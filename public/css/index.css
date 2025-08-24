@@ -13,26 +13,31 @@ body {
   --tamanho-simulador: calc(100vh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
   --tamanho-login: calc(100vh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
   --tamanho-footer: 65px;
-}
-
-.container {
-  display: flex;
-  width: 80%;
-  margin: auto;
+  --vermelho-claro: rgb(255, 92, 92);
+  --vermelho-escuro: rgb(224, 33, 51);
+  --vermelho-vivo: rgb(255, 0, 0);
+  --turqueza: rgb(0, 151, 178);
 }
 
 .header {
   height: var(--tamanho-header);
-  border-bottom: 2px solid #32b9cd;
+  border-bottom: 2px solid var(--vermelho-claro);
 }
 
 h1.titulo{
   color: red;
 }
 .header .container {
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 0.5fr 3fr 3fr;
+  grid-template-rows: 100%;
   height: 100%;
+}
+
+.header img {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
 }
 
 .header a {
@@ -45,18 +50,19 @@ h1.titulo{
 }
 
 .navbar {
-  width: 300px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
   list-style: none;
-  color: #e3b062;
+  color: var(--vermelho-claro);
 }
 
 .titulo {
-  color: #32b9cd;
-  width: fit-content;
+  color: var(--vermelho-claro);
   font-weight: 500;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .header h1 {
@@ -67,58 +73,99 @@ h1.titulo{
 
 .banner {
   height: var(--tamanho-banner);
-  color: white;
-  background-image: url('../assets/imgs/bg-jelly-fish-para-home.png');
+  background-image: url('../assets/SalaCirurgia.png');
   background-size: cover;
 }
 
 .banner .container {
+  height: min(69%, 760px);
+  width: 40%;
+  position: relative;
+  left: 10%;
+  top: 14%;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.63);
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 2fr 3fr;
+}
+
+.banner .container p{
+  font-size: clamp(69px, calc(0.5vw + 10px), 760px);
+  color: var(--vermelho-vivo);
+  text-align: center;
+}
+
+.banner .container span{
+  font-size: clamp(22px, calc(0.5vw + 22px), 520px);
+  display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
 }
 
-.banner .container p {
-  width: 50%;
-  margin: 0;
-  padding: 0;
-  font-size: 36px;
-}
-
-.banner .container span {
-  font-weight: 800;
+.banner .container button{
+  position: relative;
+  left: 25%;
+  top: 30%;
+  max-height: 33%;
+  max-width: 40%;
+  border-radius: 50px;
+  background-color: white;
+  color: var(--vermelho-escuro);
 }
 
 /* MISSÃO VISÃO VALORES */
 
 .social {
+  height: 70vh;
+  width: 100vw;
   background-color: #e5e5e5;
-  display: flex;
-}
-
-.social .container {
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.25fr 1fr;
 }
 
 .box img {
   width: 170px;
 }
 
-.social .container .boxes {
+.social span{
   display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: 30px 0;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(120px, calc(0.5vw + 15px), 760px);
+  color: var(--vermelho-escuro);
 }
 
-.social p {
-  text-align: center;
+.social .boxes {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-row: 1fr;
+  width: 100%;
+  height: 100%;
 }
 
 .box {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
+}
+
+.box img{
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.box .card-overlay{
+  background: rgba(0, 0, 0, 0.808);
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out; 
+}
+
+.box:hover .card-overlay{
+  opacity: 1;
 }
 
 /* FOOTER */
