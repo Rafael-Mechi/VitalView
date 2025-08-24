@@ -41,3 +41,25 @@ statusMemoria boolean,
 statusDisco boolean,
 fkHospital INT,
 foreign key (fkHospital) references hospital(idHospital));
+
+
+insert into hospital (nome, cnpj, codigoTecnico, codigoAnalista) 
+values 
+('Hospital São Lucas', '12345678000195', 'TEC123', 'ANA456'),
+('Hospital Vida Saudável', '98765432000188', 'TEC789', 'ANA101'),
+('Clínica Santa Maria', '11223344000166', 'TEC202', 'ANA303');
+
+select * from usuario;
+select * from hospital;
+
+   select idHospital, 
+			case 
+				when codigoTecnico = '${codigo}' then 'tecnico'
+				when codigoAnalista = '${codigo}' then 'analista'
+				else null
+			end as cargo
+	from hospital
+	where codigoTecnico = '${codigo}' or codigoAnalista = '${codigo}'
+	limit 1;
+    
+-- drop database vitalview;
