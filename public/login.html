@@ -8,7 +8,7 @@
 
     <title>AquaTech | Login</title>
 
-    <script src="./js/sessao.js"></script>
+    
 
     <link rel="stylesheet" href="./css/estilo.css">
     <link rel="icon" href="./assets/icon/favicon2.ico">
@@ -16,8 +16,6 @@
 </head>
 
 <body>
-
-    <!--Header-->
 
     <div class="header">
         <div class="container">
@@ -71,24 +69,20 @@
         </div>
     </div>
 
-    <!--footer inicio-->
+    
     <div class="footer">
         <div class="container">
             <h4>Feito com amor por aluno &hearts; SPTech &copy; 2023</h4>
             <span class="version">v1.0.0</span>
         </div>
     </div>
-    <!--footer fim-->
+    
 
 </body>
-
-</html>
-
 <script>
 
-
-    function entrar() {
-        aguardar();
+function entrar() {
+        //aguardar();
 
         var emailVar = email_input.value;
         var senhaVar = senha_input.value;
@@ -96,7 +90,6 @@
         if (emailVar == "" || senhaVar == "") {
             cardErro.style.display = "block"
             mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
-            finalizarAguardar();
             return false;
         }
         else {
@@ -130,7 +123,7 @@
                     sessionStorage.AQUARIOS = JSON.stringify(json.aquarios)
 
                     setTimeout(function () {
-                        window.location = "./dashboard/cards.html";
+                        window.location = "dashboard.html";
                     }, 1000); // apenas para exibir o loading
 
                 });
@@ -141,7 +134,7 @@
 
                 resposta.text().then(texto => {
                     console.error(texto);
-                    finalizarAguardar(texto);
+                    
                 });
             }
 
@@ -157,3 +150,4 @@
     }
 
 </script>
+</html>

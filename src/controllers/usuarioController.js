@@ -1,7 +1,8 @@
 var usuarioModel = require("../models/usuarioModel");
-//var aquarioModel = require("../models/aquarioModel");
 
-/*function autenticar(req, res) {
+function autenticar(req, res) {
+    console.log("Dados login:", req.body);
+    
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
 
@@ -19,22 +20,9 @@ var usuarioModel = require("../models/usuarioModel");
 
                     if (resultadoAutenticar.length == 1) {
                         console.log(resultadoAutenticar);
-
-                        aquarioModel.buscarAquariosPorEmpresa(resultadoAutenticar[0].empresaId)
-                            .then((resultadoAquarios) => {
-                                if (resultadoAquarios.length > 0) {
-                                    res.json({
-                                        id: resultadoAutenticar[0].id,
-                                        email: resultadoAutenticar[0].email,
-                                        nome: resultadoAutenticar[0].nome,
-                                        senha: resultadoAutenticar[0].senha,
-                                        aquarios: resultadoAquarios
-                                    });
-                                } else {
-                                    res.status(204).json({ aquarios: [] });
-                                }
-                            })
-                    } else if (resultadoAutenticar.length == 0) {
+                        res.json(resultadoAutenticar[0])
+                    }
+                     else if (resultadoAutenticar.length == 0) {
                         res.status(403).send("Email e/ou senha inválido(s)");
                     } else {
                         res.status(403).send("Mais de um usuário com o mesmo login e senha!");
@@ -49,7 +37,7 @@ var usuarioModel = require("../models/usuarioModel");
             );
     }
 
-}*/
+}
 
 
 function cadastrar(req, res) {
@@ -88,5 +76,6 @@ function cadastrar(req, res) {
 }
 
 module.exports = {
-    cadastrar
+    cadastrar,
+    autenticar
 }
