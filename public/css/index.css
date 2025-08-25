@@ -1,17 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+@font-face {
+    font-family: 'Lato';
+    src: url(../fonts/Lato/Lato-Regular.ttf) format('truetype');
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: 'Barlow', 'Segoe UI', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #ffff;
+  overflow-x: hidden;
 }
 
 :root {
   --tamanho-header: 80px;
-  --tamanho-banner: calc(100vh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
-  --tamanho-simulador: calc(100vh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
-  --tamanho-login: calc(100vh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
+  --tamanho-banner: calc(100dvh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
+  --tamanho-simulador: calc(100dvh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
+  --tamanho-login: calc(100dvh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
   --tamanho-footer: 65px;
   --vermelho-claro: rgb(255, 92, 92);
   --vermelho-escuro: rgb(224, 33, 51);
@@ -22,10 +28,12 @@ body {
 .header {
   height: var(--tamanho-header);
   border-bottom: 2px solid var(--vermelho-claro);
+  font-family: 'Lato';
 }
 
 h1.titulo{
   color: red;
+  font-family: 'Lato';
 }
 .header .container {
   display: grid;
@@ -75,6 +83,7 @@ h1.titulo{
   height: var(--tamanho-banner);
   background-image: url('../assets/SalaCirurgia.png');
   background-size: cover;
+  font-family: 'Lato';
 }
 
 .banner .container {
@@ -116,20 +125,21 @@ h1.titulo{
 
 /* MISSÃO VISÃO VALORES */
 
-.social {
-  height: 70vh;
+.ferramentas {
+  height: 70dvh;
   width: 100vw;
   background-color: #e5e5e5;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 0.25fr 1fr;
+  font-family: 'Lato';
 }
 
-.box img {
+.ferramentas .box img {
   width: 170px;
 }
 
-.social span{
+.ferramentas span{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -137,7 +147,64 @@ h1.titulo{
   color: var(--vermelho-escuro);
 }
 
-.social .boxes {
+.ferramentas .boxes {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-row: 1fr;
+  width: 90%;
+  height: 90%;
+}
+
+.ferramentas .box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.ferramentas .box img{
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.ferramentas .box h1{
+  font-size: clamp(12px, calc(0.5vw + 24px), 240px);
+  text-align: center;
+}
+
+.ferramentas .box p{
+  width: 60%;
+  font-size: clamp(6px, calc(0.5vw + 12px), 120px);
+  text-align: center;
+}
+
+/* Nossos valores */
+
+.valores {
+  height: 70dvh;
+  width: 100vw;
+  background-color: var(--turqueza);
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.25fr 1fr;
+  color: white;
+  font-family: 'Lato';
+}
+
+.valores .box img {
+  width: 170px;
+}
+
+.valores .titulo{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(120px, calc(0.5vw + 15px), 760px);
+  color: var(--vermelho-vivo);
+}
+
+.valores .boxes {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-row: 1fr;
@@ -145,27 +212,84 @@ h1.titulo{
   height: 100%;
 }
 
-.box {
+.valores .box {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
-.box img{
+.valores .box img{
   max-width: 100%;
   height: auto;
   object-fit: cover;
 }
 
-.box .card-overlay{
-  background: rgba(0, 0, 0, 0.808);
-  color: white;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out; 
+.valores .box h1{
+  font-size: clamp(12px, calc(0.5vw + 24px), 240px);
+  text-align: center;
 }
 
-.box:hover .card-overlay{
-  opacity: 1;
+.valores .box p{
+  width: 60%;
+  font-size: clamp(6px, calc(0.5vw + 12px), 120px);
+  text-align: center;
+}
+
+/* Nossa Equipe */
+
+.equipe {
+  height: 100dvh;
+  width: 100vw;
+  background-color: #e5e5e5;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.25fr 1fr;
+  font-family: 'Lato';
+}
+
+.equipe .box img {
+  width: 170px;
+}
+
+.equipe span{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(120px, calc(0.5vw + 15px), 760px);
+  color: var(--vermelho-escuro);
+}
+
+.equipe .boxes {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-row: 1fr 1fr;
+  width: 90%;
+  height: 90%;
+}
+
+.equipe .box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.equipe .box img{
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.equipe .box h1{
+  font-size: clamp(12px, calc(0.5vw + 24px), 240px);
+  text-align: center;
+}
+
+.equipe .box p{
+  width: 60%;
+  font-size: clamp(6px, calc(0.5vw + 12px), 120px);
+  text-align: center;
 }
 
 /* FOOTER */
@@ -176,6 +300,9 @@ h1.titulo{
   color: #fff;
   display: flex;
   font-size: 15px;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Lato';
 }
 
 .footer .container {
