@@ -11,7 +11,7 @@
 
 
   <link rel="stylesheet" href="./css/estilo.css" />
-  <link rel="icon" href="./assets/icon/favicon2.ico" />
+  <link rel="icon" href="./assets/LogoVitalView.png" />
   <link rel="preconnect" href="https://fonts.gstatic.com" />
 </head>
 
@@ -49,16 +49,36 @@
       <div class="formulario">
 
         <div class="campo">
-          <span>Código de usuario:</span>
-          <input id="codigo_input" type="text" placeholder="Insira aqui seu código" />
-        </div>
-        <div class="campo">
           <span>Nome:</span>
           <input id="nome_input" type="text" placeholder="Seu nome" />
         </div>
         <div class="campo">
+          <span>CPF:</span>
+          <input id="cpf_input" type="text" placeholder="Seu cpf" />
+        </div>
+        <div class="campo">
+          <span>Telefone:</span>
+          <input id="telefone_input" type="text" placeholder="Seu telefone" />
+        </div>
+        <div class="campo">
           <span>E-mail:</span>
           <input id="email_input" type="text" placeholder="meuemail@provedor.com" />
+        </div>
+        <div class="campo">
+          <span>Hospital:</span>
+          <select name="" id="hospital_input">
+            
+          </select>
+        </div>
+        <div class="campo">
+          <span>Código:</span>
+          <input id="codigo_input" type="text" placeholder="Código de autorização do seu hospital" />
+        </div>
+        <div class="campo">
+          <span>Cargo:</span>
+          <select name="" id="cargo_input">
+            
+          </select>
         </div>
         <div class="campo">
           <span>Senha:</span>
@@ -91,6 +111,8 @@
 
 </body>
 <script>
+  
+  
 
   var qtdTentativas = 30;
   function cadastrar() {
@@ -98,7 +120,11 @@
     var nomeVar = nome_input.value;
     var emailVar = email_input.value;
     var senhaVar = senha_input.value;
+    var cpfVar = cpf_input.value;
+    var telefoneVar = telefone_input.value;
     var confirmacaoSenhaVar = confirmacao_senha_input.value;
+    var cargoVar = cargo_input.value;
+    var hospitalVar = hospital_input.value;
     var codigoVar = codigo_input.value;
     var resposta = ""
 
@@ -109,8 +135,12 @@
       nomeVar == "" ||
       emailVar == "" ||
       senhaVar == "" ||
+      cpfVar == "" ||
+      telefoneVar == "" ||
       confirmacaoSenhaVar == "" ||
-      codigoVar == "") {
+      cargoVar == "" ||
+      codigoVar == "" ||
+      hospitalVar == "") {
 
       cardErro.style.display = "block";
       mensagem_erro.innerHTML = "(Preencha todos os campos em branco)";
@@ -147,7 +177,11 @@
 
               nome: nomeVar,
               email: emailVar,
+              cpf: cpfVar,
+              telefone: telefoneVar,
               senha: senhaVar,
+              cargo: cargoVar,
+              hospital: hospitalVar,
               codigo: codigoVar
 
             }),
@@ -181,6 +215,8 @@
     }
     document.getElementById('div_resposta').innerHTML = resposta
   }
+
+  
 </script>
 
 </html>

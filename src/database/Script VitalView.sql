@@ -7,6 +7,7 @@ create table hospital (
     nome varchar(100),
     cnpj varchar(14),
     telefone varchar(20),
+	codigo varchar(10),
     fkendereco int not null,
     foreign key (fkendereco) references endereco (idEndereco)
 );
