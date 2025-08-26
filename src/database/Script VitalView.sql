@@ -1,7 +1,18 @@
+-- Active: 1750092138630@@127.0.0.1@3306@VitalView
 create database VitalView;
 
 use VitalView;
 
+create table endereco (
+    idEndereco int not null auto_increment primary key,
+    logradouro varchar(100),
+    numero varchar(20),
+    complemento varchar(20),
+    bairro varchar(45),
+    cidade varchar(45),
+    estado varchar(45),
+    cep varchar(8)
+);
 create table hospital (
     idHospital int not null auto_increment primary key,
     nome varchar(100),
@@ -30,16 +41,6 @@ create table usuario (
 	foreign key (fkcargo) references cargo(idcargo)
 );
 
-create table endereco (
-    idEndereco int not null auto_increment primary key,
-    logradouro varchar(100),
-    numero varchar(20),
-    complemento varchar(20),
-    bairro varchar(45),
-    cidade varchar(45),
-    estado varchar(45),
-    cep varchar(8)
-);
 
 create table alerta (
     idAlerta int not null auto_increment primary key,
@@ -53,6 +54,8 @@ create table alerta (
     fkHospital INT,
     foreign key (fkHospital) references hospital (idHospital)
 );
+
+insert into cargo(nome) values ('analista'), ('tecnico');
 
 insert into
     hospital (
