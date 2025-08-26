@@ -23,9 +23,6 @@
       <li>
         <a href="index.html">Inicial</a>
       </li>
-      <li>
-        <a href="simulador.html">Simulador</a>
-      </li>
       <li>|</li>
       <li>
         <a href="login.html">Login</a>
@@ -68,7 +65,7 @@
         <div class="campo">
           <span>Hospital:</span>
           <select name="" id="hospital_input">
-            
+            <option value="">Escolha uma opção</option>
           </select>
         </div>
         <div class="campo">
@@ -77,8 +74,8 @@
         </div>
         <div class="campo">
           <span>Cargo:</span>
-          <select name="" id="cargo_input">
-            
+          <select name="" id="cargo_input" onchange="mostrar()">
+            <option value="">Escolha uma opção</option>
           </select>
         </div>
         <div class="campo">
@@ -112,8 +109,73 @@
 
 </body>
 <script>
-  
-  
+  function mostrar(){
+    console.log(cargo_input.value);
+    
+  }
+  const selectCargo = document.getElementById("cargo_input");
+  const selectHospital = document.getElementById("hospital_input");
+
+  fetch("/usuarios/procurarCargos", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    }
+  })
+    .then(function (resposta) {
+      console.log("resposta: ", resposta);
+
+      if (resposta.ok) {
+        return resposta.json();
+      } else {
+        throw "Erro na requisição";
+      }
+    })
+    .then(function (dados) {
+      console.log("dados: ", dados);
+
+      cardErro.style.display = "block";
+      mensagem_erro.innerHTML = "";
+
+      dados.forEach(cargo => {
+        let novaOpcao = new Option(cargo.nome, cargo.idcargo);
+        selectCargo.add(novaOpcao);
+      });
+    })
+    .catch(function (erro) {
+      console.log(`#ERRO: ${erro}`);
+    });
+
+  fetch("/usuarios/procurarHospitais", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    }
+  })
+    .then(function (resposta) {
+      console.log("resposta: ", resposta);
+
+      if (resposta.ok) {
+        return resposta.json();
+      } else {
+        throw "Erro na requisição";
+      }
+    })
+    .then(function (dados) {
+      console.log("dados: ", dados);
+
+      cardErro.style.display = "block";
+      mensagem_erro.innerHTML = "";
+
+      dados.forEach(hospital => {
+        let novaOpcao = new Option(hospital.nome, hospital.idhospital);
+        selectHospital.add(novaOpcao);
+      });
+    })
+    .catch(function (erro) {
+      console.log(`#ERRO: ${erro}`);
+    });
+
 
   var qtdTentativas = 30;
   function cadastrar() {
@@ -131,7 +193,7 @@
 
     const regraEmail = ['@', '.', '#', '$', '%', '&', '*', '(', ')']
     const CaracterEspeciais = ['!', '@', '#', '$', '%', '&', '*', '(', ')']
-    
+
     if (
       nomeVar == "" ||
       emailVar == "" ||
@@ -217,7 +279,7 @@
     document.getElementById('div_resposta').innerHTML = resposta
   }
 
-  
+
 </script>
 
 </html>

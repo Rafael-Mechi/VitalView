@@ -15,7 +15,7 @@ async function cadastrar(nome, email, cpf, telefone, senha, cargo, codigo, hospi
     var sqlBusca = `
        select idHospital, 
         from hospital
-        where codigo = '${codigo}'
+        where codigo = '${codigo}' and idhospital = '${hospital}'
         limit 1
     `;
 
@@ -40,9 +40,24 @@ async function cadastrar(nome, email, cpf, telefone, senha, cargo, codigo, hospi
     return database.executar(sqlCadastro);
 }
 
+function procurarCargos(){
+    var instrucaoSql = `
+        select idcargo, nome from cargo;`
+         console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function procurarHospitais(){
+    var instrucaoSql = `
+        select idhospital, nome from hospital;`
+         console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
 
 
 module.exports = {
     cadastrar,
-    autenticar
+    autenticar,
+    procurarCargos,
+    procurarHospitais
 };

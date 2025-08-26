@@ -55,7 +55,7 @@ create table alerta (
     foreign key (fkHospital) references hospital (idHospital)
 );
 
-insert into cargo(nome) values ('analista'), ('tecnico');
+insert into cargo(nome) values ('Analista'), ('Técnico');
 
 insert into
     hospital (
