@@ -57,31 +57,6 @@ create table alerta (
 
 insert into cargo(nome) values ('Analista'), ('Técnico');
 
-insert into
-    hospital (
-        nome,
-        cnpj,
-        codigoTecnico,
-        codigoAnalista
-    )
-values (
-        'Hospital São Lucas',
-        '12345678000195',
-        'TEC123',
-        'ANA456'
-    ),
-    (
-        'Hospital Vida Saudável',
-        '98765432000188',
-        'TEC789',
-        'ANA101'
-    ),
-    (
-        'Clínica Santa Maria',
-        '11223344000166',
-        'TEC202',
-        'ANA303'
-    );
 
 select * from usuario;
 
