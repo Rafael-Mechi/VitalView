@@ -116,7 +116,7 @@ a:hover {
     width: 20%;
     height: 100vh;
     padding-top: 6.25rem;
-    background-color: white;
+    background-color: gray;
     margin-left: -20%;
     transition: all 0.2s ease-in-out;
 }

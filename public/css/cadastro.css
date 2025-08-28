@@ -51,6 +51,7 @@ h1.titulo{
 }
 
 .header a {
+  font-size: 1.5rem;
   text-decoration: none;
   color: #d52626;
 }
