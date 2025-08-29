@@ -52,6 +52,11 @@ h1.titulo{
   font-size: 1.5rem;
   text-decoration: none;
   color: #d52626;
+  transition: font-size 0.3s ease;
+}
+
+.header a:hover {
+  font-size: 1.8rem;
 }
 
 .agora {
@@ -111,18 +116,28 @@ h1.titulo{
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
 .banner .container button{
   position: relative;
   left: 25%;
-  top: 30%;
-  max-height: 33%;
-  max-width: 40%;
+  top: 20%;
+  max-height: 58%;
+  max-width: 45%;
   border-radius: 50px;
   background-color: white;
   color: var(--vermelho-escuro);
 }
+
+
+
+.banner .container button:hover{
+  color: black;
+  background-color: #fb6363;
+  transition: background-color 0.5s ease;
+}
+
 
 /* MISSÃO VISÃO VALORES */
 

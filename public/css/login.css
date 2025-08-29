@@ -54,6 +54,11 @@ h1.titulo{
   font-size: 1.5rem;
   text-decoration: none;
   color: #d52626;
+  transition: font-size 0.3s ease;
+}
+
+.header a:hover {
+  font-size: 1.8rem;
 }
 
 .agora {
