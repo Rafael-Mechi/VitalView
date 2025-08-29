@@ -3,29 +3,38 @@ function limparSessao() {
     window.location = "login.html";
 }
 
+function validarSessao() {
+    if (!sessionStorage.ID_USUARIO) {
+        window.location = "login.html";
+    }
+    history.pushState(null, null, location.href);
+    history.pushState(null, null, location.href);
+
+    window.onpopstate = function () {
+        history.pushState(null, null, location.href);
+    };
+}
+
 
 function aguardar() {
     var sectionAguardar = document.getElementById("section_aguardar");
     sectionAguardar.style.display = "flex";
 }
 
-function finalizarAguardar(texto) {
-    var sectionAguardar = document.getElementById("section_aguardar");
-    sectionAguardar.style.display = "none";
+function finalizarAguardar(mensagem) {
+    const cardErro = document.getElementById("cardErro");
 
-    var sectionErrosLogin = document.getElementById("section_erros_login");
-    if (texto) {
-        sectionErrosLogin.style.display = "flex";
-        sectionErrosLogin.innerHTML = texto;
+    if(mensagem){
+        cardErro.style.display = "block";
+        cardErro.innerText = mensagem;
 
         setTimeout(() => {
-            sectionErrosLogin.style.display = 'none';
-        }, 4000);
+            cardErro.style.display = "none";
+        }, 4000); 
+    } else {
+        cardErro.style.display = "none";
     }
-}
 
-
-function aguardar() {
-    var sectionAguardar = document.getElementById("section_aguardar");
-    sectionAguardar.style.display = "flex";
+    const sectionAguardar = document.getElementById("section_aguardar");
+    sectionAguardar.style.display = "none";
 }
