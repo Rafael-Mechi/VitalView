@@ -8,7 +8,7 @@
 
     <title>AquaTech | Login</title>
 
-    
+    <script src="js/sessao.js"></script>
     <script src="js/login.js"></script>
     <link rel="stylesheet" href="./css/login.css">
     <link rel="icon" href="./assets/icon/favicon2.ico">
@@ -61,23 +61,26 @@
                     <button class="botao" onclick="entrar()">Entrar</button>
                 </div>
 
-                <div id="div_aguardar" class="loading-div">
-                    <img src="./assets/circle-loading.gif" id="loading-gif">
-                </div>
+                <section id="section_aguardar" class="loading-section">
+                    <img src="./assets/circle-loading.gif" alt="Icone logo aguardar">
+                    <section class="borda_aguardar"></section>
+                </section>
+                <section id="section_erros_login"></section>
 
                 <div id="div_erros_login"></div>
             </div>
         </div>
     </div>
 
-    
+
     <div class="footer">
         <div class="container">
             <h4>Todos os direitos reservados &copy; VitalView 2025</h4>
             <span class="version">v1.0.0</span>
         </div>
     </div>
-    
+
 
 </body>
+
 </html>

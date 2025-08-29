@@ -23,9 +23,6 @@ function mostrar(){
     .then(function (dados) {
       console.log("dados: ", dados);
 
-      cardErro.style.display = "block";
-      mensagem_erro.innerHTML = "";
-
       dados.forEach(cargo => {
         let novaOpcao = new Option(cargo.nome, cargo.idcargo);
         selectCargo.add(novaOpcao);
@@ -53,8 +50,6 @@ function mostrar(){
     .then(function (dados) {
       console.log("dados: ", dados);
 
-      cardErro.style.display = "block";
-      mensagem_erro.innerHTML = "";
 
       dados.forEach(hospital => {
         let novaOpcao = new Option(hospital.nome, hospital.idhospital);

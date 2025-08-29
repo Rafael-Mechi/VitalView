@@ -88,6 +88,7 @@ h1.titulo{
   height: var(--tamanho-login);
   background-image: url('../assets/SalaCirurgia.png');
   background-size: cover;
+  position: relative; 
 }
 
 .login .container {
@@ -241,6 +242,32 @@ and (-webkit-device-pixel-ratio: 3){
 }
 }
 
+
+.alerta_erro {
+    display: flex;
+    justify-content: center; 
+    align-items: flex-start;
+    margin-bottom: 10px; 
+    position: absolute; 
+    top: 10px; 
+    left: 50%;       
+    transform: translateX(-50%);
+    width: auto;
+}
+
+.card_erro {
+    display: none; 
+    color: black;
+    background-color: #fff;
+    padding: 15px 25px;
+    border-radius: 8px;
+    border: 2px solid #ED145B;
+    font-size: 18px;
+    font-weight: 500;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    position: relative;
+}
+
 /* Responsividade do iPhone 11 Pro Max (Deitado) */
 @media only screen 
 and (device-width: 896px) 
@@ -345,4 +372,29 @@ display: flex;
     background-color: rgba(0, 0, 0, 0.379);
     justify-content: center;
     align-items: center;
+}
+
+#section_aguardar img {
+    width: 6rem;
+    height: fit-content;
+    position: relative;
+}
+
+#section_aguardar .borda_aguardar {
+    position: absolute;
+    width: 7rem;
+    height: 7rem;
+    border-radius: 50%;
+    border: 0.2rem solid var(--corTextoForm);
+    border-top-color: var(--corBotaoForm);
+    animation: linear infinite 1s aguardar;
+} 
+
+/* Responsividade do iPhone 11 Pro Max (Deitado) */
+@media only screen 
+and (device-width: 896px) 
+and (device-height: 414px) 
+and (-webkit-device-pixel-ratio: 3)
+and (orientation: landscape){
+  
 }

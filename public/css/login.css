@@ -86,6 +86,7 @@ h1.titulo{
   height: var(--tamanho-login);
   background-image: url('../assets/SalaCirurgia.png');
   background-size: cover;
+  position: relative; 
 }
 
 .login .container {
@@ -200,3 +201,60 @@ display: flex;
 .footer .container .version {
   font-size: 12px;
 }
+
+
+
+
+.alerta_erro {
+    display: flex;
+    justify-content: center; 
+    align-items: flex-start;
+    margin-bottom: 10px; 
+    position: absolute; 
+    top: 10px; 
+    left: 50%;       
+    transform: translateX(-50%);
+    width: auto;
+}
+
+.card_erro {
+    display: none; 
+    color: black;
+    background-color: #fff;
+    padding: 15px 25px;
+    border-radius: 8px;
+    border: 2px solid #ED145B;
+    font-size: 18px;
+    font-weight: 500;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+
+#section_aguardar, #section_excluir {
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0;
+    height: 100%;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.379);
+    justify-content: center;
+    align-items: center;
+}
+
+#section_aguardar img {
+    width: 6rem;
+    height: fit-content;
+    position: relative;
+}
+
+#section_aguardar .borda_aguardar {
+    position: absolute;
+    width: 7rem;
+    height: 7rem;
+    border-radius: 50%;
+    border: 0.2rem solid var(--corTextoForm);
+    border-top-color: var(--corBotaoForm);
+    animation: linear infinite 1s aguardar;
+} 
