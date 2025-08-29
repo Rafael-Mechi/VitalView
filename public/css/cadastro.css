@@ -212,6 +212,12 @@ display: flex;
 and (device-width: 414px) 
 and (device-height: 896px) 
 and (-webkit-device-pixel-ratio: 3){
+  .header .container {
+  display: grid;
+  grid-template-columns: 0.5fr 3fr 4fr;
+  grid-template-rows: 100%;
+  height: 100%;
+}
   .navbar {
   display: flex;
   align-items: center;
