@@ -107,7 +107,7 @@ display: flex;
   justify-content: space-evenly;
   color: var(--vermelho-escuro);
   flex-direction: column;
-  height: max(75%, 378px);
+  height: max(83%, 378px);
   padding: 20px 0;
 }
 
