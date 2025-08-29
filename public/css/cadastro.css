@@ -205,3 +205,40 @@ display: flex;
 .footer .container .version {
   font-size: 12px;
 }
+
+
+.alerta_erro{
+  display: flex;
+  justify-content: start;
+  align-items: end;
+}
+
+.card_erro {
+  display: none;
+  background-color: #fff;
+  color: black;
+  width: 230px;
+  position: fixed;
+  border-radius: 4px;
+  border: #ED145B 3px solid;
+  padding: 10px;
+  margin-right: 10%;
+}
+
+.card_erro #mensagem_erro{
+  font-weight: 500;
+  font-size: 18px;
+}
+
+
+#section_aguardar, #section_excluir {
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0;
+    height: 100%;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.379);
+    justify-content: center;
+    align-items: center;
+}

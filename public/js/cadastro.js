@@ -68,6 +68,7 @@ function mostrar(){
 
   var qtdTentativas = 30;
   function cadastrar() {
+    aguardar();
 
     var nomeVar = nome_input.value;
     var emailVar = email_input.value;
@@ -78,9 +79,7 @@ function mostrar(){
     var cargoVar = cargo_input.value;
     var hospitalVar = hospital_input.value;
     var codigoVar = codigo_input.value;
-    var resposta = ""
 
-    const regraEmail = ['@', '.', '#', '$', '%', '&', '*', '(', ')']
     const CaracterEspeciais = ['!', '@', '#', '$', '%', '&', '*', '(', ')']
 
     if (
@@ -92,34 +91,31 @@ function mostrar(){
       confirmacaoSenhaVar == "" ||
       cargoVar == "" ||
       codigoVar == "" ||
-      hospitalVar == "") {
+      hospitalVar == ""
 
-      cardErro.style.display = "block";
-      mensagem_erro.innerHTML = "(Preencha todos os campos em branco)";
+    ) {finalizarAguardar("Os campos não podem ser vazios.");
       return false;
+  }
+  if (nomeVar.length <= 1) {
+    finalizarAguardar("O nome deve conter mais de 1 caractere.");
+    return false;
+  }
 
-    } else if (qtdTentativas <= 0) {
-      resposta = "Tentativas esgotadas! Recarregue a pagina!"
-    }
+  if(senhaVar.length < 8 || senhaVar.length > 128 || !CaracterEspeciais.some(char => senhaVar.includes(char))){
+    finalizarAguardar("Sua senha deve ter mais de 8 caracteres e possuir caracteres Especiais!")
+    return false
+  }
+
+  if (cnpjVar.length != 14) {
+    finalizarAguardar("O CNPJ é inválido.");
+    return false;
+  } 
+
+  if (!emailVar.includes('@') || !emailVar.includes('.')) {
+    finalizarAguardar("O e-mail é inválido.");
+    return false;
+  }
     else {
-
-      for (var i = 0; i < 1; i++) {
-        if (nomeVar.length > 20) {
-          qtdTentativas--
-          resposta = 'Nome de usuário grande demais.<br><br>O nome deve conter no máximo 20 caracteres.'
-        } else if (!emailVar.includes('@') && !emailVar.includes('.')) {
-          qtdTentativas--
-          resposta = 'emailVar Inválido. Deve conter @ e .'
-        } else if (senhaVar.length < 8 || senhaVar.length > 128 || !CaracterEspeciais.some(char => senhaVar.includes(char))) {
-          qtdTentativas--
-          resposta = 'Senha inválida.<br><br>Deve estar entre 8 e 128 caracteres e conter ao menos um caractere especial.'
-        } else if (confirmacaoSenhaVar != senhaVar) {
-          qtdTentativas--
-          resposta = 'A confirmação de senha está diferente'
-        } else {
-          resposta = "parabens! Cadastro realizado com sucesso"
-          qtdTentativas = 0
-
           fetch("/usuarios/cadastrar", {
             method: "POST",
             headers: {
@@ -139,31 +135,28 @@ function mostrar(){
             }),
           })
             .then(function (resposta) {
-              console.log("resposta: ", resposta);
+      console.log("resposta: ", resposta);
 
-              if (resposta.ok) {
-                cardErro.style.display = "block";
+      if (resposta.ok) {
+        var sectionErrosLogin = document.getElementById("section_erros_login");
+        sectionErrosLogin.style.backgroundColor = '#069006';
+      
+        finalizarAguardar("Cadastro realizado com sucesso! Redirecionando para tela de login...");
 
-                mensagem_erro.innerHTML =
-                  "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
-
-                setTimeout(() => {
-                  window.location = "login.html";
-                }, "2000");
-
-                limparFormulario();
-              } else {
-                throw "Houve um erro ao tentar realizar o cadastro!";
-              }
-            })
-            .catch(function (resposta) {
-              console.log(`#ERRO: ${resposta}`);
-
-            });
-
-          return false;
-        }
+        setTimeout(() => {
+          window.location = "login.html";
+        }, "2000");
+      } else {
+        throw "Houve um erro ao tentar realizar o cadastro!";
       }
+    })
+    .catch(function (resposta) {
+      console.log(`#ERRO: ${resposta}`);
+      finalizarAguardar(resposta);
+    });
+}
+
+    function sumirMensagem() {
+      cardErro.style.display = "none";
     }
-    document.getElementById('div_resposta').innerHTML = resposta
-  }
+}

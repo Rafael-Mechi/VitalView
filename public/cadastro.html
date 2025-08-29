@@ -8,7 +8,7 @@
 
   <title>Cadastro</title>
 
-
+  <script src="js/sessao.js"></script>
   <script src="js/cadastro.js"></script>
   <link rel="stylesheet" href="./css/cadastro.css" />
   <link rel="icon" href="./assets/LogoVitalView.png" />
@@ -88,11 +88,11 @@
         </div>
         <button class="botao" onclick="cadastrar()">Cadastrar</button>
       </div>
-      <div id="div_aguardar" class="loading-div">
-        <img src="./assets/circle-loading.gif" id="loading-gif" />
-      </div>
-
-      <div id="div_erros_login"></div>
+       <section id="section_aguardar" class="loading-section">
+            <img src="./assets/aguarde-orange.gif" alt="Icone logo aguardar">
+            <section class="borda_aguardar"></section>
+        </section>
+        <section id="section_erros_login"></section>
     </div>
   </div>
 </div>
