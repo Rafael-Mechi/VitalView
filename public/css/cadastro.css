@@ -247,7 +247,92 @@ and (device-width: 896px)
 and (device-height: 414px) 
 and (-webkit-device-pixel-ratio: 3)
 and (orientation: landscape){
-  
+  body{
+    overflow-y: auto;
+  }
+  .login {
+  height: 150dvh;
+  background-image: url('../assets/SalaCirurgia.png');
+  background-size: cover;
+  overflow-y: auto;
+}
+  .login .container {
+display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70%;
+}
+  .card h2 {
+  margin: 0;
+  font-size: clamp(15px, calc(1vw + 1.95dvh + 5px) ,360px);
+}
+  .card {
+  width: max(60%, 260px);
+  height: max(120%, 210px);
+  background-color: #e5e5e5;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: var(--vermelho-escuro);
+  flex-direction: column;
+  padding: 20px 0;
+  position: absolute;
+  top: 28dvh;
+}
+.card .formulario {
+  display: flex;
+  height: 40%;
+  width: 80%;
+  justify-content: space-around;
+  flex-direction: column;
+}
+.formulario span {
+  font-size: clamp(15px, calc(0.25vw + 0.55dvh + 5px) ,360px);
+  font-weight: 800;
+}
+
+.formulario input {
+  border: 2px solid var(--turqueza);
+  text-align: center;
+  border-radius: 10px;
+  margin: 0;
+  height: clamp(5px, calc(2dvh + 5px) ,69px);
+  font-size: clamp(15px, calc(0.25vw + 0.35dvh + 5px) ,360px);
+}
+
+.formulario select {
+  border: 2px solid var(--turqueza);
+  background-color: white;
+  color: gray;
+  height: clamp(5px, calc(2dvh + 15px) ,69px);
+  text-align: center;
+  border-radius: 10px;
+  margin: 0;
+  font-size: clamp(15px, calc(0.25vw + 0.35dvh + 5px) ,360px);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  padding: 5px 0;
+}
+
+.botao {
+  cursor: pointer;
+  font-family: "Barlow", sans-serif;
+  border: 0;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: clamp(15px, calc(0.5vw + 0.75dvh + 10px) ,360px);
+  color: #fff;
+  background-color: var(--vermelho-vivo);
+  width: clamp(120px, calc(32vw + 5px), 760px);
+  height: clamp(5px, calc(4dvh + 5px), 69px);
+  align-self: center;
+  margin-top: 20px;
+}
 }
 
 #section_aguardar, #section_excluir {
