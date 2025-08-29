@@ -79,6 +79,7 @@ h1.titulo{
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  font-size: clamp(15px, calc(2vw + 10px) ,360px);
 }
 
 .header h1 {
@@ -110,25 +111,25 @@ display: flex;
   justify-content: space-evenly;
   color: var(--vermelho-escuro);
   flex-direction: column;
-  height: fit-content;
+  height: max(53%, 378px);
   padding: 20px 0;
 }
 
 .card h2 {
   margin: 0;
-  font-size: 30px;
+  font-size: clamp(15px, calc(1vw + 1.95dvh + 5px) ,360px);
 }
 
 .formulario {
   display: flex;
   height: 90%;
   width: 80%;
-  justify-content: space-around;
+  justify-content: space-evenly;
   flex-direction: column;
 }
 
 .formulario span {
-  font-size: 15px;
+  font-size: clamp(15px, calc(0.25vw + 1.13dvh + 5px) ,360px);
   font-weight: 800;
 }
 
@@ -137,6 +138,8 @@ display: flex;
   text-align: center;
   border-radius: 10px;
   margin: 0;
+  height: clamp(5px, calc(3.5dvh + 5px) ,69px);
+  font-size: clamp(15px, calc(0.25vw + 0.55dvh + 5px) ,360px);
 }
 
 .formulario select {
@@ -162,11 +165,11 @@ display: flex;
   border: 0;
   border-radius: 5px;
   font-weight: 600;
-  font-size: 18px;
+  font-size: clamp(15px, calc(0.5vw + 0.75dvh + 10px) ,360px);
   color: #fff;
   background-color: var(--vermelho-vivo);
-  width: 120px;
-  height: 30px;
+  width: clamp(120px, calc(15vw + 5px), 760px);
+  height: clamp(5px, calc(4dvh + 5px), 69px);
   align-self: center;
   margin-top: 20px;
 }
@@ -263,3 +266,85 @@ display: flex;
     border-top-color: var(--corBotaoForm);
     animation: linear infinite 1s aguardar;
 } 
+
+/* Responsividade do iPhone 11 Pro Max iOS (Em pé)*/
+@media only screen 
+and (device-width: 414px) 
+and (device-height: 896px) 
+and (-webkit-device-pixel-ratio: 3){
+    .header .container {
+  display: grid;
+  grid-template-columns: 0.5fr 3fr 4fr;
+  grid-template-rows: 100%;
+  height: 100%;
+}
+  .navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  list-style: none;
+  color: var(--vermelho-claro);
+  font-size: clamp(15px, calc(2vw + 3px) ,360px);
+}
+.header a {
+  font-size: clamp(15px, calc(2vw + 3px) ,360px);
+  text-decoration: none;
+  color: #d52626;
+}
+
+.header img {
+  max-width: 300%;
+  height: auto;
+  object-fit: cover;
+}
+
+.titulo {
+  color: var(--vermelho-claro);
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(15px, calc(2vw + 10px) ,360px);
+}
+}
+
+/* Responsividade do iPhone 11 Pro Max (Deitado) */
+@media only screen 
+and (device-width: 896px) 
+and (device-height: 414px) 
+and (-webkit-device-pixel-ratio: 3)
+and (orientation: landscape){
+
+  .login {
+  height: 90dvh;
+  background-image: url('../assets/SalaCirurgia.png');
+  background-size: cover;
+  overflow-y: auto;
+}
+
+  .card {
+  width: max(60%, 260px);
+  height: max(72%, 210px);
+  background-color: #e5e5e5;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: var(--vermelho-escuro);
+  flex-direction: column;
+  padding: 20px 0;
+  position: absolute;
+  top: 5dvh;
+}
+
+.footer {
+  background-color: #32b9cd;
+  height: 80px;
+  color: #fff;
+  display: flex;
+  font-size: 15px;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Lato';
+}
+}
