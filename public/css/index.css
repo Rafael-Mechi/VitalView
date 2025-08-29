@@ -128,6 +128,7 @@ h1.titulo{
   border-radius: 50px;
   background-color: white;
   color: var(--vermelho-escuro);
+  font-size: clamp(22px, calc(0.5vw + 22px), 520px);
 }
 
 
