@@ -1,0 +1,51 @@
+.banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.banner .card {
+  width: 50%;
+  background-color: rgb(229, 229, 229, 0.95);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  color: black;
+  flex-direction: column;
+  height: max(53%, 378px);
+  padding: 20px 20px;
+}
+
+.card h2 {
+    color: var(--vermelho-escuro);
+}
+.card h3 {
+    margin: 0;
+}
+
+.card p {
+    text-indent: 3em;
+    text-align: justify;
+}
+
+a {
+    font-size: 1.5rem;
+    color: #d52626;
+    transition: font-size 0.3s ease;
+}
+
+button {
+  max-height: 58%;
+  max-width: 45%;
+  border-radius: 50px;
+  background-color: white;
+  color: var(--vermelho-escuro);
+  font-size: clamp(22px, calc(0.5vw + 22px), 520px);
+}
+
+button:hover {
+  color: black;
+  background-color: #fb6363;
+  transition: background-color 0.5s ease;
+}
