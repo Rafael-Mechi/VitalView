@@ -1,5 +1,3 @@
-
-
 * {
     margin: 0;
     padding: 0;
@@ -7,92 +5,90 @@
     font-family: "Poppins-Regular";
 }
 
-
 body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Barlow', 'Segoe UI', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #ffff;
-  overflow-x: hidden;
+    font-family: 'Barlow', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fff;
+    overflow-x: hidden;
 }
-
 
 header {
     position: sticky;
     top: 0;
-    background-color: white;
+    background-color: #fff;
     display: flex;
     align-items: center;
-
-    nav {
-        display: flex;
-        align-items: center;
-        gap: 2rem;
-    }
-
-    .container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .container {
     width: 80%;
     margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
+.secao_logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
-img {
-    overflow-clip-margin: content-box;
-    overflow: clip;
+.logo {
+    width: 5rem;
+    height: auto;
+    object-fit: cover;
+}
+
+.linha {
+    width: 60%;
+    height: 3px;
+    background: linear-gradient(to right, #e74c3c, #f39c12);
+    margin-top: 8px;
+    border-radius: 2px;
 }
 
 a {
     color: black;
     text-decoration: none;
     transition: all 0.2s ease-in-out;
-}
-
-a {
     cursor: pointer;
 }
 
 a:hover {
-    color: red;
+    color: #e74c3c;
 }
 
-.logo {
-    width: 5rem;
-    height: fit-content;
-    object-fit: cover;
+.menu {
+    position: relative;
 }
-
 
 .menu .hamburguer {
-    padding-top: 15px;
     width: 2rem;
     height: 2rem;
-    z-index: 1;
+    position: relative;
+    cursor: pointer;
+    z-index: 2;
+}
 
-    span {
-        display: block;
-        width: 2rem;
-        height: 0.3rem;
-        margin-bottom: 0.6rem;
-        background-color: black;
-        border-radius: 0.2rem;
-        transition: all 0.2s ease-in-out;
-    }
+.menu .hamburguer span {
+    display: block;
+    width: 2rem;
+    height: 0.3rem;
+    margin-bottom: 0.6rem;
+    background-color: black;
+    border-radius: 0.2rem;
+    transition: all 0.2s ease-in-out;
 }
 
 .menu .check_hamburguer {
     position: absolute;
-    z-index: 2;
     width: 2rem;
     height: 2rem;
     opacity: 0;
     cursor: pointer;
+    z-index: 3;
 }
 
 .menu .check_hamburguer:checked ~ .hamburguer span:nth-child(1) {
@@ -111,49 +107,52 @@ a:hover {
 
 .menu ul {
     list-style: none;
-    position: absolute;
+    position: fixed;  
     left: 0;
     top: 0;
-    width: 20%;
+    width: 250px;
     height: 100vh;
     padding-top: 6.25rem;
-    background-color: gray;
-    margin-left: -20%;
-    transition: all 0.2s ease-in-out;
+    background: linear-gradient(180deg, #ffffff, #b0aeae);
+    transform: translateX(-100%); 
+    opacity: 0; 
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    z-index: 1; 
 }
 
 .menu .check_hamburguer:checked ~ ul {
-    margin-left: 0;
+    transform: translateX(0);
+    opacity: 1;
 }
 
 .menu ul li {
-    padding: 1rem 3rem;
+    padding: 1rem 2rem;
+    transition: background 0.2s;
+}
+
+.menu ul li:hover {
+    background: rgba(11, 11, 11, 0.1);
 }
 
 .menu ul li a {
+    font-size: 1.1rem;
+    color: #000;
+}
+
+.conteudo_painel {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.caixa_dados, .caixa_dados_2 {
+    width: 300px;
+    height: 200px;
+    border: 2px solid black;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 1.2rem;
 }
-
-.secao_logo {
-    display: flex;
-    flex-direction: column; 
-    align-items: center;   
-    justify-content: center;
-    margin: 0 auto;        
-}
-
-
-.linha {
-    width: 100%;
-    max-width: 5rem; 
-    height: 2px;
-    background-color: black;
-    margin-top: 5px; 
-}
-
-
-
-
-
-
-
