@@ -6,7 +6,7 @@ function entrar() {
     var senhaVar = senha_input.value;
 
     if (emailVar === "" || senhaVar === "") {
-        finalizarAguardar("(Mensagem de erro para todos os campos em branco)");
+        finalizarAguardar("Preencha todos os campos!");
         return false;
     }
 

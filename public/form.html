@@ -32,6 +32,10 @@
         </ul>
       </div>
     </div>
+<div id="loading" style="display: block;justify-self: center;height: 51rem;align-content: center;">
+   <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" style="width:300px;height:200px;" />
+</div>
+
 <script src="https://js.hsforms.net/forms/embed/50427174.js" defer></script>
 
 <div class="hs-form-frame" data-region="na1" data-form-id="4994ff9b-b61a-43ef-b0a3-99f7e1d0bbd4" data-portal-id="50427174"></div>
@@ -46,4 +50,16 @@
       </div>
     </div> 
 </body>
+
+<script>
+  var i = setInterval(function () {
+    
+    clearInterval(i);
+  
+    // O código desejado é apenas isto:
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("teste").style.display = "inline";
+
+}, 1000);
+</script>
 </html>
