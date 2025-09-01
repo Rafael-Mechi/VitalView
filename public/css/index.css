@@ -120,6 +120,7 @@ h1.titulo{
 }
 
 .banner .container button{
+  cursor: pointer;
   position: relative;
   left: 25%;
   top: 20%;
@@ -472,6 +473,7 @@ input {
 }
 
 .btn {
+  cursor: pointer;
   font-family: "Barlow", sans-serif;
   border: 0;
   border-radius: 5px;

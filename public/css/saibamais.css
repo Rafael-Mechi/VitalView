@@ -36,6 +36,7 @@ a {
 }
 
 button {
+  cursor: pointer;
   max-height: 58%;
   max-width: 45%;
   border-radius: 50px;
