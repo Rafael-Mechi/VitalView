@@ -26,7 +26,7 @@ create table hospital (
 create table cargo (
     idcargo int not null auto_increment primary key,
 	nome varchar(45)
-)
+);
 
 create table usuario (
     idUsuario int not null auto_increment primary key,
