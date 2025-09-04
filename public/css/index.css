@@ -27,7 +27,7 @@ body {
   color: #333;
 }
 
-/* HEADER ANTIGO */
+/* HEADER */
 .header {
   height: var(--tamanho-header);
   border-bottom: 2px solid var(--vermelho-claro);
@@ -82,7 +82,7 @@ body {
   font-weight: 800;
 }
 
-/* BANNER E SEÇÕES (mantido igual) */
+/* BANNER */
 .banner {
   height: var(--tamanho-banner);
   background-image: url('../assets/SalaCirurgia.png');
@@ -132,10 +132,10 @@ body {
 
 .banner .container button:hover {
   background-color: var(--vermelho-claro);
-  color: #fff;
   transform: translateY(-2px);
 }
 
+/* SEÇÕES */
 .ferramentas,
 .valores,
 .equipe {
@@ -237,15 +237,22 @@ body {
   align-items: center;
 }
 
-/* RESPONSIVIDADE IPHONE 11 PRO MAX (EM PÉ) */
-@media only screen and (device-width: 414px) 
+/*  RESPONSIVIDADE IPHONE 11 PRO MAX */
+@media only screen 
+and (device-width: 414px) 
 and (device-height: 896px) 
 and (-webkit-device-pixel-ratio: 3) {
 
+  body {
+    font-size: 14px;
+  }
+
+  /* Header */
   .header .container {
     grid-template-columns: 0.5fr 3fr 4fr;
     padding: 0 10px;
     gap: 5px;
+    align-items: center;
   }
 
   .header img {
@@ -256,21 +263,139 @@ and (-webkit-device-pixel-ratio: 3) {
     font-size: 1.5rem;
   }
 
+  .navbar {
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
   .navbar a {
     font-size: 1rem;
   }
+
+  /* Banner */
+  .banner {
+    height: auto;
+    padding: 15px 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .banner .container {
+    width: 90%;
+    margin: 0;
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .banner .container p {
+    font-size: 1.8rem;
+  }
+
+  .banner .container span {
+    font-size: 1rem;
+    padding: 0 10px;
+  }
+
+  .banner .container button {
+    width: 60%;
+    padding: 10px 0;
+    font-size: 1rem;
+  }
+
+  /* Ferramentas */
+  .ferramentas span {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+  }
+
+  .ferramentas .boxes {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .ferramentas .box img {
+    max-width: 100px;
+  }
+
+  .ferramentas .box h1 {
+    font-size: 1.2rem;
+  }
+
+  .ferramentas .box p {
+    font-size: 0.85rem;
+  }
+
+  /* Valores */
+  .valores .titulo {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+  }
+
+  .valores .boxes {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .valores .box img {
+    max-width: 100px;
+  }
+
+  .valores .box h1 {
+    font-size: 1.2rem;
+  }
+
+  .valores .box p {
+    font-size: 0.85rem;
+  }
+
+  /* Equipe */
+  .equipe span {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+  }
+
+  .equipe .boxes {
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+
+  .equipe .box img {
+    max-width: 90px;
+  }
+
+  .equipe .box h1 {
+    font-size: 1rem;
+  }
+
+  .equipe .box p {
+    font-size: 0.8rem;
+  }
+
+  /* Footer */
+  .footer {
+    height: auto;
+    padding: 15px 10px;
+    text-align: center;
+    font-size: 0.85rem;
+  }
 }
 
-/* RESPONSIVIDADE IPHONE 11 PRO MAX (DEITADO) */
-@media only screen and (device-width: 896px) 
+@media only screen 
+and (device-width: 896px) 
 and (device-height: 414px) 
 and (-webkit-device-pixel-ratio: 3) 
 and (orientation: landscape) {
 
+  body {
+    font-size: 13px;
+  }
+
+  /* Header */
   .header .container {
     grid-template-columns: 0.5fr 3fr 4fr;
-    padding: 0 10px;
+    padding: 0 15px;
     gap: 5px;
+    align-items: center;
   }
 
   .header img {
@@ -278,10 +403,122 @@ and (orientation: landscape) {
   }
 
   .titulo {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+  }
+
+  .navbar {
+    justify-content: flex-end;
+    gap: 8px;
   }
 
   .navbar a {
+    font-size: 1rem;
+  }
+
+  /* Banner */
+  .banner {
+    height: auto;
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .banner .container {
+    width: 80%;
+    margin: 0;
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .banner .container p {
+    font-size: 1.5rem;
+  }
+
+  .banner .container span {
+    font-size: 0.95rem;
+    padding: 0 10px;
+  }
+
+  .banner .container button {
+    width: 50%;
+    padding: 8px 0;
+    font-size: 0.95rem;
+  }
+
+  /* Ferramentas */
+  .ferramentas span {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+
+  .ferramentas .boxes {
+    grid-template-columns: 2fr 2fr 2fr;
+    gap: 15px;
+  }
+
+  .ferramentas .box img {
+    max-width: 90px;
+  }
+
+  .ferramentas .box h1 {
     font-size: 1.1rem;
+  }
+
+  .ferramentas .box p {
+    font-size: 0.8rem;
+  }
+
+  /* Valores */
+  .valores .titulo {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+
+  .valores .boxes {
+    grid-template-columns: 2fr 2fr 2fr;
+    gap: 15px;
+  }
+
+  .valores .box img {
+    max-width: 90px;
+  }
+
+  .valores .box h1 {
+    font-size: 1.1rem;
+  }
+
+  .valores .box p {
+    font-size: 0.8rem;
+  }
+
+  /* Equipe */
+  .equipe span {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+
+  .equipe .boxes {
+    grid-template-columns: 3fr 3fr 3fr;
+    gap: 15px;
+  }
+
+  .equipe .box img {
+    max-width: 80px;
+  }
+
+  .equipe .box h1 {
+    font-size: 0.95rem;
+  }
+
+  .equipe .box p {
+    font-size: 0.75rem;
+  }
+
+  /* Footer */
+  .footer {
+    height: auto;
+    padding: 10px 5px;
+    text-align: center;
+    font-size: 0.8rem;
   }
 }
