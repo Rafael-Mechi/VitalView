@@ -1,51 +1,70 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;600;700&display=swap');
 
 @font-face {
-    font-family: 'Lato';
-    src: url(../fonts/Lato/Lato-Regular.ttf) format('truetype');
+  font-family: 'Lato';
+  src: url(../fonts/Lato/Lato-Regular.ttf) format('truetype');
+}
+
+:root {
+  --tamanho-header: 80px;
+  --tamanho-banner: calc(100dvh - var(--tamanho-header) - var(--tamanho-footer));
+  --tamanho-simulador: calc(100dvh - var(--tamanho-header) - var(--tamanho-footer));
+  --tamanho-login: calc(100dvh - var(--tamanho-header) - var(--tamanho-footer));
+  --tamanho-footer: 65px;
+  --vermelho-claro: #ff5c5c;
+  --vermelho-escuro: #e02133;
+  --vermelho-vivo: #ff0000;
+  --turqueza: #0097b2;
+  --cinza-claro: #f5f5f5;
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Barlow', 'Segoe UI', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #ffff;
+  font-family: 'Barlow', 'Segoe UI', Tahoma, sans-serif;
+  background-color: #fff;
   overflow-x: hidden;
+  color: #333;
 }
 
-:root {
-  --tamanho-header: 80px;
-  --tamanho-banner: calc(100dvh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
-  --tamanho-simulador: calc(100dvh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
-  --tamanho-login: calc(100dvh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
-  --tamanho-footer: 65px;
-  --vermelho-claro: rgb(255, 92, 92);
-  --vermelho-escuro: rgb(224, 33, 51);
-  --vermelho-vivo: rgb(255, 0, 0);
-  --turqueza: rgb(0, 151, 178);
-}
-
+/* HEADER ANTIGO */
 .header {
   height: var(--tamanho-header);
   border-bottom: 2px solid var(--vermelho-claro);
   font-family: 'Lato';
+  background-color: #fff;
 }
 
-h1.titulo{
-  color: red;
-  font-family: 'Lato';
-}
 .header .container {
   display: grid;
   grid-template-columns: 0.5fr 3fr 3fr;
   grid-template-rows: 100%;
   height: 100%;
+  align-items: center;
+  padding: 0 30px;
 }
 
 .header img {
   max-width: 100%;
   height: auto;
   object-fit: cover;
+}
+
+.titulo {
+  color: var(--vermelho-escuro);
+  font-weight: 600;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: clamp(15px, calc(2vw + 10px), 360px);
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  list-style: none;
+  color: var(--vermelho-claro);
 }
 
 .header a {
@@ -63,832 +82,206 @@ h1.titulo{
   font-weight: 800;
 }
 
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  list-style: none;
-  color: var(--vermelho-claro);
-}
-
-.titulo {
-  color: var(--vermelho-claro);
-  font-weight: 500;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.header h1 {
-  margin: 0;
-}
-
-/* BANNER */
-
+/* BANNER E SEÇÕES (mantido igual) */
 .banner {
   height: var(--tamanho-banner);
   background-image: url('../assets/SalaCirurgia.png');
   background-size: cover;
-  font-family: 'Lato';
+  background-position: center;
+  display: flex;
+  align-items: center;
 }
 
 .banner .container {
-  height: min(69%, 760px);
-  width: 40%;
-  position: relative;
-  left: 10%;
-  top: 14%;
-  border-radius: 5px;
-  background-color: rgba(255, 255, 255, 0.63);
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 2fr 3fr;
+  width: 45%;
+  margin-left: 8%;
+  padding: 30px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
 }
 
-.banner .container p{
-  font-size: clamp(69px, calc(0.5vw + 10px), 760px);
+.banner .container p {
+  font-size: 2.8rem;
   color: var(--vermelho-vivo);
   text-align: center;
+  font-weight: 700;
 }
 
-.banner .container span{
-  font-size: clamp(22px, calc(0.5vw + 22px), 520px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.banner .container span {
+  font-size: 1.2rem;
+  text-align: center;
+  color: #444;
+}
+
+.banner .container button {
+  cursor: pointer;
+  align-self: center;
+  padding: 12px 30px;
+  border-radius: 50px;
+  border: none;
+  background-color: var(--vermelho-escuro);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.banner .container button:hover {
+  background-color: var(--vermelho-claro);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.ferramentas,
+.valores,
+.equipe {
+  padding: 60px 0;
   text-align: center;
 }
-
-.banner .container button{
-  cursor: pointer;
-  position: relative;
-  left: 25%;
-  top: 20%;
-  max-height: 58%;
-  max-width: 45%;
-  border-radius: 50px;
-  background-color: white;
-  color: var(--vermelho-escuro);
-  font-size: clamp(22px, calc(0.5vw + 22px), 520px);
-}
-
-
-
-.banner .container button:hover{
-  color: black;
-  background-color: #fb6363;
-  transition: background-color 0.5s ease;
-}
-
-
-/* MISSÃO VISÃO VALORES */
 
 .ferramentas {
-  height: 70dvh;
-  width: 100vw;
-  background-color: #e5e5e5;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 0.25fr 1fr;
-  font-family: 'Lato';
+  background-color: var(--cinza-claro);
 }
-
-.ferramentas .box img {
-  width: 170px;
-}
-
-.ferramentas span{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: clamp(120px, calc(0.5vw + 15px), 760px);
-  color: var(--vermelho-escuro);
-}
-
-.ferramentas .boxes {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-row: 1fr;
-  width: 90%;
-  height: 90%;
-}
-
-.ferramentas .box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.ferramentas .box img{
-  max-width: 100%;
-  height: auto;
-  object-fit: cover;
-}
-
-.ferramentas .box h1{
-  font-size: clamp(12px, calc(0.5vw + 24px), 240px);
-  text-align: center;
-}
-
-.ferramentas .box p{
-  width: 60%;
-  font-size: clamp(6px, calc(0.5vw + 12px), 120px);
-  text-align: center;
-}
-
-/* Nossos valores */
 
 .valores {
-  height: 70dvh;
-  width: 100vw;
   background-color: var(--turqueza);
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 0.25fr 1fr;
   color: white;
-  font-family: 'Lato';
 }
-
-.valores .box img {
-  width: 170px;
-}
-
-.valores .titulo{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: clamp(120px, calc(0.5vw + 15px), 760px);
-  color: var(--vermelho-vivo);
-}
-
-.valores .boxes {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-row: 1fr;
-  width: 100%;
-  height: 100%;
-}
-
-.valores .box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-.valores .box img{
-  max-width: 100%;
-  height: auto;
-  object-fit: cover;
-}
-
-.valores .box h1{
-  font-size: clamp(12px, calc(0.5vw + 24px), 240px);
-  text-align: center;
-}
-
-.valores .box p{
-  width: 60%;
-  font-size: clamp(6px, calc(0.5vw + 12px), 120px);
-  text-align: center;
-}
-
-/* Nossa Equipe */
 
 .equipe {
-  height: 100dvh;
-  width: 100vw;
-  background-color: #e5e5e5;
+  background-color: var(--cinza-claro);
+}
+
+.ferramentas span,
+.valores .titulo,
+.equipe span {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  display: block;
+}
+
+.boxes {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 0.25fr 1fr;
-  font-family: 'Lato';
-}
-
-.equipe .box img {
-  width: 170px;
-}
-
-.equipe span{
-  display: flex;
+  gap: 30px;
   justify-content: center;
-  align-items: center;
-  font-size: clamp(120px, calc(0.5vw + 15px), 760px);
-  color: var(--vermelho-escuro);
+  align-items: stretch;
+  width: 85%;
+  margin: 0 auto;
+}
+
+.ferramentas .boxes,
+.valores .boxes {
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .equipe .boxes {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-row: 1fr 1fr;
-  width: 90%;
-  height: 90%;
+  grid-template-columns: repeat(3, 1fr);
 }
 
-.equipe .box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+.box {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
 }
 
-.equipe .box img{
-  max-width: 100%;
-  height: auto;
-  object-fit: cover;
+.valores .box {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  box-shadow: none;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.equipe .box h1{
-  font-size: clamp(12px, calc(0.5vw + 24px), 240px);
-  text-align: center;
+.box:hover {
+  transform: translateY(-6px);
 }
 
-.equipe .box p{
-  width: 60%;
-  font-size: clamp(6px, calc(0.5vw + 12px), 120px);
-  text-align: center;
+.box img {
+  max-width: 130px;
+  margin-bottom: 15px;
+}
+
+.box h1 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: var(--vermelho-escuro);
+}
+
+.valores .box h1 {
+  color: white;
+}
+
+.box p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.valores .box p {
+  color: #f0f0f0;
 }
 
 /* FOOTER */
-
 .footer {
   background-color: #32b9cd;
-  height: 150px;
+  height: var(--tamanho-footer);
   color: #fff;
   display: flex;
   font-size: 15px;
   justify-content: center;
   align-items: center;
-  font-family: 'Lato';
 }
 
-.footer .container {
-  justify-content: center;
-  text-align: center;
-}
-
-.footer .container .version {
-  font-size: 12px;
-}
-
-/* LOGIN */
-
-.login {
-  height: var(--tamanho-login);
-  background-image: url('../assets/imgs/bg-jelly-fish-para-home.png');
-  background-size: cover;
-}
-
-.login .container {
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-
-.card {
-  width: 50%;
-  background-color: #e5e5e5;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  color: palevioletred;
-  flex-direction: column;
-  height: fit-content;
-  padding: 20px 0;
-}
-
-.card h2 {
-  margin: 0;
-  font-size: 30px;
-}
-
-.formulario {
-  display: flex;
-  height: 90%;
-  width: 80%;
-  justify-content: space-around;
-  flex-direction: column;
-}
-
-.formulario span {
-  font-size: 15px;
-  font-weight: 800;
-}
-
-.formulario input {
-  border: 2px solid #32b9cd;
-  text-align: center;
-  border-radius: 10px;
-  margin: 0;
-}
-
-.formulario select {
-  border: 2px solid #32b9cd;
-  background-color: white;
-  color: gray;
-  height: 36px;
-  text-align: center;
-  border-radius: 10px;
-  margin: 0;
-}
-
-.campo {
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  padding: 5px 0;
-}
-
-.botao {
-  cursor: pointer;
-  font-family: "Barlow", sans-serif;
-  border: 0;
-  border-radius: 5px;
-  font-weight: 600;
-  font-size: 18px;
-  color: #fff;
-  background-color: #ED145B;
-  width: 120px;
-  height: 30px;
-  align-self: center;
-  margin-top: 20px;
-}
-
-.loading-div {
-  width: 50px;
-  display: none;
-}
-
-.loading-div img {
-  height: 50px;
-  width: 50px;
-}
-
-#div_erros_login {
-  display: none
-}
-
-/* FORMULARIO */
-
-.alerta_erro{
-  display: flex;
-  justify-content: flex-end;
-}
-
-.card_erro {
-  display: none;
-  background-color: #fff;
-  color: black;
-  width: 230px;
-  position: fixed;
-  border-radius: 4px;
-  border: #ED145B 3px solid;
-  padding: 10px;
-  margin-right: 10%;
-}
-
-.card_erro #mensagem_erro{
-  font-weight: 500;
-  font-size: 20px;
-}
-
-.formulario .tipo_campo {
-  font-size: 20px;
-  font-weight: 600 !important;
-}
-
-.formulario {
-  display: flex;
-  flex-direction: column;
-}
-
-input {
-  margin-bottom: 10px;
-  border: 2px solid #32b9cd;
-  padding: 10px;
-  text-align: center;
-  border-radius: 10px;
-}
-
-.btn {
-  cursor: pointer;
-  font-family: "Barlow", sans-serif;
-  border: 0;
-  border-radius: 5px;
-  font-weight: 600;
-  font-size: 18px;
-  padding: 10px 15px;
-  color: white;
-  background-color: #ED145B;
-  width: 120px;
-  align-self: center;
-  margin-top: 5px;
-}
-
-.loading-div {
-  width: 50px;
-  margin: auto;
-  display: none;
-}
-
-.loading-div img {
-  height: 50px;
-  width: 50px;
-}
-
-/* SIMULADOR */
-
-.simulador {
-  color: white;
-}
-
-.simulador .container {
-  flex-direction: column;
-  overflow: scroll; 
-  height: var(--tamanho-simulador);
-}
-
-/* ALERTA */
-
-#alerta {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-}
-
-.mensagem-alarme {
-  background-color: white;
-  border-radius: 5px;
-  width: 300px;
-  height: 80px;
-  margin: 10px;
-  padding: 10px 0;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-}
-
-.mensagem-alarme h3 {
-  font-size: 14px;
-  margin: 0;
-}
-
-.mensagem-alarme .informacao {
-  width: 66%;
-}
-
-.alarme-sino {
-  width: 48px;
-  height: 48px;
-  animation-name: bell;
-  animation-duration: 4s;
-  background-image: url('https://cdn-icons-png.flaticon.com/512/1157/1157000.png');
-  background-size: cover;
-  animation-iteration-count: infinite;
-}
-
-@keyframes bell {
-  0%   {transform: rotate(25deg)}
-  25%  {transform: rotate(-25deg)}
-  50%  {transform: rotate(25deg)}
-  75%  {transform: rotate(-25deg)}
-  100% {transform: rotate(25deg)}
-}
-
-/* Responsividade do iPhone 11 Pro Max iOS (Em pé)*/
-@media only screen 
-and (device-width: 414px) 
+/* RESPONSIVIDADE IPHONE 11 PRO MAX (EM PÉ) */
+@media only screen and (device-width: 414px) 
 and (device-height: 896px) 
 and (-webkit-device-pixel-ratio: 3) {
-  
-  body {
-    font-size: 14px;
-  }
-  
+
   .header .container {
-    grid-template-columns: 0.5fr 2fr 3fr;
+    grid-template-columns: 0.5fr 3fr 4fr;
     padding: 0 10px;
     gap: 5px;
-    align-items: center;
   }
-  
+
   .header img {
-    height: 35px; 
-    width: auto;
+    height: 40px;
   }
-  
+
   .titulo {
     font-size: 1.5rem;
-    margin-left: 8px; 
   }
-  
-  .navbar {
-    justify-content: flex-end;
-    gap: 10px;
-  }
-  
+
   .navbar a {
-    font-size: 1.1rem !important;
-  }
-  
-  .navbar li:not(:has(a)) {
-    font-size: 0.9rem !important;
-    margin: 0 2px;
-  }
-  
-  .banner .container {
-    width: 85%;
-    left: 5%;
-    top: 10%;
-    padding: 15px;
-  }
-  
-  .banner .container p {
-    font-size: 2rem;
-  }
-  
-  .banner .container span {
-    font-size: 1.1rem;
-    text-align: center;
-    padding: 0 10px;
-  }
-  
-  .banner .container button {
-    left: 30%;
-    max-width: 50%;
-    height: 40px;
     font-size: 1rem;
-  }
-  
-  .ferramentas {
-    height: auto;
-    padding: 30px 0;
-  }
-  
-  .ferramentas span {
-    font-size: 1.8rem;
-    padding: 20px 0;
-  }
-  
-  .ferramentas .boxes {
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(3, 1fr);
-    gap: 30px;
-    width: 100%;
-    margin: 0 auto;
-  }
-  
-  .ferramentas .box img {
-    width: 120px;
-  }
-  
-  .ferramentas .box p {
-    width: 80%;
-  }
-  
-  .valores {
-    height: auto;
-    padding: 30px 0;
-  }
-  
-  .valores .titulo {
-    font-size: 1.8rem;
-    padding: 20px 0;
-  }
-  
-  .valores .boxes {
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(3, 1fr);
-    gap: 30px;
-  }
-  
-  .valores .box img {
-    width: 120px;
-  }
-  
-  .valores .box p {
-    width: 80%;
-  }
-  
-  .equipe {
-    height: auto;
-    padding: 30px 0;
-  }
-  
-  .equipe span {
-    font-size: 1.8rem;
-    padding: 20px 0;
-  }
-  
-  .equipe .boxes {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(3, 1fr);
-    gap: 20px;
-    width: 95%;
-    margin: 0 auto;
-  }
-  
-  .equipe .box img {
-    width: 100px;
-  }
-  
-  .equipe .box h1 {
-    font-size: 1.1rem;
-  }
-  
-  .equipe .box p {
-    width: 90%;
-    font-size: 0.9rem;
-  }
-  
-  .footer {
-    height: auto;
-    padding: 20px 0;
-    text-align: center;
-  }
-  
-  .footer h4 {
-    font-size: 0.9rem;
-    padding: 0 10px;
   }
 }
 
-/* Responsividade do iPhone 11 Pro Max (Deitado) */
-@media only screen 
-and (device-width: 896px) 
+/* RESPONSIVIDADE IPHONE 11 PRO MAX (DEITADO) */
+@media only screen and (device-width: 896px) 
 and (device-height: 414px) 
-and (-webkit-device-pixel-ratio: 3)
+and (-webkit-device-pixel-ratio: 3) 
 and (orientation: landscape) {
-  
-  body {
-    font-size: 12px;
-  }
-   .header {
-    height: var(--tamanho-header);
-    overflow: visible;
-  }
-  
+
   .header .container {
-    grid-template-columns: 0.5fr 2fr 3fr;
+    grid-template-columns: 0.5fr 3fr 4fr;
     padding: 0 10px;
     gap: 5px;
-    align-items: center;
-    height: 100%;
   }
-  
+
   .header img {
     height: 35px;
-    width: auto;
-    object-fit: contain; 
   }
-  
 
   .titulo {
     font-size: 1.5rem;
-    margin-left: 8px;
-  }
-  
-  .navbar {
-    justify-content: flex-end;
-    gap: 10px;
-  }
-  
-  .navbar a {
-    font-size: 1.1rem !important;
-  }
-  
-  .navbar li:not(:has(a)) {
-    font-size: 0.9rem !important;
-    margin: 0 2px;
   }
 
-  .banner {
-    height: calc(100dvh - 60px);
-  }
-  
-  .banner .container {
-    width: 70%;
-    left: 5%;
-    top: 15%;
-    padding: 12px;
-    grid-template-rows: 0.8fr 1.5fr 2fr;
-  }
-  
-  .banner .container p {
-    font-size: 1.6rem;
-  }
-  
-  .banner .container span {
-    font-size: 0.9rem;
-    padding: 0 8px;
-  }
-  
-  .banner .container button {
-    left: 25%;
-    max-width: 45%;
-    height: 35px;
-    font-size: 0.9rem;
-    top: 20%;
-  }
-  
-  .ferramentas {
-    height: auto;
-    padding: 20px 0;
-  }
-  
-  .ferramentas span {
-    font-size: 1.5rem;
-    padding: 15px 0;
-  }
-  
-  .ferramentas .boxes {
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr;
-    gap: 15px;
-    width: 95%;
-  }
-  
-  .ferramentas .box img {
-    width: 90px;
-  }
-  
-  .ferramentas .box h1 {
-    font-size: 1rem;
-  }
-  
-  .ferramentas .box p {
-    width: 85%;
-    font-size: 0.8rem;
-  }
-  
-  .valores {
-    height: auto;
-    padding: 20px 0;
-  }
-  
-  .valores .titulo {
-    font-size: 1.5rem;
-    padding: 15px 0;
-  }
-  
-  .valores .boxes {
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr;
-    gap: 15px;
-  }
-  
-  .valores .box img {
-    width: 90px;
-  }
-  
-  .valores .box h1 {
-    font-size: 1rem;
-  }
-  
-  .valores .box p {
-    width: 85%;
-    font-size: 0.8rem;
-  }
-  
-  .equipe {
-    height: auto;
-    padding: 20px 0;
-  }
-  
-  .equipe span {
-    font-size: 1.5rem;
-    padding: 15px 0;
-  }
-  
-  .equipe .boxes {
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 15px;
-    width: 98%;
-  }
-  
-  .equipe .box img {
-    width: 80px;
-  }
-  
-  .equipe .box h1 {
-    font-size: 0.9rem;
-  }
-  
-  .equipe .box p {
-    width: 90%;
-    font-size: 0.75rem;
-  }
-  
-  .footer {
-    height: auto;
-    padding: 15px 0;
-  }
-  
-  .footer h4 {
-    font-size: 0.8rem;
-    padding: 0 8px;
+  .navbar a {
+    font-size: 1.1rem;
   }
 }
