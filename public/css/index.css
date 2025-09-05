@@ -204,7 +204,9 @@ body {
 
 .box img {
   max-width: 130px;
+  width: 130px;
   margin-bottom: 15px;
+  max-height: 130px;
 }
 
 .box h1 {
@@ -512,6 +514,13 @@ and (orientation: landscape) {
 
   .equipe .box p {
     font-size: 0.75rem;
+  }
+
+  .box img {
+    max-width: 130px;
+    width: 130px;
+    margin-bottom: 15px;
+    max-height: 130px;
   }
 
   /* Footer */
