@@ -13,6 +13,10 @@ create table endereco (
     estado varchar(45),
     cep varchar(8)
 );
+
+insert into endereco (logradouro, numero, complemento, bairro, cidade, estado, cep) VALUES
+('Av. Paulista', '1000', 'Bloco A', 'Bela Vista', 'São Paulo', 'SP', '01311000');
+
 create table hospital (
     idHospital int not null auto_increment primary key,
     nome varchar(100),
@@ -23,10 +27,16 @@ create table hospital (
     foreign key (fkendereco) references endereco (idEndereco)
 );
 
+insert into hospital (nome, cnpj, telefone, codigo, fkEndereco) VALUES
+('Hospital Central São Lucas', '12345678000199', '(11) 4002-8922', 'HOSP001', 1);
+
+
 create table cargo (
     idcargo int not null auto_increment primary key,
 	nome varchar(45)
 );
+
+insert into cargo(nome) values ('Analista'), ('Técnico');
 
 create table usuario (
     idUsuario int not null auto_increment primary key,
@@ -42,20 +52,56 @@ create table usuario (
 );
 
 
-create table alerta (
-    idAlerta int not null auto_increment primary key,
-    dataHora datetime default current_timestamp,
-    cpu decimal(5, 2),
-    memoria decimal(5, 2),
-    disco decimal(5, 2),
-    statusCpu boolean,
-    statusMemoria boolean,
-    statusDisco boolean,
-    fkHospital INT,
-    foreign key (fkHospital) references hospital (idHospital)
+
+
+create table servidores (
+    idServidor int primary key auto_increment,
+    nome varchar(45) not null,
+    ip varchar(80) not null,
+    fkHospital int,
+    foreign key(fkHospital) references hospital(idHospital)
 );
 
-insert into cargo(nome) values ('Analista'), ('Técnico');
+insert into servidores (nome, ip, fkHospital) values
+('Servidor Principal', '192.168.0.10', 1),
+('Servidor Backup', '192.168.0.11', 1);
+
+
+
+
+create table tipoComponente (
+    idTipo int primary key auto_increment,
+    nome VARCHAR(45) not null unique
+);
+
+insert into tipoComponente(nome) values( 
+       ("Cpu")
+);
+insert into tipoComponente(nome) values( 
+       ("Memória")
+);
+insert into tipoComponente(nome) values( 
+       ("Disco")
+);
+
+
+create table componentes (
+    idComponente int primary key auto_increment,
+    fkTipo int not null,
+    fkServidor int not null,
+    foreign key (fkTipo) references tipoComponente(idTipo),
+    foreign key(fkServidor) references servidores(idServidor)
+);
+
+
+create table capturas (
+    idCapturas int primary key auto_increment,
+    dataHora datetime not null,
+    valor decimal(5,2) not null,
+    status boolean,
+    fkComponente int not null,
+    foreign key (fkComponente) references componentes(idComponente)
+);
 
 
 select * from usuario;
