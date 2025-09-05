@@ -13,7 +13,7 @@ async function cadastrar(nome, email, cpf, telefone, senha, cargo, codigo, hospi
 
     //Busca o hospital pelo codigo 
     var sqlBusca = `
-       select idHospital, 
+       select idHospital 
         from hospital
         where codigo = '${codigo}' and idhospital = '${hospital}'
         limit 1
@@ -23,18 +23,17 @@ async function cadastrar(nome, email, cpf, telefone, senha, cargo, codigo, hospi
     console.log(resultado);
     
 
-    if (!resultado[0] || !resultado[0].cargo) {
+    if (!resultado[0]) {
         throw new Error('Código inválido para qualquer hospital');
     }
 
     var fkHospital = resultado[0].idHospital;
-    var cargo = resultado[0].cargo;
     
     console.log(resultado);
     
     var sqlCadastro = `
-        insert into usuario (nome, email, senha, fkcargo, fkHospital, cpf, telefone)
-        values ('${nome}', '${email}', '${senha}', '${cargo}', '${fkHospital}', '${cpf}', '${telefone}');
+        insert into usuario (nome, cpf, telefone, email, senha, fkcargo, fkHospital)
+        values ('${nome}', '${cpf}', '${telefone}', '${email}', '${senha}', '${cargo}', '${fkHospital}');
     `;
     console.log(resultado);
     return database.executar(sqlCadastro);

@@ -78,10 +78,7 @@ function cadastrar() {
     return false
   }
 
-  if (cnpjVar.length != 14) {
-    finalizarAguardar("O CNPJ é inválido.");
-    return false;
-  }
+
 
   if (!emailVar.includes('@') || !emailVar.includes('.')) {
     finalizarAguardar("O e-mail é inválido.");
