@@ -7,7 +7,7 @@
 
 :root {
   --tamanho-header: 80px;
-  --tamanho-banner: calc(100dvh - var(--tamanho-header) - var(--tamanho-footer));
+  --tamanho-banner: calc(110dvh - var(--tamanho-header) - var(--tamanho-footer));
   --tamanho-simulador: calc(100dvh - var(--tamanho-header) - var(--tamanho-footer));
   --tamanho-login: calc(100dvh - var(--tamanho-header) - var(--tamanho-footer));
   --tamanho-footer: 65px;
@@ -45,7 +45,7 @@ body {
 }
 
 .header img {
-  max-width: 100%;
+  max-width: 50%;
   height: auto;
   object-fit: cover;
 }
@@ -97,7 +97,7 @@ body {
   margin-left: 26.5%;
   padding: 30px;
   border-radius: 12px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.6);
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -105,14 +105,14 @@ body {
 }
 
 .banner .container p {
-  font-size: 2.8rem;
-  color: var(--vermelho-vivo);
+  font-size: 40px;
+  color: #d52626;
   text-align: center;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .banner .container span {
-  font-size: 1.2rem;
+  font-size: 18px;
   text-align: center;
   color: #444;
 }
@@ -135,16 +135,49 @@ body {
   transform: translateY(-2px);
 }
 
-/* SEÇÕES */
-.ferramentas,
-.valores,
-.equipe {
-  padding: 60px 0;
+/* Sobre Nós */
+.sobre {
+  padding: 60px 20px;
   text-align: center;
+  background: #f9f9f9;
 }
 
-.ferramentas {
-  background-color: var(--cinza-claro);
+.sobre h2 {
+  font-size: 32px;
+  margin-bottom: 30px;
+  color: #333;
+  position: relative;
+  display: inline-block;
+}
+
+.sobre h2::after {
+  content: "";
+  width: 60px;
+  height: 3px;
+  background: var(--vermelho-escuro);
+  display: block;
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+.sobre .texto {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: justify;
+  line-height: 1.8;
+  font-size: 18px;
+  color: #444;
+}
+
+.sobre p {
+  margin-bottom: 25px;
+}
+
+
+/* Valores */
+.valores {
+  padding: 40px 0;
+  text-align: center;
 }
 
 .valores {
@@ -152,13 +185,12 @@ body {
   color: white;
 }
 
-.equipe {
-  background-color: var(--cinza-claro);
+.title {
+  font-size: 40px;
 }
 
-.ferramentas span,
-.valores .titulo,
-.equipe span {
+span,
+.valores .titulo, span {
   font-size: 2.2rem;
   font-weight: 700;
   margin-bottom: 40px;
@@ -174,12 +206,8 @@ body {
   margin: 0 auto;
 }
 
-.ferramentas .boxes,
+.boxes,
 .valores .boxes {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.equipe .boxes {
   grid-template-columns: repeat(3, 1fr);
 }
 
@@ -210,12 +238,6 @@ body {
   border-radius: 10px;
 }
 
-.box h1 {
-  font-size: 1.4rem;
-  margin-bottom: 10px;
-  color: var(--vermelho-escuro);
-}
-
 .valores .box h1 {
   color: white;
 }
@@ -227,6 +249,17 @@ body {
 
 .valores .box p {
   color: #f0f0f0;
+}
+
+/* Solução */ 
+
+.solucao {
+  padding: 60px 0;
+  text-align: center;
+}
+
+.solucao img {
+  width: 500px;
 }
 
 /* FOOTER */
@@ -305,29 +338,6 @@ and (-webkit-device-pixel-ratio: 3) {
     font-size: 1rem;
   }
 
-  /* Ferramentas */
-  .ferramentas span {
-    font-size: 1.6rem;
-    margin-bottom: 20px;
-  }
-
-  .ferramentas .boxes {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .ferramentas .box img {
-    max-width: 100px;
-  }
-
-  .ferramentas .box h1 {
-    font-size: 1.2rem;
-  }
-
-  .ferramentas .box p {
-    font-size: 0.85rem;
-  }
-
   /* Valores */
   .valores .titulo {
     font-size: 1.6rem;
@@ -351,28 +361,6 @@ and (-webkit-device-pixel-ratio: 3) {
     font-size: 0.85rem;
   }
 
-  /* Equipe */
-  .equipe span {
-    font-size: 1.6rem;
-    margin-bottom: 20px;
-  }
-
-  .equipe .boxes {
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-  }
-
-  .equipe .box img {
-    max-width: 90px;
-  }
-
-  .equipe .box h1 {
-    font-size: 1rem;
-  }
-
-  .equipe .box p {
-    font-size: 0.8rem;
-  }
 
   /* Footer */
   .footer {
@@ -448,29 +436,6 @@ and (orientation: landscape) {
     font-size: 0.95rem;
   }
 
-  /* Ferramentas */
-  .ferramentas span {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-  }
-
-  .ferramentas .boxes {
-    grid-template-columns: 2fr 2fr 2fr;
-    gap: 15px;
-  }
-
-  .ferramentas .box img {
-    max-width: 90px;
-  }
-
-  .ferramentas .box h1 {
-    font-size: 1.1rem;
-  }
-
-  .ferramentas .box p {
-    font-size: 0.8rem;
-  }
-
   /* Valores */
   .valores .titulo {
     font-size: 1.5rem;
@@ -492,29 +457,6 @@ and (orientation: landscape) {
 
   .valores .box p {
     font-size: 0.8rem;
-  }
-
-  /* Equipe */
-  .equipe span {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-  }
-
-  .equipe .boxes {
-    grid-template-columns: 3fr 3fr 3fr;
-    gap: 15px;
-  }
-
-  .equipe .box img {
-    max-width: 80px;
-  }
-
-  .equipe .box h1 {
-    font-size: 0.95rem;
-  }
-
-  .equipe .box p {
-    font-size: 0.75rem;
   }
 
   .box img {

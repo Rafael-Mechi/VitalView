@@ -5,8 +5,8 @@
 }
 
 .banner .card {
-  width: 50%;
-  background-color: rgb(229, 229, 229, 0.95);
+  width: 60%;
+  background-color: rgb(229, 229, 229, 0.8);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -20,13 +20,16 @@
 
 .card h2 {
     color: var(--vermelho-escuro);
+    font-size: 25 px;
 }
 .card h3 {
     margin: 0;
+    font-size: 20px;
 }
 
 .card p {
     text-indent: 3em;
+    font-size: 17px;
 }
 
 a {
@@ -37,18 +40,20 @@ a {
 
 button {
   cursor: pointer;
-  max-height: 58%;
-  max-width: 45%;
+  align-self: center;
+  padding: 12px 30px;
   border-radius: 50px;
-  background-color: white;
-  color: var(--vermelho-escuro);
-  font-size: clamp(22px, calc(0.5vw + 22px), 520px);
+  border: none;
+  background-color: var(--vermelho-escuro);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: 0.3s;
 }
 
 button:hover {
-  color: black;
-  background-color: #fb6363;
-  transition: background-color 0.5s ease;
+  background-color: var(--vermelho-claro);
+  transform: translateY(-2px);
 }
 
 /* Responsividade do iPhone 11 Pro Max iOS (Em pé)*/
