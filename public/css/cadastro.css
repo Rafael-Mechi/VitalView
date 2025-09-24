@@ -17,7 +17,7 @@ body {
   --tamanho-header: 80px;
   --tamanho-banner: calc(100dvh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
   --tamanho-simulador: calc(100dvh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
-  --tamanho-login: calc(100dvh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
+  --tamanho-cadastro: calc(125dvh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
   --tamanho-footer: 50px;
   --vermelho-claro: rgb(255, 92, 92);
   --vermelho-escuro: rgb(224, 33, 51);
@@ -80,17 +80,17 @@ body {
 .agora {
   font-weight: 800;
 }
-/*login*/
+/*Cadstro*/
 
 .login {
-  height: var(--tamanho-login);
+  height: var(--tamanho-cadastro);
   background-image: url('../assets/SalaCirurgia.png');
   background-size: cover;
   position: relative; 
 }
 
 .login .container {
-display: flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
@@ -105,8 +105,8 @@ display: flex;
   justify-content: space-evenly;
   color: var(--vermelho-escuro);
   flex-direction: column;
-  height: max(83%, 378px);
-  padding: 20px 0;
+  height: max(90%, 378px);
+  padding: 10px 0;
 }
 
 .card h2 {
@@ -140,7 +140,7 @@ display: flex;
   border: 2px solid var(--turqueza);
   background-color: white;
   color: gray;
-  height: clamp(5px, calc(2dvh + 5px) ,69px);
+  height: clamp(5px, calc(3dvh + 5px) ,69px);
   text-align: center;
   border-radius: 10px;
   margin: 0;
@@ -187,7 +187,7 @@ display: flex;
 
 .footer {
   background-color: #32b9cd;
-  height: 12%;
+  height: auto;
   color: #fff;
   display: flex;
   font-size: 15px;

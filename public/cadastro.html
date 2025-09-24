@@ -15,97 +15,205 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" />
 </head>
 
-<div class="header">
-  <div class="container">
-    <img src="./assets/LogoVitalView.png" alt="" height="50" width="69">
-    <h1 class="titulo">VitalView</h1>
-    <ul class="navbar">
-      <li>
-        <a href="index.html">Inicio</a>
-      </li>
-      <li>|</li>
-      <li>
-        <a href="login.html">Login</a>
-      </li>
-      <li class="agora">
-        <a href="cadastro.html">Cadastro</a>
-      </li>
-    </ul>
-  </div>
-</div>
+<body>
 
-
-<div class="login">
-  <div class="alerta_erro">
-    <div class="card_erro" id="cardErro">
-      <span id="mensagem_erro"></span>
+  <div class="header">
+    <div class="container">
+      <img src="./assets/LogoVitalView.png" alt="" height="50" width="69">
+      <h1 class="titulo">VitalView</h1>
+      <ul class="navbar">
+        <li>
+          <a href="index.html">Inicio</a>
+        </li>
+        <li>|</li>
+        <li>
+          <a href="login.html">Login</a>
+        </li>
+        <li class="agora">
+          <a href="cadastro.html">Cadastro</a>
+        </li>
+      </ul>
     </div>
   </div>
-  <div class="container">
-    <div class="card">
-      <h2>Bem-vindo!</h2>
-      <div class="formulario">
 
-        <div class="campo">
-          <span>Nome:</span>
-          <input id="nome_input" type="text" placeholder="Seu nome" />
-        </div>
-        <div class="campo">
-          <span>CPF:</span>
-          <input id="cpf_input" type="text" placeholder="Seu cpf" />
-        </div>
-        <div class="campo">
-          <span>Telefone:</span>
-          <input id="telefone_input" type="text" placeholder="Seu telefone" />
-        </div>
-        <div class="campo">
-          <span>E-mail:</span>
-          <input id="email_input" type="text" placeholder="meuemail@provedor.com" />
-        </div>
-        <div class="campo">
-          <span>Hospital:</span>
-          <select name="" id="hospital_input">
-            <option value="">Escolha uma opção</option>
-          </select>
-        </div>
-        <div class="campo">
-          <span>Código:</span>
-          <input id="codigo_input" type="text" placeholder="Código do seu hospital" />
-        </div>
-        <div class="campo">
-          <span>Cargo:</span>
-          <select name="" id="cargo_input" onchange="mostrar()">
-            <option value="">Escolha uma opção</option>
-          </select>
-        </div>
-        <div class="campo">
-          <span>Senha:</span>
-          <input id="senha_input" type="password" placeholder="******" />
-        </div>
-        <div class="campo">
-          <span>Confirmação da Senha:</span>
-          <input id="confirmacao_senha_input" type="password" placeholder="******" />
-        </div>
-        <button class="botao" onclick="cadastrar()">Cadastrar</button>
+
+  <div class="login">
+    <div class="alerta_erro">
+      <div class="card_erro" id="cardErro">
+        <span id="mensagem_erro"></span>
       </div>
-       <section id="section_aguardar" class="loading-section">
-            <img src="./assets/aguarde-orange.gif" alt="Icone logo aguardar">
-            <section class="borda_aguardar"></section>
+    </div>
+    <div class="container">
+      <div class="card">
+        <h2>Bem-vindo!</h2>
+        <div class="formulario">
+
+          <div class="campo">
+            <span>Nome:</span>
+            <input id="nome_input" type="text" placeholder="Seu nome" />
+          </div>
+          <div class="campo">
+            <span>CPF:</span>
+            <input id="cpf_input" type="text" placeholder="Seu cpf" />
+          </div>
+          <div class="campo">
+            <span>Telefone:</span>
+            <input id="telefone_input" type="text" placeholder="Seu telefone" />
+          </div>
+          <div class="campo">
+            <span>E-mail:</span>
+            <input id="email_input" type="text" placeholder="meuemail@provedor.com" />
+          </div>
+          <div class="campo">
+            <span>Hospital:</span>
+            <select name="" id="hospital_input">
+              <option value="">Escolha uma opção</option>
+            </select>
+          </div>
+          <div class="campo">
+            <span>Código:</span>
+            <input id="codigo_input" type="text" placeholder="Código do seu hospital" />
+          </div>
+          <div class="campo">
+            <span>Cargo:</span>
+            <select name="" id="cargo_input" onchange="mostrar()">
+              <option value="">Escolha uma opção</option>
+            </select>
+          </div>
+          <div class="campo">
+            <span>Senha:</span>
+            <input id="senha_input" type="password" placeholder="******" />
+          </div>
+          <div class="campo">
+            <span>Confirmação da Senha:</span>
+            <input id="confirmacao_senha_input" type="password" placeholder="******" />
+          </div>
+          <button type="button" class="botao" onclick="cadastrar()">Cadastrar</button>
+        </div>
+        <section id="section_aguardar" class="loading-section">
+          <img src="./assets/aguarde-orange.gif" alt="Icone logo aguardar">
+          <section class="borda_aguardar"></section>
         </section>
         <section id="section_erros_login"></section>
+      </div>
     </div>
   </div>
-</div>
 
 
-
-<div class="footer">
-  <div class="container">
-    <h4>Todos os direitos reservados &copy; VitalView 2025</h4>
+  <div class="footer">
+    <div class="container">
+      <h4>Todos os direitos reservados &copy; VitalView 2025</h4>
+    </div>
   </div>
-</div>
 
-<div id="div_resposta"></div>
+  <div id="div_resposta"></div>
+
+  <script>
+    function mostrarAguardar() {
+      var s = document.getElementById("section_aguardar");
+      if (s) s.style.display = "block";
+    }
+    function esconderAguardar() {
+      var s = document.getElementById("section_aguardar");
+      if (s) s.style.display = "none";
+    }
+    function mostrarErro(msg) {
+      var card = document.getElementById("cardErro");
+      var span = document.getElementById("mensagem_erro");
+      if (span) span.textContent = msg || "Ocorreu um erro.";
+      if (card) {
+        card.style.display = "block";
+        setTimeout(function () { card.style.display = "none"; }, 6000);
+      }
+    }
+
+
+    function carregarHospitais() {
+      fetch("/usuarios/hospitais")
+        .then(function (res) { return res.json(); })
+        .then(function (lista) {
+          var sel = document.getElementById("hospital_input");
+          if (!sel) return;
+          sel.innerHTML = '<option value="">Escolha uma opção</option>';
+          (lista || []).forEach(function (h) {
+            sel.innerHTML += '<option value="' + h.idhospital + '">' + h.nome + '</option>';
+          });
+        })
+        .catch(function (e) {
+          console.error(e);
+          mostrarErro("Erro ao carregar hospitais.");
+        });
+    }
+    function carregarCargos() {
+      fetch("/usuarios/cargos")
+        .then(function (res) { return res.json(); })
+        .then(function (lista) {
+          var sel = document.getElementById("cargo_input");
+          if (!sel) return;
+          sel.innerHTML = '<option value="">Escolha uma opção</option>';
+          (lista || []).forEach(function (c) {
+            sel.innerHTML += '<option value="' + c.idcargo + '">' + c.nome + '</option>';
+          });
+        })
+        .catch(function (e) {
+          console.error(e);
+        });
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+      carregarHospitais();
+      carregarCargos();
+    });
+
+
+    function cadastrar() {
+      var nome = document.getElementById("nome_input").value.trim();
+      var cpf = document.getElementById("cpf_input").value.trim();
+      var telefone = document.getElementById("telefone_input").value.trim();
+      var email = document.getElementById("email_input").value.trim();
+      var hospital = document.getElementById("hospital_input").value;
+      var codigo = document.getElementById("codigo_input").value.trim();
+      var cargo = document.getElementById("cargo_input").value;
+      var senha = document.getElementById("senha_input").value;
+      var confirmacao = document.getElementById("confirmacao_senha_input").value;
+
+      if (!nome || !cpf || !telefone || !email || !hospital || !codigo || !cargo || !senha || !confirmacao) {
+        return mostrarErro("Preencha todos os campos.");
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return mostrarErro("E-mail inválido.");
+      }
+      if (senha !== confirmacao) {
+        return mostrarErro("As senhas não coincidem.");
+      }
+
+      mostrarAguardar();
+
+      fetch("/usuarios/cadastrar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome, email, cpf, telefone, senha, cargo, codigo, hospital })
+      })
+        .then(function (res) {
+          if (!res.ok) {
+            return res.text().then(function (t) { throw new Error(t || "Erro no cadastro."); });
+          }
+
+          return res.text().then(function (t) { try { return JSON.parse(t); } catch { return { mensagem: t }; } });
+        })
+        .then(function () {
+          alert("Cadastro realizado com sucesso!");
+          window.location.href = "login.html";
+        })
+        .catch(function (err) {
+          console.error(err);
+          mostrarErro(err.message);
+        })
+        .finally(function () {
+          esconderAguardar();
+        });
+    }
+  </script>
 
 </body>
+
 </html>
