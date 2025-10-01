@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Servidor</title>
+    <link rel="stylesheet" href="css/cadastroserver.css">
+    <script src="js/sessao.js"></script>
+</head>
+<body>
+
+    <header class="escuro">
+        <section class="container">
+
+            <nav class="menu">
+                <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
+
+                <section class="hamburguer">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </section>
+                <ul>
+                    <div class="title_hamb">
+                        <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
+                        <h2 class="hamb_nome">VitalView</h2>
+                    </div>
+
+                    <li>
+                        <a href="dashboard.html"> Dashboard </a>
+                    </li>
+                    <li>
+                        <a href="cadastroserver.html"> Cadastro Servidores </a>
+                    </li>
+                    <li>
+                        <a href="parametrizacao.html"> Parametrização </a>
+                    </li>
+                    <li>
+                        <a target="_blank"> Central de Serviço </a>
+                    </li>
+                    <li>
+                        <a onclick="limparSessao()"> Sair </a>
+                    </li>
+                </ul>
+            </nav>
+
+             <section class="secao_logo">
+                <h1 class="titulo_header">Cadastro de Servidores</h1>
+            </section>
+
+             <section class="secao_logo">
+                <a href="dashboard.html">
+                    <img src="assets/LogoVitalView.png" alt="Logo VitalView" class="logo">
+                </a>
+                <div class="linha"></div>
+            </section>
+        
+        </section>
+    </header>
+
+    <form class="form-servidor">
+      <div class="form-control">
+        <label for="nome">Nome do Servidor *</label>
+        <input type="text" id="nome" name="nome" placeholder="Ex.: Servidor PACS" required>
+      </div>
+
+      <div class="form-control">
+        <label for="so">Sistema Operacional *</label>
+        <select id="so" name="so" required>
+          <option value="" disabled selected>Selecione</option>
+          <option>Windows Server</option>
+          <option>Ubuntu Server</option>
+          <option>Debian</option>
+          <option>Red Hat</option>
+        </select>
+      </div>
+
+      <div class="form-control">
+        <label for="hostname">Hostname *</label>
+        <input type="text" id="hostname" name="hostname" placeholder="Ex.: srv-local-01" required>
+      </div>
+
+      <div class="form-control">
+        <label for="ip">Endereço IP *</label>
+        <input type="text" id="ip" name="ip" placeholder="Ex.: 192.168.0.10" required>
+      </div>
+
+      <div class="form-control">
+        <label for="memoria">Memória RAM (GB) *</label>
+        <input type="number" id="memoria" name="memoria" min="1" placeholder="Ex.: 16" required>
+      </div>
+
+      <div class="form-control">
+        <label for="disco">Disco (GB) *</label>
+        <input type="number" id="disco" name="disco" min="1" placeholder="Ex.: 500" required>
+      </div>
+
+      <div class="form-actions">
+        <button type="reset" class="btn cancel">Cancelar</button>
+        <button type="submit" class="btn save">Salvar</button>
+      </div>
+    </form>
+
+</body>
+</html>

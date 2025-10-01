@@ -1,15 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;600;700&display=swap');
+
+@font-face {
+  font-family: 'Lato';
+  src: url(../fonts/Lato/Lato-Regular.ttf) format('truetype');
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Poppins-Regular";
 }
 
 body {
-    font-family: 'Barlow', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #fff;
-    overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  font-family: 'Barlow', 'Segoe UI', Tahoma, sans-serif;
+  background-color: #fff;
+  overflow-x: hidden;
+  color: #333;
 }
+
 
 header {
     position: sticky;
@@ -36,7 +46,7 @@ header {
 }
 
 .logo {
-    width: 5rem;
+    width: 4rem;
     height: auto;
     object-fit: cover;
 }
@@ -44,7 +54,7 @@ header {
 .linha {
     width: 60%;
     height: 3px;
-    background: linear-gradient(to right, #e74c3c, #f39c12);
+    background: linear-gradient(to right, #e74c3c, #f31212);
     margin-top: 8px;
     border-radius: 2px;
 }
@@ -105,6 +115,22 @@ a:hover {
     transform: rotate(-45deg) scaleX(1.35);
 }
 
+.menu .title_hamb {
+  display: flex;
+  flex-direction: row;
+  margin-left: 20px;
+}
+
+.menu .img_hamb {
+  max-width: 40px;
+}
+
+.menu .hamb_nome {
+  color: #df2525;
+  margin-left: 15px;
+  margin-top: 10px;
+}
+
 .menu ul {
     list-style: none;
     position: fixed;  
@@ -113,7 +139,7 @@ a:hover {
     width: 250px;
     height: 100vh;
     padding-top: 6.25rem;
-    background: linear-gradient(180deg, #ffffff, #b0aeae);
+    background: linear-gradient(#ebe4e4);
     transform: translateX(-100%); 
     opacity: 0; 
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
@@ -156,3 +182,66 @@ a:hover {
     justify-content: center;
     font-size: 1.2rem;
 }
+
+.form-servidor {
+  max-width: 600px;
+  margin: 40px auto;         
+  padding: 32px;             
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.form-control label {
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #444;
+}
+
+.form-control input,
+.form-control select {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn.cancel {
+  background: #ccc;
+  color: #000;
+}
+
+.btn.cancel:hover {
+  background: #aaa;
+}
+
+.btn.save {
+  background: #e01919; 
+  color: #fff;
+}
+
+.btn.save:hover {
+  background: #b50f0f;
+}
+
