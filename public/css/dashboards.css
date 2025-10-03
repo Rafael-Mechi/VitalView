@@ -249,6 +249,9 @@ header {
 }
 
 .card--sm{ min-height:120px; }
-.card--lg{ min-height:280px; }
+.card--lg{ 
+    min-height:280px; 
+    min-width: 1000px;
+}
 
 
