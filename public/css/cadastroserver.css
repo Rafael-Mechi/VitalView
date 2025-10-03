@@ -213,6 +213,13 @@ header {
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
+.form-servidor h2 {
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin-bottom: 4px;
+  color: #222;
+}
+
 .form-control {
   display: flex;
   flex-direction: column;

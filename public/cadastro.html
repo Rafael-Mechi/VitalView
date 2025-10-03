@@ -127,7 +127,12 @@
             <span>Confirmação da Senha:</span>
             <input id="confirmacao_senha_input" type="password" placeholder="******" />
           </div>
-          <button type="button" class="botao" onclick="cadastrar()">Cadastrar</button>
+          
+          <div class="form-actions">
+            <button type="reset" class="btn cancel">Cancelar</button>
+            <button type="submit" class="btn save" onclick="cadastrar()">Cadastrar</button>
+          </div>
+         
         </div>
         <section id="section_aguardar" class="loading-section">
           <img src="./assets/aguarde-orange.gif" alt="Icone logo aguardar">
@@ -135,13 +140,6 @@
         </section>
         <section id="section_erros_login"></section>
       </div>
-    </div>
-  </div>
-
-
-  <div class="footer">
-    <div class="container">
-      <h4>Todos os direitos reservados &copy; VitalView 2025</h4>
     </div>
   </div>
 
