@@ -28,22 +28,31 @@
                         <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
                         <h2 class="hamb_nome">VitalView</h2>
                     </div>
+                    <div class="menu_topo">
+                        <h3 class="title_menu">Menu</h3>
+                        <li>
+                            <a href="dashboard.html"> Dashboard </a>
+                        </li>
+                        <li>
+                            <a href="cadastroserver.html"> Cadastro Servidores </a>
+                        </li>
+                        <li>
+                            <a href="parametrizacao.html"> Parametrização </a>
+                        </li>
+                    </div>
 
-                    <li>
-                        <a href="dashboard.html"> Dashboard </a>
-                    </li>
-                    <li>
-                        <a href="cadastroserver.html"> Cadastro Servidores </a>
-                    </li>
-                    <li>
-                        <a href="parametrizacao.html"> Parametrização </a>
-                    </li>
-                    <li>
-                        <a target="_blank"> Central de Serviço </a>
-                    </li>
-                    <li>
-                        <a onclick="limparSessao()"> Sair </a>
-                    </li>
+                    <div class="menu_baixo">
+                        <h3 class="title_menu">Outras Opções</h3>
+                        <li>
+                            <a target="_blank"> Central de Serviço </a>
+                        </li>
+                        <li>
+                            <a href="cadastro.html"> Cadastro </a>
+                        </li>
+                        <li>
+                            <a onclick="limparSessao()"> Sair </a>
+                        </li>
+                    </div>
                 </ul>
             </nav>
 
@@ -61,6 +70,45 @@
         </section>
     </header>
 
+    <main class="container2">
 
+        <section class="row">
+            <div class="card card--sm" id="kpi_1" aria-label="KPI 1"></div>
+            <div class="card card--sm" id="kpi_2" aria-label="KPI 2"></div>
+            <div class="card card--sm" id="kpi_3" aria-label="KPI 3"></div>
+            <div class="card card--sm" id="kpi_4" aria-label="KPI 4"></div>
+        </section>
+
+
+        <h2 class="section-title">Geral</h2>
+        <section class="row">
+            <div class="card" id="geral_1"></div>
+            <div class="card" id="geral_2"></div>
+            <div class="card" id="geral_3"></div>
+        </section>
+
+
+        <h2 class="section-title">Disco</h2>
+        <section class="row row--half">
+            <div class="card card--lg" id="disco_1"></div>
+            <div class="card card--lg" id="disco_2"></div>
+        </section>
+
+
+        <h2 class="section-title">RAM</h2>
+        <section class="row row--half">
+            <div class="card" id="ram_1"></div>
+            <div class="card" id="ram_2"></div>
+        </section>
+
+
+        <h2 class="section-title">CPU</h2>
+        <section class="row">
+            <div class="card" id="cpu_1"></div>
+            <div class="card" id="cpu_2"></div>
+            <div class="card" id="cpu_3"></div>
+        </section>
+
+    </main>
 
 </body>

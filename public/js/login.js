@@ -34,7 +34,7 @@ function entrar() {
 
         setTimeout(() => {
             finalizarAguardar(); 
-            window.location.replace("painel.html"); 
+            window.location.replace("dashboard.html"); 
         }, 2000); 
     })
     .catch(erro => {

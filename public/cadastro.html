@@ -17,24 +17,63 @@
 
 <body>
 
-  <div class="header">
-    <div class="container">
-      <img src="./assets/LogoVitalView.png" alt="" height="50" width="69">
-      <h1 class="titulo">VitalView</h1>
-      <ul class="navbar">
-        <li>
-          <a href="index.html">Inicio</a>
-        </li>
-        <li>|</li>
-        <li>
-          <a href="login.html">Login</a>
-        </li>
-        <li class="agora">
-          <a href="cadastro.html">Cadastro</a>
-        </li>
-      </ul>
-    </div>
-  </div>
+  <header class="escuro">
+    <section class="container">
+
+      <nav class="menu">
+        <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
+
+        <section class="hamburguer">
+          <span></span>
+          <span></span>
+          <span></span>
+        </section>
+        <ul>
+          <div class="title_hamb">
+            <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
+            <h2 class="hamb_nome">VitalView</h2>
+          </div>
+          <div class="menu_topo">
+            <h3 class="title_menu">Menu</h3>
+            <li>
+              <a href="dashboard.html"> Dashboard </a>
+            </li>
+            <li>
+              <a href="cadastroserver.html"> Cadastro Servidores </a>
+            </li>
+            <li>
+              <a href="parametrizacao.html"> Parametrização </a>
+            </li>
+          </div>
+
+          <div class="menu_baixo">
+            <h3 class="title_menu">Outras Opções</h3>
+            <li>
+              <a target="_blank"> Central de Serviço </a>
+            </li>
+            <li>
+              <a href="cadastro.html"> Cadastro </a>
+            </li>
+            <li>
+              <a onclick="limparSessao()"> Sair </a>
+            </li>
+          </div>
+        </ul>
+      </nav>
+
+      <section class="secao_logo">
+        <h1 class="titulo_header">Cadastro de Usuário</h1>
+      </section>
+
+      <section class="secao_logo">
+        <a href="dashboard.html">
+          <img src="assets/LogoVitalView.png" alt="Logo VitalView" class="logo">
+        </a>
+        <div class="linha"></div>
+      </section>
+
+    </section>
+  </header>
 
 
   <div class="login">

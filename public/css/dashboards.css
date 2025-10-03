@@ -15,7 +15,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Barlow', 'Segoe UI', Tahoma, sans-serif;
-  background-color: #fff;
+  background-color: #f0f0f0;
   overflow-x: hidden;
   color: #333;
 }
@@ -71,14 +71,15 @@ a:hover {
 
 .menu {
     position: relative;
+    margin-bottom: 22px;
 }
 
 .menu .hamburguer {
     width: 2rem;
     height: 2rem;
-    position: relative;
+    position: absolute;
     cursor: pointer;
-    z-index: 2;
+    z-index: 10001
 }
 
 .menu .hamburguer span {
@@ -97,7 +98,7 @@ a:hover {
     height: 2rem;
     opacity: 0;
     cursor: pointer;
-    z-index: 3;
+    z-index: 10002;
 }
 
 .menu .check_hamburguer:checked ~ .hamburguer span:nth-child(1) {
@@ -117,7 +118,7 @@ a:hover {
 .menu .title_hamb {
   display: flex;
   flex-direction: row;
-  margin-left: 20px;
+  margin-left: 45px;
 }
 
 .menu .img_hamb {
@@ -138,11 +139,12 @@ a:hover {
     width: 250px;
     height: 100vh;
     padding-top: 6.25rem;
-    background: linear-gradient(#ebe4e4);
+    background: linear-gradient(#ffffff);
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.26);
     transform: translateX(-100%); 
     opacity: 0; 
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    z-index: 1; 
+    z-index: 10000; 
 }
 
 .menu .check_hamburguer:checked ~ ul {
@@ -164,6 +166,26 @@ a:hover {
     color: #000;
 }
 
+.title_menu {
+    margin-left: 32px;
+    margin-bottom: 20px;
+    color: #505050;
+}
+
+.menu_topo {
+    margin-top: 40px;
+}
+
+.menu_baixo {
+    margin-top: 15%;
+}
+
+.main,
+header {
+  position: sticky;  
+  z-index: 1;
+}
+
 .conteudo_painel {
     display: flex;
     justify-content: center;
@@ -181,3 +203,52 @@ a:hover {
     justify-content: center;
     font-size: 1.2rem;
 }
+
+.container2{
+  max-width:1280px;
+  margin:32px auto 80px;
+  padding:0 24px;
+  display:grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap:18px;
+}
+
+
+.section-title{
+  grid-column: 1 / -1;
+  margin:8px 0 -6px;
+  font-size:20px;
+  font-weight:700;
+  letter-spacing:.2px;
+  color:#000000;
+}
+
+
+.row{
+  grid-column: 1 / -1;
+  display:grid;
+  grid-template-columns: repeat(12, 1fr);
+  color: #000;
+  gap:18px;
+}
+
+.row > .card{ grid-column: span 4; }        
+.row.row--half > .card{ grid-column: span 6; } 
+
+
+.container2 > .row:first-of-type > .card{ grid-column: span 3; }
+
+
+.card{
+  min-height:220px;
+  background: rgb(255, 255, 255);
+  border-radius: 5px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.164);
+  position:relative;
+  overflow:hidden;
+}
+
+.card--sm{ min-height:120px; }
+.card--lg{ min-height:280px; }
+
+
