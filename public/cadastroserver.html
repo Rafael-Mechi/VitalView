@@ -200,8 +200,6 @@
     });
   });
 
-let podeSalvar = true;
-
   function salvar(){
     let hostnameVar = ipt_hostname.value;
     let ipVar = ipt_ip.value;
@@ -214,8 +212,17 @@ let podeSalvar = true;
 
     let fkHospitalVar = sessionStorage.FK_HOSPITAL;
 
-    if(podeSalvar){
-      
+    if(porcentagem_cpuVar == ""){
+        porcentagem_cpuVar = 80;
+    }
+
+    if(porcentagem_ramVar == ""){
+        porcentagem_ramVar = 85;
+    }
+
+    if(porcentagem_discoVar == ""){
+        porcentagem_discoVar = 90;
+    }
     
     fetch("/servidores/cadastrar-servidor", {
         method: "POST",
@@ -253,5 +260,5 @@ let podeSalvar = true;
             podeSalvar = false;
 
 }
-}
+
 </script>
