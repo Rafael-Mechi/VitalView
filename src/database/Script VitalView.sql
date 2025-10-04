@@ -1,4 +1,4 @@
--- Active: 1750092138630@@127.0.0.1@3306@VitalView
+drop database if exists VitalView;
 create database VitalView;
 
 use VitalView;
@@ -17,6 +17,9 @@ create table endereco (
 insert into endereco (logradouro, numero, complemento, bairro, cidade, estado, cep) VALUES
 ('Av. Paulista', '1000', 'Bloco A', 'Bela Vista', 'São Paulo', 'SP', '01311000');
 
+insert into endereco (logradouro, numero, complemento, bairro, cidade, estado, cep) VALUES
+('Av. Paulista', '1000', 'Bloco A', 'Bela Vista', 'São Paulo', 'SP', '01311000');
+
 create table hospital (
     idHospital int not null auto_increment primary key,
     nome varchar(100),
@@ -30,6 +33,8 @@ create table hospital (
 insert into hospital (nome, cnpj, telefone, codigo, fkEndereco) VALUES
 ('Hospital Central São Lucas', '12345678000199', '(11) 4002-8922', 'HOSP001', 1);
 
+insert into hospital (nome, cnpj, telefone, codigo, fkEndereco) VALUES
+('Sirio libanes', '12345678000199', '(11) 4002-8922', 'HOSP002', 2);
 
 create table cargo (
     idcargo int not null auto_increment primary key,
@@ -56,15 +61,15 @@ create table usuario (
 
 create table servidores (
     idServidor int primary key auto_increment,
-    nome varchar(45) not null,
+    hostname varchar(45) not null,
     ip varchar(80) not null,
     fkHospital int,
     foreign key(fkHospital) references hospital(idHospital)
 );
 
-insert into servidores (nome, ip, fkHospital) values
-('Servidor Principal', '192.168.0.10', 1),
-('Servidor Backup', '192.168.0.11', 1);
+-- insert into servidores (hostname, ip, fkHospital) values
+-- ('Servidor Principal', '192.168.0.10', 1),
+-- ('Servidor Backup', '192.168.0.11', 1);
 
 
 
@@ -89,6 +94,9 @@ create table componentes (
     idComponente int primary key auto_increment,
     fkTipo int not null,
     fkServidor int not null,
+    
+    limite int not null,
+    
     foreign key (fkTipo) references tipoComponente(idTipo),
     foreign key(fkServidor) references servidores(idServidor)
 );
@@ -103,10 +111,19 @@ create table capturas (
     foreign key (fkComponente) references componentes(idComponente)
 );
 
+insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
+"joao", "333", "333", "e@gmail.com", "123", 1, 1
+);
+
+insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
+"oaoj", "333", "333", "e2@gmail.com", "123", 1, 2
+);
 
 select * from usuario;
-
+select * from servidores;
 select * from hospital;
-
+select * from cargo;
+select * from tipoComponente;
+select * from componentes;
 
 -- drop database vitalview;
