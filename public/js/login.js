@@ -29,9 +29,8 @@ function entrar() {
     })
     .then(json => {
         sessionStorage.EMAIL_USUARIO = json.email;
-        sessionStorage.NOME_USUARIO = json.nome;
-        sessionStorage.ID_USUARIO = json.id;
-
+        sessionStorage.NOME_USUARIO = json.nome
+        sessionStorage.FK_HOSPITAL = json.fkHospital;
         setTimeout(() => {
             finalizarAguardar(); 
             window.location.replace("dashboard.html"); 

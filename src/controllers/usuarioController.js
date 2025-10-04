@@ -1,11 +1,10 @@
 var usuarioModel = require("../models/usuarioModel");
 
 function autenticar(req, res) {
-    console.log("Dados login:", req.body);
+    console.log("Dados login:", req.body);    
     
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
-
     if (email == undefined) {
         res.status(400).send("Seu email está undefined!");
     } else if (senha == undefined) {
@@ -21,6 +20,7 @@ function autenticar(req, res) {
                     if (resultadoAutenticar.length == 1) {
                         console.log(resultadoAutenticar);
                         res.json(resultadoAutenticar[0])
+                        //let fkHospital = resultadoAutenticar[0].fkHospital // PROVISÓRIO PARA SALVAR A FK DO HOSPITAL. DEIXAR ASSIM PODE DAR PROBLEMA, POIS ASSIM É POSSÍVEL QUE SOMENTE 1 USUÁRIO ENTRE NO SISTEMA
                     }
                      else if (resultadoAutenticar.length == 0) {
                         res.status(403).send("Email e/ou senha inválido(s)");
