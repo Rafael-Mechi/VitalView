@@ -205,7 +205,8 @@ header {
 }
 
 .form-servidor {
-  max-width: 600px;
+  width: 70%;
+  max-width: 800px;
   margin: 40px auto;         
   padding: 32px;             
   background: #fff;

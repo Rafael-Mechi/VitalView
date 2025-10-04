@@ -204,54 +204,109 @@ header {
     font-size: 1.2rem;
 }
 
-.container2{
-  max-width:1280px;
-  margin:32px auto 80px;
-  padding:0 24px;
-  display:grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap:18px;
+.container2 {
+  width: 90%;
+  max-width: 1400px;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-
-.section-title{
-  grid-column: 1 / -1;
-  margin:8px 0 -6px;
-  font-size:20px;
-  font-weight:700;
-  letter-spacing:.2px;
-  color:#000000;
+/* Título de seções */
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #222;
+  margin: 1rem 0 0.5rem;
+  border-left: 5px solid #4dd0e1;
+  padding-left: 10px;
 }
 
-
-.row{
-  grid-column: 1 / -1;
-  display:grid;
-  grid-template-columns: repeat(12, 1fr);
-  color: #000;
-  gap:18px;
+/* Layout base */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: space-between;
 }
 
-.row > .card{ grid-column: span 4; }        
-.row.row--half > .card{ grid-column: span 6; } 
-
-
-.container2 > .row:first-of-type > .card{ grid-column: span 3; }
-
-
-.card{
-  min-height:220px;
-  background: rgb(255, 255, 255);
-  border-radius: 5px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.164);
-  position:relative;
-  overflow:hidden;
+/* Cards */
+.card {
+  flex: 1;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  min-width: 300px;
+  max-height: 330px;
 }
 
-.card--sm{ min-height:120px; }
-.card--lg{ 
-    min-height:280px; 
-    min-width: 1000px;
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
 }
 
+.card--sm {
+  flex: 1;
+  min-width: 220px;
+  text-align: center;
+}
 
+.card--lg {
+  width: 100%;
+  min-height: auto;
+}
+
+/* KPIs */
+.kpi-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.card--sm div {
+  margin: 6px 0;
+}
+
+/* Tabelas da projeção */
+.card table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.card th {
+  background-color: #f1f5f9;
+  color: #333;
+}
+
+.card th, .card td {
+  padding: 10px 12px;
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+  .row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 100%;
+  }
+}
+
+/* Toques visuais */
+canvas {
+  margin-top: 10px;
+}
+
+h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #2a2a2a;
+}
