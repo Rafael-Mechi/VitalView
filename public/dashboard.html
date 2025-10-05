@@ -35,10 +35,10 @@
                             <a href="dashboard.html"> Dashboard </a>
                         </li>
                         <li>
-                            <a href="cadastroserver.html"> Cadastro Servidores </a>
+                            <a href="dashboardSuporteMacro.html"> Dashboard Suporte </a>
                         </li>
                         <li>
-                            <a href="dashboardSuporteMacro.html"> Dashboard Suporte </a>
+                            <a href="cadastroserver.html"> Cadastro Servidores </a>
                         </li>
                     </div>
 
@@ -59,6 +59,17 @@
 
             <section class="secao_logo">
                 <h1 class="titulo_header">Dashboard Geral do Analista</h1>
+            </section>
+
+            <section class="secao_logo">
+                <select class="periodo_select" name="periodo" id="periodo_select">
+                    <option value="1">Escolher Período</option>
+                    <option value="2">Todos os registros</option>
+                    <option value="3">Último ano</option>
+                    <option value="4">Últimos 6 meses</option>
+                    <option value="5">Últimos 30 dias</option>
+                    <option value="6">Última semana</option>
+                </select>
             </section>
 
             <section class="secao_logo">
@@ -107,12 +118,14 @@
         </section>
     </main>
 
+    <div id="filtro_componente"></div>
+
     <script src="js/dashboard.js"></script>
 
     <script>
 
         console.log("SESSAO HOSPITAL: ", sessionStorage.FK_HOSPITAL);
-        
+
 
         const COMPONENTE = 'disco';
         const MESES = ['Jan', 'Fev', 'Mar'];
@@ -194,6 +207,58 @@
         };
         const CPU_PIZZA = { labels: ['Servidor 1', 'Servidor 2', 'Servidor 3'], data: [29.8, 40.4, 29.8] };
 
+        //  ESTADO DAS KPIS COM SELECT (2 e 3) 
+        const state = { kpi2Comp: 'disco', kpi3Comp: 'disco' };
+        const COMP_LABEL = { disco: 'DISCO', ram: 'RAM', cpu: 'CPU' };
+
+        function getAlertasDatasetByComp(comp) {
+            if (comp === 'disco') return DISCO_ALERTAS;
+            if (comp === 'ram') return RAM_ALERTAS;
+            return CPU_ALERTAS;
+        }
+
+        function resumoAlertas(comp) {
+            const src = getAlertasDatasetByComp(comp);
+            const porServidor = src.datasets.map(d => ({
+                servidor: d.label,
+                total: (d.data || []).reduce((a, b) => a + (Number(b) || 0), 0)
+            }));
+            const totalComp = porServidor.reduce((a, b) => a + b.total, 0);
+            return { porServidor, totalComp };
+        }
+
+        function getLinesByComp(comp) {
+            if (comp === 'disco') return DISCO_LINHAS;
+            if (comp === 'ram') return RAM_LINHAS;
+            return CPU_LINHAS;
+        }
+
+        function maiorPicoComp(comp) {
+            const src = getLinesByComp(comp);
+            const all = (src.series || []).flatMap(s => s.data.map(Number));
+            const max = all.reduce((m, v) => v > m ? v : m, -Infinity);
+            return Number.isFinite(max) ? max : 0;
+        }
+
+        function ensureKpiSelect(cardId, currentValue, onChange) {
+            const el = document.getElementById(cardId);
+            if (!el) return;
+            let sel = el.querySelector('.kpi-select');
+            if (!sel) {
+                sel = document.createElement('select');
+                sel.className = 'kpi-select';
+                sel.innerHTML = `
+      <option value="disco">Disco</option>
+      <option value="ram">RAM</option>
+      <option value="cpu">CPU</option>
+    `;
+                el.appendChild(sel);
+            }
+            sel.value = currentValue;
+            sel.onchange = (e) => onChange(e.target.value);
+        }   
+
+
         const BR = new Intl.NumberFormat('pt-BR');
         function percent(n) { return `${(Number(n) || 0).toFixed(0)}%`; }
 
@@ -231,26 +296,77 @@
             return card.querySelector('canvas');
         }
 
-        function mountKPI(cardId, titulo, valor, subtitulo) {
+        function mountKPI(cardId, titulo, valor, subtitulo, opts = {}) {
             const el = document.getElementById(cardId);
             if (!el) return;
+
             el.innerHTML = '';
-            const t = document.createElement('div'); t.textContent = titulo; t.style.opacity = '0.8'; t.style.fontSize = '0.9rem';
-            const v = document.createElement('div'); v.textContent = valor; v.style.fontSize = '1.6rem'; v.style.fontWeight = '700';
-            el.appendChild(t); el.appendChild(v);
+
+            const t = document.createElement('div');
+            t.textContent = titulo;
+            t.style.opacity = '0.8';
+            t.style.fontSize = '0.9rem';
+            if (opts.titleClass) t.className = opts.titleClass; // <— novidade
+
+            const v = document.createElement('div');
+            v.textContent = valor;
+            v.style.fontSize = '1.6rem';
+            v.style.fontWeight = '700';
+
+            el.appendChild(t);
+            el.appendChild(v);
+
             if (subtitulo) {
-                const s = document.createElement('div'); s.textContent = subtitulo; s.style.opacity = '0.7'; s.style.fontSize = '0.8rem';
+                const s = document.createElement('div');
+                s.textContent = subtitulo;
+                s.style.opacity = '0.7';
+                s.style.fontSize = '0.8rem';
                 el.appendChild(s);
             }
         }
 
-
-        function renderKPIs() {
-            mountKPI('kpi_1', 'Servidor com mais alertas (Jan - Dez)', `${KPIS.mais_alertas.servidor} – ${KPIS.mais_alertas.componente} – ${KPIS.mais_alertas.qtd}`);
-            mountKPI('kpi_2', `Total de alertas de ${KPIS.total_alertas_componente.componente} (${KPIS.total_alertas_componente.periodo})`, BR.format(KPIS.total_alertas_componente.total));
-            mountKPI('kpi_3', `Maior pico de ${KPIS.maior_pico_componente.componente} (${KPIS.maior_pico_componente.periodo})`, percent(KPIS.maior_pico_componente.pico));
-            mountKPI('kpi_4', `Porcentagem média de ${COMPONENTE} usado (Jan - Dez)`, percent(KPIS.media_disco_usado.media));
+        // KPI 1: fixa (sem select)
+        function renderKPI1() {
+            const titulo = `Servidor com mais alertas (${KPIS.mais_alertas.periodo})`;
+            const valor = `${KPIS.mais_alertas.servidor} – ${KPIS.mais_alertas.componente.toUpperCase()} – ${KPIS.mais_alertas.qtd}`;
+            mountKPI('kpi_1', titulo, valor, null, { titleClass: 'kpi-title' });
         }
+
+        // KPI 2: total de alertas por componente (com select)
+        function renderKPI2() {
+            const comp = state.kpi2Comp;
+            const { totalComp } = resumoAlertas(comp);
+            const titulo = `Total de alertas de ${COMP_LABEL[comp]} (Jan - Dez)`;
+            mountKPI('kpi_2', titulo, BR.format(totalComp), null, { titleClass: 'kpi-title' });
+            ensureKpiSelect('kpi_2', comp, (v) => { state.kpi2Comp = v; renderKPI2(); });
+        }
+
+        // KPI 3: maior pico por componente (com select)
+        function renderKPI3() {
+            const comp = state.kpi3Comp;
+            const pico = maiorPicoComp(comp);
+            const titulo = `Maior pico de ${COMP_LABEL[comp]} (Jan - Dez)`;
+            mountKPI('kpi_3', titulo, percent(pico), null, { titleClass: 'kpi-title' });
+            ensureKpiSelect('kpi_3', comp, (v) => { state.kpi3Comp = v; renderKPI3(); });
+        }
+
+        // KPI 4: fixa (sem select)
+        function renderKPI4() {
+            mountKPI('kpi_4',
+                `Porcentagem média de ${COMPONENTE} usado (Jan - Dez)`,
+                percent(KPIS.media_disco_usado.media),
+                null,
+                { titleClass: 'kpi-title' }
+            );
+        }
+
+        function renderKPIsNova() {
+            renderKPI1();
+            renderKPI2();
+            renderKPI3();
+            renderKPI4();
+        }
+
 
 
         function renderProjecao() {
@@ -440,8 +556,9 @@
         }
 
 
+
         document.addEventListener('DOMContentLoaded', () => {
-            renderKPIs();
+            renderKPIsNova();
             renderProjecao();
             renderDisco();
             renderRAM();

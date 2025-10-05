@@ -29,6 +29,13 @@ header {
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
+.periodo_select {
+  height: 35px;
+  border-radius: 5px;
+  background-color: #e2e2e2;
+  border: none;
+}
+
 .container {
     width: 80%;
     margin: auto;
@@ -260,12 +267,14 @@ header {
 }
 
 /* KPIs */
-.kpi-section {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1rem;
+
+.card { position: relative; }
+.kpi-select{
+  position:absolute; right:8px;
+  font-size:.8rem; padding:4px 6px;
+  border-radius:6px; border:1px solid #dfe3e8; background:#fff;
 }
+.kpi-title{ margin-right:90px; }
 
 .card--sm div {
   margin: 6px 0;

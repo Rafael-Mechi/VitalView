@@ -35,10 +35,10 @@
                             <a href="dashboard.html"> Dashboard </a>
                         </li>
                         <li>
-                            <a href="cadastroserver.html"> Cadastro Servidores </a>
+                            <a href="dashboardSuporteMacro.html"> Dashboard Suporte </a>
                         </li>
                         <li>
-                            <a href="dashboardSuporteMacro.html"> Dashboard Suporte </a>
+                            <a href="cadastroserver.html"> Cadastro Servidores </a>
                         </li>
                     </div>
 
@@ -80,11 +80,6 @@
             <div class="card card--sm" id="kpi_4"></div>
         </section>
 
-        <h2 class="section-title">Projeção de Sobrecarga dos Discos</h2>
-        <section class="row row--half">
-            <div class="card card--lg" id="disco_1"></div>
-        </section>
-
         <h2 class="section-title">DISCO</h2>
         <section class="row">
             <div class="card" id="geral_1"></div>
@@ -112,15 +107,15 @@
     <script>
 
         console.log("SESSAO HOSPITAL: ", sessionStorage.FK_HOSPITAL);
-        
+
 
         const COMPONENTE = 'disco';
         const MESES = ['Jan', 'Fev', 'Mar'];
 
         // KPIs (mock)
         const KPIS = {
-            mais_alertas: { servidor: 'srv1', componente: 'disco', qtd: 9, periodo: 'Jan - Dez' },
-            total_alertas_componente: { componente: 'disco', total: 38, periodo: 'Jan - Dez' },
+            servidores_ativos: { servidor_ativo: 12, servidor_total: 18},
+            total_alertas: {total: 38},
             maior_pico_componente: { componente: 'disco', pico: 89, periodo: 'Jan - Dez' },
             media_disco_usado: { media: 76, periodo: 'Jan - Dez' }
         };
@@ -246,8 +241,8 @@
 
 
         function renderKPIs() {
-            mountKPI('kpi_1', 'Servidor com mais alertas (Jan - Dez)', `${KPIS.mais_alertas.servidor} – ${KPIS.mais_alertas.componente} – ${KPIS.mais_alertas.qtd}`);
-            mountKPI('kpi_2', `Total de alertas de ${KPIS.total_alertas_componente.componente} (${KPIS.total_alertas_componente.periodo})`, BR.format(KPIS.total_alertas_componente.total));
+            mountKPI('kpi_1', 'Total de Servidores Ativos', `${KPIS.servidores_ativos.servidor_ativo} / ${KPIS.servidores_ativos.servidor_total}`);
+            mountKPI('kpi_2', `Total de alertas nas últimas 24h`, percent(KPIS.total_alertas.total));
             mountKPI('kpi_3', `Maior pico de ${KPIS.maior_pico_componente.componente} (${KPIS.maior_pico_componente.periodo})`, percent(KPIS.maior_pico_componente.pico));
             mountKPI('kpi_4', `Porcentagem média de ${COMPONENTE} usado (Jan - Dez)`, percent(KPIS.media_disco_usado.media));
         }
