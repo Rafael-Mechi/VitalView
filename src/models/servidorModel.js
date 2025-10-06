@@ -9,7 +9,7 @@ async function cadastrarServidor(hostname, ip, fkHospital, porcentagemCpu, porce
     
     // esta instrução abaixo é importante para obtermos o ID do servidor que acabou de ser cadastrado, para que possamos inserir o atributo "fkServidor" ma tabela "componentes"
     var instrucaoBuscarIdServidor = 
-        `SELECT idServidor FROM servidores where ip = ${ip} and fkHospital = ${fkHospital}`
+        `SELECT idServidor FROM servidores where ip = '${ip}' and fkHospital = ${fkHospital}`
     var resultado = await database.executar(instrucaoBuscarIdServidor);
     
     var idServidor = resultado[0].idServidor;

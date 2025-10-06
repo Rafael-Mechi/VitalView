@@ -2,9 +2,6 @@
 node_modules
 package-lock.json
 .env
-.env.dev
 .DS_Store
-
 .github
-
 .vscode
