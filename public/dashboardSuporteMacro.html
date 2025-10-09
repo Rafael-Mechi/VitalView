@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="css/dashboards.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <title>Dashboard Suporte</title>
+    <link rel="stylesheet" href="css/macro.css">
     <script src="js/sessao.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 </head>
 
 <body>
@@ -75,377 +75,251 @@
         </section>
     </header>
 
-    <main class="container2">
-        <a href="dashboardSuporte.html">Clique aqui provisoriamente</a>
-        <section class="row kpi-section">
-            <div class="card card--sm" id="kpi_1"></div>
-            <div class="card card--sm" id="kpi_2"></div>
-            <div class="card card--sm" id="kpi_3"></div>
-            <div class="card card--sm" id="kpi_4"></div>
+    <div class="wrap">
+
+        <!-- KPIs -->
+        <section class="kpis">
+            <article class="kpi">
+                <h4>Servidores em Risco</h4>
+                <div class="value mono">12<span>/18</span></div>
+            </article>
+
+            <article class="kpi">
+                <h4>Servidor com mais alertas</h4>
+                <div class="value">SERV-PACS</div>
+                <ul class="list">
+                    <p>RAM – 27 alertas</p>
+                    <p>CPU – 20 alertas</p>
+                    <p>DISCO – 5 alertas</p>
+                </ul>
+            </article>
+
+            <article class="kpi">
+                <h4>Alertas (últimas 24h)</h4>
+                <div class="value mono">16</div>
+            </article>
+
+            <article class="kpi">
+                <h4>Tendência de alertas (próx. 30 min)</h4>
+                <div class="value mono">23%</div>
+            </article>
         </section>
 
-        <h2 class="section-title">DISCO</h2>
-        <section class="row">
-            <div class="card" id="geral_1"></div>
-            <div class="card" id="geral_2"></div>
-            <div class="card" id="geral_3"></div>
-        </section>
+        <section class="grid">
+            <!-- COLUNA ESQUERDA -->
+            <div class="left-col">
+                <!-- Pizza: Alertas x Normais -->
+                <article class="cardPizza">
+                    <h3>Servidores em Alerta × Normais</h3>
 
-        <h2 class="section-title">RAM</h2>
-        <section class="row">
-            <div class="card" id="ram_1"></div>
-            <div class="card" id="ram_2"></div>
-            <div class="card" id="ram_3"></div>
-        </section>
+                    <div class="chart-box">
+                        <canvas id="pizzaAlertas"></canvas>
+                    </div>
 
-        <h2 class="section-title">CPU</h2>
-        <section class="row">
-            <div class="card" id="cpu_1"></div>
-            <div class="card" id="cpu_2"></div>
-            <div class="card" id="cpu_3"></div>
-        </section>
-    </main>
+                    <div class="legend-inline">
+                        <div class="item"><span class="swatch" id="swatch-alerta"></span> Alerta (34%)</div>
+                        <div class="item"><span class="swatch" id="swatch-normal"></span> Normal (66%)</div>
+                    </div>
+                </article>
 
-    <script src="js/dashboard.js"></script>
+
+                <!-- Servidores (mini barras) -->
+                <article class="card">
+                    <h3>Servidores</h3>
+
+                    <div class="mini">
+                        <div class="servers">
+                            <!-- Servidor 1 -->
+                            <div class="server">
+                                <div class="name">Servidor 1</div>
+                                <canvas id="mini1" height="48"></canvas>
+                                <div class="status">Crítico</div>
+                            </div>
+                            <!-- Servidor 2 -->
+                            <div class="server">
+                                <div class="name">Servidor 2</div>
+                                <canvas id="mini2" height="48"></canvas>
+                                <div class="status">Crítico</div>
+                            </div>
+                            <!-- Servidor 3 -->
+                            <div class="server">
+                                <div class="name">Servidor 3</div>
+                                <canvas id="mini3" height="48"></canvas>
+                                <div class="status" style="color:#f59e0b">Atenção</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:10px;color:var(--muted);font-size:13px">
+                        <span class="pill">Servidores Cadastrados: <b style="color:var(--ink)">18</b></span>
+                    </div>
+                </article>
+            </div>
+
+            <!-- COLUNA DIREITA: Servidores em risco -->
+            <aside class="risk-list">
+                <div class="card">
+                    <h3>Servidores em risco</h3>
+                </div>
+
+                <!-- Risco 1 -->
+                <article class="risk">
+                    <h4>Servidor-01</h4>
+                    <div class="chips">
+                        <span class="pill" style="background:#fee2e2;color:#b91c1c">6 alertas</span>
+                        <span class="pill">Disco</span>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="kv">
+                        <div>CPU: <b>99%</b></div>
+                        <div>Limite: <b>99%</b></div>
+                        <div>RAM: <b>58%</b></div>
+                        <div>Limite: <b>58%</b></div>
+                        <div>Disco: <b>68%</b></div>
+                        <div>Limite: <b>68%</b></div>
+                    </div>
+                    <div class="sub">Tempo em alerta: 00:16:15</div>
+                </article>
+
+                <!-- Risco 2 -->
+                <article class="risk">
+                    <h4>Servidor-02</h4>
+                    <div class="chips">
+                        <span class="pill" style="background:#fee2e2;color:#b91c1c">4 alertas</span>
+                        <span class="pill">RAM</span>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="kv">
+                        <div>CPU: <b>99%</b></div>
+                        <div>Limite: <b>99%</b></div>
+                        <div>RAM: <b>58%</b></div>
+                        <div>Limite: <b>58%</b></div>
+                        <div>Disco: <b>68%</b></div>
+                        <div>Limite: <b>68%</b></div>
+                    </div>
+                    <div class="sub">Tempo em alerta: 00:09:01</div>
+                </article>
+
+                <!-- Risco 3 -->
+                <article class="risk">
+                    <h4>Servidor-06</h4>
+                    <div class="chips">
+                        <span class="pill" style="background:#fee2e2;color:#b91c1c">1 alerta</span>
+                        <span class="pill">Disco</span>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="kv">
+                        <div>CPU: <b>99%</b></div>
+                        <div>Limite: <b>99%</b></div>
+                        <div>RAM: <b>58%</b></div>
+                        <div>Limite: <b>58%</b></div>
+                        <div>Disco: <b>68%</b></div>
+                        <div>Limite: <b>68%</b></div>
+                    </div>
+                    <div class="sub">Tempo em alerta: 00:16:15</div>
+                </article>
+            </aside>
+        </section>
+    </div>
 
     <script>
-
-        console.log("SESSAO HOSPITAL: ", sessionStorage.FK_HOSPITAL);
-
-
-        const COMPONENTE = 'disco';
-        const MESES = ['Jan', 'Fev', 'Mar'];
-
-        // KPIs (mock)
-        const KPIS = {
-            servidores_ativos: { servidor_ativo: 12, servidor_total: 18},
-            total_alertas: {total: 38},
-            maior_pico_componente: { componente: 'disco', pico: 89, periodo: 'Jan - Dez' },
-            media_disco_usado: { media: 76, periodo: 'Jan - Dez' }
+        // =========================
+        // DADOS MOCADOS / ESTÁTICOS
+        // =========================
+        const PIZZA = {
+            labels: ['Alerta', 'Normal'],
+            data: [34, 66]
         };
-
-        // Projeção de sobrecarga (mock)
-        const PROJECAO = [
-            { servidor: 'Servidor 1', uso: 25, data: '22/04/2025' },
-            { servidor: 'Servidor 2', uso: 83, data: '19/05/2025' },
-            { servidor: 'Servidor 3', uso: 50, data: '30/06/2025' },
-            { servidor: 'Servidor 4', uso: 41, data: '04/08/2025' },
-            { servidor: 'Servidor 5', uso: 13, data: '10/09/2026' },
+        const SERVIDORES_MINI = [
+            // cpu, ram, disco
+            { id: 'mini1', valores: [70, 40, 70] },   // Servidor 1
+            { id: 'mini2', valores: [12, 34, 92] },   // Servidor 2
+            { id: 'mini3', valores: [55, 61, 48] },   // Servidor 3
         ];
 
-        // DISCO (mock)
-        const DISCO_ALERTAS = {
-            labels: MESES,
-            datasets: [
-                { label: 'Serv 1', data: [4, 3, 12] },
-                { label: 'Serv 2', data: [3, 4, 8] },
-                { label: 'Serv 3', data: [2, 2, 6] },
-            ]
-        };
-        const DISCO_LINHAS = {
-            labels: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
-            series: [
-                { label: 'Serv 1', data: [15, 28, 22, 18, 30, 26, 20] },
-                { label: 'Serv 2', data: [12, 35, 18, 24, 28, 19, 14] },
-                { label: 'Serv 3', data: [20, 21, 25, 15, 17, 23, 29] },
-            ],
-            linhaAlvo: 25 // %
-        };
-        const DISCO_PIZZA = { labels: ['Usado', 'Livre'], data: [54.1, 45.9] };
-
-        // RAM (mock)
-        const RAM_ALERTAS = {
-            labels: MESES,
-            datasets: [
-                { label: 'Serv 1', data: [5, 2, 13] },
-                { label: 'Serv 2', data: [4, 3, 9] },
-                { label: 'Serv 3', data: [3, 2, 7] },
-            ]
-        };
-        const RAM_LINHAS = {
-            labels: ['Unidade', 'Segunda', 'Terça', 'Quarta'],
-            series: [
-                { label: 'Serv 1', data: [16, 30, 34, 28] },
-                { label: 'Serv 2', data: [12, 24, 31, 18] },
-                { label: 'Serv 3', data: [20, 22, 18, 27] },
-            ],
-            linhaAlvo: 30
-        };
-        const RAM_PIZZA = { labels: ['Servidor 1', 'Servidor 2', 'Servidor 3'], data: [29.3, 35.2, 35.5] };
-
-        // CPU (mock)
-        const CPU_ALERTAS = {
-            labels: MESES,
-            datasets: [
-                { label: 'Serv 1', data: [6, 14, 18] },
-                { label: 'Serv 2', data: [9, 0, 5] },
-                { label: 'Serv 3', data: [3, 8, 19] },
-            ]
-        };
-        const CPU_LINHAS = {
-            labels: ['Semestre 1', 'Semestre 2', 'Semestre 3', 'Semestre 4', 'Semestre 5'],
-            series: [
-                { label: 'Serv 1', data: [22, 8, 15, 12, 10] },
-                { label: 'Serv 2', data: [9, 18, 7, 14, 9] },
-                { label: 'Serv 3', data: [14, 11, 13, 9, 16] },
-            ],
-            linhaAlvo: 20
-        };
-        const CPU_PIZZA = { labels: ['Servidor 1', 'Servidor 2', 'Servidor 3'], data: [29.8, 40.4, 29.8] };
-
-        const BR = new Intl.NumberFormat('pt-BR');
-        function percent(n) { return `${(Number(n) || 0).toFixed(0)}%`; }
-
-
-        const LinhaAlvoPlugin = {
-            id: 'linhaAlvo',
-            afterDatasetsDraw(chart, args, opts) {
-                if (!opts || typeof opts.valor !== 'number') return;
-                const { ctx, chartArea: { left, right }, scales: { y } } = chart;
-                const yPos = y.getPixelForValue(opts.valor);
-                ctx.save();
-                ctx.strokeStyle = opts.cor || '#e64545';
-                ctx.lineWidth = 2;
-                ctx.setLineDash([6, 4]);
-                ctx.beginPath();
-                ctx.moveTo(left, yPos);
-                ctx.lineTo(right, yPos);
-                ctx.stroke();
-                ctx.restore();
-            }
+        // Paleta consistente com a UI
+        const COLORS = {
+            alerta: '#ef4444',
+            normal: '#10b981',
+            cpu: '#ef4444',
+            ram: '#60a5fa',
+            disco: '#f43f5e'
         };
 
-        function mountCardCanvas(cardId, title) {
-            const card = document.getElementById(cardId);
-            if (!card) return null;
-            if (!card.dataset.mounted) {
-                const h = document.createElement('h3'); h.textContent = title; h.style.marginBottom = '8px';
-                const c = document.createElement('canvas'); c.height = 160;
-                card.appendChild(h); card.appendChild(c);
-                card.dataset.mounted = '1';
-            } else {
-
-                const h = card.querySelector('h3'); if (h) h.textContent = title;
-            }
-            return card.querySelector('canvas');
-        }
-
-        function mountKPI(cardId, titulo, valor, subtitulo) {
-            const el = document.getElementById(cardId);
-            if (!el) return;
-            el.innerHTML = '';
-            const t = document.createElement('div'); t.textContent = titulo; t.style.opacity = '0.8'; t.style.fontSize = '0.9rem';
-            const v = document.createElement('div'); v.textContent = valor; v.style.fontSize = '1.6rem'; v.style.fontWeight = '700';
-            el.appendChild(t); el.appendChild(v);
-            if (subtitulo) {
-                const s = document.createElement('div'); s.textContent = subtitulo; s.style.opacity = '0.7'; s.style.fontSize = '0.8rem';
-                el.appendChild(s);
-            }
-        }
-
-
-        function renderKPIs() {
-            mountKPI('kpi_1', 'Total de Servidores Ativos', `${KPIS.servidores_ativos.servidor_ativo} / ${KPIS.servidores_ativos.servidor_total}`);
-            mountKPI('kpi_2', `Total de alertas nas últimas 24h`, percent(KPIS.total_alertas.total));
-            mountKPI('kpi_3', `Maior pico de ${KPIS.maior_pico_componente.componente} (${KPIS.maior_pico_componente.periodo})`, percent(KPIS.maior_pico_componente.pico));
-            mountKPI('kpi_4', `Porcentagem média de ${COMPONENTE} usado (Jan - Dez)`, percent(KPIS.media_disco_usado.media));
-        }
-
-
-        function renderProjecao() {
-            const host = document.getElementById('disco_1');
-            if (!host) return;
-            host.innerHTML = `
-    <div style="overflow:auto;">
-      <table style="width:100%; border-collapse:collapse;">
-        <thead>
-          <tr>
-            <th style="text-align:left; padding:8px;">Servidor</th>
-            <th style="text-align:left; padding:8px;">Uso de disco</th>
-            <th style="text-align:left; padding:8px;">Projeção de sobrecarga</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${PROJECAO.map(row => `
-            <tr>
-              <td style="padding:10px 8px;">${row.servidor}</td>
-              <td style="padding:10px 8px; min-width:220px;">
-                <div style="height:10px; background:#e9eef3; border-radius:999px; position:relative;">
-                  <div style="
-                    position:absolute; left:0; top:0; bottom:0; width:${row.uso}%;
-                    background:${row.uso >= 75 ? '#d55' : '#4dd0e1'};
-                    border-radius:999px;">
-                  </div>
-                </div>
-                <div style="font-size:.9rem; opacity:.8; margin-top:6px;">${row.uso}%</div>
-              </td>
-              <td style="padding:10px 8px;">${row.data}</td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
-    </div>
-  `;
-        }
-
-        const registradas = new WeakMap();
-
-        function makeBarGrouped(canvas, labels, datasets, titleY, maxY) {
-            if (!canvas) return;
-            const antigo = registradas.get(canvas);
-            if (antigo) antigo.destroy();
-
-            const chart = new Chart(canvas.getContext('2d'), {
-                type: 'bar',
-                data: { labels, datasets: datasets.map(d => ({ ...d })) },
-                options: {
-                    responsive: true,
-                    plugins: { legend: { position: 'top' } },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: maxY || undefined,
-                            title: titleY ? { display: true, text: titleY } : undefined
+        // =========================
+        // PIZZA: Alertas x Normais
+        // =========================
+        const pizzaCtx = document.getElementById('pizzaAlertas');
+        const pizza = new Chart(pizzaCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Alerta', 'Normal'],
+                datasets: [{
+                    data: [34, 66],
+                    backgroundColor: ['#ef4444', '#10b981'],
+                    borderWidth: 0,
+                    hoverOffset: 4,
+                    cutout: '62%'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,  
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => `${ctx.label}: ${ctx.raw}%`
                         }
                     }
                 }
-            });
+            }
+        });
 
-            registradas.set(canvas, chart);
-        }
+        // Atualiza as amostras da legenda manual
+        document.getElementById('swatch-alerta').style.background = COLORS.alerta;
+        document.getElementById('swatch-normal').style.background = COLORS.normal;
 
-        function makeLineMulti(canvas, labels, series, alvoPercent) {
-            if (!canvas) return;
-            const antigo = registradas.get(canvas);
-            if (antigo) antigo.destroy();
-
-            const chart = new Chart(canvas.getContext('2d'), {
-                type: 'line',
+        // ==========================================
+        // MINI BARRAS HORIZONTAIS por servidor (CPU/RAM/Disco)
+        // ==========================================
+        SERVIDORES_MINI.forEach((srv) => {
+            const ctx = document.getElementById(srv.id);
+            new Chart(ctx, {
+                type: 'bar',
                 data: {
-                    labels,
-                    datasets: series.map(s => ({
-                        label: s.label,
-                        data: s.data,
-                        tension: 0.35,
-                        fill: true,
-                        borderWidth: 2,
-                        pointRadius: 2,
-                        backgroundColor: (ctx) => {
-                            const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 180);
-                            g.addColorStop(0, 'rgba(0,0,0,0.12)');
-                            g.addColorStop(1, 'rgba(0,0,0,0.0)');
-                            return g;
-                        }
-                    }))
+                    labels: [''], // uma linha
+                    datasets: [
+                        { label: 'CPU', data: [srv.valores[0]], backgroundColor: COLORS.cpu, borderRadius: 8, barPercentage: 0.6 },
+                        { label: 'RAM', data: [srv.valores[1]], backgroundColor: COLORS.ram, borderRadius: 8, barPercentage: 0.6 },
+                        { label: 'Disco', data: [srv.valores[2]], backgroundColor: COLORS.disco, borderRadius: 8, barPercentage: 0.6 },
+                    ]
                 },
                 options: {
-                    responsive: true,
+                    indexAxis: 'y',
                     plugins: {
-                        legend: { position: 'top' },
-                        linhaAlvo: { valor: typeof alvoPercent === 'number' ? alvoPercent : undefined }
+                        legend: {
+                            position: 'right',
+                            labels: { boxWidth: 10, usePointStyle: true, pointStyle: 'rectRounded' }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => `${ctx.dataset.label}: ${ctx.raw}%`
+                            }
+                        }
                     },
+                    responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
-                        y: { beginAtZero: true, max: 100, ticks: { callback: v => `${v}%` } }
+                        x: {
+                            min: 0, max: 100, grid: { display: false }, ticks: { callback: v => v + '%' }
+                        },
+                        y: { grid: { display: false } }
                     }
-                },
-                plugins: [LinhaAlvoPlugin]
+                }
             });
-
-            registradas.set(canvas, chart);
-        }
-
-        function makePie(canvas, labels, data) {
-            if (!canvas) return;
-            const antigo = registradas.get(canvas);
-            if (antigo) antigo.destroy();
-
-            const chart = new Chart(canvas.getContext('2d'), {
-                type: 'pie',
-                data: { labels, datasets: [{ data }] },
-                options: { responsive: true, plugins: { legend: { position: 'right' } } }
-            });
-
-            registradas.set(canvas, chart);
-        }
-
-
-        function renderDisco() {
-            // 1) Quantidade de alertas de disco entre os servidores (barras comparativas)
-            makeBarGrouped(
-                mountCardCanvas('geral_1', 'Quantidade de alertas de DISCO entre os servidores'),
-                DISCO_ALERTAS.labels,
-                DISCO_ALERTAS.datasets,
-                'Alertas'
-            );
-
-            // 2) Porcentagem de disco entre os servidores (linhas)
-            makeLineMulti(
-                mountCardCanvas('geral_2', 'Porcentagem de DISCO entre os servidores'),
-                DISCO_LINHAS.labels,
-                DISCO_LINHAS.series,
-                DISCO_LINHAS.linhaAlvo
-            );
-
-            // 3) Disco livre x Usado (pizza)
-            makePie(
-                mountCardCanvas('geral_3', 'Disco livre x Usado'),
-                DISCO_PIZZA.labels,
-                DISCO_PIZZA.data
-            );
-        }
-
-        function renderRAM() {
-            makeBarGrouped(
-                mountCardCanvas('ram_1', 'Quantidade de alertas de RAM entre os servidores'),
-                RAM_ALERTAS.labels,
-                RAM_ALERTAS.datasets,
-                'Alertas'
-            );
-
-            makeLineMulti(
-                mountCardCanvas('ram_2', 'Maiores picos de RAM entre os servidores'),
-                RAM_LINHAS.labels,
-                RAM_LINHAS.series,
-                RAM_LINHAS.linhaAlvo
-            );
-
-            makePie(
-                mountCardCanvas('ram_3', 'Porcentagem relativa no uso de RAM entre servidores em (período)'),
-                RAM_PIZZA.labels,
-                RAM_PIZZA.data
-            );
-        }
-
-        function renderCPU() {
-            makeBarGrouped(
-                mountCardCanvas('cpu_1', 'Quantidade de alertas de CPU entre os servidores'),
-                CPU_ALERTAS.labels,
-                CPU_ALERTAS.datasets,
-                'Alertas'
-            );
-
-            makeLineMulti(
-                mountCardCanvas('cpu_2', 'Maiores picos de CPU entre os servidores'),
-                CPU_LINHAS.labels,
-                CPU_LINHAS.series,
-                CPU_LINHAS.linhaAlvo
-            );
-
-            makePie(
-                mountCardCanvas('cpu_3', 'Porcentagem de proporção relativa no uso de CPU entre servidores em (período)'),
-                CPU_PIZZA.labels,
-                CPU_PIZZA.data
-            );
-        }
-
-
-        document.addEventListener('DOMContentLoaded', () => {
-            renderKPIs();
-            renderProjecao();
-            renderDisco();
-            renderRAM();
-            renderCPU();
         });
     </script>
-
 </body>
+
+</html>
