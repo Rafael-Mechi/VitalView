@@ -28,25 +28,29 @@
             <h2 class="hamb_nome">VitalView</h2>
           </div>
           <div class="menu_topo">
-                        <h3 class="title_menu">Menu</h3>
-                        <li>
-                            <a href="dashboard.html"> Dashboard </a>
-                        </li>
-                        <li>
-                            <a href="dashboardSuporteMacro.html"> Dashboard Suporte </a>
-                        </li>
-                        <li>
-                            <a href="cadastroserver.html"> Cadastro Servidores </a>
-                        </li>
-                    </div>
+            <h3 class="title_menu">Dashboards</h3>
+            <li>
+              <a href="dashboardAnalista.html"> Dash Analista </a>
+            </li>
+            <li>
+              <a href="dashboardSuporteMacro.html"> Dash Suporte Macro</a>
+            </li>
+            <li>
+              <a href="dashboardSuporteMicro.html"> Dash Suporte Micro</a>
+            </li>
+
+          </div>
 
           <div class="menu_baixo">
             <h3 class="title_menu">Outras Opções</h3>
             <li>
-              <a target="_blank"> Central de Serviço </a>
+              <a href="cadastro.html"> Cadastro Funcionário </a>
             </li>
             <li>
-              <a href="cadastro.html"> Cadastro </a>
+              <a href="cadastroserver.html"> Cadastro Servidores </a>
+            </li>
+            <li>
+              <a target="_blank"> Central de Serviço </a>
             </li>
             <li>
               <a onclick="limparSessao()"> Sair </a>
@@ -99,7 +103,7 @@
         <input type="number" id="memoria" name="memoria" min="1" placeholder="Ex.: 16" required>
       </div> -->
 
-      <div class="form-control">
+    <div class="form-control">
       <label for="disco">RAM (GB)*</label>
       <input type="number" id="ipt_ram" name="ram" min="1" placeholder="Ex.: 16" required>
     </div>
@@ -137,9 +141,11 @@
     <div id="infoModalCpu" class="modal">
       <div class="modal-content">
         <h3>CPU</h3>
-        <p style="text-align: justify;">Define a porcentagem limite para atingir um alerta de <b>CPU</b>. Por exemplo, se você definir "50%", o sistema enviará um alerta
+        <p style="text-align: justify;">Define a porcentagem limite para atingir um alerta de <b>CPU</b>. Por exemplo,
+          se você definir "50%", o sistema enviará um alerta
           quando a CPU atingir 50% <br><br>
-          Por padrão, se você não digitar nada, será definido uma porcentagem de <b>80%</b>, seguindo nossa recomendação.
+          Por padrão, se você não digitar nada, será definido uma porcentagem de <b>80%</b>, seguindo nossa
+          recomendação.
         </p>
         <button class="closeBtn">Fechar</button>
       </div>
@@ -148,9 +154,11 @@
     <div id="infoModalRam" class="modal">
       <div class="modal-content">
         <h3>RAM</h3>
-        <p style="text-align: justify;">Define a porcentagem limite para atingir um alerta de <b>RAM</b>. Por exemplo, se você definir "50%", o sistema enviará um alerta
+        <p style="text-align: justify;">Define a porcentagem limite para atingir um alerta de <b>RAM</b>. Por exemplo,
+          se você definir "50%", o sistema enviará um alerta
           quando a RAM atingir 50% <br><br>
-          Por padrão, se você não digitar nada, será definido uma porcentagem de <b>85%</b>, seguindo nossa recomendação.
+          Por padrão, se você não digitar nada, será definido uma porcentagem de <b>85%</b>, seguindo nossa
+          recomendação.
         </p>
         <button class="closeBtn">Fechar</button>
       </div>
@@ -159,18 +167,20 @@
     <div id="infoModalDisco" class="modal">
       <div class="modal-content">
         <h3>Disco</h3>
-        <p style="text-align: justify;">Define a porcentagem limite para atingir um alerta de <b>disco</b>. Por exemplo, se você definir "50%", o sistema enviará um alerta
+        <p style="text-align: justify;">Define a porcentagem limite para atingir um alerta de <b>disco</b>. Por exemplo,
+          se você definir "50%", o sistema enviará um alerta
           quando a CPU atingir 50% <br><br>
-          Por padrão, se você não digitar nada, será definido uma porcentagem de <b>90%</b>, seguindo nossa recomendação.
+          Por padrão, se você não digitar nada, será definido uma porcentagem de <b>90%</b>, seguindo nossa
+          recomendação.
         </p>
         <button class="closeBtn">Fechar</button>
       </div>
     </div>
 
     <div class="form-actions">
-        <button type="reset" class="btn cancel">Cancelar</button>
-        <button class="btn save" type="button" onclick="salvar(event)">Salvar</button>
-      </div>
+      <button type="reset" class="btn cancel">Cancelar</button>
+      <button class="btn save" type="button" onclick="salvar(event)">Salvar</button>
+    </div>
   </form>
 
 </body>
@@ -200,7 +210,7 @@
     });
   });
 
-  function salvar(){
+  function salvar() {
     let hostnameVar = ipt_hostname.value;
     let ipVar = ipt_ip.value;
     let ramVar = ipt_ram.value;
@@ -212,31 +222,31 @@
 
     let fkHospitalVar = sessionStorage.FK_HOSPITAL;
 
-    if(porcentagem_cpuVar == ""){
-        porcentagem_cpuVar = 80;
+    if (porcentagem_cpuVar == "") {
+      porcentagem_cpuVar = 80;
     }
 
-    if(porcentagem_ramVar == ""){
-        porcentagem_ramVar = 85;
+    if (porcentagem_ramVar == "") {
+      porcentagem_ramVar = 85;
     }
 
-    if(porcentagem_discoVar == ""){
-        porcentagem_discoVar = 90;
+    if (porcentagem_discoVar == "") {
+      porcentagem_discoVar = 90;
     }
-    
+
     fetch("/servidores/cadastrar-servidor", {
-        method: "POST",
-        headers:{
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
 
         hostnameServer: hostnameVar,
         ipServer: ipVar,
 
         ramServer: ramVar,
         discoServer: discoVar,
-        
+
         porcentagemCpuServer: porcentagem_cpuVar,
         porcentagemRamServer: porcentagem_ramVar,
         porcentagemDiscoServer: porcentagem_discoVar,
@@ -245,20 +255,20 @@
 
       }),
     })
-        .then((resposta) => {
-            if(resposta.ok){
-                alert("Servidor cadastrado com sucesso!")
-            }else {
-                    alert("Erro ao cadastrar. Verifique os dados e tente novamente.");
-                }
-        })
-        .catch((erro) => {
-                console.error("Erro na requisição: ", erro);
-                alert("Erro na conexão com o servidor.");
-            });
+      .then((resposta) => {
+        if (resposta.ok) {
+          alert("Servidor cadastrado com sucesso!")
+        } else {
+          alert("Erro ao cadastrar. Verifique os dados e tente novamente.");
+        }
+      })
+      .catch((erro) => {
+        console.error("Erro na requisição: ", erro);
+        alert("Erro na conexão com o servidor.");
+      });
 
-            podeSalvar = false;
+    podeSalvar = false;
 
-}
+  }
 
 </script>

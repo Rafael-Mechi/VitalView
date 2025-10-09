@@ -33,7 +33,7 @@ function entrar() {
         sessionStorage.FK_HOSPITAL = json.fkHospital;
         setTimeout(() => {
             finalizarAguardar(); 
-            window.location.replace("dashboard.html"); 
+            window.location.replace("dashboardAnalista.html"); 
         }, 2000); 
     })
     .catch(erro => {
