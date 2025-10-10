@@ -1,0 +1,166 @@
+/* Global and Layout */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 70px;
+  height: 100%;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+}
+#sidebar .logo {
+  font-size: 1.2em;
+  margin: 20px 0;
+  font-weight: bold;
+}
+#sidebar .menu {
+  list-style: none;
+  padding: 0;
+}
+#sidebar .menu li {
+  margin: 20px 0;
+  cursor: pointer;
+}
+#sidebar .menu .icon {
+  font-size: 1.5em;
+}
+#sidebar .menu .label {
+  display: none;
+}
+#main {
+  margin-left: 80px; /* to accommodate sidebar */
+  padding: 10px;
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-auto-rows: auto;
+  grid-gap: 10px;
+  padding: 10px;
+}
+/* Grid Areas */
+.cpu { grid-area: cpu; }
+.ram { grid-area: ram; }
+.uptime { grid-area: uptime; }
+.server { grid-area: server; }
+.disk { grid-area: disk; }
+.alertsCount { grid-area: alertsCount; }
+.processes { grid-area: processes; }
+.alertsChart { grid-area: alertsChart; }
+
+.grid-container {
+  grid-template-areas:
+    "cpu ram uptime"
+    "server disk alertsCount"
+    "process processes alertsChart";
+}
+
+/* Card Styling */
+.card {
+  background-color: #ffffff;
+  border-radius: 4px;
+  padding: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.card h3 {
+  margin-top: 0;
+  font-size: 1em;
+}
+.status.ativo {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+.server-info td {
+  padding: 4px 8px;
+}
+.server-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.process-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.process-table th, .process-table td {
+  padding: 4px 6px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+.process-table th {
+  background-color: #f0f0f0;
+}
+
+/* Specific Background Colors */
+.cpu { background-color: #fff9c4; }       /* Light Yellow */
+.ram { background-color: #fff9c4; }       /* Light Yellow */
+.disk { background-color: #bbdefb; }      /* Light Blue */
+.processes { background-color: #c8e6c9; } /* Light Green */
+.alertsCount { background-color: #ffcdd2; } /* Light Red/Peach */
+.uptime { background-color: #eceff1; }    /* Light Grey */
+.alertsChart { background-color: #ffffff; } /* White or match main */
+
+/* CPU/RAM Gauge Container */
+.chart-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 10px;
+}
+.chart-container canvas {
+  flex: 0 0 100px;
+  height: 100px;
+}
+.gauge-text {
+  font-size: 1.5em;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+/* Disk Usage */
+.disk-info {
+  margin-top: 5px;
+  font-size: 0.9em;
+}
+.projection-text {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+/* Uptime Display */
+.uptime-display {
+  font-size: 2em;
+  color: #4caf50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+.arrow-up {
+  color: #4caf50;
+  margin-left: 8px;
+}
+
+/* Alerts Count */
+.alert-number {
+  font-size: 3em;
+  color: #d32f2f;
+  text-align: center;
+  margin: 20px 0;
+}
+
+/* Alerts Chart */
+.alertsChart h3 {
+  color: #d32f2f;
+}

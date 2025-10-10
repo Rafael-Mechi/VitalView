@@ -16,9 +16,22 @@
         <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
 
         <section class="hamburguer">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span>
+                <div class="icones_topo">
+                    <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
+                    <img src="./assets/dashboard-icons/layout.svg" alt="">
+                    <img src="./assets/dashboard-icons/activity.svg" alt="">
+                    <img src="./assets/dashboard-icons/calendar.svg" alt="">
+                    <img src="./assets/dashboard-icons/bar-chart.svg" alt="">
+                </div>
+
+                <div class="icones_baixo">
+                    <img src="./assets/dashboard-icons/settings.svg" alt="">
+                    <img src="./assets/dashboard-icons/users.svg" alt="">
+                    <img src="./assets/dashboard-icons/help-circle.svg" alt="">
+                    <img src="./assets/dashboard-icons/log-out.svg" alt="">
+                </div>
+            </span>
         </section>
 
         <ul>
@@ -104,13 +117,80 @@
 
         <section class="container-de-sessoes">
             <section class="sessao-lateral-esquerda">
-                <section class="sessao-lateral-esquerda-itens">
-                    <h1>PACS-01</h1><span>Ativo</span>
+                <section class="sessao-lateral-esquerda-itens" id="nome-servidor">
+                    <h1>PACS-01</h1><span class="status ativo">Ativo</span>
                 </section>
-                <section class="sessao-lateral-esquerda-itens">
-
+                <section class="sessao-lateral-esquerda-itens" id="informações-servidor">
+                    <table class="server-info">
+                        <tr>
+                            <td><strong>Hostname:</strong></td>
+                            <td>PACS-01</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Endereço IP:</strong></td>
+                            <td>192.168.1.10</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Localização:</strong></td>
+                            <td>Radiologia Central</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Qtd. RAM:</strong></td>
+                            <td>128 GB</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Qtd. Disco:</strong></td>
+                            <td>5 TB</td>
+                        </tr>
+                    </table>
                 </section>
-                <section class="sessao-lateral-esquerda-itens"></section>
+                <section class="sessao-lateral-esquerda-itens" id="lista-processos">
+                    <div class="card processes">
+                        <h3>Lista de Processos</h3>
+                        <table class="process-table">
+                            <thead>
+                                <tr>
+                                    <th>Processo</th>
+                                    <th>Uso (CPU)</th>
+                                    <th>Uso (RAM)</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>MySQL</td>
+                                    <td>32%</td>
+                                    <td>26%</td>
+                                    <td><span class="status ativo">Ativo</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Node.js</td>
+                                    <td>12%</td>
+                                    <td>34%</td>
+                                    <td><span class="status ativo">Ativo</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Windows</td>
+                                    <td>45%</td>
+                                    <td>67%</td>
+                                    <td><span class="status ativo">Ativo</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Pictures</td>
+                                    <td>22%</td>
+                                    <td>10%</td>
+                                    <td><span class="status ativo">Ativo</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Arquivos</td>
+                                    <td>14%</td>
+                                    <td>9%</td>
+                                    <td><span class="status ativo">Ativo</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
             </section>
             <section class="sessao-lateral-direita">
                 <section class="sessao-lateral-direita-itens">
@@ -125,12 +205,27 @@
                         <h3>81%</h3>
                     </section>
                     <section>
-                        <h3>UpTime</h3>
-                        <h2>09:03:21</h2>
+                        <div class="card uptime">
+                            <h3>Uptime do Sistema</h3>
+                            <div class="uptime-display">
+                                <span id="uptime">09:03:21</span>
+                                <span class="arrow-up">&#9650;</span>
+                            </div>
+                        </div>
                     </section>
                 </section>
-                <section class="sessao-lateral-direita-itens"></section>
-                <section class="sessao-lateral-direita-itens"></section>
+                <section class="sessao-lateral-direita-itens" id="id_sessao_direita_2">
+                    <section class="row" id="grafico_disco">
+                        <div class="card_grafico_disco" id="geral_3"></div>
+                    </section>
+                    <section class="row">
+                        <h2 class="section-title">Projeção de disco</h2>
+                        <div class="card_grafico_disco" id="card_grafico_disco"></div>
+                    </section>
+                </section>
+                <section class="sessao-lateral-direita-itens">
+
+                </section>
             </section>
         </section>
     </section>
