@@ -16,9 +16,22 @@
         <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
 
         <section class="hamburguer">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span>
+                <div class="icones_topo">
+                    <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
+                    <img src="./assets/dashboard-icons/layout.svg" alt="">
+                    <img src="./assets/dashboard-icons/activity.svg" alt="">
+                    <img src="./assets/dashboard-icons/calendar.svg" alt="">
+                    <img src="./assets/dashboard-icons/bar-chart.svg" alt="">
+                </div>
+
+                <div class="icones_baixo">
+                    <img src="./assets/dashboard-icons/settings.svg" alt="">
+                    <img src="./assets/dashboard-icons/users.svg" alt="">
+                    <img src="./assets/dashboard-icons/help-circle.svg" alt="">
+                    <img src="./assets/dashboard-icons/log-out.svg" alt="">
+                </div>
+            </span>
         </section>
 
         <ul>
@@ -83,7 +96,7 @@
 
                 <article class="kpi">
                     <h4>Servidor com mais alertas</h4>
-                    <div class="value">SERV-PACS</div>
+                    <div class="value">SERVIDOR 1</div>
                     <ul class="list">
                         <p>RAM – 27 alertas</p>
                         <p>CPU – 20 alertas</p>
@@ -105,64 +118,65 @@
             <section class="grid">
                 <!-- COLUNA ESQUERDA -->
                 <div class="left-col">
-                    <!-- Pizza: Alertas x Normais -->
-                    <article class="cardPizza">
-                        <h3>Servidores em Alerta × Normais</h3>
-                        <div class="fundo">
-
-                            <div class="chart-box">
-                                <canvas id="pizzaAlertas"></canvas>
-                            </div>
-
-                            <div class="legend-inline">
-                                <div class="item"><span class="swatch" id="swatch-alerta"></span> Alerta (34%)</div>
-                                <div class="item"><span class="swatch" id="swatch-normal"></span> Normal (66%)</div>
-                            </div>
-
-                        </div>
-                    </article>
-
 
                     <!-- Servidores (mini barras) -->
                     <article class="card">
                         <h3 class="card-title">Servidores</h3>
 
                         <div class="side-left">
+
+                            <div class="stat-card-pizza">
+                                <div class="stat-label">Servidores em Alerta × Normais</div>
+                                <div class="fundo">
+                                    <div class="chart-box">
+                                        <canvas id="pizzaAlertas"></canvas>
+                                    </div>
+
+                                    <div class="legend-inline">
+                                        <div class="item"><span class="swatch" id="swatch-alerta"></span> Alerta (34%)
+                                        </div>
+                                        <div class="item"><span class="swatch" id="swatch-normal"></span> Normal (66%)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="stat-card">
                                 <div class="stat-label">Servidores<br>Cadastrados</div>
                                 <div class="stat-value">6</div>
                             </div>
+
                         </div>
 
                         <div class="side-right">
                             <div class="mini">
                                 <div class="servers">
-                                    <div class="name">Servidor 1</div>
+                                    <a href="dashboardSuporteMicro.html" class="name">Servidor 1</a>
                                     <div class="server">
                                         <canvas id="mini1" height="48"></canvas>
                                         <div class="status">Crítico</div>
                                     </div>
-                                    <div class="name">Servidor 2</div>
+                                    <a href="dashboardSuporteMicro.html" class="name">Servidor 2</a>
                                     <div class="server">
                                         <canvas id="mini2" height="48"></canvas>
                                         <div class="status">Crítico</div>
                                     </div>
-                                    <div class="name">Servidor 3</div>
+                                    <a href="dashboardSuporteMicro.html" class="name">Servidor 3</a>
                                     <div class="server">
                                         <canvas id="mini3" height="48"></canvas>
                                         <div class="status" style="color:#f59e0b">Atenção</div>
                                     </div>
-                                    <div class="name">Servidor 4</div>
+                                    <a href="dashboardSuporteMicro.html" class="name">Servidor 4</a>
                                     <div class="server">
                                         <canvas id="mini4" height="48"></canvas>
                                         <div class="status" style="color:#21cc8b">Normal</div>
                                     </div>
-                                    <div class="name">Servidor 5</div>
+                                    <a href="dashboardSuporteMicro.html" class="name">Servidor 5</a>
                                     <div class="server">
                                         <canvas id="mini5" height="48"></canvas>
                                         <div class="status" style="color:#21cc8b">Normal</div>
                                     </div>
-                                    <div class="name">Servidor 6</div>
+                                    <a href="dashboardSuporteMicro.html" class="name">Servidor 6</a>
                                     <div class="server">
                                         <canvas id="mini6" height="48"></canvas>
                                         <div class="status" style="color:#21cc8b">Normal</div>
@@ -181,7 +195,7 @@
                         <!-- Risco 1 -->
                         <div class="scroll">
                             <article class="risk">
-                                <h4>Servidor-01</h4>
+                                <a href="dashboardSuporteMicro.html" class="nameAlert">Servidor 1</a>
                                 <div class="chips">
                                     <span class="pill" style="background:#fee2e2;color:#b91c1c">6 alertas</span>
                                     <span class="pill">Disco</span>
@@ -200,7 +214,7 @@
 
                             <!-- Risco 2 -->
                             <article class="risk">
-                                <h4>Servidor-02</h4>
+                                <a href="dashboardSuporteMicro.html" class="nameAlert">Servidor 2</a>
                                 <div class="chips">
                                     <span class="pill" style="background:#fee2e2;color:#b91c1c">4 alertas</span>
                                     <span class="pill">RAM</span>
@@ -219,7 +233,7 @@
 
                             <!-- Risco 3 -->
                             <article class="risk">
-                                <h4>Servidor-06</h4>
+                                <a href="dashboardSuporteMicro.html" class="nameAlert">Servidor 3</a>
                                 <div class="chips">
                                     <span class="pill" style="background:#fee2e2;color:#b91c1c">1 alerta</span>
                                     <span class="pill">Disco</span>
@@ -263,7 +277,7 @@
         // Paleta consistente com a UI
         const COLORS = {
             alerta: '#ef4444',
-            normal: '#21cc8b',
+            normal: '#39f1ba',
             cpu: '#ef4444',
             ram: '#60a5fa',
             disco: '#f43f5e'
@@ -279,7 +293,7 @@
                 labels: ['Alerta', 'Normal'],
                 datasets: [{
                     data: [34, 66],
-                    backgroundColor: ['#ef4444', '#21cc8b'],
+                    backgroundColor: ['#ef4444', '#39f1ba'],
                     borderWidth: 0,
                     hoverOffset: 4,
                 }]
