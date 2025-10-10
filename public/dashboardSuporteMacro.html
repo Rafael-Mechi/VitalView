@@ -12,215 +12,235 @@
 
 <body>
 
-    <header class="escuro">
-        <section class="container">
+    <nav class="menu">
+        <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
 
-            <nav class="menu">
-                <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
+        <section class="hamburguer">
+            <span></span>
+            <span></span>
+            <span></span>
+        </section>
 
-                <section class="hamburguer">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </section>
+        <ul>
+            <div class="title_hamb">
+                <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
+                <h2 class="hamb_nome">VitalView</h2>
+            </div>
+            <div class="menu_topo">
+                <h3 class="title_menu">Dashboards</h3>
+                <li>
+                    <a href="dashboardAnalista.html"> Dash Analista </a>
+                </li>
+                <li>
+                    <a href="dashboardSuporteMacro.html"> Dash Suporte Macro</a>
+                </li>
+                <li>
+                    <a href="dashboardSuporteMicro.html"> Dash Suporte Micro</a>
+                </li>
 
-                <ul>
-                    <div class="title_hamb">
-                        <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
-                        <h2 class="hamb_nome">VitalView</h2>
-                    </div>
-                    <div class="menu_topo">
-                        <h3 class="title_menu">Dashboards</h3>
-                        <li>
-                            <a href="dashboardAnalista.html"> Dash Analista </a>
-                        </li>
-                        <li>
-                            <a href="dashboardSuporteMacro.html"> Dash Suporte Macro</a>
-                        </li>
-                        <li>
-                            <a href="dashboardSuporteMicro.html"> Dash Suporte Micro</a>
-                        </li>
-                        
-                    </div>
+            </div>
 
-                    <div class="menu_baixo">
-                        <h3 class="title_menu">Outras Opções</h3>
-                        <li>
-                            <a href="cadastro.html"> Cadastro Funcionário </a>
-                        </li>
-                        <li>
-                            <a href="cadastroserver.html"> Cadastro Servidores </a>
-                        </li>
-                        <li>
-                            <a target="_blank"> Central de Serviço </a>
-                        </li>
-                        <li>
-                            <a onclick="limparSessao()"> Sair </a>
-                        </li>
-                    </div>
-                </ul>
-            </nav>
+            <div class="menu_baixo">
+                <h3 class="title_menu">Outras Opções</h3>
+                <li>
+                    <a href="cadastro.html"> Cadastro Funcionário </a>
+                </li>
+                <li>
+                    <a href="cadastroserver.html"> Cadastro Servidores </a>
+                </li>
+                <li>
+                    <a target="_blank"> Central de Serviço </a>
+                </li>
+                <li>
+                    <a onclick="limparSessao()"> Sair </a>
+                </li>
+            </div>
+        </ul>
+    </nav>
 
-            <section class="secao_logo">
-                <h1 class="titulo_header">Dashboard Suporte (Macro)</h1>
-            </section>
 
+    <section class="container">
+        <section class="nav-dash">
             <section class="secao_logo">
                 <a href="dashboardAnalista.html">
                     <img src="assets/LogoVitalView.png" alt="Logo VitalView" class="logo">
                 </a>
-                <div class="linha"></div>
             </section>
 
-        </section>
-    </header>
-
-    <div class="wrap">
-
-        <!-- KPIs -->
-        <section class="kpis">
-            <article class="kpi">
-                <h4>Servidores em Risco</h4>
-                <div class="value mono">12<span>/18</span></div>
-            </article>
-
-            <article class="kpi">
-                <h4>Servidor com mais alertas</h4>
-                <div class="value">SERV-PACS</div>
-                <ul class="list">
-                    <p>RAM – 27 alertas</p>
-                    <p>CPU – 20 alertas</p>
-                    <p>DISCO – 5 alertas</p>
-                </ul>
-            </article>
-
-            <article class="kpi">
-                <h4>Alertas (últimas 24h)</h4>
-                <div class="value mono">16</div>
-            </article>
-
-            <article class="kpi">
-                <h4>Tendência de alertas (próx. 30 min)</h4>
-                <div class="value mono">23%</div>
-            </article>
+            <section class="secao_logo">
+                <h1 class="titulo_header">VitalView</h1>
+            </section>
         </section>
 
-        <section class="grid">
-            <!-- COLUNA ESQUERDA -->
-            <div class="left-col">
-                <!-- Pizza: Alertas x Normais -->
-                <article class="cardPizza">
-                    <h3>Servidores em Alerta × Normais</h3>
+        <div class="wrap">
 
-                    <div class="chart-box">
-                        <canvas id="pizzaAlertas"></canvas>
-                    </div>
-
-                    <div class="legend-inline">
-                        <div class="item"><span class="swatch" id="swatch-alerta"></span> Alerta (34%)</div>
-                        <div class="item"><span class="swatch" id="swatch-normal"></span> Normal (66%)</div>
-                    </div>
+            <!-- KPIs -->
+            <section class="kpis">
+                <article class="kpi">
+                    <h4>Servidores em Risco</h4>
+                    <div class="value mono">3<span>/6</span></div>
                 </article>
 
+                <article class="kpi">
+                    <h4>Servidor com mais alertas</h4>
+                    <div class="value">SERV-PACS</div>
+                    <ul class="list">
+                        <p>RAM – 27 alertas</p>
+                        <p>CPU – 20 alertas</p>
+                        <p>DISCO – 5 alertas</p>
+                    </ul>
+                </article>
 
-                <!-- Servidores (mini barras) -->
-                <article class="card">
-                    <h3>Servidores</h3>
+                <article class="kpi">
+                    <h4>Alertas (últimas 24h)</h4>
+                    <div class="value mono">16</div>
+                </article>
 
-                    <div class="mini">
-                        <div class="servers">
-                            <!-- Servidor 1 -->
-                            <div class="server">
-                                <div class="name">Servidor 1</div>
-                                <canvas id="mini1" height="48"></canvas>
-                                <div class="status">Crítico</div>
+                <article class="kpi">
+                    <h4>Tendência de alertas (próx. 30 min)</h4>
+                    <div class="value mono">23%</div>
+                </article>
+            </section>
+
+            <section class="grid">
+                <!-- COLUNA ESQUERDA -->
+                <div class="left-col">
+                    <!-- Pizza: Alertas x Normais -->
+                    <article class="cardPizza">
+                        <h3>Servidores em Alerta × Normais</h3>
+                        <div class="fundo">
+
+                            <div class="chart-box">
+                                <canvas id="pizzaAlertas"></canvas>
                             </div>
-                            <!-- Servidor 2 -->
-                            <div class="server">
-                                <div class="name">Servidor 2</div>
-                                <canvas id="mini2" height="48"></canvas>
-                                <div class="status">Crítico</div>
+
+                            <div class="legend-inline">
+                                <div class="item"><span class="swatch" id="swatch-alerta"></span> Alerta (34%)</div>
+                                <div class="item"><span class="swatch" id="swatch-normal"></span> Normal (66%)</div>
                             </div>
-                            <!-- Servidor 3 -->
-                            <div class="server">
-                                <div class="name">Servidor 3</div>
-                                <canvas id="mini3" height="48"></canvas>
-                                <div class="status" style="color:#f59e0b">Atenção</div>
+
+                        </div>
+                    </article>
+
+
+                    <!-- Servidores (mini barras) -->
+                    <article class="card">
+                        <h3 class="card-title">Servidores</h3>
+
+                        <div class="side-left">
+                            <div class="stat-card">
+                                <div class="stat-label">Servidores<br>Cadastrados</div>
+                                <div class="stat-value">6</div>
                             </div>
                         </div>
-                    </div>
 
-                    <div style="margin-top:10px;color:var(--muted);font-size:13px">
-                        <span class="pill">Servidores Cadastrados: <b style="color:var(--ink)">18</b></span>
-                    </div>
-                </article>
-            </div>
-
-            <!-- COLUNA DIREITA: Servidores em risco -->
-            <aside class="risk-list">
-                <div class="card">
-                    <h3>Servidores em risco</h3>
+                        <div class="side-right">
+                            <div class="mini">
+                                <div class="servers">
+                                    <div class="name">Servidor 1</div>
+                                    <div class="server">
+                                        <canvas id="mini1" height="48"></canvas>
+                                        <div class="status">Crítico</div>
+                                    </div>
+                                    <div class="name">Servidor 2</div>
+                                    <div class="server">
+                                        <canvas id="mini2" height="48"></canvas>
+                                        <div class="status">Crítico</div>
+                                    </div>
+                                    <div class="name">Servidor 3</div>
+                                    <div class="server">
+                                        <canvas id="mini3" height="48"></canvas>
+                                        <div class="status" style="color:#f59e0b">Atenção</div>
+                                    </div>
+                                    <div class="name">Servidor 4</div>
+                                    <div class="server">
+                                        <canvas id="mini4" height="48"></canvas>
+                                        <div class="status" style="color:#21cc8b">Normal</div>
+                                    </div>
+                                    <div class="name">Servidor 5</div>
+                                    <div class="server">
+                                        <canvas id="mini5" height="48"></canvas>
+                                        <div class="status" style="color:#21cc8b">Normal</div>
+                                    </div>
+                                    <div class="name">Servidor 6</div>
+                                    <div class="server">
+                                        <canvas id="mini6" height="48"></canvas>
+                                        <div class="status" style="color:#21cc8b">Normal</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
                 </div>
 
-                <!-- Risco 1 -->
-                <article class="risk">
-                    <h4>Servidor-01</h4>
-                    <div class="chips">
-                        <span class="pill" style="background:#fee2e2;color:#b91c1c">6 alertas</span>
-                        <span class="pill">Disco</span>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="kv">
-                        <div>CPU: <b>99%</b></div>
-                        <div>Limite: <b>99%</b></div>
-                        <div>RAM: <b>58%</b></div>
-                        <div>Limite: <b>58%</b></div>
-                        <div>Disco: <b>68%</b></div>
-                        <div>Limite: <b>68%</b></div>
-                    </div>
-                    <div class="sub">Tempo em alerta: 00:16:15</div>
-                </article>
+                <!-- COLUNA DIREITA: Servidores em risco -->
+                <aside class="risk-list">
+                    <div class="cardD">
+                        <h3>Servidores em Risco</h3>
 
-                <!-- Risco 2 -->
-                <article class="risk">
-                    <h4>Servidor-02</h4>
-                    <div class="chips">
-                        <span class="pill" style="background:#fee2e2;color:#b91c1c">4 alertas</span>
-                        <span class="pill">RAM</span>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="kv">
-                        <div>CPU: <b>99%</b></div>
-                        <div>Limite: <b>99%</b></div>
-                        <div>RAM: <b>58%</b></div>
-                        <div>Limite: <b>58%</b></div>
-                        <div>Disco: <b>68%</b></div>
-                        <div>Limite: <b>68%</b></div>
-                    </div>
-                    <div class="sub">Tempo em alerta: 00:09:01</div>
-                </article>
+                        <!-- Risco 1 -->
+                        <div class="scroll">
+                            <article class="risk">
+                                <h4>Servidor-01</h4>
+                                <div class="chips">
+                                    <span class="pill" style="background:#fee2e2;color:#b91c1c">6 alertas</span>
+                                    <span class="pill">Disco</span>
+                                </div>
+                                <div class="divider"></div>
+                                <div class="kv">
+                                    <div>CPU: <b>99%</b></div>
+                                    <div>Limite: <b>99%</b></div>
+                                    <div>RAM: <b>58%</b></div>
+                                    <div>Limite: <b>58%</b></div>
+                                    <div>Disco: <b>68%</b></div>
+                                    <div>Limite: <b>68%</b></div>
+                                </div>
+                                <div class="sub">Tempo em alerta: 00:16:15</div>
+                            </article>
 
-                <!-- Risco 3 -->
-                <article class="risk">
-                    <h4>Servidor-06</h4>
-                    <div class="chips">
-                        <span class="pill" style="background:#fee2e2;color:#b91c1c">1 alerta</span>
-                        <span class="pill">Disco</span>
+                            <!-- Risco 2 -->
+                            <article class="risk">
+                                <h4>Servidor-02</h4>
+                                <div class="chips">
+                                    <span class="pill" style="background:#fee2e2;color:#b91c1c">4 alertas</span>
+                                    <span class="pill">RAM</span>
+                                </div>
+                                <div class="divider"></div>
+                                <div class="kv">
+                                    <div>CPU: <b>99%</b></div>
+                                    <div>Limite: <b>99%</b></div>
+                                    <div>RAM: <b>58%</b></div>
+                                    <div>Limite: <b>58%</b></div>
+                                    <div>Disco: <b>68%</b></div>
+                                    <div>Limite: <b>68%</b></div>
+                                </div>
+                                <div class="sub">Tempo em alerta: 00:09:01</div>
+                            </article>
+
+                            <!-- Risco 3 -->
+                            <article class="risk">
+                                <h4>Servidor-06</h4>
+                                <div class="chips">
+                                    <span class="pill" style="background:#fee2e2;color:#b91c1c">1 alerta</span>
+                                    <span class="pill">Disco</span>
+                                </div>
+                                <div class="divider"></div>
+                                <div class="kv">
+                                    <div>CPU: <b>99%</b></div>
+                                    <div>Limite: <b>99%</b></div>
+                                    <div>RAM: <b>58%</b></div>
+                                    <div>Limite: <b>58%</b></div>
+                                    <div>Disco: <b>68%</b></div>
+                                    <div>Limite: <b>68%</b></div>
+                                </div>
+                                <div class="sub">Tempo em alerta: 00:16:15</div>
+                            </article>
+                        </div>
                     </div>
-                    <div class="divider"></div>
-                    <div class="kv">
-                        <div>CPU: <b>99%</b></div>
-                        <div>Limite: <b>99%</b></div>
-                        <div>RAM: <b>58%</b></div>
-                        <div>Limite: <b>58%</b></div>
-                        <div>Disco: <b>68%</b></div>
-                        <div>Limite: <b>68%</b></div>
-                    </div>
-                    <div class="sub">Tempo em alerta: 00:16:15</div>
-                </article>
-            </aside>
-        </section>
-    </div>
+                </aside>
+            </section>
+        </div>
+    </section>
 
     <script>
         // =========================
@@ -235,12 +255,15 @@
             { id: 'mini1', valores: [70, 40, 70] },   // Servidor 1
             { id: 'mini2', valores: [12, 34, 92] },   // Servidor 2
             { id: 'mini3', valores: [55, 61, 48] },   // Servidor 3
+            { id: 'mini4', valores: [30, 35, 21] },   // Servidor 4
+            { id: 'mini5', valores: [23, 20, 23] },   // Servidor 5
+            { id: 'mini6', valores: [19, 21, 12] },  //  Servidor 6
         ];
 
         // Paleta consistente com a UI
         const COLORS = {
             alerta: '#ef4444',
-            normal: '#10b981',
+            normal: '#21cc8b',
             cpu: '#ef4444',
             ram: '#60a5fa',
             disco: '#f43f5e'
@@ -251,20 +274,19 @@
         // =========================
         const pizzaCtx = document.getElementById('pizzaAlertas');
         const pizza = new Chart(pizzaCtx, {
-            type: 'doughnut',
+            type: 'pie',
             data: {
                 labels: ['Alerta', 'Normal'],
                 datasets: [{
                     data: [34, 66],
-                    backgroundColor: ['#ef4444', '#10b981'],
+                    backgroundColor: ['#ef4444', '#21cc8b'],
                     borderWidth: 0,
                     hoverOffset: 4,
-                    cutout: '62%'
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false,  
+                maintainAspectRatio: false,
                 plugins: {
                     legend: { display: false },
                     tooltip: {

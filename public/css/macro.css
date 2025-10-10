@@ -11,15 +11,26 @@
     box-sizing: border-box;
 }
 
+/* -------------------------------------------------- */
+/*                 BODY E ESTRUTURA BASE              */
+/* -------------------------------------------------- */
+html,
 body {
     margin: 0;
     padding: 0;
+    height: 100%;
+    width: 100%;
     font-family: 'Barlow', 'Segoe UI', Tahoma, sans-serif;
-    background-color: #f0f0f0;
     overflow-x: hidden;
     color: #333;
+    background-color: #e0e1e4;
+    display: flex;
+    justify-content: center;
 }
 
+/* -------------------------------------------------- */
+/*                       HEADER                       */
+/* -------------------------------------------------- */
 header {
     position: sticky;
     top: 0;
@@ -29,30 +40,86 @@ header {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
+.titulo_header {
+    color: #d65e5f;
+    font-size: 28px;
+}
+
 .periodo_select {
-    height: 35px;
-    border-radius: 5px;
+    height: 40px;
+    border-radius: 20px;
     background-color: #e2e2e2;
     border: none;
 }
 
-.container {
-    width: 80%;
-    margin: auto;
+.data-hora {
+    width: 250px;
+    border-radius: 10px;
+    height: 75%;
+    background-color: #e2e2e2;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
+    margin-left: auto;
 }
 
+.data-hora button {
+    border: none;
+    border-radius: 10px;
+    height: 70%;
+    width: 18%;
+    cursor: pointer;
+}
+
+.data-hora button:hover {
+    border: none;
+    border-radius: 10px;
+    height: 80%;
+    width: 18%;
+    background-color: #38b6ff;
+    color: white;
+    transition: 0.5s;
+}
+
+/* -------------------------------------------------- */
+/*                    NAV DASHBOARD                   */
+/* -------------------------------------------------- */
+.nav-dash {
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    /* background-color: #05cf0533; */
+}
+
+/* -------------------------------------------------- */
+/*                     CONTAINER                      */
+/* -------------------------------------------------- */
+.container {
+    margin-top: 10px;
+    width: 98%;
+    height: fit-content;
+    background-color: #ffffff;
+    border-radius: 23px;
+}
+
+/* -------------------------------------------------- */
+/*                      LOGO                          */
+/* -------------------------------------------------- */
 .secao_logo {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin: 0 10px;
 }
 
 .logo {
-    width: 4rem;
+    width: 32px;
     height: auto;
     object-fit: cover;
 }
@@ -65,6 +132,9 @@ header {
     border-radius: 2px;
 }
 
+/* -------------------------------------------------- */
+/*                     LINKS E TEXTO                  */
+/* -------------------------------------------------- */
 a {
     color: black;
     text-decoration: none;
@@ -75,6 +145,10 @@ a {
 a:hover {
     color: #e74c3c;
 }
+
+/* -------------------------------------------------- */
+/*                          MENU                      */
+/* -------------------------------------------------- */
 
 .menu {
     position: relative;
@@ -143,15 +217,16 @@ a:hover {
     position: fixed;
     left: 0;
     top: 0;
-    width: 250px;
+    width: 230px;
     height: 100vh;
-    padding-top: 6.25rem;
     background: linear-gradient(#ffffff);
     box-shadow: 0 0 24px rgba(0, 0, 0, 0.26);
     transform: translateX(-100%);
     opacity: 0;
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
     z-index: 10000;
+    border-radius: 40px;
+    margin-left: 10px;
 }
 
 .menu .check_hamburguer:checked~ul {
@@ -214,15 +289,13 @@ header {
 
 :root {
     --bg: #f6f7fb;
-    --card: #ffffff;
+    --card: #ececec;
     --ink: #1f2a37;
     --muted: #6b7280;
     --accent: #ef4444;
-    /* vermelho alertas */
     --ok: #10b981;
-    /* verde normal   */
     --chip: #f3f4f6;
-    --shadow: 0 6px 18px rgba(0, 0, 0, .06);
+    --shadow: 0 3px 6px rgba(0, 0, 0, 0.144);
     --radius: 16px;
 }
 
@@ -235,7 +308,8 @@ header {
 /* GRID PRINCIPAL */
 .grid {
     display: grid;
-    gap: 18px;
+    gap: 10px;
+    margin-top: 20px;
     grid-template-columns: 1fr;
 }
 
@@ -279,7 +353,7 @@ header {
 
 .kpi .value {
     font-weight: 800;
-    font-size: 28px
+    font-size: 28px;
 }
 
 .kpi .sub {
@@ -293,18 +367,15 @@ header {
 }
 
 .pill {
-    display: inline-block;
-    background: var(--chip);
-    border-radius: 999px;
     padding: 2px 8px;
-    font-size: 12px;
+    font-size: 20px;
     color: var(--muted)
 }
 
 .list {
     margin: 8px 0 0 0;
     padding-left: 16px;
-    color: #b91c1c;
+    color: #e23b3b;
     font-weight: 600;
     font-size: 12px
 }
@@ -319,24 +390,16 @@ header {
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     padding: 16px;
-    max-height: 250px;
+    max-height: 260px;
 }
 
-.cardPizza h3 {
-    margin: 0 0 12px 0;
-    font-size: 16px
-}
-
-.card {
-    background: var(--card);
+.fundo {
+    background-color: white;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    padding: 16px
-}
-
-.card h3 {
-    margin: 0 0 12px 0;
-    font-size: 16px
+    padding: 16px;
+    margin: 10px;
+    max-height: 195px;
 }
 
 /* LADO ESQUERDO */
@@ -380,34 +443,120 @@ header {
     background: #ddd
 }
 
-/* Servidores (barras) */
+/* SERVIDORES COM SCROLL - CARD ESQUERDO BAIXO (barras) */
+.card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px;
+    display: grid;
+    grid-template-areas:
+        "title title"
+        "left  right";
+    grid-template-columns: 120px 1fr;
+    gap: 16px 18px;
+    min-height: 0;
+}
+
+/* Coluna esquerda (estreita) */
+.side-left {
+    grid-area: left;
+    min-width: 0;
+}
+
+.stat-card {
+    background: #fff;
+    box-shadow: var(--shadow);
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 240px;
+}
+
+.stat-label {
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.2;
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: 800;
+    margin-top: 8px;
+    color: var(--ink);
+}
+
+/* Coluna direita (lista com scroll) */
+.side-right {
+    grid-area: right;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.mini {
+    background: #fff;
+    box-shadow: var(--shadow);
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 10px;
+    max-height: 240px;
+    overflow-y: auto;
+    min-height: 0;
+    flex: 0 0 auto;
+}
+
+.pill {
+    display: inline-block;
+    background: var(--chip);
+    border-radius: 999px;
+    padding: 2px 8px;
+}
+
+/* Lista de servers */
 .servers {
     display: grid;
-    gap: 14px
+    gap: 12px;
 }
 
 .server {
-    display: grid;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     gap: 8px;
-    grid-template-columns: 110px 1fr auto;
-    align-items: center
 }
 
-.server .name {
-    font-weight: 700
+.name {
+    font-weight: 700;
 }
 
 .server .status {
     font-weight: 800;
-    color: #b91c1c
+    color: #b91c1c;
 }
 
-.mini {
-    background: #fafafa;
-    border: 1px solid #eee;
-    border-radius: 12px;
-    padding: 10px
+.server canvas {
+    width: 80% !important;
+    height: 130px !important;
 }
+
+
+/* Responsivo */
+@media (max-width:640px) {
+    .card {
+        grid-template-areas:
+            "title"
+            "left"
+            "right";
+        grid-template-columns: 1fr;
+    }
+}
+
 
 /* LADO DIREITO – Risco */
 .risk-list {
@@ -416,12 +565,12 @@ header {
 }
 
 .risk {
-    background: var(--card);
+    background:white;
     border-radius: var(--radius);
-    box-shadow: var(--shadow);
     padding: 14px 16px;
     display: grid;
-    gap: 10px
+    gap: 10px;
+    margin-top: 10px;
 }
 
 .risk h4 {
@@ -433,6 +582,16 @@ header {
     display: flex;
     gap: 8px;
     flex-wrap: wrap
+}
+
+.cardD {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px;
+    display: grid;
+    gap: 16px 18px;
+    min-height: 0;
 }
 
 .kv {
@@ -473,4 +632,15 @@ header {
 /* segurança: nunca 100% de altura fora de um wrapper controlado */
 canvas {
     max-width: 100%;
+}
+
+.scroll {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 10px;
+    max-height: 500px;
+    overflow-y: auto;
+    min-height: 0;
+    flex: 0 0 auto;
 }
