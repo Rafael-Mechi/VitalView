@@ -56,6 +56,7 @@ header {
   border-radius: 20px;
   background-color: #e2e2e2;
   border: none;
+  box-shadow: var(--shadow);
 }
 
 .data-hora {
@@ -68,6 +69,7 @@ header {
   align-items: center;
   justify-content: space-around;
   margin-left: auto;
+  box-shadow: var(--shadow);
 }
 
 .data-hora button {
@@ -110,7 +112,7 @@ header {
   margin-right: 10px;
   width: 98%;
   height: 97%;
-  background-color: #f6f7f6;
+  background-color: white;
   border-radius: 23px;
 
 }
@@ -225,21 +227,23 @@ header {
   width: 100%;
   height: 31%;
   border-radius: 20px;
-  background-color: #e3e4e3;
+  background-color: #ECECEC;
   display: flex;
   justify-content: space-around;
   align-items: center;
   margin-bottom: 10px;
+
+  box-shadow: var(--shadow);
 }
 
 .sessao-lateral-esquerda-itens {
   border-radius: 20px;
-  background-color: #e3e4e3;
+  background-color: #ECECEC;
+  box-shadow: var(--shadow);
 }
 
 .sessao-lateral-direita-itens section {
   height: 90%;
-  background-color: rgb(255, 255, 255);
   border-radius: 20px;
   display: flex;
   justify-content: space-around;
@@ -252,8 +256,6 @@ img {
   width: 80%;
   border-radius: 20px;
 }
-
-
 
 /* -------------------------------------------------- */
 /*                  TÍTULOS DE SEÇÕES                 */
@@ -280,12 +282,23 @@ img {
 /* -------------------------------------------------- */
 /*                        CARDS                       */
 /* -------------------------------------------------- */
+.projecao-disco{
+  background-color: white;
+  border-radius: 20px;
+}
+
+#grafico_disco {
+  width: 30%;
+  height: 80%;
+}
+
+
 .card_grafico_disco {
   flex: 1;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  transition: 0.5s;
   height: 95%;
   width: 100%;
 }
@@ -293,6 +306,7 @@ img {
 .card:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  transition: 0.5s;
 }
 
 .card--sm {
@@ -306,6 +320,66 @@ img {
   min-height: auto;
 }
 
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+  margin-top: 40px;
+}
+
+.card-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.progress-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+}
+
+.label {
+  font-size: 13px;
+  color: #008c99;
+  font-weight: 600;
+}
+
+.progress-bar {
+  position: relative;
+  background: #d9f5f7;
+  border-radius: 20px;
+  height: 12px;
+  width: 180px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: #45d4dc;
+  height: 100%;
+  width: 28.6%;
+  /* valor proporcional ao uso */
+  border-radius: 20px;
+}
+
+.uso {
+  font-size: 14px;
+  font-weight: 600;
+  color: #008c99;
+  min-width: 55px;
+  text-align: right;
+}
+
+.data {
+  font-size: 14px;
+  font-weight: 600;
+  color: #008c99;
+  min-width: 90px;
+  text-align: right;
+}
 
 
 /* -------------------------------------------------- */
@@ -333,6 +407,20 @@ img {
   margin: 6px 0;
 }
 
+.uptime{
+  background-color: white;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center ;
+  flex-direction: column;
+}
+
+.velocimetro{
+  background-color: white;
+  border-radius: 20px;
+}
+
 .uptime-display {
   font-size: 2em;
   font-weight: 550;
@@ -340,12 +428,29 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 20px;   
 }
 
 .arrow-up {
   color: #4caf50;
   margin-left: 8px;
+}
+
+#qtd-alertas {
+  background-color: white;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 40%;
+
+}
+
+#qtd-alertas h1 {
+  color: red;
+  margin-bottom: 20px;
+
 }
 
 /* -------------------------------------------------- */
@@ -355,11 +460,14 @@ img {
 #nome-servidor {
   background-color: rgba(0, 0, 0, 0);
   font-size: 23px;
-  height: 24px;
   width: 90%;
   margin-bottom: 27px;
   display: flex;
   flex-direction: row;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
 }
 
 #informações-servidor {
@@ -369,7 +477,19 @@ img {
   display: flex;
   justify-content: space-around;
   align-items: center;
+}
 
+.server-info {
+  background-color: white;
+  padding: 6%;
+
+  border-radius: 20px;
+}
+
+.processes {
+  background-color: white;
+  border-radius: 20px;
+  width: 50%;
 }
 
 /* -------------------------------------------------- */
@@ -390,11 +510,14 @@ img {
   width: 100%;
   border-collapse: collapse;
 }
-.process-table th, .process-table td {
+
+.process-table th,
+.process-table td {
   padding: 4px 6px;
   border-bottom: 1px solid #ddd;
   text-align: left;
 }
+
 .process-table th {
   background-color: #f0f0f0;
 }
@@ -407,10 +530,11 @@ img {
   font-size: 0.9em;
 }
 
-.card{
+.card {
   width: 90%;
   height: 90%;
 }
+
 
 
 /* -------------------------------------------------- */
@@ -419,7 +543,7 @@ img {
 .card table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .card th {
@@ -430,6 +554,16 @@ img {
 .card th,
 .card td {
   padding: 10px 12px;
+}
+
+.grafico-alertas {
+  background-color: white;
+  width: 500px;
+}
+
+#graficoPizza {
+  width: 200px;
+  height: 90%;
 }
 
 /* -------------------------------------------------- */
@@ -453,7 +587,7 @@ img {
   width: 100%;
   height: 100%;
   margin-bottom: 0.6rem;
-  background-color: #f6f7f6;
+  background-color: white;
   border-radius: 0.2rem;
   transition: all 0.2s ease-in-out;
   border-radius: 15px;
@@ -508,7 +642,7 @@ img {
   top: 0;
   width: 230px;
   height: 100vh;
-  background: linear-gradient(#f6f7f6);
+  background: linear-gradient(white);
   box-shadow: 0 0 24px rgba(0, 0, 0, 0.26);
   transform: translateX(-100%);
   opacity: 0;
@@ -593,6 +727,19 @@ img {
 /* -------------------------------------------------- */
 /*                 TOQUES VISUAIS GERAIS              */
 /* -------------------------------------------------- */
+
+:root {
+  --bg: #f6f7fb;
+  --card: #ececec;
+  --ink: #1f2a37;
+  --muted: #6b7280;
+  --accent: #ef4444;
+  --ok: #10b981;
+  --chip: #f3f4f6;
+  --shadow: 0 3px 6px rgba(0, 0, 0, 0.144);
+  --radius: 16px;
+}
+
 canvas {
   margin-top: 10px;
 }
