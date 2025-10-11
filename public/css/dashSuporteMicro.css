@@ -113,11 +113,11 @@ header {
 /*                     CONTAINER                      */
 /* -------------------------------------------------- */
 .container {
-  margin-top: 10px;
+  margin-top: 7px;
   margin-left: 60px;
   margin-right: 10px;
   width: 98%;
-  height: 97%;
+  height: 98%;
   background-color: white;
   border-radius: 23px;
 }
@@ -294,21 +294,44 @@ img {
   flex-wrap: wrap;
   gap: 1.5rem;
   justify-content: space-between;
+  height: 90%;
+  width: 80%;
+}
+
+.projecao{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 90%;
+  height: 80%;
+}
+
+#projecao{
+  height: 90%;
+  width: 66%;
+  margin-right: 10px;
+  margin-left: 5px;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#projecao:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  transition: 0.5s;
 }
 
 /* -------------------------------------------------- */
 /*                        CARDS                       */
 /* -------------------------------------------------- */
-.projecao-disco {
-  background-color: white;
-  border-radius: 20px;
-}
 
 #grafico_disco {
-  width: 30%;
-  height: 80%;
+  width: 31.5%;
+  height: 90%;
 }
-
 
 .card_grafico_disco {
   flex: 1;
@@ -340,16 +363,17 @@ img {
 .card-header {
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: bold;
   color: #000;
-  margin-top: 40px;
+  margin-bottom: 20px;
 }
 
 .card-body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .progress-container {
@@ -388,6 +412,7 @@ img {
   color: #008c99;
   min-width: 55px;
   text-align: right;
+  margin-right: 32px;
 }
 
 .data {
@@ -426,27 +451,23 @@ img {
 
 .uptime {
   background-color: white;
-  border-radius: 20px;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  text-align: center;
+  height: 100%;
+  width: 80%;
 }
 
-.velocimetro {
-  border-radius: 20px;
-  background-color: #00000000;
+#uptime{
+  margin-right: 10px;
 }
 
+
 .velocimetro {
-  width: 400px;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
   background-color: white;
-  border-radius: 5px;
 }
 
 
@@ -467,19 +488,22 @@ img {
 
 #qtd-alertas {
   background-color: white;
-  border-radius: 20px;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   width: 40%;
-
+  padding: 20px;
 }
 
 #qtd-alertas h1 {
-  color: red;
+  color: #f75454;
   margin-bottom: 20px;
+}
 
+#qtd-alertas h2{
+  font-size: 20px;
 }
 
 /* -------------------------------------------------- */
@@ -514,6 +538,12 @@ img {
   padding: 2% 5%;
   border-radius: 10px;
   font-size: 20px;
+}
+
+.server-info:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  transition: 0.5s;
 }
 
 .processes {
@@ -604,17 +634,13 @@ h3 {
   width: 500px;
 }
 
-#graficoPizza {
-  width: 200px;
-  height: 90%;
-}
 
 /* -------------------------------------------------- */
 /*                   MENU HAMBÚRGUER                  */
 /* -------------------------------------------------- */
 .menu {
   position: relative;
-  margin-bottom: 22px;
+  margin-bottom: 16px;
 }
 
 .menu .hamburguer {
@@ -685,7 +711,7 @@ h3 {
   top: 0;
   width: 230px;
   height: 100vh;
-  background: linear-gradient(#f6f7f6);
+  background: linear-gradient(#ffffff);
   box-shadow: 0 0 24px rgba(0, 0, 0, 0.26);
   transform: translateX(-100%);
   opacity: 0;
