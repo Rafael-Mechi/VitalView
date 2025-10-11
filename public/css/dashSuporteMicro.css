@@ -15,6 +15,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Barlow';
 }
 
 /* -------------------------------------------------- */
@@ -53,10 +54,15 @@ header {
 
 .periodo_select {
   height: 40px;
-  border-radius: 20px;
-  background-color: #e2e2e2;
+  border-radius: 10px;
+  background-color: #32b9cd;
   border: none;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  font-size: 15px;
   box-shadow: var(--shadow);
+  padding: 10px;
 }
 
 .data-hora {
@@ -225,7 +231,8 @@ header {
 .sessao-lateral-direita-itens {
   width: 100%;
   height: 31%;
-  border-radius: 20px;
+  padding: 10px;
+  border-radius: 10px;
   background-color: #ECECEC;
   display: flex;
   justify-content: space-around;
@@ -236,25 +243,36 @@ header {
 }
 
 .sessao-lateral-esquerda-itens {
-  border-radius: 20px;
+  border-radius: 10px;
   background-color: #ECECEC;
   box-shadow: var(--shadow);
 }
 
 .sessao-lateral-direita-itens section {
   height: 90%;
-  border-radius: 20px;
+  border-radius: 10px;
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex-direction: column;
 }
 
+.sessao-lateral-direita-itens {
+  border-radius: 10px;
+  gap: 20px;
+}
+
 .sessao-lateral-direita-itens section,
 img {
   width: 80%;
-  border-radius: 20px;
 }
+
+#card_processos{
+  height: 77%;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
 
 /* -------------------------------------------------- */
 /*                  TÍTULOS DE SEÇÕES                 */
@@ -281,7 +299,7 @@ img {
 /* -------------------------------------------------- */
 /*                        CARDS                       */
 /* -------------------------------------------------- */
-.projecao-disco{
+.projecao-disco {
   background-color: white;
   border-radius: 20px;
 }
@@ -406,32 +424,44 @@ img {
   margin: 6px 0;
 }
 
-.uptime{
+.uptime {
   background-color: white;
   border-radius: 20px;
   display: flex;
   justify-content: center;
-  align-items: center ;
+  align-items: center;
   flex-direction: column;
 }
 
-.velocimetro{
-  background-color: white;
+.velocimetro {
   border-radius: 20px;
+  background-color: #00000000;
 }
+
+.velocimetro {
+  width: 400px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background-color: white;
+  border-radius: 5px;
+}
+
 
 .uptime-display {
   font-size: 2em;
   font-weight: 550;
-  color: #4caf50;
+  color: #32b9cd;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;   
+  margin-top: 20px;
 }
 
 .arrow-up {
-  color: #4caf50;
+  color: #32b9cd;
   margin-left: 8px;
 }
 
@@ -480,14 +510,14 @@ img {
 
 .server-info {
   background-color: white;
-  padding: 6%;
-
-  border-radius: 20px;
+  width: 90%;
+  padding: 2% 5%;
+  border-radius: 10px;
+  font-size: 20px;
 }
 
 .processes {
   background-color: white;
-  border-radius: 20px;
   width: 50%;
 }
 
@@ -502,6 +532,7 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
 
@@ -521,12 +552,20 @@ img {
   background-color: #f0f0f0;
 }
 
+
+
 .status.ativo {
-  background-color: #4caf50;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1% 5%;
+  margin-top: 3px;
+  background-color: #32b9cd;
   color: #fff;
-  padding: 2px 6px;
   border-radius: 4px;
   font-size: 0.9em;
+  margin-left: 15px;
 }
 
 .card {
@@ -534,6 +573,10 @@ img {
   height: 90%;
 }
 
+h3 {
+  font-weight: bold;
+  font-size: 20px;
+}
 
 
 /* -------------------------------------------------- */
@@ -554,6 +597,7 @@ img {
 .card td {
   padding: 10px 12px;
 }
+
 
 .grafico-alertas {
   background-color: white;
@@ -586,7 +630,7 @@ img {
   width: 100%;
   height: 100%;
   margin-bottom: 0.6rem;
-  background-color: white;
+  background-color: #ffffff;
   border-radius: 0.2rem;
   transition: all 0.2s ease-in-out;
   border-radius: 15px;
@@ -625,7 +669,7 @@ img {
 }
 
 .menu .img_hamb {
-  max-width: 40px;
+  width: 40px;
 }
 
 .menu .hamb_nome {
@@ -641,7 +685,7 @@ img {
   top: 0;
   width: 230px;
   height: 100vh;
-  background: linear-gradient(white);
+  background: linear-gradient(#f6f7f6);
   box-shadow: 0 0 24px rgba(0, 0, 0, 0.26);
   transform: translateX(-100%);
   opacity: 0;
@@ -695,6 +739,7 @@ img {
 
 .icones_topo img {
   margin-bottom: 10px;
+  width: 24px;
 }
 
 .icones_baixo {
@@ -707,6 +752,7 @@ img {
 
 .icones_baixo img {
   margin: 10px;
+  width: 24px;
 }
 
 /* -------------------------------------------------- */
@@ -739,13 +785,9 @@ img {
   --radius: 16px;
 }
 
-canvas {
-  margin-top: 10px;
-}
-
 h3 {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: bold;
   margin-bottom: 8px;
   color: #2a2a2a;
 }
