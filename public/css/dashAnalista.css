@@ -35,6 +35,24 @@ body {
   justify-content: center;
 }
 
+:root{
+  --cinza-50:#f6f7f6;
+  --cinza-100:#eceff1;
+  --cinza-300:#d9dde2;
+  --cinza-700:#4b5968;
+  --cinza-800:#2e3b4a;
+  --branco:#fff;
+  --sombra: 0 8px 22px rgba(0,0,0,.08);
+  --radius: 16px;
+  --vermelho:#e33d3d;
+  --verde:#10b981;
+  --amarelo:#fff6b9;
+  --azul-suave:#e2f3ff;
+  --borda: 2px solid #e6e6e6;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+
 /* -------------------------------------------------- */
 /*                       HEADER                       */
 /* -------------------------------------------------- */
@@ -246,6 +264,12 @@ header {
   border-radius: 10px;
   background-color: #ECECEC;
   box-shadow: var(--shadow);
+  padding: 10px;
+  min-height: 700px;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  display: flex;
 }
 
 .sessao-lateral-direita-itens section {
@@ -333,6 +357,30 @@ img {
   height: 90%;
 }
 
+#graficoPizza {
+  min-height: 200px;
+}
+
+#graficoPizza > [aria-labelledby="qtd"] {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin-top: 5%;       
+}
+
+
+#graficoPizza h4 {
+  margin: 0 0 8px;     
+  text-align: center;  
+}
+
+
+#graficoPizza .valor {
+  margin: auto 0;      
+  align-self: center;  
+  text-align: center;
+}
+
 .card_grafico_disco {
   flex: 1;
   background: #fff;
@@ -341,6 +389,7 @@ img {
   transition: 0.5s;
   height: 95%;
   width: 100%;
+  padding: 5px;
 }
 
 .card:hover {
@@ -857,3 +906,23 @@ h3 {
   font-weight:800; padding:14px 24px; border-radius:14px; box-shadow:0 10px 18px rgba(47,125,244,.25)
 }
 .botao-relatorio:hover{ filter:brightness(1.05) }
+
+.mini {
+    background: #fff;
+    box-shadow: var(--shadow);
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+    min-height: 200px;
+    width: 95%;
+    flex: 0 0 auto;
+}
+
+.mini h4 {
+  text-align: center;
+}
+
+.wrap-mini { width: 100%; height: 48px; }
+.wrap-mini canvas { width: 100% !important; height: 100% !important; }

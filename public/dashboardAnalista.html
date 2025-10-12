@@ -86,17 +86,6 @@
 
             <section class="secao_logo">
                 <select class="periodo_select" name="periodo" id="periodo_select">
-                    <option value="1">Escolher Servidor</option>
-                    <option value="2">Servidor 1</option>
-                    <option value="3">Servidor 2</option>
-                    <option value="4">Servidor 3</option>
-                    <option value="5">Servidor 4</option>
-                    <option value="6">Servidor 5</option>
-                </select>
-            </section>
-
-            <section class="secao_logo">
-                <select class="periodo_select" name="periodo" id="periodo_select">
                     <option value="1">Escolher periodo</option>
                     <option value="2">Todos os registros</option>
                     <option value="3">Último ano</option>
@@ -117,22 +106,24 @@
 
         <section class="container-de-sessoes">
             <section class="sessao-lateral-esquerda">
-                <div class="server-info" role="group" aria-labelledby="t1">
-                    <h3 id="t1" class="titulo-cartao">Top 5 Servidores com mais alertas <small>No [Período]</small>
-                    </h3>
-                    <div class="wrap-canvas">
-                        <canvas id="topServidoresChart" aria-label="Top servidores" role="img"></canvas>
+                <section class="sessao-lateral-esquerda-itens">
+                    <div class="server-info" role="group" aria-labelledby="t1">
+                        <h3 id="t1" class="titulo-cartao">Top 5 Servidores com mais alertas <small>No [Período]</small>
+                        </h3>
+                        <div class="wrap-canvas">
+                            <canvas id="topServidoresChart" aria-label="Top servidores" role="img"></canvas>
+                        </div>
                     </div>
-                </div>
-                <div class="server-info" role="group" aria-labelledby="t2">
-                    <h3 id="t1" class="titulo-cartao">Distribuição de alertas por componente
-                        <small>No [Período]</small>
-                    </h3>
-                    <div class="wrap-canvas">
-                        <canvas id="componentesChart" aria-label="Alertas por componente" role="img"></canvas>
-                    </div>
-                </div>
 
+                    <div class="server-info" role="group" aria-labelledby="t2">
+                        <h3 id="t1" class="titulo-cartao">Distribuição de alertas por componente
+                            <small>No [Período]</small>
+                        </h3>
+                        <div class="wrap-canvas">
+                            <canvas id="componentesChart" aria-label="Alertas por componente" role="img"></canvas>
+                        </div>
+                    </div>
+                </section>
                 <button class="botao-relatorio">Gerar Relatório</button>
 
             </section>
@@ -161,7 +152,7 @@
                     <section class="row" id="grafico_disco">
                         <div class="card card_grafico_disco" id="graficoPizza">
                             <div aria-labelledby="qtd">
-                                <h4 id="qtd">Quantidade total de alertas <small>Durante o [Período]</small></h4>
+                                <h4 id="qtd">Quantidade total de alertas <br><small>Durante o [Período]</small></h4>
                                 <div class="valor enorme vermelho">12</div>
                             </div>
                         </div>
@@ -169,36 +160,33 @@
                     <section id="projecao">
                         <div aria-labelledby="lin">
                             <h4 id="lin">Distribuição de alertas ao longo do ano</h4>
-                            <div class="wrap-canvas">
+                            <div class="wrap-canvas" style="height: 150px; width: 300px;">
                                 <canvas id="linhaAnoChart" aria-label="Distribuição no ano" role="img"></canvas>
                             </div>
                         </div>
                     </section>
                 </section>
-                <section class="sessao-lateral-direita-itens cartao bloco-projecao">
-                    <h4 id="proj">Projeção de Sobrecarga dos discos</h4>
-                    <div class="tabela-proj">
-                        <div class="linha">
-                            <span class="srv">SERV-PACS</span>
-                            <div class="medidor"><span class="medidor__preench cor-disco" style="width:90%"></span>
+                <section class="sessao-lateral-direita-itens">
+                    <div class="mini">
+                        <h4>Projeção de Sobrecarga dos Discos</h4>
+
+                        <div class="servers">
+                            <a href="dashboardSuporteMicro.html" class="name">Servidor 1</a>
+                            <div class="server">
+                                <div class="wrap-mini"><canvas id="mini1"></canvas></div>
                             </div>
-                            <span class="uso">90%</span>
-                            <span class="data">22/12/2025</span>
-                        </div>
-                        <div class="linha">
-                            <span class="srv">SERV-2</span>
-                            <div class="medidor"><span class="medidor__preench cor-ram" style="width:40%"></span></div>
-                            <span class="uso">40%</span>
-                            <span class="data">22/04/2026</span>
-                        </div>
-                        <div class="linha">
-                            <span class="srv">SERV-3</span>
-                            <div class="medidor"><span class="medidor__preench cor-cpu" style="width:20%"></span></div>
-                            <span class="uso">20%</span>
-                            <span class="data">30/11/2026</span>
+
+                            <a href="dashboardSuporteMicro.html" class="name">Servidor 2</a>
+                            <div class="server">
+                                <div class="wrap-mini"><canvas id="mini2"></canvas></div>
+                            </div>
+
+                            <a href="dashboardSuporteMicro.html" class="name">Servidor 3</a>
+                            <div class="server">
+                                <div class="wrap-mini"><canvas id="mini3"></canvas></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="barra-vertical"></div>
                 </section>
             </section>
         </section>
@@ -213,7 +201,7 @@
             type: 'bar',
             data: {
                 labels: ['SERV-PACS', 'PACS-2', 'PACS-3', 'PACS-4', 'PACS-5'],
-                datasets: [{ label: 'Alertas', data: [30, 18, 12, 9, 6], borderRadius: 10, backgroundColor: '#ef7070' }]
+                datasets: [{ label: 'Alertas', data: [30, 18, 12, 9, 6], borderRadius: 10, backgroundColor: '#32b9cd' }]
             },
             options: {
                 indexAxis: 'y',
@@ -230,7 +218,7 @@
             type: 'bar',
             data: {
                 labels: ['CPU', 'RAM', 'DISCO'],
-                datasets: [{ data: [8, 12, 16], backgroundColor: ['#e4ef2f', '#ffb65e', '#ff6d6d'], borderRadius: 12 }]
+                datasets: [{ data: [8, 12, 16], backgroundColor: ['#32b9cd', '#32b9cd', '#32b9cd'], borderRadius: 12 }]
             },
             options: {
                 plugins: { legend: { display: false } },
@@ -246,7 +234,7 @@
             type: 'line',
             data: {
                 labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-                datasets: [{ label: 'Alertas', data: [25, 12, 15, 10, 14, 32, 18, 9, 6, 3, 1, 2], borderColor: '#e34a4a', pointBackgroundColor: '#e34a4a', pointRadius: 3.5, fill: false, tension: .35 }]
+                datasets: [{ label: 'Alertas', data: [25, 12, 15, 10, 14, 32, 18, 9, 6, 3, 1, 2], borderColor: '#32b9cd', pointBackgroundColor: '#32bccd', pointRadius: 3.5, fill: false, tension: .35 }]
             },
             options: {
                 plugins: { legend: { display: true, labels: { boxWidth: 10, usePointStyle: true, pointStyle: 'circle' } } },
@@ -255,6 +243,45 @@
                     y: { grid: { color: gridColor }, border: { display: false }, beginAtZero: true }
                 }
             }
+        });
+
+        const minis = [
+            { id: 'mini1', valor: 90, cor: '#32b9cd' },
+            { id: 'mini2', valor: 40, cor: '#32b9cd' }, 
+            { id: 'mini3', valor: 20, cor: '#32b9cd' }  
+        ];
+
+        minis.forEach(({ id, valor, cor }) => {
+            const el = document.getElementById(id);
+            if (!el) return;         
+            new Chart(el, {
+                type: 'bar',
+                data: {
+                    labels: [''],
+                    datasets: [{
+                        label: 'Uso (%)',
+                        data: [valor],
+                        backgroundColor: cor,
+                        borderRadius: 8,
+                        barPercentage: 0.7,
+                        categoryPercentage: 1.0
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${c.raw}%` } } },
+                    scales: {
+                        x: {
+                            min: 0, max: 100,
+                            ticks: { callback: v => v + '%' },
+                            grid: { display: false }, border: { display: false }
+                        },
+                        y: { grid: { display: false }, border: { display: false } }
+                    }
+                }
+            });
         });
     </script>
 
