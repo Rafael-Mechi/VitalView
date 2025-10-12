@@ -96,17 +96,12 @@
 
                 <article class="kpi">
                     <h4>Servidor com mais alertas</h4>
-                    <div class="value">SERVIDOR 1</div>
-                    <ul class="list">
-                        <p>RAM – 27 alertas</p>
-                        <p>CPU – 20 alertas</p>
-                        <p>DISCO – 5 alertas</p>
-                    </ul>
+                    <a href="dashboardSuporteMicro.html" class="value">SERVIDOR 1</a>
                 </article>
 
                 <article class="kpi">
                     <h4>Alertas (últimas 24h)</h4>
-                    <div class="value mono">16</div>
+                    <div style="color: #e62323;" class="value mono">16</div>
                 </article>
 
                 <article class="kpi">
@@ -125,18 +120,10 @@
 
                         <div class="side-left">
 
-                            <div class="stat-card-pizza">
-                                <div class="stat-label">Servidores em Alerta × Normais</div>
+                            <div class="stat-card-pizza">      
                                 <div class="fundo">
                                     <div class="chart-box">
-                                        <canvas id="pizzaAlertas"></canvas>
-                                    </div>
-
-                                    <div class="legend-inline">
-                                        <div class="item"><span class="swatch" id="swatch-alerta"></span> Alerta (34%)
-                                        </div>
-                                        <div class="item"><span class="swatch" id="swatch-normal"></span> Normal (66%)
-                                        </div>
+                                        <canvas id="pizzaAlertas" style="width: 100%; height: 100%; padding-bottom: 20px; padding-right: 10px;"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -169,17 +156,17 @@
                                     <a href="dashboardSuporteMicro.html" class="name">Servidor 4</a>
                                     <div class="server">
                                         <canvas id="mini4" height="48"></canvas>
-                                        <div class="status" style="color:#21cc8b">Normal</div>
+                                        <div class="status" style="color:#6ce5e8">Normal</div>
                                     </div>
                                     <a href="dashboardSuporteMicro.html" class="name">Servidor 5</a>
                                     <div class="server">
                                         <canvas id="mini5" height="48"></canvas>
-                                        <div class="status" style="color:#21cc8b">Normal</div>
+                                        <div class="status" style="color:#6ce5e8">Normal</div>
                                     </div>
                                     <a href="dashboardSuporteMicro.html" class="name">Servidor 6</a>
                                     <div class="server">
                                         <canvas id="mini6" height="48"></canvas>
-                                        <div class="status" style="color:#21cc8b">Normal</div>
+                                        <div class="status" style="color:#6ce5e8">Normal</div>
                                     </div>
                                 </div>
                             </div>
@@ -260,10 +247,6 @@
         // =========================
         // DADOS MOCADOS / ESTÁTICOS
         // =========================
-        const PIZZA = {
-            labels: ['Alerta', 'Normal'],
-            data: [34, 66]
-        };
         const SERVIDORES_MINI = [
             // cpu, ram, disco
             { id: 'mini1', valores: [70, 40, 70] },   // Servidor 1
@@ -276,45 +259,44 @@
 
         // Paleta consistente com a UI
         const COLORS = {
-            alerta: '#ef4444',
-            normal: '#39f1ba',
-            cpu: '#ef4444',
-            ram: '#60a5fa',
-            disco: '#f43f5e'
+            cpu: '#2d8bba',
+            ram: '#6ce5e8',
+            disco: '#0d3e47'
         };
 
         // =========================
         // PIZZA: Alertas x Normais
         // =========================
-        const pizzaCtx = document.getElementById('pizzaAlertas');
-        const pizza = new Chart(pizzaCtx, {
+                const ctx = document.getElementById('pizzaAlertas').getContext('2d');
+        new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: ['Alerta', 'Normal'],
+                labels: ['Alerta 34%', 'Normal 66%',],
                 datasets: [{
                     data: [34, 66],
-                    backgroundColor: ['#ef4444', '#39f1ba'],
-                    borderWidth: 0,
-                    hoverOffset: 4,
+                    backgroundColor: ['#2d8bba', '#6ce5e8'],
+                    borderWidth: 1
                 }]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
+                responsive: false,
                 plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: (ctx) => `${ctx.label}: ${ctx.raw}%`
-                        }
+                    legend: {
+                        position: 'right'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Servidores em Alerta × Normais',
+                        font: {
+                            size: 17,
+                            weight: 'bold',
+                        },
+                        color: 'black'
+
                     }
                 }
             }
         });
-
-        // Atualiza as amostras da legenda manual
-        document.getElementById('swatch-alerta').style.background = COLORS.alerta;
-        document.getElementById('swatch-normal').style.background = COLORS.normal;
 
         // ==========================================
         // MINI BARRAS HORIZONTAIS por servidor (CPU/RAM/Disco)
