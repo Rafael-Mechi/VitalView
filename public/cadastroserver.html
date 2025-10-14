@@ -74,6 +74,10 @@
   </header>
 
   <form class="form-servidor">
+    <div class="form-grid">
+
+    <!-- BLOCO 1 -->
+    <div class="form-card">
     <h2>Informações do Servidor:</h2>
     <br>
 
@@ -112,7 +116,10 @@
       <label for="disco">Disco (GB) *</label>
       <input type="number" id="ipt_disco" name="disco" min="1" placeholder="Ex.: 512" required>
     </div>
+    </div>
 
+     <!-- BLOCO 2 -->
+    <div class="form-card">
     <h2>Informações de parametrização:</h2>
     <br>
 
@@ -135,6 +142,8 @@
       <label for="ipt_porcentagem_disco">Porcentagem para gerar alerta no disco *</label>
       <button type="button" class="infoBtn" data-target="infoModalDisco">ℹ️</button>
       <input type="number" id="ipt_porcentagem_disco" name="porcentagem_disco" min="1" placeholder="Ex.: 90">
+    </div>
+
     </div>
 
     <!-- MODAIS -->
