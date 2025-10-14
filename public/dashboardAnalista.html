@@ -94,14 +94,6 @@
                     <option value="6">Última semana</option>
                 </select>
             </section>
-
-            <section class="data-hora">
-                <button>1min</button>
-                <button>10min</button>
-                <button>1h</button>
-                <button>24h</button>
-                <button>7d</button>
-            </section>
         </section>
 
         <section class="container-de-sessoes">
@@ -135,7 +127,7 @@
                         <p class="legenda">Tempo que os servidores ficaram disponíveis</p>
                     </section>
                     <section class="velocimetro card">
-                        <h4 id="c2">Servidor com mais alerta <small>Durante o [Período]</small></h4>
+                        <h4 id="c2">Servidor com mais alertas <small>Durante o [Período]</small></h4>
                         <div class="valor grande vermelho">SERV-PACS</div>
                         <p class="legenda">RAM – 27 Alertas</p>
                     </section>
@@ -163,7 +155,7 @@
                             <div class="wrap-canvas" style="height: 150px; width: 300px;">
                                 <canvas id="linhaAnoChart" aria-label="Distribuição no ano" role="img"></canvas>
                             </div>
-                        </div>
+                        </div>  
                     </section>
                 </section>
                 <section class="sessao-lateral-direita-itens">
@@ -175,16 +167,21 @@
                             <div class="server">
                                 <div class="wrap-mini"><canvas id="mini1"></canvas></div>
                             </div>
+                            <a href="dashboardSuporteMicro.html" class="name">22/12/2025</a>
 
                             <a href="dashboardSuporteMicro.html" class="name">Servidor 2</a>
                             <div class="server">
                                 <div class="wrap-mini"><canvas id="mini2"></canvas></div>
                             </div>
+                            <a href="dashboardSuporteMicro.html" class="name">22/04/2026</a>
+
 
                             <a href="dashboardSuporteMicro.html" class="name">Servidor 3</a>
                             <div class="server">
                                 <div class="wrap-mini"><canvas id="mini3"></canvas></div>
                             </div>
+                            <a href="dashboardSuporteMicro.html" class="name">30/11/2026</a>
+
                         </div>
                     </div>
                 </section>
@@ -233,11 +230,11 @@
         new Chart(document.getElementById('linhaAnoChart'), {
             type: 'line',
             data: {
-                labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
                 datasets: [{ label: 'Alertas', data: [25, 12, 15, 10, 14, 32, 18, 9, 6, 3, 1, 2], borderColor: '#32b9cd', pointBackgroundColor: '#32bccd', pointRadius: 3.5, fill: false, tension: .35 }]
             },
             options: {
-                plugins: { legend: { display: true, labels: { boxWidth: 10, usePointStyle: true, pointStyle: 'circle' } } },
+                plugins: { legend: { display: false, labels: { boxWidth: 5, usePointStyle: true, pointStyle: 'circle' } } },
                 scales: {
                     x: { grid: { display: false }, border: { display: false } },
                     y: { grid: { color: gridColor }, border: { display: false }, beginAtZero: true }
@@ -247,13 +244,13 @@
 
         const minis = [
             { id: 'mini1', valor: 90, cor: '#32b9cd' },
-            { id: 'mini2', valor: 40, cor: '#32b9cd' }, 
-            { id: 'mini3', valor: 20, cor: '#32b9cd' }  
+            { id: 'mini2', valor: 40, cor: '#32b9cd' },
+            { id: 'mini3', valor: 20, cor: '#32b9cd' }
         ];
 
         minis.forEach(({ id, valor, cor }) => {
             const el = document.getElementById(id);
-            if (!el) return;         
+            if (!el) return;
             new Chart(el, {
                 type: 'bar',
                 data: {
