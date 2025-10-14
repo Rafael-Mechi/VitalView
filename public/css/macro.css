@@ -303,7 +303,7 @@ a:hover {
     }
 
     .card {
-        width: 100%;    
+        width: 100%;
     }
 }
 
@@ -349,7 +349,7 @@ a:hover {
     margin-bottom: 6px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     background-color: #ececec;
-    border-radius: 20px;
+    border-radius: 12px;
     padding: 15px;
 }
 
@@ -360,37 +360,53 @@ a:hover {
 }
 
 .kpi {
-    background:white;
-    border-radius: var(--radius);
+    background: white;
+    border-radius: 12px;
     box-shadow: var(--shadow);
     padding: 14px 16px;
     display: flex;
     flex-direction: column;
     text-align: center;
-    max-height: 100px;
+    height: 130px;
 }
 
-.kpi h4 {
-    margin: 0 0 8px 0;
-    font-size: 12.5px;
-    color: var(--muted);
-    letter-spacing: .2px
+.kpi .normal {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #2a2a2a;
+}
+
+.kpi .diferente {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2a2a2a;
+}
+
+.kpi p {
+    margin-bottom: 8px;
 }
 
 .kpi .value {
     font-weight: 800;
     font-size: 28px;
+    color: #32b9cd;
+}
+
+.kpi .value-serv {
+    font-weight: 800;
+    font-size: 28px;
+    color: #e62323;
 }
 
 .kpi a {
-    color: #333;
     text-decoration: underline;
     transition: all 0.2s ease-in-out;
     cursor: pointer;
 }
 
 .kpi a:hover {
-    color: #7e7e7e;
+    color: #747474;
 }
 
 .kpi .sub {
@@ -519,6 +535,7 @@ a:hover {
 .stat-label {
     color: black;
     font-weight: bold;
+    font-size: 20px;
     text-align: center;
     line-height: 1.2;
     width: 240px;
@@ -528,7 +545,7 @@ a:hover {
     font-size: 32px;
     font-weight: 800;
     margin-top: 8px;
-    color: var(--ink);
+    color:#32b9cd;
 }
 
 /* Coluna direita (lista com scroll) */
