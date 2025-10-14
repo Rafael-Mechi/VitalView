@@ -90,22 +90,24 @@
             <!-- KPIs -->
             <section class="kpis">
                 <article class="kpi">
-                    <h4>Servidores em Risco</h4>
+                    <h4 class="normal">Servidores em Risco</h4>
                     <div class="value mono">3<span>/6</span></div>
                 </article>
 
                 <article class="kpi">
-                    <h4>Servidor com mais alertas</h4>
-                    <a href="dashboardSuporteMicro.html" class="value">SERVIDOR 1</a>
+                    <h4 class="normal">Servidor com mais Alertas</h4>
+                    <a href="dashboardSuporteMicro.html" class="value-serv">SERVIDOR 1</a>
                 </article>
 
                 <article class="kpi">
-                    <h4>Alertas (últimas 24h)</h4>
+                    <h4 class="diferente">Alertas</h4>
+                    <p>(Últimas 24 horas)</p>
                     <div style="color: #e62323;" class="value mono">16</div>
                 </article>
 
                 <article class="kpi">
-                    <h4>Tendência de alertas (próx. 30 min)</h4>
+                    <h4 class="diferente">Tendência de Alertas</h4>
+                    <p>(Próximos 30 minutos)</p>
                     <div class="value mono">23%</div>
                 </article>
             </section>
@@ -116,7 +118,7 @@
 
                     <!-- Servidores (mini barras) -->
                     <article class="card">
-                        <h3 class="card-title">Servidores</h3>
+
 
                         <div class="side-left">
 
@@ -138,6 +140,7 @@
                         <div class="side-right">
                             <div class="mini">
                                 <div class="servers">
+                                    <h3 style="color: black;">Lista de Servidores</h3>
                                     <a href="dashboardSuporteMicro.html" class="name">Servidor 1</a>
                                     <div class="server">
                                         <canvas id="mini1" height="48"></canvas>
@@ -177,10 +180,9 @@
                 <!-- COLUNA DIREITA: Servidores em risco -->
                 <aside class="risk-list">
                     <div class="cardD">
-                        <h3>Servidores em Risco</h3>
-
                         <!-- Risco 1 -->
                         <div class="scroll">
+                            <h3 style="color: black;" >Servidores em Risco</h3>
                             <article class="risk">
                                 <a href="dashboardSuporteMicro.html" class="nameAlert">Servidor 1</a>
                                 <div class="chips">
@@ -288,7 +290,7 @@
                         display: true,
                         text: 'Servidores em Alerta × Normais',
                         font: {
-                            size: 17,
+                            size: 21,
                             weight: 'bold',
                         },
                         color: 'black'
