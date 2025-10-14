@@ -84,7 +84,7 @@
                 <h1 class="titulo_header">VitalView</h1>
             </section>
 
-            <section class="secao_logo">
+            <section class="secao_logo" id="escolher-servidor">
                 <select class="periodo_select" name="periodo" id="periodo_select">
                     <option value="1">Escolher Servidor</option>
                     <option value="2">Servidor 1</option>
@@ -106,13 +106,13 @@
                 </select>
             </section>
 
-            <section class="data-hora">
+            <!-- <section class="data-hora">
                 <button>1min</button>
                 <button>10min</button>
                 <button>1h</button>
                 <button>24h</button>
                 <button>7d</button>
-            </section>
+            </section> -->
         </section>
 
         <section class="container-de-sessoes">
@@ -121,7 +121,34 @@
                     <h1>PACS-01</h1><span class="status ativo">Ativo</span>
                 </section>
                 <section class="sessao-lateral-esquerda-itens" id="informações-servidor">
-                    <table class="server-info">
+
+                    <div class="card" id="card_processos">
+                        <table class="process-table processes" id="conteudo-servidores">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Hostname:</strong></td>
+                                    <td>PACS-01</td>
+
+                                </tr>
+                                <tr>
+                                    <td><strong>Endereço IP:</strong></td>
+                                    <td>192.168.1.10</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Localização:</strong></td>
+                                    <td>Radiologia Central</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Qtd. RAM:</strong></td>
+                                    <td>128 GB</td>
+                                </tr>
+                                <td><strong>Qtd. Disco:</strong></td>
+                                <td>5 TB</td>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- <table class="server-info">
                         <tr>
                             <td><strong>Hostname:</strong></td>
                             <td>PACS-01</td>
@@ -142,11 +169,11 @@
                             <td><strong>Qtd. Disco:</strong></td>
                             <td>5 TB</td>
                         </tr>
-                    </table>
+                    </table> -->
                 </section>
                 <section class="sessao-lateral-esquerda-itens" id="lista-processos">
                     <h3>Lista de Processos</h3>
-                    <div class="card" id="card_processos">
+                    <div class="card scroll" id="card_processos">
                         <table class="process-table processes">
                             <thead>
                                 <tr>
@@ -161,32 +188,63 @@
                                     <td>MySQL</td>
                                     <td>32%</td>
                                     <td>26%</td>
-                                    <td><span class="status ativo">Ativo</span></td>
+                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
                                 </tr>
                                 <tr>
                                     <td>Node.js</td>
                                     <td>12%</td>
                                     <td>34%</td>
-                                    <td><span class="status ativo">Ativo</span></td>
+                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
                                 </tr>
                                 <tr>
                                     <td>Windows</td>
                                     <td>45%</td>
                                     <td>67%</td>
-                                    <td><span class="status ativo">Ativo</span></td>
+                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
                                 </tr>
                                 <tr>
                                     <td>Pictures</td>
                                     <td>22%</td>
                                     <td>10%</td>
-                                    <td><span class="status ativo">Ativo</span></td>
+                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
                                 </tr>
                                 <tr>
                                     <td>Arquivos</td>
                                     <td>14%</td>
                                     <td>9%</td>
-                                    <td><span class="status ativo">Ativo</span></td>
+                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
                                 </tr>
+                                <tr>
+                                    <td>MySQL</td>
+                                    <td>32%</td>
+                                    <td>26%</td>
+                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Node.js</td>
+                                    <td>12%</td>
+                                    <td>34%</td>
+                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Windows</td>
+                                    <td>45%</td>
+                                    <td>67%</td>
+                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Pictures</td>
+                                    <td>22%</td>
+                                    <td>10%</td>
+                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Arquivos</td>
+                                    <td>14%</td>
+                                    <td>9%</td>
+                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
+                                </tr>
+                                
                             </tbody>
                         </table>
                     </div>
