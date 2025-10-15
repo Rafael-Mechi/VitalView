@@ -371,8 +371,7 @@ img {
 }
 
 
-#graficoPizza .valor {
-  margin: auto 0;      
+#graficoPizza .valor {      
   align-self: center;  
   text-align: center;
 }
