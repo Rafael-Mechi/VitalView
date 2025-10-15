@@ -5,8 +5,8 @@ function salvar(){
     let discoVar = ipt_disco.value;
 
     let porcentagem_cpuVar = ipt_porcentagem_cpu.value;
-    let porcentagem_ramVar = ipt_porcentagem_ram;
-    let porcentagem_discoVar = ipt_porcentagem_disco;
+    let porcentagem_ramVar = ipt_porcentagem_ram.value;
+    let porcentagem_discoVar = ipt_porcentagem_disco.value;
 
     let fkHospitalVar = sessionStorage.FK_HOSPITAL;
 
