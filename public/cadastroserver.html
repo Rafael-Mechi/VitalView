@@ -86,129 +86,123 @@
     </section>
   </header>
 
-  <form class="form-servidor">
-    <div class="form-grid">
-
-    <!-- BLOCO 1 -->
-    <div class="form-card">
-    <h2>Informações do Servidor:</h2>
-    <br>
-
-    <!-- <div class="form-control">
-        <label for="so">Sistema Operacional *</label>
-        <select id="so" name="so" required>
-          <option value="" disabled selected>Selecione</option>
-          <option>Windows Server</option>
-          <option>Ubuntu Server</option>
-          <option>Debian</option>
-          <option>Red Hat</option>
-        </select>
-      </div> -->
-
-    <div class="form-control">
-      <label for="hostname">Hostname *</label>
-      <input type="text" id="ipt_hostname" name="hostname" placeholder="Ex.: srv-local-01" required>
-    </div>
-
-    <div class="form-control">
-      <label for="ip">Endereço IP *</label>
-      <input type="text" id="ipt_ip" name="ip" placeholder="Ex.: 192.168.0.10" required>
-    </div>
-
-    <!-- <div class="form-control">
-        <label for="memoria">Memória RAM (GB) *</label>
-        <input type="number" id="memoria" name="memoria" min="1" placeholder="Ex.: 16" required>
-      </div> -->
-
-    <div class="form-control">
-      <label for="disco">RAM (GB)*</label>
-      <input type="number" id="ipt_ram" name="ram" min="1" placeholder="Ex.: 16" required>
-    </div>
-
-    <div class="form-control">
-      <label for="disco">Disco (GB) *</label>
-      <input type="number" id="ipt_disco" name="disco" min="1" placeholder="Ex.: 512" required>
-    </div>
-    </div>
-
-     <!-- BLOCO 2 -->
-    <div class="form-card">
-    <h2>Informações de parametrização:</h2>
-    <br>
-
-    <!-- CPU -->
-    <div class="form-control">
-      <label for="ipt_porcentagem_cpu">Porcentagem para gerar alerta na CPU *</label>
-      <button type="button" class="infoBtn" data-target="infoModalCpu">ℹ️</button>
-      <input type="number" id="ipt_porcentagem_cpu" name="porcentagem_cpu" min="1" placeholder="Ex.: 70">
-    </div>
-
-    <!-- RAM -->
-    <div class="form-control">
-      <label for="ipt_porcentagem_ram">Porcentagem para gerar alerta na RAM *</label>
-      <button type="button" class="infoBtn" data-target="infoModalRam">ℹ️</button>
-      <input type="number" id="ipt_porcentagem_ram" name="porcentagem_ram" min="1" placeholder="Ex.: 80">
-    </div>
-
-    <!-- Disco -->
-    <div class="form-control">
-      <label for="ipt_porcentagem_disco">Porcentagem para gerar alerta no disco *</label>
-      <button type="button" class="infoBtn" data-target="infoModalDisco">ℹ️</button>
-      <input type="number" id="ipt_porcentagem_disco" name="porcentagem_disco" min="1" placeholder="Ex.: 90">
-    </div>
-
-    </div>
-
-    <!-- MODAIS -->
-    <div id="infoModalCpu" class="modal">
-      <div class="modal-content">
-        <h3>CPU</h3>
-        <p style="text-align: justify;">Define a porcentagem limite para atingir um alerta de <b>CPU</b>. Por exemplo,
-          se você definir "50%", o sistema enviará um alerta
-          quando a CPU atingir 50% <br><br>
-          Por padrão, se você não digitar nada, será definido uma porcentagem de <b>80%</b>, seguindo nossa
-          recomendação.
-        </p>
-        <button type="button" class="closeBtn">Fechar</button>
+  <!-- CONTAINER PRINCIPAL SIMILAR AO CADASTRO ANTERIOR -->
+  <div class="container-servidor">
+    <div class="card">
+      <div class="formulario">
+        <h2>Informações do Servidor</h2>
+        <div class="campo">
+          <span>Hostname:</span>
+          <input type="text" id="ipt_hostname" placeholder="Ex.: srv-local-01" required>
+        </div>
+        <div class="campo">
+          <span>Endereço IP:</span>
+          <input type="text" id="ipt_ip" placeholder="Ex.: 192.168.0.10" required>
+        </div>
+        <div class="campo">
+          <span>RAM (GB):</span>
+          <input type="number" id="ipt_ram" min="1" placeholder="Ex.: 16" required>
+        </div>
+        <div class="campo">
+          <span>Disco (GB):</span>
+          <input type="number" id="ipt_disco" min="1" placeholder="Ex.: 512" required>
+        </div>
       </div>
     </div>
 
-    <div id="infoModalRam" class="modal">
-      <div class="modal-content">
-        <h3>RAM</h3>
-        <p style="text-align: justify;">Define a porcentagem limite para atingir um alerta de <b>RAM</b>. Por exemplo,
-          se você definir "50%", o sistema enviará um alerta
-          quando a RAM atingir 50% <br><br>
-          Por padrão, se você não digitar nada, será definido uma porcentagem de <b>85%</b>, seguindo nossa
-          recomendação.
-        </p>
-        <button type="button" class="closeBtn">Fechar</button>
+    <div class="card">
+      <div class="formulario">
+        <h2>Informações de Parametrização</h2>
+        
+        <!-- CPU -->
+        <div class="campo">
+          <span>Alerta CPU (%):</span>
+          <div class="input-with-info">
+            <input type="number" id="ipt_porcentagem_cpu" min="1" placeholder="Ex.: 70">
+            <button type="button" class="infoBtn" data-target="infoModalCpu">&#9432</button>
+          </div>
+        </div>
+
+        <!-- RAM -->
+        <div class="campo">
+          <span>Alerta RAM (%):</span>
+          <div class="input-with-info">
+            <input type="number" id="ipt_porcentagem_ram" min="1" placeholder="Ex.: 80">
+            <button type="button" class="infoBtn" data-target="infoModalRam">&#9432</button>
+          </div>
+        </div>
+
+        <!-- Disco -->
+        <div class="campo">
+          <span>Alerta Disco (%):</span>
+          <div class="input-with-info">
+            <input type="number" id="ipt_porcentagem_disco" min="1" placeholder="Ex.: 90">
+            <button type="button" class="infoBtn" data-target="infoModalDisco">&#9432</button>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="reset" class="btn cancel" onclick="limparFormulario()">Limpar</button>
+          <button type="button" class="btn save" onclick="salvar()">Cadastrar</button>
+        </div>
       </div>
     </div>
+  </div>
 
-    <div id="infoModalDisco" class="modal">
-      <div class="modal-content">
-        <h3>Disco</h3>
-        <p style="text-align: justify;">Define a porcentagem limite para atingir um alerta de <b>disco</b>. Por exemplo,
-          se você definir "50%", o sistema enviará um alerta
-          quando a CPU atingir 50% <br><br>
-          Por padrão, se você não digitar nada, será definido uma porcentagem de <b>90%</b>, seguindo nossa
-          recomendação.
-        </p>
-        <button type="button" class="closeBtn">Fechar</button>
-      </div>
+  <!-- MODAIS -->
+  <div id="infoModalCpu" class="modal">
+    <div class="modal-content">
+      <h3>CPU</h3>
+      <p style="text-align: justify;">Define a porcentagem limite para atingir um alerta de <b>CPU</b>. Por exemplo,
+        se você definir "50%", o sistema enviará um alerta
+        quando a CPU atingir 50% <br><br>
+        Por padrão, se você não digitar nada, será definido uma porcentagem de <b>80%</b>, seguindo nossa
+        recomendação.
+      </p>
+      <button type="button" class="closeBtn">Fechar</button>
     </div>
+  </div>
 
-    <div class="form-actions">
-      <button type="reset" class="btn cancel">Cancelar</button>
-      <button class="btn save" type="button" onclick="salvar(event)">Salvar</button>
+  <div id="infoModalRam" class="modal">
+    <div class="modal-content">
+      <h3>RAM</h3>
+      <p style="text-align: justify;">Define a porcentagem limite para atingir um alerta de <b>RAM</b>. Por exemplo,
+        se você definir "50%", o sistema enviará um alerta
+        quando a RAM atingir 50% <br><br>
+        Por padrão, se você não digitar nada, será definido uma porcentagem de <b>85%</b>, seguindo nossa
+        recomendação.
+      </p>
+      <button type="button" class="closeBtn">Fechar</button>
     </div>
-  </form>
+  </div>
+
+  <div id="infoModalDisco" class="modal">
+    <div class="modal-content">
+      <h3>Disco</h3>
+      <p style="text-align: justify;">Define a porcentagem limite para atingir um alerta de <b>disco</b>. Por exemplo,
+        se você definir "50%", o sistema enviará um alerta
+        quando a CPU atingir 50% <br><br>
+        Por padrão, se você não digitar nada, será definido uma porcentagem de <b>90%</b>, seguindo nossa
+        recomendação.
+      </p>
+      <button type="button" class="closeBtn">Fechar</button>
+    </div>
+  </div>
+
+  <div id="div_resposta"></div>
 
 </body>
 
 </html>
 <script>
+  // Função para limpar formulário (similar ao primeiro cadastro)
+  function limparFormulario() {
+    const campos = document.querySelectorAll('.container-servidor input');
+    campos.forEach(campo => {
+      campo.value = '';
+    });
+  }
+
   const infoBtns = document.querySelectorAll('.infoBtn');
   const modals = document.querySelectorAll('.modal');
   const closeBtns = document.querySelectorAll('.closeBtn');

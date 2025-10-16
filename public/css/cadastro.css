@@ -194,6 +194,7 @@ header {
 .menu ul li a {
   font-size: 1.1rem;
   color: #000;
+  text-decoration: none;
 }
 
 /* --------------------------------------------------
@@ -243,6 +244,9 @@ header {
   width: 24px;
 }
 
+/* --------------------------------------------------
+   PAINEL DE CONTEÚDO (CAIXAS DE DADOS)
+-------------------------------------------------- */
 .conteudo_painel {
   display: flex;
   justify-content: center;
@@ -356,12 +360,12 @@ header {
 }
 
 .btn.save {
-  background: #e01919;
+  background: #32b9cd;
   color: #fff;
 }
 
 .btn.save:hover {
-  background: #b50f0f;
+  background: #1a636e;
 }
 
 .alerta_erro {
