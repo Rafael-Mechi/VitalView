@@ -100,12 +100,8 @@
           <input type="text" id="ipt_ip" placeholder="Ex.: 192.168.0.10" required>
         </div>
         <div class="campo">
-          <span>RAM (GB):</span>
-          <input type="number" id="ipt_ram" min="1" placeholder="Ex.: 16" required>
-        </div>
-        <div class="campo">
-          <span>Disco (GB):</span>
-          <input type="number" id="ipt_disco" min="1" placeholder="Ex.: 512" required>
+          <span>Localização</span>
+          <input type="text" id="ipt_localizacao" placeholder="Ex.: Sala os servidores" required>
         </div>
       </div>
     </div>
@@ -229,8 +225,7 @@
   function salvar() {
     let hostnameVar = ipt_hostname.value;
     let ipVar = ipt_ip.value;
-    let ramVar = ipt_ram.value;
-    let discoVar = ipt_disco.value;
+    let localizacaoVar = ipt_localizacao.value;
 
     let porcentagem_cpuVar = ipt_porcentagem_cpu.value;
     let porcentagem_ramVar = ipt_porcentagem_ram.value;
@@ -260,8 +255,7 @@
         hostnameServer: hostnameVar,
         ipServer: ipVar,
 
-        ramServer: ramVar,
-        discoServer: discoVar,
+        localizacaoServer: localizacaoVar,
 
         porcentagemCpuServer: porcentagem_cpuVar,
         porcentagemRamServer: porcentagem_ramVar,

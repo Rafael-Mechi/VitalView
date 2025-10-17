@@ -63,6 +63,7 @@ create table servidores (
     idServidor int primary key auto_increment,
     hostname varchar(45) not null,
     ip varchar(80) not null,
+    localizacao varchar(75) not null,
     fkHospital int,
     foreign key(fkHospital) references hospital(idHospital)
 );
@@ -120,7 +121,7 @@ fkComponente int not null
 
 
 insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
-"joao", "333", "333", "e@gmail.com", "123", 1, 1
+"joao", "333", "333", "analista@hsl.com", "123", 1, 1
 );
 
 insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
