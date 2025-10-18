@@ -167,7 +167,7 @@ header {
   top: 0;
   width: 230px;
   height: 100vh;
-  background: linear-gradient(#ffffff);
+  background: linear-gradient(white);
   box-shadow: 0 0 24px rgba(0, 0, 0, 0.26);
   transform: translateX(-100%);
   opacity: 0;
@@ -183,7 +183,7 @@ header {
 }
 
 .menu ul li {
-  padding: 1rem 2rem;
+  padding: 0.7rem 2rem;
   transition: background 0.2s;
 }
 
@@ -273,7 +273,7 @@ header {
 .container-funcionario {
   display: flex;
   width: 80%;
-  height: 60vh;
+  height: 80%;
   margin: auto;
   margin-top: 15px;
   border-radius: 8px;

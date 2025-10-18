@@ -146,7 +146,7 @@ a:hover {
   width: 230px;
   height: 100vh;
   padding-top: 6.25rem;
-  background: linear-gradient(#ffffff);
+  background: linear-gradient(white);
   box-shadow: 0 0 24px rgba(0, 0, 0, 0.26);
   transform: translateX(-100%);
   opacity: 0;
@@ -162,7 +162,7 @@ a:hover {
 }
 
 .menu ul li {
-  padding: 1rem 2rem;
+  padding: 0.7rem 2rem;
   transition: background 0.2s;
 }
 
