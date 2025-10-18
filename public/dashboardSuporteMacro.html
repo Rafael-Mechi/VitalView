@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Suporte</title>
-    <link rel="stylesheet" href="css/macro.css">
+    <link rel="stylesheet" href="css/dashSuporteMacro.css">
     <script src="js/sessao.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 </head>
@@ -41,32 +41,20 @@
             </div>
             <div class="menu_topo">
                 <h3 class="title_menu">Dashboards</h3>
-                <li>
-                    <a href="dashboardAnalista.html"> Dash Analista </a>
-                </li>
-                <li>
-                    <a href="dashboardSuporteMacro.html"> Dash Suporte Macro</a>
-                </li>
-                <li>
-                    <a href="dashboardSuporteMicro.html"> Dash Suporte Micro</a>
-                </li>
-
+                <li><a href="dashboardAnalista.html" data-role="Analista,Administrador">Dash Analista</a></li>
+                <li><a href="dashboardSuporteMacro.html" data-role="Técnico,Administrador">Dash Suporte Macro</a></li>
+                <li><a href="dashboardSuporteMicro.html" data-role="Técnico,Administrador">Dash Suporte Micro</a></li>
             </div>
 
             <div class="menu_baixo">
                 <h3 class="title_menu">Outras Opções</h3>
-                <li>
-                    <a href="cadastro.html"> Cadastro Funcionário </a>
+                <li><a href="historicoAlertas.html" data-role="Analista,Técnico,Administrador">Histórico de Alertas</a>
                 </li>
-                <li>
-                    <a href="cadastroserver.html"> Cadastro Servidores </a>
-                </li>
-                <li>
-                    <a target="_blank"> Central de Serviço </a>
-                </li>
-                <li>
-                    <a onclick="limparSessao()"> Sair </a>
-                </li>
+                <li><a href="cadastroFuncionarios.html" data-role="Administrador">Cadastro Funcionário</a></li>
+                <li><a href="cadastroServidores.html" data-role="Técnico">Cadastro Servidores</a></li>
+                <li><a href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1" target="_blank"
+                        data-role="Analista,Técnico,Administrador">Central de Serviço</a></li>
+                <li><a onclick="limparSessao()" data-role="Analista,Técnico,Administrador">Sair</a></li>
             </div>
         </ul>
     </nav>
@@ -122,10 +110,11 @@
 
                         <div class="side-left">
 
-                            <div class="stat-card-pizza">      
+                            <div class="stat-card-pizza">
                                 <div class="fundo">
                                     <div class="chart-box">
-                                        <canvas id="pizzaAlertas" style="width: 100%; height: 100%; padding-bottom: 20px; padding-right: 10px;"></canvas>
+                                        <canvas id="pizzaAlertas"
+                                            style="width: 100%; height: 100%; padding-bottom: 20px; padding-right: 10px;"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -182,7 +171,7 @@
                     <div class="cardD">
                         <!-- Risco 1 -->
                         <div class="scroll">
-                            <h3 style="color: black;" >Servidores em Risco</h3>
+                            <h3 style="color: black;">Servidores em Risco</h3>
                             <article class="risk">
                                 <a href="dashboardSuporteMicro.html" class="nameAlert">Servidor 1</a>
                                 <div class="chips">
@@ -245,18 +234,23 @@
         </div>
     </section>
 
+    <script src="js/permissoes.js"></script>
+
     <script>
+        protegerPagina(['Técnico', 'Administrador']);
+        aplicarCargoNaUI();
+
         // =========================
         // DADOS MOCADOS / ESTÁTICOS
         // =========================
         const SERVIDORES_MINI = [
             // cpu, ram, disco
-            { id: 'mini1', valores: [70, 40, 70] },   // Servidor 1
-            { id: 'mini2', valores: [12, 34, 92] },   // Servidor 2
-            { id: 'mini3', valores: [55, 61, 48] },   // Servidor 3
-            { id: 'mini4', valores: [30, 35, 21] },   // Servidor 4
-            { id: 'mini5', valores: [23, 20, 23] },   // Servidor 5
-            { id: 'mini6', valores: [19, 21, 12] },  //  Servidor 6
+            { id: 'mini1', valores: [70, 40, 70] }, // Servidor 1
+            { id: 'mini2', valores: [12, 34, 92] }, // Servidor 2
+            { id: 'mini3', valores: [55, 61, 48] }, // Servidor 3
+            { id: 'mini4', valores: [30, 35, 21] }, // Servidor 4
+            { id: 'mini5', valores: [23, 20, 23] }, // Servidor 5
+            { id: 'mini6', valores: [19, 21, 12] }, // Servidor 6
         ];
 
         // Paleta consistente com a UI
@@ -269,7 +263,7 @@
         // =========================
         // PIZZA: Alertas x Normais
         // =========================
-                const ctx = document.getElementById('pizzaAlertas').getContext('2d');
+        const ctx = document.getElementById('pizzaAlertas').getContext('2d');
         new Chart(ctx, {
             type: 'pie',
             data: {

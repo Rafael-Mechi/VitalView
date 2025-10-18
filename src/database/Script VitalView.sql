@@ -41,7 +41,7 @@ create table cargo (
 	nome varchar(45)
 );
 
-insert into cargo(nome) values ('Analista'), ('Técnico');
+insert into cargo(nome) values ('Analista'), ('Técnico'), ('Administrador');
 
 create table usuario (
     idUsuario int not null auto_increment primary key,
@@ -63,6 +63,7 @@ create table servidores (
     idServidor int primary key auto_increment,
     hostname varchar(45) not null,
     ip varchar(80) not null,
+    localizacao varchar(75) not null,
     fkHospital int,
     foreign key(fkHospital) references hospital(idHospital)
 );
@@ -111,8 +112,16 @@ create table capturas (
     foreign key (fkComponente) references componentes(idComponente)
 );
 
+create table alerta(
+id int primary key auto_increment,
+data_alerta datetime not null,
+registro float not null,
+fkComponente int not null
+);
+
+
 insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
-"joao", "333", "333", "e@gmail.com", "123", 1, 1
+"joao", "333", "333", "analista@hsl.com", "123", 1, 1
 );
 
 insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(

@@ -10,13 +10,12 @@
 
   <script src="js/sessao.js"></script>
   <script src="js/cadastro.js"></script>
-  <link rel="stylesheet" href="./css/cadastro.css" />
+  <link rel="stylesheet" href="./css/cadastroFuncionarios.css" />
   <link rel="icon" href="./assets/LogoVitalView.png" />
   <link rel="preconnect" href="https://fonts.gstatic.com" />
 </head>
 
 <body>
-
   <header class="escuro">
     <section class="container">
 
@@ -24,9 +23,22 @@
         <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
 
         <section class="hamburguer">
-          <span></span>
-          <span></span>
-          <span></span>
+          <span class="menu_lateral">
+            <div class="icones_topo">
+              <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
+              <img src="./assets/dashboard-icons/layout.svg" alt="">
+              <img src="./assets/dashboard-icons/activity.svg" alt="">
+              <img src="./assets/dashboard-icons/calendar.svg" alt="">
+              <img src="./assets/dashboard-icons/bar-chart.svg" alt="">
+            </div>
+
+            <div class="icones_baixo">
+              <img src="./assets/dashboard-icons/settings.svg" alt="">
+              <img src="./assets/dashboard-icons/users.svg" alt="">
+              <img src="./assets/dashboard-icons/help-circle.svg" alt="">
+              <img src="./assets/dashboard-icons/log-out.svg" alt="">
+            </div>
+          </span>
         </section>
         <ul>
           <div class="title_hamb">
@@ -35,38 +47,26 @@
           </div>
           <div class="menu_topo">
             <h3 class="title_menu">Dashboards</h3>
-            <li>
-              <a href="dashboardAnalista.html"> Dash Analista </a>
-            </li>
-            <li>
-              <a href="dashboardSuporteMacro.html"> Dash Suporte Macro</a>
-            </li>
-            <li>
-              <a href="dashboardSuporteMicro.html"> Dash Suporte Micro</a>
-            </li>
-
+            <li><a href="dashboardAnalista.html" data-role="Analista,Administrador">Dash Analista</a></li>
+            <li><a href="dashboardSuporteMacro.html" data-role="Técnico,Administrador">Dash Suporte Macro</a></li>
+            <li><a href="dashboardSuporteMicro.html" data-role="Técnico,Administrador">Dash Suporte Micro</a></li>
           </div>
 
           <div class="menu_baixo">
             <h3 class="title_menu">Outras Opções</h3>
-            <li>
-              <a href="cadastro.html"> Cadastro Funcionário </a>
+            <li><a href="historicoAlertas.html" data-role="Analista,Técnico,Administrador">Histórico de Alertas</a>
             </li>
-            <li>
-              <a href="cadastroserver.html"> Cadastro Servidores </a>
-            </li>
-            <li>
-              <a target="_blank"> Central de Serviço </a>
-            </li>
-            <li>
-              <a onclick="limparSessao()"> Sair </a>
-            </li>
+            <li><a href="cadastroFuncionarios.html" data-role="Administrador">Cadastro Funcionário</a></li>
+            <li><a href="cadastroServidores.html" data-role="Técnico">Cadastro Servidores</a></li>
+            <li><a href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1" target="_blank"
+                data-role="Analista,Técnico,Administrador">Central de Serviço</a></li>
+            <li><a onclick="limparSessao()" data-role="Analista,Técnico,Administrador">Sair</a></li>
           </div>
         </ul>
       </nav>
 
       <section class="secao_logo">
-        <h1 class="titulo_header">Cadastro de Funcionário</h1>
+        <h1 class="titulo_header">Cadastro de Funcionários</h1>
       </section>
 
       <section class="secao_logo">
@@ -75,81 +75,75 @@
         </a>
         <div class="linha"></div>
       </section>
-
     </section>
   </header>
 
 
-  <div class="login">
-    <div class="alerta_erro">
-      <div class="card_erro" id="cardErro">
-        <span id="mensagem_erro"></span>
+  <div class="container-funcionario">
+    <div class="card">
+      <div class="formulario">
+        <div class="campo">
+          <span>Nome:</span>
+          <input id="nome_input" type="text" placeholder="Seu nome" />
+        </div>
+        <div class="campo">
+          <span>CPF:</span>
+          <input id="cpf_input" type="text" placeholder="Seu cpf" />
+        </div>
+        <div class="campo">
+          <span>Telefone:</span>
+          <input id="telefone_input" type="text" placeholder="Seu telefone" />
+        </div>
       </div>
     </div>
-    <div class="container">
-      <div class="card">
-        <h2>Bem-vindo!</h2>
-        <div class="formulario">
 
-          <div class="campo">
-            <span>Nome:</span>
-            <input id="nome_input" type="text" placeholder="Seu nome" />
-          </div>
-          <div class="campo">
-            <span>CPF:</span>
-            <input id="cpf_input" type="text" placeholder="Seu cpf" />
-          </div>
-          <div class="campo">
-            <span>Telefone:</span>
-            <input id="telefone_input" type="text" placeholder="Seu telefone" />
-          </div>
-          <div class="campo">
-            <span>E-mail:</span>
-            <input id="email_input" type="text" placeholder="meuemail@provedor.com" />
-          </div>
-          <div class="campo">
-            <span>Hospital:</span>
-            <select name="" id="hospital_input">
-              <option value="">Escolha uma opção</option>
-            </select>
-          </div>
-          <div class="campo">
-            <span>Código:</span>
-            <input id="codigo_input" type="text" placeholder="Código do seu hospital" />
-          </div>
-          <div class="campo">
-            <span>Cargo:</span>
-            <select name="" id="cargo_input" onchange="mostrar()">
-              <option value="">Escolha uma opção</option>
-            </select>
-          </div>
-          <div class="campo">
-            <span>Senha:</span>
-            <input id="senha_input" type="password" placeholder="******" />
-          </div>
-          <div class="campo">
-            <span>Confirmação da Senha:</span>
-            <input id="confirmacao_senha_input" type="password" placeholder="******" />
-          </div>
-
-          <div class="form-actions">
-            <button type="reset" class="btn cancel">Cancelar</button>
-            <button type="submit" class="btn save" onclick="cadastrar()">Cadastrar</button>
-          </div>
-
+    <div class="card">
+      <div class="formulario">
+        <div class="campo">
+          <span>E-mail:</span>
+          <input id="email_input" type="text" placeholder="meuemail@provedor.com" />
         </div>
-        <section id="section_aguardar" class="loading-section">
-          <img src="./assets/aguarde-orange.gif" alt="Icone logo aguardar">
-          <section class="borda_aguardar"></section>
-        </section>
-        <section id="section_erros_login"></section>
+        <div class="campo">
+          <span>Senha:</span>
+          <input id="senha_input" type="password" placeholder="******" />
+        </div>
+        <div class="campo">
+          <span>Confirmação da Senha:</span>
+          <input id="confirmacao_senha_input" type="password" placeholder="******" />
+        </div>
+
+        <div class="campo">
+          <span>Cargo:</span>
+          <select name="" id="cargo_input" onchange="mostrar()">
+            <option value="">Escolha uma opção</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="reset" class="btn cancel" onclick="limparFormulario()">Limpar</button>
+          <button type="submit" class="btn save" onclick="cadastrar()">Cadastrar</button>
+        </div>
       </div>
     </div>
   </div>
 
   <div id="div_resposta"></div>
 
+  <script src="js/permissoes.js"></script>
+
   <script>
+
+    protegerPagina(['Administrador']);
+    aplicarCargoNaUI();
+
+    function limparFormulario() {
+      const campos = document.querySelectorAll('.container-funcionario input, .container-funcionario select');
+
+      campos.forEach(campo => {
+        campo.value = '';
+      });
+    }
+
 
     async function fetchJsonOrThrow(url, options) {
       const res = await fetch(url, options);

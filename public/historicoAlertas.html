@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alertas</title>
+  <link rel="stylesheet" href="css/historicoAlertas.css">
+  <link rel="stylesheet" href="css/cadastroServidores.css">
+  <script src="js/sessao.js"></script>
+</head>
+
+<body>
+
+  <header class="escuro">
+    <section class="container">
+
+      <nav class="menu">
+        <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
+
+        <section class="hamburguer">
+          <span class="menu_lateral">
+            <div class="icones_topo">
+              <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
+              <img src="./assets/dashboard-icons/layout.svg" alt="">
+              <img src="./assets/dashboard-icons/activity.svg" alt="">
+              <img src="./assets/dashboard-icons/calendar.svg" alt="">
+              <img src="./assets/dashboard-icons/bar-chart.svg" alt="">
+            </div>
+
+            <div class="icones_baixo">
+              <img src="./assets/dashboard-icons/settings.svg" alt="">
+              <img src="./assets/dashboard-icons/users.svg" alt="">
+              <img src="./assets/dashboard-icons/help-circle.svg" alt="">
+              <img src="./assets/dashboard-icons/log-out.svg" alt="">
+            </div>
+          </span>
+        </section>
+        <ul>
+          <div class="title_hamb">
+            <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
+            <h2 class="hamb_nome">VitalView</h2>
+          </div>
+          <div class="menu_topo">
+            <h3 class="title_menu">Dashboards</h3>
+            <li><a href="dashboardAnalista.html" data-role="Analista,Administrador">Dash Analista</a></li>
+            <li><a href="dashboardSuporteMacro.html" data-role="Técnico,Administrador">Dash Suporte Macro</a></li>
+            <li><a href="dashboardSuporteMicro.html" data-role="Técnico,Administrador">Dash Suporte Micro</a></li>
+          </div>
+
+          <div class="menu_baixo">
+            <h3 class="title_menu">Outras Opções</h3>
+            <li><a href="historicoAlertas.html" data-role="Analista,Técnico,Administrador">Histórico de Alertas</a>
+            </li>
+            <li><a href="cadastroFuncionarios.html" data-role="Administrador">Cadastro Funcionário</a></li>
+            <li><a href="cadastroServidores.html" data-role="Técnico">Cadastro Servidores</a></li>
+            <li><a href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1" target="_blank"
+                data-role="Analista,Técnico,Administrador">Central de Serviço</a></li>
+            <li><a onclick="limparSessao()" data-role="Analista,Técnico,Administrador">Sair</a></li>
+          </div>
+        </ul>
+      </nav>
+
+      <section class="secao_logo">
+        <h1 class="titulo_header">Cadastro de Servidores</h1>
+      </section>
+
+      <section class="secao_logo">
+        <a href="dashboard.html">
+          <img src="assets/LogoVitalView.png" alt="Logo VitalView" class="logo">
+        </a>
+        <div class="linha"></div>
+      </section>
+
+    </section>
+  </header>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="conteudo">
+    <section class="alertas">
+      <h2>Lista de Alertas</h2>
+      <table class="tabela-alertas">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Hora</th>
+            <th>Servidor</th>
+            <th>Mensagem</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>21/09/2025</td>
+            <td>20:15</td>
+            <td>Servidor-01</td>
+            <td>CPU acima de 90%</td>
+            <td><span class="status critico">Crítico</span></td>
+            <td>
+              <button class="btn-lido">Marcar como lido</button>
+              <button class="btn-resolver">Resolver</button>
+            </td>
+          </tr>
+          <tr>
+            <td>21/09/2025</td>
+            <td>19:40</td>
+            <td>Servidor-02</td>
+            <td>Espaço em disco baixo</td>
+            <td><span class="status atencao">Atenção</span></td>
+            <td>
+              <button class="btn-lido">Marcar como lido</button>
+              <button class="btn-resolver">Resolver</button>
+            </td>
+          </tr>
+          <tr>
+            <td>21/09/2025</td>
+            <td>18:55</td>
+            <td>Servidor-03</td>
+            <td>Processo DICOM reiniciado</td>
+            <td><span class="status resolvido">Resolvido</span></td>
+            <td>
+              <button class="btn-lido">Marcar como lido</button>
+              <button class="btn-resolver">Resolver</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+</body>
+
+<script src="js/permissoes.js"></script>
+
+<script>
+  protegerPagina(['Analista', 'Técnico', 'Administrador']);
+  aplicarCargoNaUI();
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const tabela = document.querySelector(".tabela-alertas");
+
+    // Delegação de eventos (funciona para todos os botões da tabela)
+    tabela.addEventListener("click", (event) => {
+      if (event.target.classList.contains("btn-lido")) {
+        const statusCell = event.target.closest("tr").querySelector(".status");
+        statusCell.textContent = "Lido";
+        statusCell.className = "status lido";
+      }
+
+      if (event.target.classList.contains("btn-resolver")) {
+        const statusCell = event.target.closest("tr").querySelector(".status");
+        statusCell.textContent = "Resolvido";
+        statusCell.className = "status resolvido";
+      }
+    })
+  });
+
+</script>
+
+</html>

@@ -3,8 +3,7 @@ var servidorModel = require("../models/servidorModel")
 function cadastrarServidor(req, res){
     var hostname = req.body.hostnameServer;
     var ip = req.body.ipServer;
-    //var ram = req.body.ramServer; // precisa da quantidade de ram? O próprio psutil já vai dizer
-    //var disco = req.body.discoServer;
+    var localizacao = req.body.localizacaoServer;
 
     var porcentagemCpu = req.body.porcentagemCpuServer;
     var porcentagemRam = req.body.porcentagemRamServer;
@@ -12,7 +11,7 @@ function cadastrarServidor(req, res){
 
     var fkHospital = req.body.fkHospitalServer;
 
-    servidorModel.cadastrarServidor(hostname, ip, fkHospital, porcentagemCpu, porcentagemRam, porcentagemDisco)
+    servidorModel.cadastrarServidor(hostname, ip, localizacao, fkHospital, porcentagemCpu, porcentagemRam, porcentagemDisco)
         .then(
             function (resultadoCadastrarServidor){
                 res.json(resultadoCadastrarServidor);

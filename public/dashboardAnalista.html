@@ -41,32 +41,20 @@
             </div>
             <div class="menu_topo">
                 <h3 class="title_menu">Dashboards</h3>
-                <li>
-                    <a href="dashboardAnalista.html"> Dash Analista </a>
-                </li>
-                <li>
-                    <a href="dashboardSuporteMacro.html"> Dash Suporte Macro</a>
-                </li>
-                <li>
-                    <a href="dashboardSuporteMicro.html"> Dash Suporte Micro</a>
-                </li>
-
+                <li><a href="dashboardAnalista.html" data-role="Analista,Administrador">Dash Analista</a></li>
+                <li><a href="dashboardSuporteMacro.html" data-role="Técnico,Administrador">Dash Suporte Macro</a></li>
+                <li><a href="dashboardSuporteMicro.html" data-role="Técnico,Administrador">Dash Suporte Micro</a></li>
             </div>
 
             <div class="menu_baixo">
                 <h3 class="title_menu">Outras Opções</h3>
-                <li>
-                    <a href="cadastro.html"> Cadastro Funcionário </a>
+                <li><a href="historicoAlertas.html" data-role="Analista,Técnico,Administrador">Histórico de Alertas</a>
                 </li>
-                <li>
-                    <a href="cadastroserver.html"> Cadastro Servidores </a>
-                </li>
-                <li>
-                    <a target="_blank"> Central de Serviço </a>
-                </li>
-                <li>
-                    <a onclick="limparSessao()"> Sair </a>
-                </li>
+                <li><a href="cadastroFuncionarios.html" data-role="Administrador">Cadastro Funcionário</a></li>
+                <li><a href="cadastroServidores.html" data-role="Técnico">Cadastro Servidores</a></li>
+                <li><a href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1" target="_blank"
+                        data-role="Analista,Técnico,Administrador">Central de Serviço</a></li>
+                <li><a onclick="limparSessao()" data-role="Analista,Técnico,Administrador">Sair</a></li>
             </div>
         </ul>
     </nav>
@@ -87,20 +75,11 @@
             <section class="secao_logo">
                 <select class="periodo_select" name="periodo" id="periodo_select">
                     <option value="1">Escolher periodo</option>
-                    <option value="2">Todos os registros</option>
-                    <option value="3">Último ano</option>
-                    <option value="4">Últimos 6 meses</option>
-                    <option value="5">Últimos 30 dias</option>
-                    <option value="6">Última semana</option>
+                    <option value="2">Hoje</option>
+                    <option value="3">Nesta semana</option>
+                    <option value="4">Neste mês</option>
+                    <option value="5">Neste ano</option>
                 </select>
-            </section>
-
-            <section class="data-hora">
-                <button>1min</button>
-                <button>10min</button>
-                <button>1h</button>
-                <button>24h</button>
-                <button>7d</button>
             </section>
         </section>
 
@@ -130,12 +109,14 @@
             <section class="sessao-lateral-direita">
                 <section class="sessao-lateral-direita-itens">
                     <section class="velocimetro card">
-                        <h4 id="c1">SLA/Disponibilidade <small>Durante o [Período]</small></h4>
+                        <h4 id="c1" style="text-align: center;">Disponibilidade <br><small>Durante o [Período]</small>
+                        </h4>
                         <div class="valor grande verde">99.85% <span class="seta">▲</span></div>
                         <p class="legenda">Tempo que os servidores ficaram disponíveis</p>
                     </section>
                     <section class="velocimetro card">
-                        <h4 id="c2">Servidor com mais alerta <small>Durante o [Período]</small></h4>
+                        <h4 id="c2" style="text-align: center;">Servidor com mais alertas <br><small>Durante o
+                                [Período]</small></h4>
                         <div class="valor grande vermelho">SERV-PACS</div>
                         <p class="legenda">RAM – 27 Alertas</p>
                     </section>
@@ -152,17 +133,16 @@
                     <section class="row" id="grafico_disco">
                         <div class="card card_grafico_disco" id="graficoPizza">
                             <div aria-labelledby="qtd">
-                                <h4 id="qtd">Quantidade total de alertas <br><small>Durante o [Período]</small></h4>
-                                <div class="valor enorme vermelho">12</div>
+                                <h4 id="qtd">Quantidade total de alertas <small>Durante o [Período]</small></h4>
+                                <h4 class="valor enorme vermelho">12</h4>
                             </div>
                         </div>
                     </section>
                     <section id="projecao">
                         <div aria-labelledby="lin">
                             <h4 id="lin">Distribuição de alertas ao longo do ano</h4>
-                            <div class="wrap-canvas" style="height: 150px; width: 300px;">
-                                <canvas id="linhaAnoChart" aria-label="Distribuição no ano" role="img"></canvas>
-                            </div>
+                            <canvas id="linhaAnoChart" aria-label="Distribuição no ano" role="img"
+                                style="height: 100px; width: 500px;"></canvas>
                         </div>
                     </section>
                 </section>
@@ -175,23 +155,34 @@
                             <div class="server">
                                 <div class="wrap-mini"><canvas id="mini1"></canvas></div>
                             </div>
+                            <a href="dashboardSuporteMicro.html" class="name">22/12/2025</a>
 
                             <a href="dashboardSuporteMicro.html" class="name">Servidor 2</a>
                             <div class="server">
                                 <div class="wrap-mini"><canvas id="mini2"></canvas></div>
                             </div>
+                            <a href="dashboardSuporteMicro.html" class="name">22/04/2026</a>
+
 
                             <a href="dashboardSuporteMicro.html" class="name">Servidor 3</a>
                             <div class="server">
                                 <div class="wrap-mini"><canvas id="mini3"></canvas></div>
                             </div>
+                            <a href="dashboardSuporteMicro.html" class="name">30/11/2026</a>
+
                         </div>
                     </div>
                 </section>
             </section>
         </section>
     </section>
+
+    <script src="js/permissoes.js"></script>
+
     <script>
+        protegerPagina(['Analista', 'Administrador']);
+        aplicarCargoNaUI();
+
         Chart.defaults.font.family = "'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif";
         Chart.defaults.color = "#4b5968";
         const gridColor = "rgba(0,0,0,.06)";
@@ -233,11 +224,14 @@
         new Chart(document.getElementById('linhaAnoChart'), {
             type: 'line',
             data: {
-                labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-                datasets: [{ label: 'Alertas', data: [25, 12, 15, 10, 14, 32, 18, 9, 6, 3, 1, 2], borderColor: '#32b9cd', pointBackgroundColor: '#32bccd', pointRadius: 3.5, fill: false, tension: .35 }]
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                datasets: [{
+                    label: 'Alertas', data: [25, 12, 15, 10, 14, 32, 18, 9, 6, 3, 1, 2], borderColor: '#32b9cd',
+                    pointBackgroundColor: '#32bccd', pointRadius: 3.5, fill: false, tension: .35
+                }]
             },
             options: {
-                plugins: { legend: { display: true, labels: { boxWidth: 10, usePointStyle: true, pointStyle: 'circle' } } },
+                plugins: { legend: { display: false, labels: { boxWidth: 5, usePointStyle: true, pointStyle: 'circle' } } },
                 scales: {
                     x: { grid: { display: false }, border: { display: false } },
                     y: { grid: { color: gridColor }, border: { display: false }, beginAtZero: true }
@@ -247,13 +241,13 @@
 
         const minis = [
             { id: 'mini1', valor: 90, cor: '#32b9cd' },
-            { id: 'mini2', valor: 40, cor: '#32b9cd' }, 
-            { id: 'mini3', valor: 20, cor: '#32b9cd' }  
+            { id: 'mini2', valor: 40, cor: '#32b9cd' },
+            { id: 'mini3', valor: 20, cor: '#32b9cd' }
         ];
 
         minis.forEach(({ id, valor, cor }) => {
             const el = document.getElementById(id);
-            if (!el) return;         
+            if (!el) return;
             new Chart(el, {
                 type: 'bar',
                 data: {

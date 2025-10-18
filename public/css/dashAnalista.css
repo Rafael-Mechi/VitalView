@@ -265,11 +265,12 @@ header {
   background-color: #ECECEC;
   box-shadow: var(--shadow);
   padding: 10px;
-  min-height: 700px;
+  height: 90%;
   align-items: center;
   justify-content: space-around;
   flex-direction: column;
   display: flex;
+  width: 90%;
 }
 
 .sessao-lateral-direita-itens section {
@@ -338,7 +339,6 @@ img {
   background-color: white;
   border-radius: 10px;
   display: flex;
-  justify-content: center;
   align-items: center;
 }
 
@@ -357,10 +357,6 @@ img {
   height: 90%;
 }
 
-#graficoPizza {
-  min-height: 200px;
-}
-
 #graficoPizza > [aria-labelledby="qtd"] {
   display: flex;
   flex-direction: column;
@@ -375,8 +371,7 @@ img {
 }
 
 
-#graficoPizza .valor {
-  margin: auto 0;      
+#graficoPizza .valor {      
   align-self: center;  
   text-align: center;
 }
@@ -587,6 +582,8 @@ img {
   padding: 2% 5%;
   border-radius: 10px;
   font-size: 20px;
+  height: 50%;
+  margin-bottom: 5%;
 }
 
 .server-info:hover{
@@ -760,7 +757,7 @@ h3 {
   top: 0;
   width: 230px;
   height: 100vh;
-  background: linear-gradient(#ffffff);
+  background: linear-gradient(white);
   box-shadow: 0 0 24px rgba(0, 0, 0, 0.26);
   transform: translateX(-100%);
   opacity: 0;
@@ -776,7 +773,7 @@ h3 {
 }
 
 .menu ul li {
-  padding: 1rem 2rem;
+  padding: 0.7rem 2rem;
   transition: background 0.2s;
 }
 
@@ -913,10 +910,9 @@ h3 {
     border: 1px solid #eee;
     border-radius: 12px;
     padding: 10px;
-    max-height: 200px;
     overflow-y: auto;
-    min-height: 200px;
-    width: 95%;
+    height: 100%;
+    width: 100%;
     flex: 0 0 auto;
 }
 
@@ -924,5 +920,32 @@ h3 {
   text-align: center;
 }
 
-.wrap-mini { width: 100%; height: 48px; }
-.wrap-mini canvas { width: 100% !important; height: 100% !important; }
+.mini .servers{
+  display: grid;
+  grid-template-columns: 100px 2fr 150px;
+  column-gap: 8px;
+  row-gap: 8px; 
+  align-items: center;
+  justify-content: start;
+}
+
+.mini .servers .name{
+  display: inline-block;
+  margin: 0;
+  margin-left: 20px;
+}
+
+.mini .servers .server{
+  justify-self: start;  /* cola o gráfico ao lado do nome */
+  margin: 0;
+}
+
+.wrap-mini{
+  width: 500px;
+  height: 48px;
+}
+
+.wrap-mini canvas{
+  width: 100% !important;
+  height: 100% !important;
+}

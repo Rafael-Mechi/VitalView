@@ -31,6 +31,10 @@ function entrar() {
         sessionStorage.EMAIL_USUARIO = json.email;
         sessionStorage.NOME_USUARIO = json.nome
         sessionStorage.FK_HOSPITAL = json.fkHospital;
+        sessionStorage.CARGO_USUARIO = json.cargo;
+
+        const rota = rotaPorCargo(json.cargo);
+
         setTimeout(() => {
             finalizarAguardar(); 
             window.location.replace("dashboardAnalista.html"); 
@@ -41,4 +45,14 @@ function entrar() {
     });
 
     return false; 
+}
+
+function rotaPorCargo(cargo) {
+  
+  const MAP = {
+    'Analista': 'dashboardAnalista.html',
+    'Técnico':  'dashboardSuporteMacro.html',   
+  };
+  
+  return MAP[cargo] || 'dashboardAnalista.html';
 }
