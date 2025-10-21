@@ -241,7 +241,8 @@ a:hover {
 }
 
 .menu ul li {
-    padding: 0.7rem 2rem;
+    display: flex;
+    padding: 0.7rem 1.2rem;
     transition: background 0.2s;
 }
 
@@ -291,6 +292,10 @@ a:hover {
 
 .icones_baixo img {
     margin: 10px;
+}
+
+.pagina-ativa{
+  background-color:#e6e6e6;
 }
 
 /* -------------------------------------------------- */

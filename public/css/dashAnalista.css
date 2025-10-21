@@ -628,8 +628,6 @@ img {
   background-color: #f0f0f0;
 }
 
-
-
 .status.ativo {
   display: flex;
   justify-content: center;
@@ -773,7 +771,8 @@ h3 {
 }
 
 .menu ul li {
-  padding: 0.7rem 2rem;
+  display: flex;
+  padding: 0.7rem 1.2rem;
   transition: background 0.2s;
 }
 
@@ -815,7 +814,7 @@ h3 {
 }
 
 .icones_baixo {
-  margin-top: 150px;
+  margin-top: 205px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -825,6 +824,10 @@ h3 {
 .icones_baixo img {
   margin: 10px;
   width: 24px;
+}
+
+.pagina-ativa{
+  background-color:#e6e6e6;
 }
 
 /* -------------------------------------------------- */

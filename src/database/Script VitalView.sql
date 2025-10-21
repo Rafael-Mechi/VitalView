@@ -121,11 +121,15 @@ fkComponente int not null
 
 
 insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
-"joao", "333", "333", "analista@hsl.com", "123", 1, 1
+"analista", "333", "333", "analista@.com", "123", 1, 1
 );
 
 insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
-"oaoj", "333", "333", "e2@gmail.com", "123", 1, 2
+"suporte", "333", "333", "suporte@.com", "123", 2, 2
+);
+
+insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
+"admin", "333", "333", "admin@.com", "123", 3, 2
 );
 
 select * from usuario;

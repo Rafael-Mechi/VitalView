@@ -183,7 +183,8 @@ header {
 }
 
 .menu ul li {
-  padding: 0.7rem 2rem;
+  display: flex;
+  padding: 0.7rem 1.2rem;
   transition: background 0.2s;
 }
 
@@ -195,6 +196,10 @@ header {
   font-size: 1.1rem;
   color: #000;
   text-decoration: none;
+}
+
+.pagina-ativa{
+  background-color:#e6e6e6;
 }
 
 /* --------------------------------------------------

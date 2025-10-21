@@ -19,50 +19,50 @@
         <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
 
         <section class="hamburguer">
-          <span class="menu_lateral">
-            <div class="icones_topo">
-              <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
-              <img src="./assets/dashboard-icons/layout.svg" alt="">
-              <img src="./assets/dashboard-icons/activity.svg" alt="">
-              <img src="./assets/dashboard-icons/calendar.svg" alt="">
-              <img src="./assets/dashboard-icons/bar-chart.svg" alt="">
-            </div>
+            <span class="menu_lateral">
+                <div class="icones_topo">
+                    <img class="img_hamb" src="assets/LogoVitalView.png">
+                    <img src="./assets/dashboard-icons/activity.svg" data-role="Analista,Administrador">
+                    <img src="./assets/dashboard-icons/bar-chart.svg" data-role="Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/layout.svg" data-role="Técnico,Administrador">
+                </div>
 
-            <div class="icones_baixo">
-              <img src="./assets/dashboard-icons/settings.svg" alt="">
-              <img src="./assets/dashboard-icons/users.svg" alt="">
-              <img src="./assets/dashboard-icons/help-circle.svg" alt="">
-              <img src="./assets/dashboard-icons/log-out.svg" alt="">
-            </div>
-          </span>
+                <div class="icones_baixo">
+                    <img src="./assets/dashboard-icons/calendar.svg" data-role="Analista,Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/users.svg" data-role="Administrador">
+                    <img src="./assets/dashboard-icons/hard-drive.svg" data-role="Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/help-circle.svg" data-role="Analista,Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/log-out.svg" data-role="Analista,Técnico,Administrador">
+                </div>
+            </span>
         </section>
-        <ul>
-          <div class="title_hamb">
-            <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
-            <h2 class="hamb_nome">VitalView</h2>
-          </div>
-          <div class="menu_topo">
-            <h3 class="title_menu">Dashboards</h3>
-            <li><a href="dashboardAnalista.html" data-role="Analista,Administrador">Dash Analista</a></li>
-            <li><a href="dashboardSuporteMacro.html" data-role="Técnico,Administrador">Dash Suporte Macro</a></li>
-            <li><a href="dashboardSuporteMicro.html" data-role="Técnico,Administrador">Dash Suporte Micro</a></li>
-          </div>
 
-          <div class="menu_baixo">
-            <h3 class="title_menu">Outras Opções</h3>
-            <li><a href="historicoAlertas.html" data-role="Analista,Técnico,Administrador">Histórico de Alertas</a>
-            </li>
-            <li><a href="cadastroFuncionarios.html" data-role="Administrador">Cadastro Funcionário</a></li>
-            <li><a href="cadastroServidores.html" data-role="Técnico">Cadastro Servidores</a></li>
-            <li><a href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1" target="_blank"
-                data-role="Analista,Técnico,Administrador">Central de Serviço</a></li>
-            <li><a onclick="limparSessao()" data-role="Analista,Técnico,Administrador">Sair</a></li>
-          </div>
+        <ul>
+            <div class="title_hamb">
+                <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
+                <h2 class="hamb_nome">VitalView</h2>
+            </div>
+            <div class="menu_topo">
+                <h3 class="title_menu">Dashboards</h3>
+                <li style="display: flex; align-items: center;" data-role="Analista,Administrador"><img src="./assets/dashboard-icons/activity.svg" style="width: 20px; margin-right: 4px;"><a href="dashboardAnalista.html">Dash Analista</a></li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img src="./assets/dashboard-icons/bar-chart.svg" style="width: 20px; margin-right: 4px;"><a href="dashboardSuporteMacro.html">Dash Suporte Macro</a></li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img src="./assets/dashboard-icons/layout.svg" style="width: 20px; margin-right: 4px;"><a href="dashboardSuporteMicro.html">Dash Suporte Micro</a></li>
+            </div>
+
+            <div class="menu_baixo">
+                <h3 class="title_menu">Outras Opções</h3>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador" class="pagina-ativa"><img src="./assets/dashboard-icons/calendar.svg" style="width: 20px; margin-right: 4px;"><a href="historicoAlertas.html">Histórico de Alertas</a></li>
+                <li style="display: flex; align-items: center;" data-role="Administrador"><img src="./assets/dashboard-icons/users.svg" style="width: 20px; margin-right: 4px;"><a href="cadastroFuncionarios.html">Cadastro Funcionário</a></li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img src="./assets/dashboard-icons/hard-drive.svg" style="width: 20px; margin-right: 4px;"><a href="cadastroServidores.html">Cadastro Servidores</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img src="./assets/dashboard-icons/help-circle.svg" style="width: 20px; margin-right: 4px;"><a href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1" target="_blank">Central de Serviço</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img src="./assets/dashboard-icons/log-out.svg" style="width: 20px; margin-right: 4px;"><a onclick="limparSessao()">Sair</a></li>
+            </div>
         </ul>
-      </nav>
+    </nav>
+
 
       <section class="secao_logo">
-        <h1 class="titulo_header">Cadastro de Servidores</h1>
+        <h1 class="titulo_header">Histórico de Alertas</h1>
       </section>
 
       <section class="secao_logo">
