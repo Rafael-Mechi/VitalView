@@ -51,7 +51,7 @@
             <li><a href="historicoAlertas.html" data-role="Analista,Técnico,Administrador">Histórico de Alertas</a>
             </li>
             <li><a href="cadastroFuncionarios.html" data-role="Administrador">Cadastro Funcionário</a></li>
-            <li><a href="cadastroServidores.html" data-role="Técnico">Cadastro Servidores</a></li>
+            <li><a href="cadastroServidores.html" data-role="Técnico,Administrador">Cadastro Servidores</a></li>
             <li><a href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1" target="_blank"
                 data-role="Analista,Técnico,Administrador">Central de Serviço</a></li>
             <li><a onclick="limparSessao()" data-role="Analista,Técnico,Administrador">Sair</a></li>
@@ -178,7 +178,7 @@
 
   <script>
 
-    protegerPagina(['Técnico']);
+    protegerPagina(['Técnico', 'Administrador']);
     aplicarCargoNaUI();
 
     // Função para limpar formulário (similar ao primeiro cadastro)
