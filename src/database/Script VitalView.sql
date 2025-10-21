@@ -132,11 +132,22 @@ insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) val
 "admin", "333", "333", "admin@.com", "123", 3, 2
 );
 
+insert into servidores (hostname, ip, localizacao, fkHospital) values (
+"srv1", "10.20.30.456", "esquina", 1);
+
+insert into componentes (fkTipo, fkServidor, limite) values
+(1, 1, 50),
+(2, 1, 40),
+(3, 1, 70);
+
 select * from usuario;
 select * from servidores;
 select * from hospital;
 select * from cargo;
 select * from tipoComponente;
 select * from componentes;
+select * from alerta;
 
 -- drop database vitalview;
+
+-- truncate table alerta;
