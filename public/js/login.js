@@ -1,5 +1,5 @@
 function entrar() {
-  
+
     aguardar();
 
     var emailVar = email_input.value;
@@ -20,39 +20,42 @@ function entrar() {
             senhaServer: senhaVar
         })
     })
-    .then(resposta => {
-        if (resposta.ok) {
-            return resposta.json(); 
-        } else {
-            return resposta.text().then(texto => { throw new Error(texto); });
-        }
-    })
-    .then(json => {
-        sessionStorage.EMAIL_USUARIO = json.email;
-        sessionStorage.NOME_USUARIO = json.nome
-        sessionStorage.FK_HOSPITAL = json.fkHospital;
-        sessionStorage.CARGO_USUARIO = json.cargo;
+        .then(resposta => {
+            if (resposta.ok) {
+                return resposta.json();
+            } else {
+                return resposta.text().then(texto => { throw new Error(texto); });
+            }
+        })
+        .then(json => {
+            sessionStorage.EMAIL_USUARIO = json.email;
+            sessionStorage.NOME_USUARIO = json.nome
+            sessionStorage.FK_HOSPITAL = json.fkHospital;
+            sessionStorage.CARGO_USUARIO = json.cargo;
 
-        const rota = rotaPorCargo(json.cargo);
+            const cargoNormalizado = String(json.cargo || "")
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
+                .trim().toLowerCase();
 
-        setTimeout(() => {
-            finalizarAguardar(); 
-            window.location.replace("dashboardAnalista.html"); 
-        }, 2000); 
-    })
-    .catch(erro => {
-        finalizarAguardar(erro.message);
-    });
+            const rota = rotaPorCargo(cargoNormalizado);
 
-    return false; 
+            finalizarAguardar();
+            
+            window.location.replace(rota);
+        })
+        .catch((erro) => {
+            finalizarAguardar(erro.message || "Falha ao autenticar.");
+        });
+
+    return false;
 }
 
-function rotaPorCargo(cargo) {
-  
-  const MAP = {
-    'Analista': 'dashboardAnalista.html',
-    'Técnico':  'dashboardSuporteMacro.html',   
-  };
-  
-  return MAP[cargo] || 'dashboardAnalista.html';
+function rotaPorCargo(cargoNormalizado) {
+    // Mapa usando chaves
+    const MAP = {
+        analista: "dashboardAnalista.html",
+        tecnico: "dashboardSuporteMacro.html",
+        administrador: "cadastroFuncionarios.html",
+    };
+    return MAP[cargoNormalizado] || "dashboardAnalista.html";
 }
