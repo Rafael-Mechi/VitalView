@@ -96,7 +96,7 @@ create table componentes (
     fkTipo int not null,
     fkServidor int not null,
     
-    limite int not null,
+    limite decimal(3, 1) not null,
     
     foreign key (fkTipo) references tipoComponente(idTipo),
     foreign key(fkServidor) references servidores(idServidor)
