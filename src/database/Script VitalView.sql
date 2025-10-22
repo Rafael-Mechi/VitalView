@@ -96,12 +96,14 @@ create table componentes (
     fkTipo int not null,
     fkServidor int not null,
     
-    limite decimal(3, 1) not null,
+    limite decimal(4, 1) not null,
+    
+    constraint chk_limite check (limite <= 100.0),
     
     foreign key (fkTipo) references tipoComponente(idTipo),
     foreign key(fkServidor) references servidores(idServidor)
 );
-
+use VitalView;
 
 create table capturas (
     idCapturas int primary key auto_increment,
@@ -121,24 +123,24 @@ fkComponente int not null
 
 
 insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
-"analista", "333", "333", "analista@.com", "123", 1, 1
+"analista", "333", "333", "analista@hsl.com", "123", 1, 1
 );
 
 insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
-"suporte", "333", "333", "suporte@.com", "123", 2, 2
+"suporte", "333", "333", "suporte@hsl.com", "123", 2, 2
 );
 
 insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
-"admin", "333", "333", "admin@.com", "123", 3, 2
+"admin", "333", "333", "admin@hsl.com", "123", 3, 2
 );
 
-insert into servidores (hostname, ip, localizacao, fkHospital) values (
-"srv1", "10.20.30.456", "esquina", 1);
+insert into servidores(hostname, ip, localizacao, fkHospital) values
+('srv1', '192.0.0.1', 'Sala dos servidores', 1);
 
-insert into componentes (fkTipo, fkServidor, limite) values
-(1, 1, 50),
-(2, 1, 40),
-(3, 1, 70);
+insert into componentes(fkTipo, fkServidor, limite) values
+(1, 1, 83.5),
+(2, 1, 41.6),
+(3, 1, 90.0);
 
 select * from usuario;
 select * from servidores;
@@ -146,8 +148,5 @@ select * from hospital;
 select * from cargo;
 select * from tipoComponente;
 select * from componentes;
-select * from alerta;
 
 -- drop database vitalview;
-
--- truncate table alerta;
