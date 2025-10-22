@@ -148,5 +148,8 @@ select * from hospital;
 select * from cargo;
 select * from tipoComponente;
 select * from componentes;
+select * from alerta;
+
+truncate table alerta;
 
 -- drop database vitalview;
