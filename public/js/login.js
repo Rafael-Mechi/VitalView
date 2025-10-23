@@ -55,7 +55,7 @@ function rotaPorCargo(cargoNormalizado) {
     const MAP = {
         analista: "dashboardAnalista.html",
         tecnico: "dashboardSuporteMacro.html",
-        administrador: "cadastroFuncionarios.html",
+        administrador: "bemVindo.html",
     };
     return MAP[cargoNormalizado] || "dashboardAnalista.html";
 }

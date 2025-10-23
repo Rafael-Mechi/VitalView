@@ -583,7 +583,7 @@ img {
   border-collapse: collapse;
 }
 
-.scroll{
+.scroll {
   overflow: auto;
 }
 
@@ -744,7 +744,7 @@ img {
 
 .menu ul li {
   display: flex;
-  padding: 0.7rem 1.2rem;
+  padding: 0.4rem 1.2rem;
   transition: background 0.2s;
 }
 
@@ -798,9 +798,10 @@ img {
   width: 24px;
 }
 
-.pagina-ativa{
-  background-color:#e6e6e6;
+.pagina-ativa {
+  background-color: #e6e6e6;
 }
+
 /* -------------------------------------------------- */
 /*                    RESPONSIVIDADE                  */
 /* -------------------------------------------------- */
@@ -837,4 +838,124 @@ h3 {
   margin-bottom: 10px;
   margin-top: 4px;
   color: #2a2a2a;
+}
+
+
+/* -------------------------------------------------- */
+/*                 Pagina de Bem vindo                */
+/* -------------------------------------------------- */
+
+#element {
+  font-size: 4rem;
+  font-weight: bold;
+  text-align: center;
+  animation: subirDiminuir 1s forwards;
+  /* 1s de duração, mantém o estado final */
+  animation-delay: 7.5s;
+  /* espera 7 segundos antes de iniciar */
+  margin-top: 180px;
+}
+
+.menu-rapido {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.menu-centralizado {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 1vh;
+  padding: 20px 30px;
+  background-color: #f4f7f9;
+  border-radius: 10px;
+
+  opacity: 0;
+  /* começa acima e menor */
+  animation: descerCrescer 1s forwards;
+  animation-delay: 7.5s;
+}
+
+.grade-botoes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-width: 900px;
+  width: 100%;
+}
+
+.botao-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px 20px;
+  height: 150px;
+  text-decoration: none;
+  color: #333;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  width: 100%;
+}
+
+.botao-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  background-color: #e0f7fa;
+}
+
+.botao-card img {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 10px;
+}
+
+.texto-botao {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.botao-sair {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.botao-sair:hover {
+  background-color: #ffcdd2;
+}
+
+@keyframes descerCrescer {
+  0% {
+    opacity: 0;
+    min-height: 86vh;
+    padding: 20px 30px;
+  }
+
+  100% {
+    opacity: 1;
+    min-height: 86vh;
+    padding: 20px 30px;
+  }
+}
+
+@keyframes subirDiminuir {
+  0% {
+    font-size: 4rem;
+  }
+
+  100% {
+    font-size: 2rem;
+    /* diminui para metade do tamanho */
+    margin-top: -80px;
+  }
 }

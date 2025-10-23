@@ -241,9 +241,9 @@ a:hover {
 }
 
 .menu ul li {
-    display: flex;
-    padding: 0.7rem 1.2rem;
-    transition: background 0.2s;
+  display: flex;
+  padding: 0.4rem 1.2rem;
+  transition: background 0.2s;
 }
 
 .menu ul li:hover {
