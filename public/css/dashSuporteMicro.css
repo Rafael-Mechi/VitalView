@@ -465,11 +465,11 @@ img {
   margin-right: 10px;
 }
 
+.legenda{margin:6px 0 0; color:#7b8a9a; font-size:12px}
 
 .velocimetro {
   background-color: white;
 }
-
 
 .uptime-display {
   font-size: 2em;
@@ -649,7 +649,6 @@ img {
   background-color: white;
   width: 500px;
 }
-
 
 /* -------------------------------------------------- */
 /*                   MENU HAMBÚRGUER                  */
