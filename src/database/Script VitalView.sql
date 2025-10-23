@@ -105,20 +105,24 @@ create table componentes (
 );
 use VitalView;
 
-create table capturas (
-    idCapturas int primary key auto_increment,
-    dataHora datetime not null,
-    valor decimal(5,2) not null,
-    status boolean,
-    fkComponente int not null,
-    foreign key (fkComponente) references componentes(idComponente)
-);
 
 create table alerta(
 id int primary key auto_increment,
 data_alerta datetime not null,
 registro float not null,
-fkComponente int not null
+fkComponente int not null,
+
+foreign key (fkComponente) references componentes (idComponente)
+);
+
+create table correcao_alerta(
+id int primary key auto_increment,
+data_correcao datetime not null,
+
+fkAlerta int not null,
+
+foreign key (fkAlerta) references alerta(id)
+
 );
 
 
