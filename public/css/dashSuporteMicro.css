@@ -465,7 +465,11 @@ img {
   margin-right: 10px;
 }
 
-.legenda{margin:6px 0 0; color:#7b8a9a; font-size:12px}
+.legenda {
+  margin: 6px 0 0;
+  color: #7b8a9a;
+  font-size: 12px
+}
 
 .velocimetro {
   background-color: white;
@@ -879,7 +883,7 @@ h3 {
 
 .grade-botoes {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 30px;
   list-style: none;
   padding: 0;
@@ -936,14 +940,15 @@ h3 {
 @keyframes descerCrescer {
   0% {
     opacity: 0;
-    min-height: 86vh;
+    min-height: 60vh;
     padding: 20px 30px;
   }
 
   100% {
     opacity: 1;
-    min-height: 86vh;
+    min-height: 60vh;
     padding: 20px 30px;
+    margin-top: 80px;
   }
 }
 
