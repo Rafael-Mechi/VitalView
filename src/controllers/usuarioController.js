@@ -42,10 +42,10 @@ function autenticar(req, res) {
 
 function cadastrar(req, res) {
     
-    console.log("Dados recbidos no cadastro:", req.body);
+    console.log("Dados recebidos no cadastro:", req.body);
 
-    const { nome, email, cpf, telefone, senha, cargo, codigo, hospital } = req.body;
-    if (!nome || !email || !senha || !codigo || !cargo || !cpf || !telefone || !hospital) {
+    const { nome, cpf, telefone, email, senha, fkCargo, fkHospital } = req.body;
+    if (!nome || !email || !senha || !fkCargo || !cpf || !telefone || !fkHospital) {
         return res.status(400).send("Dados incompletos!");
     }
 
@@ -59,15 +59,13 @@ function cadastrar(req, res) {
         res.status(400).send("Seu cpf está undefined!");
     }else if (telefone == undefined) {
         res.status(400).send("Seu telefone está undefined!");
-    }else if (cargo == undefined) {
+    }else if (fkCargo == undefined) {
         res.status(400).send("Seu cargo está undefined!");
-    }else if (codigo == undefined) {
-        res.status(400).send("Seu cargo está undefined!");
-    }else if (hospital == undefined) {
-        res.status(400).send("Seu cargo está undefined!");
+    }else if (fkHospital == undefined) {
+        res.status(400).send("Seu hospital está undefined!");
     }else {
 
-        usuarioModel.cadastrar(nome, email, cpf, telefone, senha, cargo, codigo, hospital)
+        usuarioModel.cadastrar(nome, cpf, telefone, email, senha, fkCargo, fkHospital)
             .then(
                 function (resultado) {
                     res.json(resultado);

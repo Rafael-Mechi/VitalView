@@ -15,37 +15,17 @@ function autenticar(email, senha) {
         JOIN cargo c ON c.idcargo = u.fkcargo
         WHERE u.email = '${email}' AND u.senha = '${senha}';
     `;
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    console.log("Cadastro realizado: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
-async function cadastrar(nome, email, cpf, telefone, senha, cargo, codigo, hospital) {
-
-    //Busca o hospital pelo codigo 
-    var sqlBusca = `
-       select idHospital 
-        from hospital
-        where codigo = '${codigo}' and idhospital = '${hospital}'
-        limit 1
-    `;
-
-    var resultado = await database.executar(sqlBusca)
-    console.log(resultado);
-
-
-    if (!resultado[0]) {
-        throw new Error('Código inválido para qualquer hospital');
-    }
-
-    var fkHospital = resultado[0].idHospital;
-
-    console.log(resultado);
+async function cadastrar(nome, cpf, telefone, email, senha, fkCargo, fkHospital) {
 
     var sqlCadastro = `
         insert into usuario (nome, cpf, telefone, email, senha, fkcargo, fkHospital)
-        values ('${nome}', '${cpf}', '${telefone}', '${email}', '${senha}', '${cargo}', '${fkHospital}');
+        values ('${nome}', '${cpf}', '${telefone}', '${email}', '${senha}', '${fkCargo}', '${fkHospital}');
     `;
-    console.log(resultado);
+    console.log("Executando a instrução SQL: \n" + sqlCadastro);
     return database.executar(sqlCadastro);
 }
 
