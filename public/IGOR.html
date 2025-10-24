@@ -57,177 +57,169 @@
         </ul>
     </nav>
 
+    <section class="container">
+        <section class="nav-dash">
+            <section class="secao_logo">
+                <a href="dashboardAnalista.html">
+                    <img src="assets/LogoVitalView.png" alt="Logo VitalView" class="logo">
+                </a>
+            </section>
 
-    
-
-
-    <div class="wrap">
-
-        <section class="kpis-novo">
-            
-            <article class="kpi-card" style="border-left: 5px solid #ff4d4d;">
-                <h4 class="kpi-titulo">Servidores em Risco</h4>
-                <div class="kpi-valor" style="color: #ff4d4d;">4<span>/6</span></div>
-            </article>
-
-            <article class="kpi-card" style="border-left: 5px solid #ff9800;">
-                <h4 class="kpi-titulo">Alertas</h4>
-                <div class="kpi-valor" style="color: #ff9800;">21</div>
-            </article>
-
-            <article class="kpi-card kpi-resumo">
-                <h4 class="kpi-titulo">Resumo Rápido</h4>
-                <div class="resumo-conteudo">
-                    <div class="chart-placeholder">
-                        <canvas id="pizzaResumo"></canvas>
-                    </div>
-                    <div class="resumo-legenda">
-                        <div>Normais: 60%</div>
-                        <div style="color: #ff9800;">Alertas: 25%</div>
-                        <div style="color: #ff4d4d;">Críticos: 15%</div>
-                    </div>
-                </div>
-            </article>
-
+            <section class="secao_logo">
+                <h1 class="titulo_header">VitalView</h1>
+            </section>
         </section>
 
-        <section class="tabela-servidores">
-            <div class="tabela-header">
-                <nav class="abas">
-                    <a href="#" class="aba ativa">Todos</a>
-                    <a href="#" class="aba">Críticos</a>
-                    <a href="#" class="aba">Maior CPU</a>
-                    <a href="#" class="aba">Maior RAM</a>
-                    <a href="#" class="aba">Maior Disco</a>
-                    <a href="#" class="aba">Mais Alertas</a>
-                </nav>
-                <div class="tabela-acao">
-                    <h3 class="total-servidores">Servidores Cadastrados: <span class="badge-total">5</span></h3>
-                    <div class="campo-pesquisa">
-                        <input type="text" placeholder="Pesquisar..." class="input-pesquisa">
-                        <button class="btn-pesquisa">🔍</button>
+        <div class="wrap">
+           <section class="kpis">
+            <div class="kpi">
+             <p>Servidores em Risco</p>
+             <div class="value">4<span>/5</span></div>
+                <p class="sub">Monitoramento ativo</p>
+            </div>
+        <div class="kpi">
+            <p>Alertas</p>
+            <div class="value-serv">21</div>
+                <p class="sub">Últimas ocorrências</p>
+        </div>
+        <div class="kpi">
+            <p>Resumo Rápido</p>
+            <div class="chart-area" style="width: 100%; height: 100px;">
+            <canvas id="pizzaResumo"></canvas>
+        </div>
+</div>
+</section>
+
+
+            <section class="tabela-servidores">
+                <div class="tabela-header">
+                    <nav class="abas">
+                        <img src="assets/imgs/filtro.png">
+                        <a href="#" class="aba ativa">Todos</a>
+                        <a href="#" class="aba">Críticos</a>
+                        <a href="#" class="aba">Maior CPU</a>
+                        <a href="#" class="aba">Maior RAM</a>
+                        <a href="#" class="aba">Maior Disco</a>
+                        <a href="#" class="aba">Mais Alertas</a>
+                    </nav>
+                    <div class="tabela-acao">
+                        <h3 class="total-servidores">Servidores Cadastrados: <span class="badge-total">5</span></h3>
+                        <div class="campo-pesquisa">
+                            <input type="text" placeholder="Pesquisar..." class="input-pesquisa">
+                            <button class="btn-pesquisa"><img src="assets/imgs/lupa.png" alt=""></button>
+                        </div>
+                        <a href="cadastroServidores.html" class="btn-novo">Novo +</a>
                     </div>
-                    <a href="cadastroServidores.html" class="btn-novo">Novo +</a>
                 </div>
-            </div>
 
-            <div class="tabela-corpo">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Servidor</th>
-                            <th>Status</th>
-                            <th>CPU%</th>
-                            <th>RAM%</th>
-                            <th>Disco%</th>
-                            <th>Alertas</th>
-                            <th>Tempo em Alerta</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Pacs-01</td>
-                            <td><span class="status-badge critico">● Crítico</span></td>
-                            <td><div class="barra-progresso"><div class="barra-uso cpu" style="width: 60%;">60%</div></div></td>
-                            <td><div class="barra-progresso"><div class="barra-uso ram" style="width: 60%;">60%</div></div></td>
-                            <td><div class="barra-progresso"><div class="barra-uso disco" style="width: 60%;">60%</div></div></td>
-                            <td><span class="alerta-badge">12</span></td>
-                            <td>00:16:31</td>
-                            <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
-                        </tr>
-                        <tr>
-                            <td>Pacs-02</td>
-                            <td><span class="status-badge critico">● Crítico</span></td>
-                            <td><div class="barra-progresso"><div class="barra-uso cpu" style="width: 80%;">80%</div></div></td>
-                            <td><div class="barra-progresso"><div class="barra-uso ram" style="width: 40%;">40%</div></div></td>
-                            <td><div class="barra-progresso"><div class="barra-uso disco" style="width: 70%;">70%</div></div></td>
-                            <td><span class="alerta-badge">8</span></td>
-                            <td>00:10:05</td>
-                            <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
-                        </tr>
-                        <tr>
-                            <td>Pacs-03</td>
-                            <td><span class="status-badge atencao">● Atenção</span></td>
-                            <td><div class="barra-progresso"><div class="barra-uso cpu" style="width: 40%;">40%</div></div></td>
-                            <td><div class="barra-progresso"><div class="barra-uso ram" style="width: 75%;">75%</div></div></td>
-                            <td><div class="barra-progresso"><div class="barra-uso disco" style="width: 30%;">30%</div></div></td>
-                            <td><span class="alerta-badge">3</span></td>
-                            <td>00:05:22</td>
-                            <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
-                        </tr>
-                        <tr>
-                            <td>Pacs-04</td>
-                            <td><span class="status-badge normal">● Normal</span></td>
-                            <td><div class="barra-progresso"><div class="barra-uso cpu" style="width: 15%;">15%</div></div></td>
-                            <td><div class="barra-progresso"><div class="barra-uso ram" style="width: 25%;">25%</div></div></td>
-                            <td><div class="barra-progresso"><div class="barra-uso disco" style="width: 10%;">10%</div></div></td>
-                            <td><span class="alerta-badge">0</span></td>
-                            <td>--:--:--</td>
-                            <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
-                        </tr>
-                        <tr>
-                            <td>Pacs-05</td>
-                            <td><span class="status-badge normal">● Normal</span></td>
-                            <td><div class="barra-progresso"><div class="barra-uso cpu" style="width: 30%;">30%</div></div></td>
-                            <td><div class="barra-progresso"><div class="barra-uso ram" style="width: 30%;">30%</div></div></td>
-                            <td><div class="barra-progresso"><div class="barra-uso disco" style="width: 20%;">20%</div></div></td>
-                            <td><span class="alerta-badge">0</span></td>
-                            <td>--:--:--</td>
-                            <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
+                <div class="tabela-corpo">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Servidor</th>
+                                <th>Status</th>
+                                <th>CPU%</th>
+                                <th>RAM%</th>
+                                <th>Disco%</th>
+                                <th>Alertas</th>
+                                <th>Tempo em Alerta</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Pacs-01</td>
+                                <td><span class="status-badge critico">● Crítico</span></td>
+                                <td><div class="barra-progresso"><div class="barra-uso critico" style="width: 92%;">92%</div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso critico" style="width: 87%;">87%</div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 60%;">60%</div></div></td>
+                                <td><span class="alerta-badge">12</span></td>
+                                <td>00:16:31</td>
+                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
+                            </tr>
+                            <tr>
+                                <td>Pacs-02</td>
+                                <td><span class="status-badge critico">● Crítico</span></td>
+                                <td><div class="barra-progresso"><div class="barra-uso critico" style="width: 80%;">80%</div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 40%;">40%</div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso alerta" style="width: 70%;">70%</div></div></td>
+                                <td><span class="alerta-badge">8</span></td>
+                                <td>00:10:05</td>
+                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
+                            </tr>
+                            <tr>
+                                <td>Pacs-03</td>
+                                <td><span class="status-badge atencao">● Atenção</span></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 40%;">40%</div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso alerta" style="width: 75%;">75%</div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 30%;">30%</div></div></td>
+                                <td><span class="alerta-badge">3</span></td>
+                                <td>00:05:22</td>
+                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
+                            </tr>
+                            <tr>
+                                <td>Pacs-04</td>
+                                <td><span class="status-badge normal">● Normal</span></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 15%;">15%</div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 25%;">25%</div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 10%;">10%</div></div></td>
+                                <td><span class="alerta-badge">0</span></td>
+                                <td>--:--:--</td>
+                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
+                            </tr>
+                            <tr>
+                                <td>Pacs-05</td>
+                                <td><span class="status-badge normal">● Normal</span></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 30%;">30%</div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 30%;">30%</div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 20%;">20%</div></div></td>
+                                <td><span class="alerta-badge">0</span></td>
+                                <td>--:--:--</td>
+                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </section>
 
-    </div>
+    <!-- Script principal -->
+  <script>
+   
+    window.onload = () => {
+      const canvas = document.getElementById('pizzaResumo');
+      if (!canvas) {
+        console.error("Canvas 'pizzaResumo' não encontrado!");
+        return;
+      }
 
-    <script src="js/permissoes.js"></script>
-
-    <script>
-        // Funções de proteção de página (mantidas)
-        protegerPagina(['Técnico', 'Administrador']);
-        aplicarCargoNaUI();
-
-        // REMOVENDO DADOS MOCADOS ANTIGOS (SERVIDORES_MINI E COLORS)
-
-        // =========================
-        // PIZZA: Resumo Rápido (Normal, Alertas, Críticos)
-        // =========================
-        const ctxResumo = document.getElementById('pizzaResumo').getContext('2d');
-        new Chart(ctxResumo, {
-            type: 'pie',
-            data: {
-                labels: ['Normais', 'Alertas', 'Críticos'],
-                datasets: [{
-                    data: [60, 25, 15], // 60%, 25%, 15% (total 100%)
-                    // Cores: Normal (Azul Claro/Verde), Alerta (Laranja), Crítico (Vermelho)
-                    backgroundColor: ['#6ce5e8', '#ff9800', '#ff4d4d'], 
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false // Oculta a legenda do Chart.js
-                    },
-                    title: {
-                        display: false // O título está no HTML do card
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: (context) => `${context.label}: ${context.raw}%`
-                        }
-                    }
-                }
+      const ctxResumo = canvas.getContext('2d');
+      new Chart(ctxResumo, {
+        type: 'pie',
+        data: {
+          labels: ['Normais', 'Alertas', 'Críticos'],
+          datasets: [{
+            data: [60, 25, 15],
+            backgroundColor: ['#6ce5e8', '#ff9800', '#ff4d4d'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: ctx => `${ctx.label}: ${ctx.raw}%`
+              }
             }
-        });
-
-        // O loop SERVIDORES_MINI.forEach foi removido, corrigindo o problema anterior.
-    </script>
+          }
+        }
+      });
+    };
+  </script>
 
 </body>
 </html>
