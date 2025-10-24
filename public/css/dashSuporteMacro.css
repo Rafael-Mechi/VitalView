@@ -336,11 +336,12 @@ a:hover {
 /* KPIs */
 .wrap {
   background: #ececec;
-  margin: 10px auto; 
+  margin: 0px auto; 
   padding: 20px;
   width: 95%;
   border-radius: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 12px;
 }
 
 
@@ -350,15 +351,14 @@ a:hover {
   align-items: center;     
   flex-wrap: wrap;           
   gap: 20px;
-
   border-radius: 12px;
-  padding: 20px;
+  margin-bottom: 10px;
 }
 
 /* Cards de KPI */
 .kpi {
   flex: 1 1 250px;           
-  max-width: 300px;        
+  width: 90%;        
   background: white;
   border-radius: 12px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.144);
@@ -366,7 +366,7 @@ a:hover {
   display: flex;
   flex-direction: column;
   text-align: center;
-  height: 130px;
+  height: 20vh;
   justify-content: center;
 }
 
@@ -428,8 +428,9 @@ a:hover {
 .tabela-servidores {
   background: white;
   border-radius: 12px;
-  padding: 20px;
+  padding: 10px;
   border: 1px solid #dcdcdc;
+  height: 60vh;
 }
 
 /* Cabeçalho */
