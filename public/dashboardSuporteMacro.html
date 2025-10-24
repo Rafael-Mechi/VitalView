@@ -41,42 +41,21 @@
             </div>
             <div class="menu_topo">
                 <h3 class="title_menu">Dashboards</h3>
-                <li style="display: flex; align-items: center;" data-role="Analista,Administrador,Técnico">
-                    <img src="./assets/dashboard-icons/home.svg" style="width: 20px; margin-right: 4px;"><a
-                        href="bemVindo.html">Home</a></li>
-                <li style="display: flex; align-items: center;" data-role="Analista,Administrador"><img
-                        src="./assets/dashboard-icons/activity.svg" style="width: 20px; margin-right: 4px;"><a
-                        href="dashboardAnalista.html">Dash Analista</a></li>
-                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador" class="pagina-ativa">
-                    <img src="./assets/dashboard-icons/bar-chart.svg" style="width: 20px; margin-right: 4px;"><a
-                        href="dashboardSuporteMacro.html">Dash Suporte Macro</a></li>
-                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
-                        src="./assets/dashboard-icons/layout.svg" style="width: 20px; margin-right: 4px;"><a
-                        href="dashboardSuporteMicro.html">Dash Suporte Micro</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Administrador"><img src="./assets/dashboard-icons/activity.svg" style="width: 20px; margin-right: 4px;"><a href="dashboardAnalista.html">Dash Analista</a></li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador" class="pagina-ativa"><img src="./assets/dashboard-icons/bar-chart.svg" style="width: 20px; margin-right: 4px;"><a href="dashboardSuporteMacro.html">Dash Suporte Macro</a></li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img src="./assets/dashboard-icons/layout.svg" style="width: 20px; margin-right: 4px;"><a href="dashboardSuporteMicro.html">Dash Suporte Micro</a></li>
             </div>
 
             <div class="menu_baixo">
                 <h3 class="title_menu">Outras Opções</h3>
-                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
-                        src="./assets/dashboard-icons/calendar.svg" style="width: 20px; margin-right: 4px;"><a
-                        href="historicoAlertas.html">Histórico de Alertas</a></li>
-                <li style="display: flex; align-items: center;" data-role="Administrador"><img
-                        src="./assets/dashboard-icons/users.svg" style="width: 20px; margin-right: 4px;"><a
-                        href="cadastroFuncionarios.html">Cadastro Funcionário</a></li>
-                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
-                        src="./assets/dashboard-icons/hard-drive.svg" style="width: 20px; margin-right: 4px;"><a
-                        href="cadastroServidores.html">Cadastro Servidores</a></li>
-                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
-                        src="./assets/dashboard-icons/help-circle.svg" style="width: 20px; margin-right: 4px;"><a
-                        href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1"
-                        target="_blank">Central de Serviço</a></li>
-                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
-                        src="./assets/dashboard-icons/log-out.svg" style="width: 20px; margin-right: 4px;"><a
-                        onclick="limparSessao()">Sair</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img src="./assets/dashboard-icons/calendar.svg" style="width: 20px; margin-right: 4px;"><a href="historicoAlertas.html">Histórico de Alertas</a></li>
+                <li style="display: flex; align-items: center;" data-role="Administrador"><img src="./assets/dashboard-icons/users.svg" style="width: 20px; margin-right: 4px;"><a href="cadastroFuncionarios.html">Cadastro Funcionário</a></li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img src="./assets/dashboard-icons/hard-drive.svg" style="width: 20px; margin-right: 4px;"><a href="cadastroServidores.html">Cadastro Servidores</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img src="./assets/dashboard-icons/help-circle.svg" style="width: 20px; margin-right: 4px;"><a href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1" target="_blank">Central de Serviço</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img src="./assets/dashboard-icons/log-out.svg" style="width: 20px; margin-right: 4px;"><a onclick="limparSessao()">Sair</a></li>
             </div>
         </ul>
     </nav>
-
 
     <section class="container">
         <section class="nav-dash">
@@ -87,271 +66,160 @@
             </section>
 
             <section class="secao_logo">
-                <h1 class="titulo_header">VitalView</h1>
+                <h1 class="titulo_header">    Painel de Servidores</h1>
             </section>
         </section>
 
         <div class="wrap">
-
-            <!-- KPIs -->
-            <section class="kpis">
-                <article class="kpi">
-                    <h4 class="normal">Servidores em Risco</h4>
-                    <div class="value mono">3<span>/6</span></div>
-                </article>
-
-                <article class="kpi">
-                    <h4 class="normal">Servidor com mais Alertas</h4>
-                    <a href="dashboardSuporteMicro.html" class="value-serv">SERVIDOR 1</a>
-                </article>
-
-                <article class="kpi">
-                    <h4 class="diferente">Alertas</h4>
-                    <p>(Últimas 24 horas)</p>
-                    <div style="color: #e62323;" class="value mono">16</div>
-                </article>
-
-                <article class="kpi">
-                    <h4 class="diferente">Tendência de Alertas</h4>
-                    <p>(Próximos 30 minutos)</p>
-                    <div class="value mono">23%</div>
-                </article>
-            </section>
-
-            <section class="grid">
-                <!-- COLUNA ESQUERDA -->
-                <div class="left-col">
-
-                    <!-- Servidores (mini barras) -->
-                    <article class="card">
+           <section class="kpis">
+            <div class="kpi">
+             <p>Servidores em Risco</p>
+             <div class="value">4<span>/5</span></div>
+                <p class="sub">Monitoramento ativo</p>
+            </div>
+        <div class="kpi">
+            <p>Alertas</p>
+            <div class="value-serv">21</div>
+                <p class="sub">Últimas ocorrências</p>
+        </div>
+        <div class="kpi">
+            <p>Resumo Rápido</p>
+            <div class="chart-area" style="width: 100%; height: 100px;">
+            <canvas id="pizzaResumo"></canvas>
+        </div>
+</div>
+</section>
 
 
-                        <div class="side-left">
-
-                            <div class="stat-card-pizza">
-                                <div class="fundo">
-                                    <div class="chart-box">
-                                        <canvas id="pizzaAlertas"
-                                            style="width: 100%; height: 100%; padding-bottom: 20px; padding-right: 10px;"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="stat-card">
-                                <div class="stat-label">Servidores<br>Cadastrados</div>
-                                <div class="stat-value">6</div>
-                            </div>
-
+            <section class="tabela-servidores">
+                <div class="tabela-header">
+                    <nav class="abas">
+                        <img src="assets/imgs/filtro.png">
+                        <a href="#" class="aba ativa">Todos</a>
+                        <a href="#" class="aba">Críticos</a>
+                        <a href="#" class="aba">Maior CPU</a>
+                        <a href="#" class="aba">Maior RAM</a>
+                        <a href="#" class="aba">Maior Disco</a>
+                        <a href="#" class="aba">Mais Alertas</a>
+                    </nav>
+                    <div class="tabela-acao">
+                        <h3 class="total-servidores">Servidores Cadastrados: <span class="badge-total">5</span></h3>
+                        <div class="campo-pesquisa">
+                            <input type="text" placeholder="Pesquisar..." class="input-pesquisa">
+                            <button class="btn-pesquisa"><img src="assets/imgs/lupa.png" alt=""></button>
                         </div>
-
-                        <div class="side-right">
-                            <div class="mini">
-                                <div class="servers">
-                                    <h3 style="color: black;">Lista de Servidores</h3>
-                                    <a href="dashboardSuporteMicro.html" class="name">Servidor 1</a>
-                                    <div class="server">
-                                        <canvas id="mini1" height="48"></canvas>
-                                        <div class="status">Crítico</div>
-                                    </div>
-                                    <a href="dashboardSuporteMicro.html" class="name">Servidor 2</a>
-                                    <div class="server">
-                                        <canvas id="mini2" height="48"></canvas>
-                                        <div class="status">Crítico</div>
-                                    </div>
-                                    <a href="dashboardSuporteMicro.html" class="name">Servidor 3</a>
-                                    <div class="server">
-                                        <canvas id="mini3" height="48"></canvas>
-                                        <div class="status" style="color:#f59e0b">Atenção</div>
-                                    </div>
-                                    <a href="dashboardSuporteMicro.html" class="name">Servidor 4</a>
-                                    <div class="server">
-                                        <canvas id="mini4" height="48"></canvas>
-                                        <div class="status" style="color:#6ce5e8">Normal</div>
-                                    </div>
-                                    <a href="dashboardSuporteMicro.html" class="name">Servidor 5</a>
-                                    <div class="server">
-                                        <canvas id="mini5" height="48"></canvas>
-                                        <div class="status" style="color:#6ce5e8">Normal</div>
-                                    </div>
-                                    <a href="dashboardSuporteMicro.html" class="name">Servidor 6</a>
-                                    <div class="server">
-                                        <canvas id="mini6" height="48"></canvas>
-                                        <div class="status" style="color:#6ce5e8">Normal</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
+                        <a href="cadastroServidores.html" class="btn-novo">Novo +</a>
+                    </div>
                 </div>
 
-                <!-- COLUNA DIREITA: Servidores em risco -->
-                <aside class="risk-list">
-                    <div class="cardD">
-                        <!-- Risco 1 -->
-                        <div class="scroll">
-                            <h3 style="color: black;">Servidores em Risco</h3>
-                            <article class="risk">
-                                <a href="dashboardSuporteMicro.html" class="nameAlert">Servidor 1</a>
-                                <div class="chips">
-                                    <span class="pill" style="background:#fee2e2;color:#b91c1c">6 alertas</span>
-                                    <span class="pill">Disco</span>
-                                </div>
-                                <div class="divider"></div>
-                                <div class="kv">
-                                    <div>CPU: <b>99%</b></div>
-                                    <div>Limite: <b>99%</b></div>
-                                    <div>RAM: <b>58%</b></div>
-                                    <div>Limite: <b>58%</b></div>
-                                    <div>Disco: <b>68%</b></div>
-                                    <div>Limite: <b>68%</b></div>
-                                </div>
-                                <div class="sub">Tempo em alerta: 00:16:15</div>
-                            </article>
-
-                            <!-- Risco 2 -->
-                            <article class="risk">
-                                <a href="dashboardSuporteMicro.html" class="nameAlert">Servidor 2</a>
-                                <div class="chips">
-                                    <span class="pill" style="background:#fee2e2;color:#b91c1c">4 alertas</span>
-                                    <span class="pill">RAM</span>
-                                </div>
-                                <div class="divider"></div>
-                                <div class="kv">
-                                    <div>CPU: <b>99%</b></div>
-                                    <div>Limite: <b>99%</b></div>
-                                    <div>RAM: <b>58%</b></div>
-                                    <div>Limite: <b>58%</b></div>
-                                    <div>Disco: <b>68%</b></div>
-                                    <div>Limite: <b>68%</b></div>
-                                </div>
-                                <div class="sub">Tempo em alerta: 00:09:01</div>
-                            </article>
-
-                            <!-- Risco 3 -->
-                            <article class="risk">
-                                <a href="dashboardSuporteMicro.html" class="nameAlert">Servidor 3</a>
-                                <div class="chips">
-                                    <span class="pill" style="background:#fee2e2;color:#b91c1c">1 alerta</span>
-                                    <span class="pill">Disco</span>
-                                </div>
-                                <div class="divider"></div>
-                                <div class="kv">
-                                    <div>CPU: <b>99%</b></div>
-                                    <div>Limite: <b>99%</b></div>
-                                    <div>RAM: <b>58%</b></div>
-                                    <div>Limite: <b>58%</b></div>
-                                    <div>Disco: <b>68%</b></div>
-                                    <div>Limite: <b>68%</b></div>
-                                </div>
-                                <div class="sub">Tempo em alerta: 00:16:15</div>
-                            </article>
-                        </div>
-                    </div>
-                </aside>
+                <div class="tabela-corpo">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Servidor</th>
+                                <th>Status</th>
+                                <th>CPU%</th>
+                                <th>RAM%</th>
+                                <th>Disco%</th>
+                                <th>Alertas</th>
+                                <th>Tempo em Alerta</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Pacs-01</td>
+                                <td><span class="status-badge critico">● Crítico</span></td>
+                                <td><div class="barra-progresso"><div class="barra-uso critico" style="width: 92%;"><p>92%</p></div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso critico" style="width: 87%;">87%</div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 60%;">60%</div></div></td>
+                                <td><span class="alerta-badge">12</span></td>
+                                <td>00:16:31</td>
+                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
+                            </tr>
+                            <tr>
+                                <td>Pacs-02</td>
+                                <td><span class="status-badge critico">● Crítico</span></td>
+                                <td><div class="barra-progresso"><div class="barra-uso critico" style="width: 80%;">80%</div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 40%;">40%</div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso critico" style="width: 80%;">80%</div></div></td>
+                                <td><span class="alerta-badge">8</span></td>
+                                <td>00:10:05</td>
+                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
+                            </tr>
+                            <tr>
+                                <td>Pacs-03</td>
+                                <td><span class="status-badge critico">● Atenção</span></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 40%;">40%</div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 60%;">60%</div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso critico" style="width: 85%;">85%</div></div></td>
+                                <td><span class="alerta-badge">3</span></td>
+                                <td>00:05:22</td>
+                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
+                            </tr>
+                            <tr>
+                                <td>Pacs-04</td>
+                                <td><span class="status-badge normal">● Normal</span></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 30%;">30%</div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 25%;">25%</div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 40%;">40%</div></div></td>
+                                <td><span class="alerta-badge">0</span></td>
+                                <td>--:--:--</td>
+                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
+                            </tr>
+                            <tr>
+                                <td>Pacs-05</td>
+                                <td><span class="status-badge normal">● Normal</span></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 30%;">30%</div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 30%;">30%</div></div></td>
+                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 20%;">20%</div></div></td>
+                                <td><span class="alerta-badge">0</span></td>
+                                <td>--:--:--</td>
+                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </section>
         </div>
     </section>
 
-    <script src="js/permissoes.js"></script>
+    <!-- Script principal -->
+  <script>
+   
+    window.onload = () => {
+      const canvas = document.getElementById('pizzaResumo');
+      if (!canvas) {
+        console.error("Canvas 'pizzaResumo' não encontrado!");
+        return;
+      }
 
-    <script>
-        protegerPagina(['Técnico', 'Administrador']);
-        aplicarCargoNaUI();
-
-        // =========================
-        // DADOS MOCADOS / ESTÁTICOS
-        // =========================
-        const SERVIDORES_MINI = [
-            // cpu, ram, disco
-            { id: 'mini1', valores: [70, 40, 70] }, // Servidor 1
-            { id: 'mini2', valores: [12, 34, 92] }, // Servidor 2
-            { id: 'mini3', valores: [55, 61, 48] }, // Servidor 3
-            { id: 'mini4', valores: [30, 35, 21] }, // Servidor 4
-            { id: 'mini5', valores: [23, 20, 23] }, // Servidor 5
-            { id: 'mini6', valores: [19, 21, 12] }, // Servidor 6
-        ];
-
-        // Paleta consistente com a UI
-        const COLORS = {
-            cpu: '#2d8bba',
-            ram: '#6ce5e8',
-            disco: '#0d3e47'
-        };
-
-        // =========================
-        // PIZZA: Alertas x Normais
-        // =========================
-        const ctx = document.getElementById('pizzaAlertas').getContext('2d');
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Alerta 34%', 'Normal 66%',],
-                datasets: [{
-                    data: [34, 66],
-                    backgroundColor: ['#2d8bba', '#6ce5e8'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: false,
-                plugins: {
-                    legend: {
-                        position: 'right'
-                    },
-                    title: {
-                        display: true,
-                        text: 'Servidores em Alerta × Normais',
-                        font: {
-                            size: 21,
-                            weight: 'bold',
-                        },
-                        color: 'black'
-
-                    }
-                }
+      const ctxResumo = canvas.getContext('2d');
+      new Chart(ctxResumo, {
+        type: 'pie',
+        data: {
+          labels: ['Normais','Críticos'],
+          datasets: [{
+            data: [60, 40],
+            backgroundColor: ['#6ce5e8', '#ff4d4d'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: ctx => `${ctx.label}: ${ctx.raw}%`
+              }
             }
-        });
+          }
+        }
+      });
+    };
+  </script>
 
-        // ==========================================
-        // MINI BARRAS HORIZONTAIS por servidor (CPU/RAM/Disco)
-        // ==========================================
-        SERVIDORES_MINI.forEach((srv) => {
-            const ctx = document.getElementById(srv.id);
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: [''], // uma linha
-                    datasets: [
-                        { label: 'CPU', data: [srv.valores[0]], backgroundColor: COLORS.cpu, borderRadius: 8, barPercentage: 0.6 },
-                        { label: 'RAM', data: [srv.valores[1]], backgroundColor: COLORS.ram, borderRadius: 8, barPercentage: 0.6 },
-                        { label: 'Disco', data: [srv.valores[2]], backgroundColor: COLORS.disco, borderRadius: 8, barPercentage: 0.6 },
-                    ]
-                },
-                options: {
-                    indexAxis: 'y',
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                            labels: { boxWidth: 10, usePointStyle: true, pointStyle: 'rectRounded' }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: (ctx) => `${ctx.dataset.label}: ${ctx.raw}%`
-                            }
-                        }
-                    },
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            min: 0, max: 100, grid: { display: false }, ticks: { callback: v => v + '%' }
-                        },
-                        y: { grid: { display: false } }
-                    }
-                }
-            });
-        });
-    </script>
 </body>
-
 </html>
