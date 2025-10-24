@@ -19,13 +19,13 @@ function autenticar(email, senha) {
     return database.executar(instrucaoSql);
 }
 
-async function cadastrar(nome, email, cpf, telefone, senha, cargo, codigo, hospital) {
+async function cadastrar(nome, cpf, telefone, email, senha, cargo, hospital) {
 
     //Busca o hospital pelo codigo 
     var sqlBusca = `
        select idHospital 
         from hospital
-        where codigo = '${codigo}' and idhospital = '${hospital}'
+        where idhospital = '${hospital}'
         limit 1
     `;
 
@@ -42,7 +42,7 @@ async function cadastrar(nome, email, cpf, telefone, senha, cargo, codigo, hospi
     console.log(resultado);
 
     var sqlCadastro = `
-        insert into usuario (nome, cpf, telefone, email, senha, fkcargo, fkHospital)
+        insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital)
         values ('${nome}', '${cpf}', '${telefone}', '${email}', '${senha}', '${cargo}', '${fkHospital}');
     `;
     console.log(resultado);
