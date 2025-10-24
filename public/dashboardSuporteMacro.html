@@ -19,6 +19,7 @@
             <span class="menu_lateral">
                 <div class="icones_topo">
                     <img class="img_hamb" src="assets/LogoVitalView.png">
+                    <img src="./assets/dashboard-icons/home.svg" data-role="Analista,Administrador,Técnico">
                     <img src="./assets/dashboard-icons/activity.svg" data-role="Analista,Administrador">
                     <img src="./assets/dashboard-icons/bar-chart.svg" data-role="Técnico,Administrador">
                     <img src="./assets/dashboard-icons/layout.svg" data-role="Técnico,Administrador">
@@ -41,18 +42,41 @@
             </div>
             <div class="menu_topo">
                 <h3 class="title_menu">Dashboards</h3>
-                <li style="display: flex; align-items: center;" data-role="Analista,Administrador"><img src="./assets/dashboard-icons/activity.svg" style="width: 20px; margin-right: 4px;"><a href="dashboardAnalista.html">Dash Analista</a></li>
-                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador" class="pagina-ativa"><img src="./assets/dashboard-icons/bar-chart.svg" style="width: 20px; margin-right: 4px;"><a href="dashboardSuporteMacro.html">Dash Suporte Macro</a></li>
-                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img src="./assets/dashboard-icons/layout.svg" style="width: 20px; margin-right: 4px;"><a href="dashboardSuporteMicro.html">Dash Suporte Micro</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Administrador,Técnico">
+                    <img src="./assets/dashboard-icons/home.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="bemVindo.html">Home</a>
+                </li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Administrador"><img
+                        src="./assets/dashboard-icons/activity.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="dashboardAnalista.html">Dash Analista</a></li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador" class="pagina-ativa">
+                    <img src="./assets/dashboard-icons/bar-chart.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="dashboardSuporteMacro.html">Dash Suporte Macro</a>
+                </li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/layout.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="dashboardSuporteMicro.html">Dash Suporte Micro</a>
+                </li>
             </div>
 
             <div class="menu_baixo">
                 <h3 class="title_menu">Outras Opções</h3>
-                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img src="./assets/dashboard-icons/calendar.svg" style="width: 20px; margin-right: 4px;"><a href="historicoAlertas.html">Histórico de Alertas</a></li>
-                <li style="display: flex; align-items: center;" data-role="Administrador"><img src="./assets/dashboard-icons/users.svg" style="width: 20px; margin-right: 4px;"><a href="cadastroFuncionarios.html">Cadastro Funcionário</a></li>
-                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img src="./assets/dashboard-icons/hard-drive.svg" style="width: 20px; margin-right: 4px;"><a href="cadastroServidores.html">Cadastro Servidores</a></li>
-                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img src="./assets/dashboard-icons/help-circle.svg" style="width: 20px; margin-right: 4px;"><a href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1" target="_blank">Central de Serviço</a></li>
-                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img src="./assets/dashboard-icons/log-out.svg" style="width: 20px; margin-right: 4px;"><a onclick="limparSessao()">Sair</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/calendar.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="historicoAlertas.html">Histórico de Alertas</a></li>
+                <li style="display: flex; align-items: center;" data-role="Administrador"><img
+                        src="./assets/dashboard-icons/users.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="cadastroFuncionarios.html">Cadastro Funcionário</a></li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/hard-drive.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="cadastroServidores.html">Cadastro Servidores</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/help-circle.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1"
+                        target="_blank">Central de Serviço</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/log-out.svg" style="width: 20px; margin-right: 4px;"><a
+                        onclick="limparSessao()">Sair</a></li>
             </div>
         </ul>
     </nav>
@@ -66,29 +90,27 @@
             </section>
 
             <section class="secao_logo">
-                <h1 class="titulo_header">    Painel de Servidores</h1>
+                <h1 class="titulo_header" style="margin-left: 10px;">VitalView</h1>
             </section>
         </section>
 
         <div class="wrap">
-           <section class="kpis">
-            <div class="kpi">
-             <p>Servidores em Risco</p>
-             <div class="value">4<span>/5</span></div>
-                <p class="sub">Monitoramento ativo</p>
-            </div>
-        <div class="kpi">
-            <p>Alertas</p>
-            <div class="value-serv">21</div>
-                <p class="sub">Últimas ocorrências</p>
-        </div>
-        <div class="kpi">
-            <p>Resumo Rápido</p>
-            <div class="chart-area" style="width: 100%; height: 100px;">
-            <canvas id="pizzaResumo"></canvas>
-        </div>
-</div>
-</section>
+            <section class="kpis">
+                <div class="kpi">
+                    <p style="font-weight: bold;">Servidores em Risco</p>
+                    <div class="value">4<span>/5</span></div>
+                    <p class="sub">Monitoramento ativo</p>
+                </div>
+                <div class="kpi">
+                    <p style="font-weight: bold;">Alertas</p>
+                    <div class="value-serv">21</div>
+                    <p class="sub">Últimas ocorrências</p>
+                </div>
+                <div class="kpi" id="kpi-uso-disco">
+                    <canvas class="card card_grafico_disco" id="graficoPizza"
+                        style="width: 100%; height: 100%; padding-bottom: 10px; padding-right: 10px;"></canvas>
+                </div>
+            </section>
 
 
             <section class="tabela-servidores">
@@ -130,52 +152,119 @@
                             <tr>
                                 <td class="nomeServidor"><a href="dashboardSuporteMicro.html">Pacs-01</a></td>
                                 <td><span class="status-badge critico">● Crítico</span></td>
-                                <td><div class="barra-progresso"><div class="barra-uso critico" style="width: 92%;"><p>92%</p></div></div></td>
-                                <td><div class="barra-progresso"><div class="barra-uso critico" style="width: 87%;">87%</div></div></td>
-                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 60%;">60%</div></div></td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso critico" style="width: 92%;">
+                                            <p>92%</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso critico" style="width: 87%;">87%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 60%;">60%</div>
+                                    </div>
+                                </td>
                                 <td><span class="alerta-badge">12</span></td>
                                 <td>00:16:31</td>
-                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
+                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png"
+                                            style="width: 20px;" alt=""></button></td>
                             </tr>
                             <tr>
                                 <td class="nomeServidor"><a href="dashboardSuporteMicro.html">Pacs-02</a></td>
                                 <td><span class="status-badge critico">● Crítico</span></td>
-                                <td><div class="barra-progresso"><div class="barra-uso critico" style="width: 80%;">80%</div></div></td>
-                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 40%;">40%</div></div></td>
-                                <td><div class="barra-progresso"><div class="barra-uso critico" style="width: 80%;">80%</div></div></td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso critico" style="width: 80%;">80%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 40%;">40%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso critico" style="width: 80%;">80%</div>
+                                    </div>
+                                </td>
                                 <td><span class="alerta-badge">8</span></td>
                                 <td>00:10:05</td>
-                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
+                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png"
+                                            style="width: 20px;" alt=""></button></td>
                             </tr>
                             <tr>
                                 <td class="nomeServidor"><a href="dashboardSuporteMicro.html">Pacs-03</a></td>
                                 <td><span class="status-badge critico">● Crítico</span></td>
-                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 40%;">40%</div></div></td>
-                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 60%;">60%</div></div></td>
-                                <td><div class="barra-progresso"><div class="barra-uso critico" style="width: 85%;">85%</div></div></td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 40%;">40%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 60%;">60%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso critico" style="width: 85%;">85%</div>
+                                    </div>
+                                </td>
                                 <td><span class="alerta-badge">3</span></td>
                                 <td>00:05:22</td>
-                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
+                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png"
+                                            style="width: 20px;" alt=""></button></td>
                             </tr>
                             <tr>
                                 <td class="nomeServidor"><a href="dashboardSuporteMicro.html">Pacs-04</a></td>
                                 <td><span class="status-badge normal">● Normal</span></td>
-                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 30%;">30%</div></div></td>
-                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 25%;">25%</div></div></td>
-                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 40%;">40%</div></div></td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 30%;">30%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 25%;">25%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 40%;">40%</div>
+                                    </div>
+                                </td>
                                 <td><span class="alerta-badge">0</span></td>
                                 <td>--:--:--</td>
-                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
+                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png"
+                                            style="width: 20px;" alt=""></button></td>
                             </tr>
                             <tr>
                                 <td class="nomeServidor"><a href="dashboardSuporteMicro.html">Pacs-05</a></td>
                                 <td><span class="status-badge normal">● Normal</span></td>
-                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 30%;">30%</div></div></td>
-                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 30%;">30%</div></div></td>
-                                <td><div class="barra-progresso"><div class="barra-uso normal" style="width: 20%;">20%</div></div></td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 30%;">30%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 30%;">30%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 20%;">20%</div>
+                                    </div>
+                                </td>
                                 <td><span class="alerta-badge">0</span></td>
                                 <td>--:--:--</td>
-                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png" style="width: 20px;" alt=""></button></td>
+                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png"
+                                            style="width: 20px;" alt=""></button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -185,41 +274,73 @@
     </section>
 
     <!-- Script principal -->
-  <script>
-   
-    window.onload = () => {
-      const canvas = document.getElementById('pizzaResumo');
-      if (!canvas) {
-        console.error("Canvas 'pizzaResumo' não encontrado!");
-        return;
-      }
+    <script>
 
-      const ctxResumo = canvas.getContext('2d');
-      new Chart(ctxResumo, {
-        type: 'pie',
-        data: {
-          labels: ['Normais','Críticos'],
-          datasets: [{
-            data: [60, 40],
-            backgroundColor: ['#6ce5e8', '#ff4d4d'],
-            borderWidth: 1
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: ctx => `${ctx.label}: ${ctx.raw}%`
-              }
+        const ctx = document.getElementById('graficoPizza').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['30% Alerta', '70% Normal',],
+                datasets: [{
+                    data: [30, 70],
+                    backgroundColor: ['#f75454', '#32b9cd'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: false,
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Distribuição alertas',
+                        font: {
+                            size: 17,
+                            weight: 'bold',
+                        },
+                        color: 'black'
+
+                    }
+                }
             }
-          }
-        }
-      });
-    };
-  </script>
+        });
+
+        window.onload = () => {
+            const canvas = document.getElementById('pizzaResumo');
+            if (!canvas) {
+                console.error("Canvas 'pizzaResumo' não encontrado!");
+                return;
+            }
+
+            const ctxResumo = canvas.getContext('2d');
+            new Chart(ctxResumo, {
+                type: 'pie',
+                data: {
+                    labels: ['Normais', 'Críticos'],
+                    datasets: [{
+                        data: [60, 40],
+                        backgroundColor: ['#6ce5e8', '#ff4d4d'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => `${ctx.label}: ${ctx.raw}%`
+                            }
+                        }
+                    }
+                }
+            });
+        };
+    </script>
 
 </body>
+
 </html>
