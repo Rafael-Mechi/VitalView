@@ -331,7 +331,7 @@ a:hover {
 
 /* KPIs */
 .wrap {
-  background: #f6f7f9;
+  background: #ececec;
   margin: 10px auto; 
   padding: 20px;
   width: 95%;
@@ -546,6 +546,15 @@ th, td {
 
 tr:nth-child(even) {
   background: #f8f8f8;
+}
+
+.nomeServidor {
+    text-decoration: underline;
+}
+
+.nomeServidor a:hover {
+    transition: 0.2s;
+    color: #32b9cd;
 }
 
 .status-badge {
