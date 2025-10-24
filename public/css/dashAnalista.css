@@ -228,10 +228,8 @@ header {
 .sessao-lateral-esquerda {
   width: 35%;
   height: 100%;
-  /* background-color: rgb(119, 197, 119); */
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   align-items: center;
 }
 
@@ -248,7 +246,7 @@ header {
 
 .sessao-lateral-direita-itens {
   width: 100%;
-  height: 31%;
+  height: 50%;
   padding: 10px;
   border-radius: 10px;
   background-color: #ECECEC;
@@ -265,7 +263,7 @@ header {
   background-color: #ECECEC;
   box-shadow: var(--shadow);
   padding: 10px;
-  height: 90%;
+  height: 98%;
   align-items: center;
   justify-content: space-around;
   flex-direction: column;
@@ -583,7 +581,8 @@ img {
   border-radius: 10px;
   font-size: 20px;
   height: 50%;
-  margin-bottom: 5%;
+  margin-bottom: 4%;
+  margin-top: 2%;
 }
 
 .server-info:hover{
@@ -858,6 +857,10 @@ h3 {
   --chip: #f3f4f6;
   --shadow: 0 3px 6px rgba(0, 0, 0, 0.144);
   --radius: 16px;
+}
+
+.azul{
+  color: #32b9cd;
 }
 
 h3 {
