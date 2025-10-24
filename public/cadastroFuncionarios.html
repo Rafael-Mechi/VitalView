@@ -9,7 +9,6 @@
   <title>VitalView</title>
 
   <script src="js/sessao.js"></script>
-  <script src="js/cadastro.js"></script>
   <link rel="stylesheet" href="./css/cadastroFuncionarios.css" />
   <link rel="icon" href="./assets/LogoVitalView.png" />
   <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -142,7 +141,6 @@
         <div class="form-actions">
           <button type="reset" class="btn cancel" onclick="limparFormulario()">Limpar</button>
           <button type="submit" class="btn save" onclick="cadastrar()">Cadastrar</button>
-          <button type="button" class="btn" onclick="window.location.href='IGOR.html'">Igor</button>
         </div>
       </div>
     </div>
@@ -157,201 +155,123 @@
     protegerPagina(['Administrador']);
     aplicarCargoNaUI();
 
-    function limparFormulario() {
-      const campos = document.querySelectorAll('.container-funcionario input, .container-funcionario select');
 
-      campos.forEach(campo => {
-        campo.value = '';
+    document.addEventListener("DOMContentLoaded", () => {
+      const cargoSelect = document.getElementById("cargo_input");
+
+
+      const cargos = [
+        { nome: "Analista", id: 1 },
+        { nome: "Técnico", id: 2 },
+        { nome: "Administrador", id: 3 }
+      ];
+
+      cargos.forEach(cargo => {
+        const opt = document.createElement("option");
+        opt.value = cargo.id;
+        opt.textContent = cargo.nome;
+        cargoSelect.appendChild(opt);
       });
-    }
-
-
-    async function fetchJsonOrThrow(url, options) {
-      const res = await fetch(url, options);
-      const text = await res.text();
-
-      if (!res.ok) {
-        console.error(`Erro HTTP ${res.status} em ${url}:`, text);
-        throw new Error(`(${res.status}) Falha ao acessar ${url}`);
-      }
-
-      try {
-        return JSON.parse(text);
-      } catch (e) {
-        console.error(`Resposta não-JSON de ${url}:`, text);
-        throw new Error(`Resposta inválida do servidor em ${url} (esperava JSON)`);
-      }
-    }
-
-    function sumirMensagem() {
-      const cardErro = document.getElementById('cardErro');
-      if (cardErro) cardErro.style.display = 'none';
-    }
-
-
-    let listaEmpresasCadastradas = [];
-    let listaHospitais = [];
-    let listaCargos = [];
-
-
-    function listarEmpresas() {
-
-      fetchJsonOrThrow('/usuarios/autenticar')
-        .then(empresas => {
-          listaEmpresasCadastradas = Array.isArray(empresas) ? empresas : [];
-
-        })
-        .catch(err => {
-          console.error(err);
-          mostrarErro('Erro ao carregar empresas.');
-        });
-    }
-
-    function carregarHospitais() {
-
-      fetchJsonOrThrow('/usuarios/procurarHospitais')
-        .then(lista => {
-          listaHospitais = Array.isArray(lista) ? lista : [];
-          const sel = document.getElementById('hospital_input');
-          if (!sel) return;
-          sel.innerHTML = '<option value="">Escolha uma opção</option>';
-          listaHospitais.forEach(h => {
-            sel.innerHTML += `<option value="${h.idhospital}">${h.nome}</option>`;
-          });
-        })
-        .catch(err => {
-          console.error(err);
-          mostrarErro('Erro ao carregar hospitais.');
-        });
-    }
-
-    function carregarCargos() {
-
-      fetchJsonOrThrow('/usuarios/procurarCargos')
-        .then(lista => {
-          listaCargos = Array.isArray(lista) ? lista : [];
-          const sel = document.getElementById('cargo_input');
-          if (!sel) return;
-          sel.innerHTML = '<option value="">Escolha uma opção</option>';
-          listaCargos.forEach(c => {
-            sel.innerHTML += `<option value="${c.idcargo}">${c.nome}</option>`;
-          });
-        })
-        .catch(err => {
-          console.error(err);
-          mostrarErro('Erro ao carregar cargos.');
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-      carregarHospitais();
-      carregarCargos();
     });
 
-    // Cadastro 
-    async function cadastrar() {
 
-      if (typeof mostrarAguardar === 'function') mostrarAguardar();
-
-      const nomeVar = (document.getElementById('nome_input')?.value || '').trim();
-      const emailVar = (document.getElementById('email_input')?.value || '').trim();
-      const senhaVar = (document.getElementById('senha_input')?.value || '').trim();
-      const confirmacaoVar = (document.getElementById('confirmacao_senha_input')?.value || '').trim();
-      const cpfVar = (document.getElementById('cpf_input')?.value || '').trim();
-      const telefoneVar = (document.getElementById('telefone_input')?.value || '').trim();
-      const codigoVar = (document.getElementById('codigo_input')?.value || '').trim();
-      const hospitalVar = (document.getElementById('hospital_input')?.value || '').trim();
-      const cargoVar = (document.getElementById('cargo_input')?.value || '').trim();
-
-      const cardErro = document.getElementById('cardErro');
-      const mensagem_erro = document.getElementById('mensagem_erro');
-
-
-      function falha(msg) {
-        if (cardErro) cardErro.style.display = 'block';
-        if (mensagem_erro) mensagem_erro.innerHTML = msg;
-        if (typeof esconderAguardar === 'function') esconderAguardar();
-        setTimeout(sumirMensagem, 5000);
-        return false;
-      }
-
-      if (!nomeVar || !emailVar || !senhaVar || !confirmacaoVar || !cpfVar || !codigoVar || !hospitalVar || !cargoVar) {
-        return falha('(Preencha todos os campos)');
-      } else if (nomeVar.length <= 1) {
-        return falha('(Digite um nome válido)');
-      } else if (!emailVar.includes('@') || !emailVar.includes('.')) {
-        return falha('(E-mail deve conter @ e .)');
-      } else if (senhaVar.length <= 3) {
-        return falha('(Senha tem que ser maior que 3 dígitos)');
-      } else if (cpfVar.length !== 11 || !/^\d{11}$/.test(cpfVar)) {
-        return falha('(CPF deve ter 11 dígitos numéricos)');
-      } else if (confirmacaoVar !== senhaVar) {
-        return falha('(Senhas estão diferentes)');
-      }
-
-
-      let idEmpresaVincular = null;
-      if (listaEmpresasCadastradas.length > 0) {
-        const empresa = listaEmpresasCadastradas.find(e => String(e.codigo_ativacao) === String(codigoVar));
-        if (!empresa) {
-          return falha('(Código de ativação inválido)');
-        }
-        idEmpresaVincular = empresa.id;
-      } else {
-
-        console.warn('listaEmpresasCadastradas vazia — validando no backend.');
-      }
-
-      try {
-
-        const payload = {
-          nome: nomeVar,
-          email: emailVar,
-          senha: senhaVar,
-          cpf: cpfVar,
-          telefone: telefoneVar,
-          codigo: codigoVar,
-          hospital: hospitalVar,
-          cargo: cargoVar,
-          idEmpresaVincular
-
-        };
-
-        const res = await fetch('/usuarios/cadastrar', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        const texto = await res.text();
-
-        if (!res.ok) {
-          console.error('Erro no cadastro:', texto);
-          throw new Error('Houve um erro ao tentar realizar o cadastro!');
-        }
-
-
-        try { JSON.parse(texto); } catch (_) { }
-
-        if (cardErro) cardErro.style.display = 'block';
-        if (mensagem_erro) {
-          mensagem_erro.innerHTML = 'Cadastro realizado com sucesso! Redirecionando para tela de Login...';
-        }
-
-        setTimeout(() => { window.location = 'login.html'; }, 2000);
-
-
-        if (typeof limparFormulario === 'function') limparFormulario();
-
-      } catch (err) {
-        console.error(err);
-        mostrarErro(err.message || 'Erro ao cadastrar.');
-      } finally {
-        if (typeof esconderAguardar === 'function') esconderAguardar();
-      }
-
-      return false;
+    function limparFormulario() {
+      nome_input.value = "";
+      cpf_input.value = "";
+      telefone_input.value = "";
+      email_input.value = "";
+      senha_input.value = "";
+      confirmacao_senha_input.value = "";
+      cargo_input.value = "";
+      div_resposta.innerHTML = "";
     }
+
+    function mostrar() {
+
+    }
+
+
+    function cadastrar() {
+
+      const nome = nome_input.value.trim();
+      const cpf = cpf_input.value.trim();
+      const telefone = telefone_input.value.trim();
+      const email = email_input.value.trim();
+      const senha = senha_input.value;
+      const confirmacaoSenha = confirmacao_senha_input.value;
+      const fkCargo = cargo_input.value;
+
+
+      const fkHospital = sessionStorage.FK_HOSPITAL;
+
+      if (!fkHospital) {
+        div_resposta.innerHTML = `
+      <span style="color: red; font-weight: 600;">
+        Erro: fkHospital não encontrada na sessão. Faça login novamente como Administrador.
+      </span>`;
+        return;
+      }
+
+      if (!nome || !cpf || !telefone || !email || !senha || !confirmacaoSenha || !fkCargo) {
+        div_resposta.innerHTML = `
+      <span style="color: red; font-weight: 600;">
+        Preencha todos os campos.
+      </span>`;
+        return;
+      }
+
+      if (senha !== confirmacaoSenha) {
+        div_resposta.innerHTML = `
+      <span style="color: red; font-weight: 600;">
+        Senha e confirmação não conferem.
+      </span>`;
+        return;
+      }
+
+
+      const novoFuncionario = {
+        nome: nome,
+        cpf: cpf,
+        telefone: telefone,
+        email: email,
+        senha: senha,
+        fkCargo: Number(fkCargo),
+        fkHospital: Number(fkHospital)
+      };
+
+
+      fetch("/usuarios/cadastrar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(novoFuncionario)
+      })
+        .then(resposta => {
+          if (resposta.ok) {
+            return resposta.json();
+          } else {
+            return resposta.text().then(texto => {
+              throw new Error(texto);
+            });
+          }
+        })
+        .then(json => {
+
+          alert("Funcionário cadastrado com sucesso!")
+
+          limparFormulario();
+        })
+        .catch(erro => {
+
+          console.error("Erro no cadastro:", erro);
+          div_resposta.innerHTML = `
+        <span style="color: red; font-weight: 600; text-align: center;">
+          Erro ao cadastrar funcionário:<br>${erro.message}
+        </span>`;
+        });
+    }
+
   </script>
 
 </body>

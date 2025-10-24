@@ -29,7 +29,7 @@ function entrar() {
         })
         .then(json => {
             sessionStorage.EMAIL_USUARIO = json.email;
-            sessionStorage.NOME_USUARIO = json.nome
+            sessionStorage.NOME_USUARIO = json.nome;
             sessionStorage.FK_HOSPITAL = json.fkHospital;
             sessionStorage.CARGO_USUARIO = json.cargo;
 
