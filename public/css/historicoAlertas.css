@@ -224,7 +224,7 @@ a:hover {
 
 .conteudo {
     padding: 20px;
-    background: #f4f6f9;
+    background: #c5c5c5;
     min-height: calc(100vh - 80px); /* ajusta conforme altura do header */
 }
 
