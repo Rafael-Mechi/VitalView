@@ -238,8 +238,11 @@ header {
   justify-content: space-around;
   align-items: center;
   margin-bottom: 10px;
-
   box-shadow: var(--shadow);
+}
+
+#sessao-disco{
+  padding: 10px;
 }
 
 .sessao-lateral-esquerda-itens {
@@ -271,6 +274,10 @@ img {
   height: 77%;
   border-radius: 5px;
   margin-bottom: 20px;
+}
+
+.mini {
+  margin-left: 2%;
 }
 
 
