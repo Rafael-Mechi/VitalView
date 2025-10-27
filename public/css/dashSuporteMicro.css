@@ -233,7 +233,7 @@ header {
   height: 31%;
   padding: 10px;
   border-radius: 10px;
-  background-color: #ECECEC;
+  background-color: #c5c5c5;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -244,7 +244,7 @@ header {
 
 .sessao-lateral-esquerda-itens {
   border-radius: 10px;
-  background-color: #ECECEC;
+  background-color: #c5c5c5;
   box-shadow: var(--shadow);
 }
 
@@ -272,6 +272,7 @@ img {
   border-radius: 5px;
   margin-bottom: 20px;
 }
+
 
 
 /* -------------------------------------------------- */
