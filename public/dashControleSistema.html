@@ -23,6 +23,7 @@
                 </div>
 
                 <div class="icones_baixo">
+                    <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador" style="width: 28px; height: 28px;">
                     <img src="./assets/dashboard-icons/calendar.svg" data-role="Analista,Técnico,Administrador">
                     <img src="./assets/dashboard-icons/users.svg" data-role="Administrador">
                     <img src="./assets/dashboard-icons/hard-drive.svg" data-role="Técnico,Administrador">
@@ -57,6 +58,9 @@
 
             <div class="menu_baixo">
                 <h3 class="title_menu">Outras Opções</h3>
+                <li style="display: flex; align-items: center;" data-role="Administrador"><img
+                        src="./assets/dashboard-icons/gerenciar-usuarios.png" style="width: 20px; margin-right: 4px;"><a
+                        href="dashControleSistema.html">Gerenciar usuários</a></li>
                 <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
                         src="./assets/dashboard-icons/calendar.svg" style="width: 20px; margin-right: 4px;"><a
                         href="historicoAlertas.html">Histórico de Alertas</a></li>
@@ -133,7 +137,7 @@
                             <option value="cargo">cargo</option>
                             <option value="data_criacao">data de criação</option>
                         </select>
-                        <button class="btn-adicionar">Adicionar usuário +</button>
+                        <button class="btn-adicionar" title="Adicionar novo usuário" onclick="irTelaCadastroFuncionario()"><img src="assets/dashboard-icons/user-plus-svgrepo-com.png" style="height: 15px; display: flex; justify-content: center; align-items: center;" alt="Adicionar novo usuário"></button>
                     </div>
                 </div>
 
@@ -340,6 +344,11 @@
     </section>
 
     <script>
+
+        function irTelaCadastroFuncionario(){
+            window.location.href = "cadastroFuncionarios.html"; 
+        }
+
         const infoBtns = document.querySelectorAll('.infoBtn');
         const modals = document.querySelectorAll('.modal');
         const closeBtns = document.querySelectorAll('.closeBtn');
