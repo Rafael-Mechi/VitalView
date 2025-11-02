@@ -878,7 +878,6 @@ h3 {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 1vh;
   padding: 20px 30px;
   background-color: #c5c5c5;
   border-radius: 10px;
@@ -891,7 +890,7 @@ h3 {
 
 .grade-botoes {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
   list-style: none;
   padding: 0;
