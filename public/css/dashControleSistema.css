@@ -1,0 +1,513 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;600;700&display=swap');
+
+@font-face {
+    font-family: 'Lato';
+    src: url(../fonts/Lato/Lato-Regular.ttf) format('truetype');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* -------------------------------------------------- */
+/*                 BODY E ESTRUTURA BASE              */
+/* -------------------------------------------------- */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: 'Barlow', 'Segoe UI', Tahoma, sans-serif;
+    overflow-x: hidden;
+    color: #333;
+    background-color: #c5c5c5;
+    display: flex;
+}
+
+/* -------------------------------------------------- */
+/*                     CONTAINER                      */
+/* -------------------------------------------------- */
+.container {
+    margin-top: 10px;
+    margin-left: 60px;
+    margin-right: 10px;
+    width: 98%;
+    height: 97%;
+    background-color: #ffffff;
+    border-radius: 23px;
+    height: fit-content;
+    padding-bottom: 20px;
+}
+
+/* -------------------------------------------------- */
+/*                    NAV DASHBOARD                   */
+/* -------------------------------------------------- */
+.nav-dash {
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+}
+
+/* -------------------------------------------------- */
+/*                      LOGO                          */
+/* -------------------------------------------------- */
+.secao_logo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo {
+    width: 32px;
+    height: auto;
+    object-fit: cover;
+}
+
+.titulo_header {
+    color: #d65e5f;
+    font-size: 28px;
+}
+
+/* -------------------------------------------------- */
+/*                   MENU HAMBÚRGUER                  */
+/* -------------------------------------------------- */
+.menu {
+    position: relative;
+    margin-bottom: 22px;
+}
+
+.menu .hamburguer {
+    width: 45px;
+    height: 100%;
+    position: absolute;
+    cursor: pointer;
+    z-index: 10001;
+}
+
+.menu .hamburguer span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 0.6rem;
+    background-color: #ffffff;
+    border-radius: 0.2rem;
+    transition: all 0.2s ease-in-out;
+    border-radius: 15px;
+    margin-top: 8px;
+}
+
+.menu .check_hamburguer {
+    position: absolute;
+    width: 45px;
+    height: 100vh;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10002;
+}
+
+.menu .check_hamburguer:checked~.hamburguer span:nth-child(1) {
+    transform-origin: 0% 0%;
+    transform: scaleX(1.35) translateX(-60px);
+
+}
+
+.menu .check_hamburguer:checked~.hamburguer span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu .check_hamburguer:checked~.hamburguer span:nth-child(3) {
+    transform-origin: 0% 100%;
+    transform: scaleX(1.35) translateX(-60px);
+}
+
+.menu .title_hamb {
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    margin-left: 20px;
+}
+
+.menu .img_hamb {
+    max-width: 40px;
+}
+
+.menu .hamb_nome {
+    color: #df2525;
+    margin-left: 15px;
+    margin-top: 10px;
+}
+
+.menu ul {
+    list-style: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 230px;
+    height: 100vh;
+    background: linear-gradient(white);
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.26);
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    z-index: 10000;
+    border-radius: 40px;
+    margin-left: 10px;
+}
+
+.menu .check_hamburguer:checked~ul {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.menu ul li {
+    display: flex;
+    padding: 0.7rem 1.2rem;
+    transition: background 0.2s;
+}
+
+.menu ul li:hover {
+    background: rgba(11, 11, 11, 0.1);
+}
+
+.menu ul li a {
+    font-size: 1.1rem;
+    color: #000;
+}
+
+.title_menu {
+    margin-left: 32px;
+    margin-bottom: 20px;
+    color: #505050;
+}
+
+.menu_topo {
+    margin-top: 40px;
+}
+
+.menu_baixo {
+    margin-top: 15%;
+}
+
+.icones_topo {
+    padding-top: 5px;
+    margin-bottom: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.icones_topo img {
+    margin-bottom: 10px;
+}
+
+.icones_baixo {
+    margin-top: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.icones_baixo img {
+    margin: 10px;
+}
+
+.pagina-ativa {
+    background-color: #e6e6e6;
+}
+
+/* -------------------------------------------------- */
+/*                     LINKS E TEXTO                  */
+/* -------------------------------------------------- */
+a {
+    color: black;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+a:hover {
+    color: #e74c3c;
+}
+
+/* -------------------------------------------------- */
+/*                 CONTAINER PRINCIPAL                */
+/* -------------------------------------------------- */
+.container-principal {
+    width: 95%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #c5c5c5;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+/* -------------------------------------------------- */
+/*                    KPIs                            */
+/* -------------------------------------------------- */
+.wrap {
+    background: #c5c5c5;
+    margin: 0px auto;
+    padding: 20px;
+    width: 95%;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 12px;
+}
+
+.kpis {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+.kpi {
+    flex: 1 1 250px;
+    width: 90%;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.144);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    height: 20vh;
+    justify-content: center;
+}
+
+.kpi .normal {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #2a2a2a;
+}
+
+.kpi .value {
+    font-weight: 800;
+    font-size: 28px;
+    color: #e62323;
+}
+
+.kpi .value-serv {
+    font-weight: 800;
+    font-size: 28px;
+    color: #e62323;
+}
+
+.kpi .sub {
+    color: #6b7280;
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+/* -------------------------------------------------- */
+/*                    GRÁFICOS                        */
+/* -------------------------------------------------- */
+.container-graficos {
+    display: flex;
+    gap: 20px;
+    background-color: #c5c5c5c5;
+    border-radius: 10px;
+}
+
+.grafico-container {
+    flex: 1;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.144);
+    padding: 16px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.grafico-container canvas {
+    flex: 1;
+}
+
+.div-alta-produtividade {
+    flex: 1;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.144);
+    padding: 16px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.div-alta-produtividade h1 {
+    color: #2a2a2a;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* -------------------------------------------------- */
+/*                    TABELAS                         */
+/* -------------------------------------------------- */
+.tabela-container {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.144);
+}
+
+.tabela-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.tabela-header h2 {
+    color: #2a2a2a;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.tabela-acoes {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.filtro-select {
+    background: #e2e2e2;
+    padding: 8px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: none;
+}
+
+.btn-adicionar {
+    background: #0038ff;
+    color: white;
+    padding: 8px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-adicionar:hover {
+    background: #002fcc;
+    transition: 1.05px;
+    color: white;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.tabelinha {
+    border-radius: 10px;
+}
+
+thead {
+    background: #f1f1f1;
+}
+
+th {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    background-color: #1f2937;
+    color: white;
+}
+
+#th-sup-esquerdo {
+    border-top-left-radius: 10px;
+}
+
+#th-sup-direito {
+    border-top-right-radius: 10px;
+}
+
+td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.acao-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.acao-icons span {
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* -------------------------------------------------- */
+/*                 SEÇÃO ALERTAS E GRÁFICO            */
+/* -------------------------------------------------- */
+.secao-alertas-grafico {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.tabela-alertas {
+    flex: 2;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.144);
+    padding: 16px;
+}
+
+.grafico-alertas {
+    flex: 1;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.144);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.grafico-alertas canvas {
+    flex: 1;
+}
+
+/* -------------------------------------------------- */
+/*                 RESPONSIVIDADE                     */
+/* -------------------------------------------------- */
+@media (max-width: 900px) {
+    .container-graficos {
+        flex-direction: column;
+    }
+
+    .grafico-container,
+    .div-alta-produtividade {
+        height: 250px;
+    }
+
+    .secao-alertas-grafico {
+        flex-direction: column;
+    }
+}

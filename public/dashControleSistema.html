@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle do Sistema</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="css/dashControleSistema.css">
+</head>
+
+<body>
+    <nav class="menu">
+        <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
+
+        <section class="hamburguer">
+            <span class="menu_lateral">
+                <div class="icones_topo">
+                    <img class="img_hamb" src="assets/LogoVitalView.png">
+                    <img src="./assets/dashboard-icons/activity.svg" data-role="Analista,Administrador">
+                    <img src="./assets/dashboard-icons/bar-chart.svg" data-role="Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/layout.svg" data-role="Técnico,Administrador">
+                </div>
+
+                <div class="icones_baixo">
+                    <img src="./assets/dashboard-icons/calendar.svg" data-role="Analista,Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/users.svg" data-role="Administrador">
+                    <img src="./assets/dashboard-icons/hard-drive.svg" data-role="Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/help-circle.svg" data-role="Analista,Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/log-out.svg" data-role="Analista,Técnico,Administrador">
+                </div>
+            </span>
+        </section>
+
+        <ul>
+            <div class="title_hamb">
+                <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
+                <h2 class="hamb_nome">VitalView</h2>
+            </div>
+            <div class="menu_topo">
+                <h3 class="title_menu">Dashboards</h3>
+                <li style="display: flex; align-items: center;" data-role="Analista,Administrador,Técnico">
+                    <img src="./assets/dashboard-icons/home.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="bemVindo.html">Home</a>
+                </li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Administrador" class="pagina-ativa">
+                    <img src="./assets/dashboard-icons/activity.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="dashboardAnalista.html">Dash Analista</a>
+                </li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/bar-chart.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="dashboardSuporteMacro.html">Dash Suporte Macro</a></li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/layout.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="dashboardSuporteMicro.html">Dash Suporte Micro</a></li>
+            </div>
+
+            <div class="menu_baixo">
+                <h3 class="title_menu">Outras Opções</h3>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/calendar.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="historicoAlertas.html">Histórico de Alertas</a></li>
+                <li style="display: flex; align-items: center;" data-role="Administrador"><img
+                        src="./assets/dashboard-icons/users.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="cadastroFuncionarios.html">Cadastro Funcionário</a></li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/hard-drive.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="cadastroServidores.html">Cadastro Servidores</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/help-circle.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1"
+                        target="_blank">Central de Serviço</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/log-out.svg" style="width: 20px; margin-right: 4px;"><a
+                        onclick="limparSessao()">Sair</a></li>
+            </div>
+        </ul>
+    </nav>
+
+    <section class="container">
+        <section class="nav-dash">
+            <section class="secao_logo">
+                <a href="dashboardAnalista.html">
+                    <img src="assets/LogoVitalView.png" alt="Logo VitalView" class="logo">
+                </a>
+            </section>
+            <section class="secao_logo">
+                <h1 class="titulo_header">VitalView</h1>
+            </section>
+        </section>
+
+        <div class="container-principal">
+            <div class="container-graficos">
+                <div class="grafico-container">
+                    <canvas id="chart-qtd-asa"></canvas>
+                </div>
+
+                <div class="grafico-container">
+                    <canvas id="chart-alertas-resolvidos"></canvas>
+                </div>
+
+                <div class="div-alta-produtividade">
+                    <h1 style="font-size: 35px; color: #32b9cd;">Alta produtividade &#9650;</h1>
+                </div>
+
+            </div>
+
+            <div class="tabela-container">
+                <div class="tabela-header">
+                    <h2>Usuários do Sistema</h2>
+                    <div class="tabela-acoes">
+                        <select class="filtro-select">
+                            <option value="">Filtrar por</option>
+                            <option value="id">id</option>
+                            <option value="nome">nome</option>
+                            <option value="cargo">cargo</option>
+                            <option value="data_criacao">data de criação</option>
+                        </select>
+                        <button class="btn-adicionar">Adicionar usuário +</button>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th id="th-sup-esquerdo">ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Cargo</th>
+                            <th>Data de criação</th>
+                            <th>Servidores criados</th>
+                            <th id="th-sup-direito">Ação</th>
+                        </tr>
+                    </thead>
+                        <tr>
+                            <td>1</td>
+                            <td>Rafael</td>
+                            <td>rafael@hsl.com</td>
+                            <td>Analista</td>
+                            <td>11/08/2025</td>
+                            <td>Nenhum</td>
+                            <td class="acao-icons">
+                                <span>&#9998;</span>
+                                <span>&#x1F5D1;</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Fritz</td>
+                            <td>fritz@hsl.com</td>
+                            <td>Suporte</td>
+                            <td>12/08/2025</td>
+                            <td>Srv1, Srv-prov, Srv2, Srv3</td>
+                            <td class="acao-icons">
+                                <span>&#9998;</span>
+                                <span>&#x1F5D1;</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Ana</td>
+                            <td>ana@hsl.com</td>
+                            <td>Suporte</td>
+                            <td>23/09/2025</td>
+                            <td>Nenhum</td>
+                            <td class="acao-icons">
+                                <span>&#9998;</span>
+                                <span>&#x1F5D1;</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Pedro</td>
+                            <td>pedro@hsl.com</td>
+                            <td>Analista</td>
+                            <td>25/09/2025</td>
+                            <td>Nenhum</td>
+                            <td class="acao-icons">
+                                <span>&#9998;</span>
+                                <span>&#x1F5D1;</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Carlos</td>
+                            <td>carlos@hsl.com</td>
+                            <td>Suporte</td>
+                            <td>01/10/2025</td>
+                            <td>Nenhum</td>
+                            <td class="acao-icons">
+                                <span>&#9998;</span>
+                                <span>&#x1F5D1;</span>
+                            </td>
+                        </tr>
+                </table>
+            </div>
+
+            <div class="secao-alertas-grafico">
+                <div class="tabela-alertas">
+                    <div class="tabela-header">
+                        <h2>Alertas Resolvidos</h2>
+                    </div>
+                    <div class="tabelinha">
+                        <table>
+                        <thead>
+                            <tr>
+                                <th id="th-sup-esquerdo">Cód</th>
+                                <th>Usuário</th>
+                                <th>Email</th>
+                                <th>Cargo</th>
+                                <th>Descrição</th>
+                                <th>Componente</th>
+                                <th>Uso</th>
+                                <th>Status</th>
+                                <th id="th-sup-direito">Data</th>
+                            </tr>
+                        </thead>
+                            <tr>
+                                <td>1</td>
+                                <td>Rafael</td>
+                                <td>rafael@hsl.com</td>
+                                <td>Analista</td>
+                                <td>Sobrecarga de cpu</td>
+                                <td>CPU</td>
+                                <td>98.2%</td>
+                                <td>Resolvido</td>
+                                <td>09/11/2025</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Ana</td>
+                                <td>ana@hsl.com</td>
+                                <td>Suporte</td>
+                                <td>Sobrecarga de RAM</td>
+                                <td>RAM</td>
+                                <td>92.8%</td>
+                                <td>Resolvido</td>
+                                <td>11/11/2025</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Carlos</td>
+                                <td>carlos@hsl.com</td>
+                                <td>Suporte</td>
+                                <td>Sobrecarga de disco</td>
+                                <td>Disco</td>
+                                <td>86.3%</td>
+                                <td>Resolvido</td>
+                                <td>01/12/2025</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Ana</td>
+                                <td>ana@hsl.com</td>
+                                <td>Suporte</td>
+                                <td>Sobrecarga de RAM</td>
+                                <td>RAM</td>
+                                <td>99.1%</td>
+                                <td>Resolvido</td>
+                                <td>03/12/2025</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Pedro</td>
+                                <td>pedro@hsl.com</td>
+                                <td>Analista</td>
+                                <td>Sobrecarga de CPU</td>
+                                <td>CPU</td>
+                                <td>89.5%</td>
+                                <td>Resolvido</td>
+                                <td>09/12/2025</td>
+                            </tr>
+                    </table>
+                    </div>
+                </div>
+
+                <div class="grafico-alertas">
+                    <canvas id="chart-usuarios-alertas"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const ctx1 = document.getElementById('chart-qtd-asa').getContext('2d');
+        new Chart(ctx1, {
+            type: 'doughnut',
+            data: {
+                labels: ['Analista', 'Suporte', 'Administrador'],
+                datasets: [{
+                    data: [2, 1, 3],
+                    backgroundColor: ['#f7b731', '#10ac84', '#9b59b6'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Quantidade de usuários',
+                        font: {
+                            size: 20,
+                            family: 'Barlow, sans-serif'
+                        },
+                        color: 'black'
+                    }
+                }
+            }
+        });
+
+        const ctx2 = document.getElementById('chart-alertas-resolvidos').getContext('2d');
+        new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: ['Pendente', 'Resolvido'],
+                datasets: [{
+                    data: [30, 32],
+                    backgroundColor: ['#f75454', '#32b9cd']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Alertas Resolvidos',
+                        font: {
+                            size: 20,
+                            family: 'Barlow, sans-serif'
+                        },
+                        color: 'black',
+                    }
+                }
+            }
+        });
+
+        const ctx3 = document.getElementById('chart-usuarios-alertas').getContext('2d');
+        new Chart(ctx3, {
+            type: 'bar',
+            data: {
+                labels: ['Rafael', 'Fritz', 'Carlos', 'Ana', 'Pedro'],
+                datasets: [{
+                    label: 'Alertas Resolvidos',
+                    data: [15, 12, 8, 6, 4],
+                    backgroundColor: ['#f75454', '#32b9cd', '#ffd60a', '#10b981', '#8b5cf6'],
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    borderSkipped: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Cinco usuários com mais alertas resolvidos',
+                        font: {
+                            size: 16,
+                            weight: 'bold',
+                        },
+                        color: 'black',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Quantidade de Alertas',
+                            color: 'black'
+                        },
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Usuários',
+                            color: 'black'
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
