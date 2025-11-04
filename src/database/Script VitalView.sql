@@ -165,48 +165,14 @@ VALUES
 ('2025-11-04 10:30:00', 92.7, 1),  -- CPU do servidor 1
 ('2025-11-04 10:45:00', 88.3, 3);  -- Disco do servidor 1
 
+INSERT INTO alerta (data_alerta, registro, fkComponente)
+VALUES
+('2025-11-04 14:35:00', 72.5, 16),
+('2025-11-04 15:10:00', 88.3, 17),
+('2025-11-04 15:10:00', 88.3, 19);
 
-select * from usuario;
-select * from servidores;
-select * from hospital;
-select * from cargo;
-select * from tipoComponente;
-select * from componentes;
-select * from alerta;
-
-SELECT 
-  u.idUsuario AS ID,
-  u.nome AS Nome,
-  u.email AS Email,
-  c.nome AS Cargo,
-  u.data_criacao AS 'Data de criação',
-  COALESCE(GROUP_CONCAT(s.hostname SEPARATOR ', '), 'Nenhum') AS 'Servidores criados'
-FROM usuario u
-INNER JOIN hospital h ON h.idHospital = u.fkHospital
-LEFT JOIN servidores s ON s.fkUsuario = u.idUsuario
-INNER JOIN cargo c ON c.idcargo = u.fkcargo
-WHERE idHospital = 2
-GROUP BY u.idUsuario;
-
-SELECT 
-  c.nome AS Cargo,
-  COUNT(u.idUsuario) AS 'Quantidade de usuários'
-FROM cargo c
-LEFT JOIN usuario u ON u.fkCargo = c.idcargo
-WHERE u.fkHospital = 2
-GROUP BY c.idcargo, c.nome;
-
-
-SELECT 
-    s.hostname AS Servidor,
-    a.data_alerta AS 'Data e hora do alerta',
-    t.nome AS Componente,
-    a.registro AS 'Registro (%)'
-FROM alerta a
-INNER JOIN componentes c ON a.fkComponente = c.idComponente
-INNER JOIN tipoComponente t ON c.fkTipo = t.idTipo
-INNER JOIN servidores s ON c.fkServidor = s.idServidor
-ORDER BY a.data_alerta DESC;
-
-
--- drop database vitalview;
+insert into componentes(fkTipo, fkServidor, limite) values 
+('1', '3', 99.0),
+('2', '3', 89.0),
+('3', '3', 80.0),
+('1', '4', 96.0);
