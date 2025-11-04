@@ -26,7 +26,8 @@
                 </div>
 
                 <div class="icones_baixo">
-                    <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador" style="width: 28px; height: 28px;">
+                    <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador"
+                        style="width: 28px; height: 28px;">
                     <img src="./assets/dashboard-icons/calendar.svg" data-role="Analista,Técnico,Administrador">
                     <img src="./assets/dashboard-icons/users.svg" data-role="Administrador">
                     <img src="./assets/dashboard-icons/hard-drive.svg" data-role="Técnico,Administrador">
@@ -102,13 +103,18 @@
             <section class="kpis">
                 <div class="kpi">
                     <p style="font-weight: bold;">Servidores em Risco</p>
-                    <div class="value">4<span>/5</span></div>
+                    <div class="value">3<span>/5</span></div>
                     <p class="sub">Monitoramento ativo</p>
                 </div>
                 <div class="kpi">
                     <p style="font-weight: bold;">Alertas</p>
-                    <div class="value-serv">21</div>
-                    <p class="sub">Últimas ocorrências</p>
+                    <div class="value-serv">
+                        23
+                        <span class="tendencia aumento">▲+5</span>
+                        <!-- ou -->
+                        <!-- <span class="tendencia queda">▼</span> -->
+                    </div>
+                    <p class="sub">Últimas ocorrências (nas últimas 24 horas)</p>
                 </div>
 
                 <div class="kpi" id="kpi-uso-disco">
@@ -155,7 +161,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="nomeServidor"><a href="dashboardSuporteMicro.html">Pacs-01</a></td>
+                                <td class="nomeServidor"><a>Pacs-01</a></td>
                                 <td><span class="status-badge critico">● Crítico</span></td>
                                 <td>
                                     <div class="barra-progresso">
@@ -176,11 +182,19 @@
                                 </td>
                                 <td><span class="alerta-badge">12</span></td>
                                 <td>00:16:31</td>
-                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png"
-                                            style="width: 20px;" alt=""></button></td>
+                                <td>
+                                    <div class="btn-grupo">
+                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
+                                                style="width: 20px;" alt="" href="dashboardSuporteMicro.html"></button>
+                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
+                                                style="width: 20px;" alt=""></button>
+                                        <button class="btn-network" ><img src="assets/imgs/rede.png"
+                                                style="width: 20px;" alt=""></button>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <td class="nomeServidor"><a href="dashboardSuporteMicro.html">Pacs-02</a></td>
+                                <td class="nomeServidor"><a>Pacs-02</a></td>
                                 <td><span class="status-badge critico">● Crítico</span></td>
                                 <td>
                                     <div class="barra-progresso">
@@ -199,11 +213,19 @@
                                 </td>
                                 <td><span class="alerta-badge">8</span></td>
                                 <td>00:10:05</td>
-                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png"
-                                            style="width: 20px;" alt=""></button></td>
+                                <td>
+                                    <div class="btn-grupo">
+                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
+                                                style="width: 20px;" alt="" href="dashboardSuporteMicro.html"></button>
+                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
+                                                style="width: 20px;" alt=""></button>
+                                        <button class="btn-network" ><img src="assets/imgs/rede.png"
+                                                style="width: 20px;" alt=""></button>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <td class="nomeServidor"><a href="dashboardSuporteMicro.html">Pacs-03</a></td>
+                                <td class="nomeServidor"><a>Pacs-03</a></td>
                                 <td><span class="status-badge critico">● Crítico</span></td>
                                 <td>
                                     <div class="barra-progresso">
@@ -222,11 +244,19 @@
                                 </td>
                                 <td><span class="alerta-badge">3</span></td>
                                 <td>00:05:22</td>
-                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png"
-                                            style="width: 20px;" alt=""></button></td>
+                                <td>
+                                    <div class="btn-grupo">
+                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
+                                                style="width: 20px;" alt="" href="dashboardSuporteMicro.html"></button>
+                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
+                                                style="width: 20px;" alt=""></button>
+                                        <button class="btn-network" ><img src="assets/imgs/rede.png"
+                                                style="width: 20px;" alt=""></button>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <td class="nomeServidor"><a href="dashboardSuporteMicro.html">Pacs-04</a></td>
+                                <td class="nomeServidor"><a>Pacs-04</a></td>
                                 <td><span class="status-badge normal">● Normal</span></td>
                                 <td>
                                     <div class="barra-progresso">
@@ -245,11 +275,19 @@
                                 </td>
                                 <td><span class="alerta-badge">0</span></td>
                                 <td>--:--:--</td>
-                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png"
-                                            style="width: 20px;" alt=""></button></td>
+                                <td>
+                                    <div class="btn-grupo">
+                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
+                                                style="width: 20px;" alt="" href="dashboardSuporteMicro.html"></button>
+                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
+                                                style="width: 20px;" alt=""></button>
+                                        <button class="btn-network" ><img src="assets/imgs/rede.png"
+                                                style="width: 20px;" alt=""></button>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <td class="nomeServidor"><a href="dashboardSuporteMicro.html">Pacs-05</a></td>
+                                <td class="nomeServidor"><a>Pacs-05</a></td>
                                 <td><span class="status-badge normal">● Normal</span></td>
                                 <td>
                                     <div class="barra-progresso">
@@ -268,8 +306,172 @@
                                 </td>
                                 <td><span class="alerta-badge">0</span></td>
                                 <td>--:--:--</td>
-                                <td><button class="btn-config"><img src="assets/imgs/engrenagem.png"
-                                            style="width: 20px;" alt=""></button></td>
+                                <td>
+                                    <div class="btn-grupo">
+                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
+                                                style="width: 20px;" alt="" href="dashboardSuporteMicro.html"></button>
+                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
+                                                style="width: 20px;" alt=""></button>
+                                        <button class="btn-network"><img src="assets/imgs/rede.png"
+                                                style="width: 20px;" alt=""></button>
+                                    </div>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="nomeServidor"><a>Pacs-06</a></td>
+                                <td><span class="status-badge normal">● Normal</span></td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 50%;">50%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 20%;">20%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 30%;">30%</div>
+                                    </div>
+                                </td>
+                                <td><span class="alerta-badge">0</span></td>
+                                <td>--:--:--</td>
+                                <td>
+                                    <div class="btn-grupo">
+                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
+                                                style="width: 20px;" alt="" href="dashboardSuporteMicro.html"></button>
+                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
+                                                style="width: 20px;" alt=""></button>
+                                        <button class="btn-network" ><img src="assets/imgs/rede.png"
+                                                style="width: 20px;" alt=""></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="nomeServidor"><a>Pacs-07</a></td>
+                                <td><span class="status-badge normal">● Normal</span></td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 20%;">20%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 42%;">42%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 35%;">35%</div>
+                                    </div>
+                                </td>
+                                <td><span class="alerta-badge">0</span></td>
+                                <td>--:--:--</td>
+                                <td>
+                                    <div class="btn-grupo">
+                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
+                                                style="width: 20px;" alt="" href="dashboardSuporteMicro.html"></button>
+                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
+                                                style="width: 20px;" alt=""></button>
+                                        <button class="btn-network" ><img src="assets/imgs/rede.png"
+                                                style="width: 20px;" alt=""></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="nomeServidor"><a>Pacs-08</a></td>
+                                <td><span class="status-badge normal">● Normal</span></td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 30%;">30%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 10%;">10%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 05%;">05%</div>
+                                    </div>
+                                </td>
+                                <td><span class="alerta-badge">0</span></td>
+                                <td>--:--:--</td>
+                                <td>
+                                    <div class="btn-grupo">
+                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
+                                                style="width: 20px;" alt="" href="dashboardSuporteMicro.html"></button>
+                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
+                                                style="width: 20px;" alt=""></button>
+                                        <button class="btn-network" ><img src="assets/imgs/rede.png"
+                                                style="width: 20px;" alt=""></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="nomeServidor"><a>Pacs-09</a></td>
+                                <td><span class="status-badge normal">● Normal</span></td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 45%;">45%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 28%;">28%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 50%;">50%</div>
+                                    </div>
+                                </td>
+                                <td><span class="alerta-badge">0</span></td>
+                                <td>--:--:--</td>
+                                <td>
+                                    <div class="btn-grupo">
+                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
+                                                style="width: 20px;" alt="" href="dashboardSuporteMicro.html"></button>
+                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
+                                                style="width: 20px;" alt=""></button>
+                                        <button class="btn-network" ><img src="assets/imgs/rede.png"
+                                                style="width: 20px;" alt=""></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="nomeServidor"><a>Pacs-10</a></td>
+                                <td><span class="status-badge normal">● Normal</span></td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 35%;">35%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 60%;">60%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="barra-progresso">
+                                        <div class="barra-uso normal" style="width: 20%;">20%</div>
+                                    </div>
+                                </td>
+                                <td><span class="alerta-badge">0</span></td>
+                                <td>--:--:--</td>
+                                <td>
+                                    <div class="btn-grupo">
+                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
+                                                style="width: 20px;" alt=""></button>
+                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
+                                                style="width: 20px;" alt=""></button>
+                                        <button class="btn-network" ><img src="assets/imgs/rede.png"
+                                                style="width: 20px;" alt=""></button>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

@@ -368,6 +368,7 @@ a:hover {
   text-align: center;
   height: 20vh;
   justify-content: center;
+  position: relative;
 }
 
 .kpi .normal {
@@ -387,6 +388,10 @@ a:hover {
   font-weight: 800;
   font-size: 28px;
   color: #e62323;
+  display: flex; /* Mudado para flex */
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+  gap: 8px; /* Espaço entre número e tendência */
 }
 
 .kpi .sub {
@@ -431,6 +436,50 @@ a:hover {
   padding: 10px;
   border: 1px solid #dcdcdc;
   height: 60vh;
+}
+
+.tabela-corpo {
+  height: calc(60vh - 120px);
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+/* Estilizar o scroll */
+.tabela-corpo::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tabela-corpo::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.tabela-corpo::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.tabela-corpo::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Fixa o cabeçalho durante o scroll */
+.tabela-corpo thead {
+  position: sticky;
+  top: 0;
+  background: #f1f1f1;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Ajuste para garantir que o cabeçalho da tabela fique visível */
+.tabela-corpo table thead tr th {
+  position: sticky;
+  top: 0;
+  background: #f1f1f1;
+  z-index: 11;
 }
 
 /* Cabeçalho */
@@ -589,11 +638,12 @@ tr:nth-child(even) {
 /* ===== BARRAS DE USO ===== */
 .barra-progresso {
   width: 100%;
-  height: 20px;
-  background: #e4edf3;
-  border-radius: 10px;
+  height: 28px;
+  background: #d1dbe6;
+  border-radius: 14px;
   overflow: hidden;
   position: relative;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); 
 }
 
 .barra-uso {
@@ -602,9 +652,11 @@ tr:nth-child(even) {
   color: white;
   justify-content: center;
   align-items: center;
-  padding-right: 5px;
-  font-size: 11px;
-  border-radius: 3px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 14px;
+  min-width: 50px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3); 
 }
 
 
@@ -629,16 +681,34 @@ tr:nth-child(even) {
   font-weight: 600;
 }
 
-.btn-config {
+.btn-server, .btn-disk, .btn-network {
   border: none;
   background: none;
   cursor: pointer;
   font-size: 18px;
+  margin: 0 2px; 
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
 
-.btn-config:hover {
-  transform: scale(1.2);
+.btn-server:hover, .btn-disk:hover, .btn-network:hover {
+  transform: scale(1.1);
+  background: rgba(0, 0, 0, 0.1);
   transition: 0.2s;
+}
+
+td:last-child {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Container dos botões - se quiser mais controle */
+.btn-grupo {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  width: 100%;
 }
 
 /* Header com Logo */
@@ -658,4 +728,23 @@ tr:nth-child(even) {
     font-size: 24px;
     font-weight: 600;
     margin: 0;
+}
+
+/* ========================================= */ 
+/*          INDICADOR DE TENDÊNCIA */ 
+/* ========================================= */
+.tendencia {
+  font-size: 16px;
+  font-weight: bold;
+  display: inline-flex; /* Mudado para inline-flex */
+  align-items: center; /* Alinha verticalmente */
+}
+
+.tendencia.aumento {
+  color: #e63946; /* vermelho = piorou */
+  font-size: 14px;
+}
+
+.tendencia.queda {
+  color: #2ecc71; /* verde = melhorou */
 }
