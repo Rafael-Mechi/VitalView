@@ -141,6 +141,14 @@ insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) val
 "admin", "333", "333", "admin@hsl.com", "123", 3, 2
 );
 
+insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
+"suporte2", "333", "333", "suporte2@hsl.com", "123", 2, 2
+);
+
+insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
+"analista", "333", "333", "analista@hsl.com", "123", 1, 2
+);
+
 insert into servidores(hostname, ip, localizacao, fkHospital, fkUsuario) values
 ('srv1', '192.0.0.1', 'Sala dos servidores', 1, 2);
 
@@ -160,6 +168,8 @@ select * from tipoComponente;
 select * from componentes;
 select * from alerta;
 
+update usuario set data_criacao = "2025-01-10" where idUsuario between 1 and 5;
+
 SELECT 
   u.idUsuario AS ID,
   u.nome AS Nome,
@@ -171,7 +181,17 @@ FROM usuario u
 INNER JOIN hospital h ON h.idHospital = u.fkHospital
 LEFT JOIN servidores s ON s.fkUsuario = u.idUsuario
 INNER JOIN cargo c ON c.idcargo = u.fkcargo
+WHERE idHospital = 2
 GROUP BY u.idUsuario;
+
+SELECT 
+  c.nome AS Cargo,
+  COUNT(u.idUsuario) AS 'Quantidade de usuários'
+FROM cargo c
+LEFT JOIN usuario u ON u.fkCargo = c.idcargo
+WHERE u.fkHospital = 2
+GROUP BY c.idcargo, c.nome;
+
 
 
 
