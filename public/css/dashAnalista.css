@@ -892,7 +892,7 @@ h3 {
 
 .mini .servers{
   display: grid;
-  grid-template-columns: 10% 72% 5% 0%;
+  grid-template-columns: 10% 72% 5%;
   column-gap: 8px;
   align-items: center;
 }
