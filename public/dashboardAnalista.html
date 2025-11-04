@@ -111,16 +111,15 @@
             <section class="sessao-lateral-esquerda">
                 <section class="sessao-lateral-esquerda-itens">
                     <div class="server-info" role="group" aria-labelledby="t1">
-                        <h3 id="t1" class="titulo-cartao">Top 5 Servidores com mais alertas <small>No [Período]</small>
+                        <h3 id="t1" class="titulo-cartao" style="text-align: center;">Top 5 Servidores com mais alertas <small>No [Período]</small>
                         </h3>
                         <div class="wrap-canvas">
                             <canvas id="topServidoresChart" aria-label="Top servidores" role="img"></canvas>
                         </div>
                     </div>
 
-                    <div class="server-info" role="group" aria-labelledby="t2">
-                        <h3 id="t1" class="titulo-cartao">Distribuição de alertas por componente
-                            <small>No [Período]</small>
+                    <div class="server-info" role="group" aria-labelledby="t2" style=" margin-top: 3%;">
+                        <h3 id="t1" class="titulo-cartao" style="text-align: center;">Distribuição de alertas por componente<small>No [Período]</small>
                         </h3>
                         <div class="wrap-canvas">
                             <canvas id="componentesChart" aria-label="Alertas por componente" role="img"></canvas>
@@ -130,7 +129,7 @@
 
             </section>
             <section class="sessao-lateral-direita">
-                <section class="sessao-lateral-direita-itens">
+                <section class="sessao-lateral-direita-itens" style="height: 30%;">
                     <section class="velocimetro card">
                         <h4 id="c1" style="text-align: center;">Disponibilidade <br><small>Durante o [Período]</small>
                         </h4>
@@ -138,10 +137,8 @@
                         <p class="legenda">Tempo que os servidores ficaram disponíveis</p>
                     </section>
                     <section class="velocimetro card">
-                        <h4 id="c2" style="text-align: center;">Servidor com mais alertas <br><small>Durante o
-                                [Período]</small></h4>
-                        <div class="valor grande vermelho">SERV-PACS</div>
-                        <p class="legenda">RAM – 27 Alertas</p>
+                        <h4 id="c2" style="text-align: center;">Quantidade total de alertas <br><small>Durante o [Período]</small></h4>
+                        <div class="valor grande vermelho" style="font-size: 40px; margin-bottom: 20px;">12</div>
                     </section>
                     <section class="velocimetro card" id="uptime">
                         <div class="uptime">
@@ -153,45 +150,39 @@
                     </section>
                 </section>
                 <section class="sessao-lateral-direita-itens" id="id_sessao_direita_2">
-                    <section class="row" id="grafico_disco">
-                        <div class="card card_grafico_disco" id="graficoPizza">
-                            <div aria-labelledby="qtd">
-                                <h4 id="qtd">Quantidade total de alertas <small>Durante o [Período]</small></h4>
-                                <h4 class="valor grande vermelho">12</h4>
-                            </div>
-                        </div>
-                    </section>
                     <section id="projecao">
                         <div aria-labelledby="lin">
-                            <h4 id="lin">Distribuição de alertas ao longo do ano</h4>
+                            <h4 id="lin" style="font-size: 20px; text-align: center;">Distribuição de alertas ao longo do ano</h4>
                             <canvas id="linhaAnoChart" aria-label="Distribuição no ano" role="img"
-                                style="height: 100px; width: 500px;"></canvas>
+                                style="height: 200%; width: 200%;"></canvas>
                         </div>
                     </section>
                 </section>
-                <section id="sessao-disco" class="sessao-lateral-direita-itens">
+                <section id="sessao-disco" class="sessao-lateral-direita-itens" style="height: 30%; padding-top: 10px; padding-bottom: 10px;">
                     <div class="mini">
-                        <h4>Projeção de Sobrecarga dos Discos</h4>
+                        <h4 style="font-size: 20px;">Projeção de Sobrecarga dos Discos</h4>
 
                         <div class="servers">
                             <a href="dashboardSuporteMicro.html" class="name">Servidor 1</a>
                             <div class="server">
-                                <div class="wrap-mini"><canvas id="mini1"></canvas></div>
+                            <div class="wrap-mini" style="margin-top: 15px;"><canvas id="mini1"></canvas></div>
                             </div>
-                            <a href="dashboardSuporteMicro.html" class="name">22/12/2025</a>
+                            <a href="dashboardSuporteMicro.html">90%</a>
+                            <a href="dashboardSuporteMicro.html">22/12/2025</a>
 
                             <a href="dashboardSuporteMicro.html" class="name">Servidor 2</a>
                             <div class="server">
                                 <div class="wrap-mini"><canvas id="mini2"></canvas></div>
                             </div>
-                            <a href="dashboardSuporteMicro.html" class="name">22/04/2026</a>
-
+                            <a href="dashboardSuporteMicro.html">40%</a>
+                            <a href="dashboardSuporteMicro.html">22/04/2026</a>
 
                             <a href="dashboardSuporteMicro.html" class="name">Servidor 3</a>
                             <div class="server">
                                 <div class="wrap-mini"><canvas id="mini3"></canvas></div>
                             </div>
-                            <a href="dashboardSuporteMicro.html" class="name">30/11/2026</a>
+                            <a href="dashboardSuporteMicro.html">20%</a>
+                            <a href="dashboardSuporteMicro.html">30/11/2026</a>
 
                         </div>
                     </div>

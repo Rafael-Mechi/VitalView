@@ -247,7 +247,8 @@ header {
 .sessao-lateral-direita-itens {
   width: 100%;
   height: 50%;
-  padding: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
   border-radius: 10px;
   background-color: #c5c5c5;
   display: flex;
@@ -283,7 +284,7 @@ header {
 
 .sessao-lateral-direita-itens {
   border-radius: 10px;
-  gap: 20px;
+  gap: 10px;
 }
 
 .sessao-lateral-direita-itens section,
@@ -326,19 +327,19 @@ img {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  width: 90%;
+  width: 100%;
   height: 80%;
+  padding: 10px;
 }
 
 #projecao{
   height: 90%;
-  width: 66%;
-  margin-right: 10px;
-  margin-left: 5px;
+  width: 100%;
   background-color: white;
   border-radius: 10px;
   display: flex;
   align-items: center;
+  padding: 10px;
 }
 
 #projecao:hover{
@@ -350,30 +351,6 @@ img {
 /* -------------------------------------------------- */
 /*                        CARDS                       */
 /* -------------------------------------------------- */
-
-#grafico_disco {
-  width: 31.5%;
-  height: 90%;
-}
-
-#graficoPizza > [aria-labelledby="qtd"] {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  margin-top: 5%;       
-}
-
-
-#graficoPizza h4 {
-  margin: 0 0 8px;     
-  text-align: center;  
-}
-
-
-#graficoPizza .valor {      
-  align-self: center;  
-  text-align: center;
-}
 
 .card_grafico_disco {
   flex: 1;
@@ -504,11 +481,6 @@ img {
   width: 80%;
 }
 
-#uptime{
-  margin-right: 10px;
-}
-
-
 .velocimetro {
   background-color: white;
 }
@@ -577,13 +549,11 @@ img {
 
 .server-info {
   background-color: white;
-  width: 90%;
   padding: 2% 5%;
   border-radius: 10px;
   font-size: 20px;
   height: 50%;
-  margin-bottom: 4%;
-  margin-top: 2%;
+  width: 100%;
 }
 
 .server-info:hover{
@@ -646,12 +616,6 @@ img {
   width: 90%;
   height: 90%;
 }
-
-h3 {
-  font-weight: bold;
-  font-size: 20px;
-}
-
 
 /* -------------------------------------------------- */
 /*               TABELAS DE PROJEÇÃO                  */
@@ -865,7 +829,6 @@ h3 {
 }
 
 h3 {
-  font-size: 1.4rem;
   font-weight: bold;
   margin-bottom: 8px;
   color: #2a2a2a;
@@ -877,7 +840,7 @@ h3 {
 }
 
 .bloco-projecao{ position:relative }
-.tabela-proj{ display:grid; gap:10px; margin-top:6px }
+.tabela-proj{ display:grid}
 .linha{ display:grid; grid-template-columns: 1fr 5fr 60px 120px; gap:10px; align-items:center }
 .srv{ font-weight:800; color:#5b6675 }
 .medidor{ height:12px; border-radius:10px; background:#f1f1f1; overflow:hidden }
@@ -929,30 +892,18 @@ h3 {
 
 .mini .servers{
   display: grid;
-  grid-template-columns: 100px 2fr 150px;
+  grid-template-columns: 10% 72% 5% 0%;
   column-gap: 8px;
-  row-gap: 8px; 
   align-items: center;
-  justify-content: start;
 }
 
 .mini .servers .name{
   display: inline-block;
-  margin: 0;
-  margin-left: 20px;
-}
-
-.mini .servers .server{
-  justify-self: start;  /* cola o gráfico ao lado do nome */
-  margin: 0;
+  margin-left: 5%;
 }
 
 .wrap-mini{
-  width: 500px;
+  width: 100%;
   height: 48px;
-}
-
-.wrap-mini canvas{
-  width: 100% !important;
-  height: 100% !important;
+  margin-top: 15px;
 }
