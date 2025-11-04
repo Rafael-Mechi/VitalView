@@ -352,7 +352,7 @@
 
         let idHospitalVar = sessionStorage.FK_HOSPITAL;
 
-        function carregarInformacoes(){
+        function carregarInformacoes() {
             buscarQtdUsuarios();
         }
 
@@ -379,48 +379,48 @@
 
         }
 
-        function gerarGraficoRosquinha(dados){
+        function gerarGraficoRosquinha(dados) {
             console.log("Iniciando plotagem do gráfico de preferências...");
 
             let labels = [];
             let valores = [];
 
-            for(let i = 0; i < dados.length; i++){
+            for (let i = 0; i < dados.length; i++) {
                 let registro = dados[i];
-                labels.push(registro.cargo);
-                valores.push(registro.quantidade_usuarios)
+                labels.push(`${registro.cargo}: ${registro.quantidade_usuarios}`);
+                valores.push(registro.quantidade_usuarios);
             }
-            
+
 
             const config = {
                 type: 'doughnut',
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Quantidade de usuários',
+                        label: `Quantidade de usuários`,
                         data: valores,
                         backgroundColor: ['#f7b731', '#10ac84', '#9b59b6'],
                         borderWidth: 1
                     }]
                 },
                 options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right'
-                    },
-                    title: {
-                        display: true,
-                        text: 'Quantidade de usuários',
-                        font: {
-                            size: 20,
-                            family: 'Barlow, sans-serif'
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right'
                         },
-                        color: 'black'
+                        title: {
+                            display: true,
+                            text: `Quantidade de usuários: ${dados.length}`,
+                            font: {
+                                size: 20,
+                                family: 'Barlow, sans-serif'
+                            },
+                            color: 'black'
+                        }
                     }
                 }
-            }
             };
 
             new Chart(
@@ -429,29 +429,7 @@
             );
         }
 
-        // ['#f7b731', '#10ac84', '#9b59b6']
-        // function buscarInformacoes() {
-        //     fetch(`buscar-usuarios-do-sistema/:${idHospitalVar}`, {
-        //         method: "GET",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //         },
-        //         body: JSON.stringify({
 
-        //             idHospitalServer: idHospitalVar
-
-        //         }),
-        //     })
-        //         .then((resposta) => {
-        //             if (resposta.ok) {
-        //                 console.log(resposta);
-        //             }
-        //         })
-        //         .catch((erro) => {
-        //             console.error("Erro na requisição: ", erro);
-        //             alert("Erro na conexão com o servidor.");
-        //         });
-        // }
 
         function irTelaCadastroFuncionario() {
             window.location.href = "cadastroFuncionarios.html";
