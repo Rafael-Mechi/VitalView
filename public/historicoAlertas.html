@@ -10,7 +10,7 @@
   <script src="js/sessao.js"></script>
 </head>
 
-<body>
+<body onload="carregarInformacoes()">
 
   <header class="escuro">
     <section class="container">
@@ -28,7 +28,8 @@
             </div>
 
             <div class="icones_baixo">
-              <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador" style="width: 28px; height: 28px;">
+              <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador"
+                style="width: 28px; height: 28px;">
               <img src="./assets/dashboard-icons/calendar.svg" data-role="Analista,Técnico,Administrador">
               <img src="./assets/dashboard-icons/users.svg" data-role="Administrador">
               <img src="./assets/dashboard-icons/hard-drive.svg" data-role="Técnico,Administrador">
@@ -107,41 +108,23 @@
       <table class="tabela-alertas">
         <thead>
           <tr>
-            <th>Data</th>
-            <th>Hora</th>
+            <th>ID do alerta</th>
             <th>Servidor</th>
-            <th>Mensagem</th>
+            <th>Data e hora do alerta</th>
+            <th>Componente</th>
+            <th>Registro</th>
             <th>Status</th>
             <th>Ações</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="info-alertas">
           <tr>
-            <td>21/09/2025</td>
-            <td>20:15</td>
+            <td>006</td>
+            <td>10/02/2020 00:00</td>
             <td>Pacs-01</td>
-            <td>CPU acima de 90%</td>
+            <td>CPU</td>
+            <td>90%</td>
             <td><span class="status critico">Em alerta</span></td>
-            <td>
-              <button class="btn-resolver">Resolver</button>
-            </td>
-          </tr>
-          <tr>
-            <td>21/09/2025</td>
-            <td>19:40</td>
-            <td>Pacs-02</td>
-            <td>Espaço em disco baixo</td>
-            <td><span class="status critico">Em alerta</span></td>
-            <td>
-              <button class="btn-resolver">Resolver</button>
-            </td>
-          </tr>
-          <tr>
-            <td>21/09/2025</td>
-            <td>18:55</td>
-            <td>Pacs-03</td>
-            <td>Processo DICOM reiniciado</td>
-            <td><span class="status resolvido">Resolvido</span></td>
             <td>
               <button class="btn-resolver">Resolver</button>
             </td>
@@ -158,6 +141,73 @@
 <script>
   protegerPagina(['Analista', 'Técnico', 'Administrador']);
   aplicarCargoNaUI();
+
+  let idHospital = sessionStorage.FK_HOSPITAL;
+
+  function carregarInformacoes() {
+    buscarHistoricoAlertas();
+  }
+
+  function buscarHistoricoAlertas() {
+    fetch(`/historico-alertas/buscar-historico-alertas/${idHospital}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          response.json().then(resposta => {
+            console.log("Dado recebido: ", resposta);
+            gerarTabelaAlertas(resposta)
+          })
+        }
+      })
+      .catch((erro) => {
+        console.error("Erro na requisição: ", erro);
+        alert("Erro na conexão com o servidor.");
+      });
+  }
+
+  function gerarTabelaAlertas(dados) {
+    let tbodyAlertas = document.getElementById("info-alertas");
+    tbodyAlertas.innerHTML = "";
+
+    let idAlerta;
+    let servidor;
+    let data_hora;
+    let componente;
+    let registro;
+    let status;
+    let acoes;
+
+    for (let i = 0; i < dados.length; i++) {
+      idAlerta = dados[i].id_alerta;
+      servidor = dados[i].servidor;
+      data_hora = new Date(dados[i].data_hora);
+      data_hora_formatada = data_hora.toLocaleString("pt-BR", {
+        timeZone: "UTC"
+      });
+      componente = dados[i].componente;
+      registro = dados[i].registro;
+
+      let linha = `
+          <tr>
+                    <td>${idAlerta}</td>
+                    <td>${servidor}</td>
+                    <td>${data_hora_formatada}</td>
+                    <td>${componente}</td>
+                    <td>${registro}</td>
+                    <td><span class="status critico">Em alerta</span></td>
+                    <td>
+                <button class="btn-resolver">Resolver</button>
+              </td>
+                </tr>
+        `
+
+        tbodyAlertas.innerHTML += linha;
+    }
+  }
 
   document.addEventListener("DOMContentLoaded", () => {
     const tabela = document.querySelector(".tabela-alertas");

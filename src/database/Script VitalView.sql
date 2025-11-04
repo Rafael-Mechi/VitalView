@@ -116,7 +116,7 @@ registro float not null,
 fkComponente int not null,
 
 foreign key (fkComponente) references componentes (idComponente)
-);
+) auto_increment = 100;
 
 create table correcao_alerta(
 id int primary key auto_increment,
@@ -133,16 +133,16 @@ insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) val
 "analista", "333", "333", "analista@hsl.com", "123", 1, 1
 );
 
-insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
-"suporte", "333", "333", "suporte@hsl.com", "123", 2, 2
+insert into usuario (nome, cpf, telefone, email, senha, data_criacao, fkCargo, fkHospital) values(
+"suporte", "333", "333", "suporte@hsl.com", "123", "2025-10-10", 2, 2
 );
 
-insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
-"admin", "333", "333", "admin@hsl.com", "123", 3, 2
+insert into usuario (nome, cpf, telefone, email, senha, data_criacao, fkCargo, fkHospital) values(
+"admin", "333", "333", "admin@hsl.com", "123", "2025-10-10", 3, 2
 );
 
-insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
-"suporte2", "333", "333", "suporte2@hsl.com", "123", 2, 2
+insert into usuario (nome, cpf, telefone, email, senha, data_criacao, fkCargo, fkHospital) values(
+"suporte2", "333", "333", "suporte2@hsl.com", "2025-10-10", "123", 2, 2
 );
 
 insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
@@ -160,6 +160,12 @@ insert into componentes(fkTipo, fkServidor, limite) values
 (2, 1, 41.6),
 (3, 1, 90.0);
 
+INSERT INTO alerta (data_alerta, registro, fkComponente)
+VALUES 
+('2025-11-04 10:30:00', 92.7, 1),  -- CPU do servidor 1
+('2025-11-04 10:45:00', 88.3, 3);  -- Disco do servidor 1
+
+
 select * from usuario;
 select * from servidores;
 select * from hospital;
@@ -167,8 +173,6 @@ select * from cargo;
 select * from tipoComponente;
 select * from componentes;
 select * from alerta;
-
-update usuario set data_criacao = "2025-01-10" where idUsuario between 1 and 5;
 
 SELECT 
   u.idUsuario AS ID,
@@ -193,6 +197,16 @@ WHERE u.fkHospital = 2
 GROUP BY c.idcargo, c.nome;
 
 
+SELECT 
+    s.hostname AS Servidor,
+    a.data_alerta AS 'Data e hora do alerta',
+    t.nome AS Componente,
+    a.registro AS 'Registro (%)'
+FROM alerta a
+INNER JOIN componentes c ON a.fkComponente = c.idComponente
+INNER JOIN tipoComponente t ON c.fkTipo = t.idTipo
+INNER JOIN servidores s ON c.fkServidor = s.idServidor
+ORDER BY a.data_alerta DESC;
 
 
 -- drop database vitalview;
