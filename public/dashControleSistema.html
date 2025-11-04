@@ -159,79 +159,8 @@
                                 <th id="th-sup-direito">Ação</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Rafael</td>
-                                <td>rafael@hsl.com</td>
-                                <td>Analista</td>
-                                <td>11/08/2025</td>
-                                <td>Nenhum</td>
-                                <td class="acao-icons">
-                                    <span>&#9998;</span>
-                                    <span>&#x1F5D1;</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Fritz</td>
-                                <td>fritz@hsl.com</td>
-                                <td>Suporte</td>
-                                <td>12/08/2025</td>
-                                <td>Srv1, Srv-prov, Srv2, Srv3</td>
-                                <td class="acao-icons">
-                                    <span>&#9998;</span>
-                                    <span>&#x1F5D1;</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Ana</td>
-                                <td>ana@hsl.com</td>
-                                <td>Suporte</td>
-                                <td>23/09/2025</td>
-                                <td>Nenhum</td>
-                                <td class="acao-icons">
-                                    <span>&#9998;</span>
-                                    <span>&#x1F5D1;</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>Pedro</td>
-                                <td>pedro@hsl.com</td>
-                                <td>Analista</td>
-                                <td>25/09/2025</td>
-                                <td>Nenhum</td>
-                                <td class="acao-icons">
-                                    <span>&#9998;</span>
-                                    <span>&#x1F5D1;</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>Carlos</td>
-                                <td>carlos@hsl.com</td>
-                                <td>Suporte</td>
-                                <td>01/10/2025</td>
-                                <td>Nenhum</td>
-                                <td class="acao-icons">
-                                    <span>&#9998;</span>
-                                    <span>&#x1F5D1;</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>6</td>
-                                <td>Darious</td>
-                                <td>dairous@hsl.com</td>
-                                <td>Analista</td>
-                                <td>01/10/2025</td>
-                                <td>Nenhum</td>
-                                <td class="acao-icons">
-                                    <span>&#9998;</span>
-                                    <span>&#x1F5D1;</span>
-                                </td>
-                            </tr>
+                        <tbody id="info-usuarios">
+
                         </tbody>
                     </table>
                 </div>
@@ -354,6 +283,7 @@
 
         function carregarInformacoes() {
             buscarQtdUsuarios();
+            buscarUsuariosSistema();
         }
 
         function buscarQtdUsuarios() {
@@ -375,8 +305,6 @@
                     console.error("Erro na requisição: ", erro);
                     alert("Erro na conexão com o servidor.");
                 });
-
-
         }
 
         function gerarGraficoRosquinha(dados) {
@@ -429,6 +357,69 @@
             );
         }
 
+        function buscarUsuariosSistema() {
+            fetch(`/controle-usuarios/buscar-usuarios-do-sistema/${idHospitalVar}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        response.json().then(resposta => {
+                            console.log("Dado recebido: ", resposta);
+                            gerarTabelaUsuariosSistema(resposta)
+                        })
+                    }
+                })
+                .catch((erro) => {
+                    console.error("Erro na requisição: ", erro);
+                    alert("Erro na conexão com o servidor.");
+                });
+        }
+
+        function gerarTabelaUsuariosSistema(dados) {
+            let tbodyUsuarios = document.getElementById("info-usuarios");
+            tbodyUsuarios.innerHTML = "";
+
+            let id;
+            let nome;
+            let email;
+            let cargo;
+            let dataCriacao;
+            let servidoresCriados = [];
+
+            for (let i = 0; i < dados.length; i++) {
+                let registro = dados[i];
+
+                id = registro.id;
+                nome = registro.nome;
+                email = registro.email;
+                cargo = registro.cargo;
+                let dataCriacao = new Date(registro.data_criacao);
+                let dataFormatada = dataCriacao.toLocaleDateString("pt-BR", {
+                    timeZone: "UTC"
+                });
+                servidoresCriados = registro.servidores_criados;
+
+                let linha = `
+                <tr>
+                    <td>${id}</td>
+                    <td>${nome}</td>
+                    <td>${email}</td>
+                    <td>${cargo}</td>
+                    <td>${dataFormatada}</td>
+                    <td>${servidoresCriados}</td>
+                    <td class="acao-icons">
+                        <span>&#9998;</span>
+                        <span>&#x1F5D1;</span>
+                    </td>
+                </tr>
+                `
+
+                tbodyUsuarios.innerHTML += linha;
+            }
+        }
 
 
         function irTelaCadastroFuncionario() {

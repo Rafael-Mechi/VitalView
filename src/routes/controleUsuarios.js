@@ -11,4 +11,9 @@ router.get(`/buscar-quantidade-de-usuarios/:idHospital`, function (req, res){
         controleUsuariosController.buscarQtdUsuarios(req, res);
 });
 
+router.get(`/buscar-usuarios-do-sistema/:idHospital`, function (req, res){
+        controleUsuariosController.buscarUsuariosSistema(req, res);
+});
+
+
 module.exports = router;
