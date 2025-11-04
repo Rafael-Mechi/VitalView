@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/dashControleSistema.css">
 </head>
 
-<body>
+<body onload="carregarInformacoes()">
     <nav class="menu">
         <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
 
@@ -23,7 +23,8 @@
                 </div>
 
                 <div class="icones_baixo">
-                    <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador" style="width: 28px; height: 28px;">
+                    <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador"
+                        style="width: 28px; height: 28px;">
                     <img src="./assets/dashboard-icons/calendar.svg" data-role="Analista,Técnico,Administrador">
                     <img src="./assets/dashboard-icons/users.svg" data-role="Administrador">
                     <img src="./assets/dashboard-icons/hard-drive.svg" data-role="Técnico,Administrador">
@@ -137,7 +138,11 @@
                             <option value="cargo">cargo</option>
                             <option value="data_criacao">data de criação</option>
                         </select>
-                        <button class="btn-adicionar" title="Adicionar novo usuário" onclick="irTelaCadastroFuncionario()"><img src="assets/dashboard-icons/user-plus-svgrepo-com.png" style="height: 15px; display: flex; justify-content: center; align-items: center;" alt="Adicionar novo usuário"></button>
+                        <button class="btn-adicionar" title="Adicionar novo usuário"
+                            onclick="irTelaCadastroFuncionario()"><img
+                                src="assets/dashboard-icons/user-plus-svgrepo-com.png"
+                                style="height: 15px; display: flex; justify-content: center; align-items: center;"
+                                alt="Adicionar novo usuário"></button>
                     </div>
                 </div>
 
@@ -345,8 +350,111 @@
 
     <script>
 
-        function irTelaCadastroFuncionario(){
-            window.location.href = "cadastroFuncionarios.html"; 
+        let idHospitalVar = sessionStorage.FK_HOSPITAL;
+
+        function carregarInformacoes(){
+            buscarQtdUsuarios();
+        }
+
+        function buscarQtdUsuarios() {
+            fetch(`/controle-usuarios/buscar-quantidade-de-usuarios/${idHospitalVar}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        response.json().then(resposta => {
+                            console.log("Dado recebido: ", resposta);
+                            gerarGraficoRosquinha(resposta)
+                        })
+                    }
+                })
+                .catch((erro) => {
+                    console.error("Erro na requisição: ", erro);
+                    alert("Erro na conexão com o servidor.");
+                });
+
+
+        }
+
+        function gerarGraficoRosquinha(dados){
+            console.log("Iniciando plotagem do gráfico de preferências...");
+
+            let labels = [];
+            let valores = [];
+
+            for(let i = 0; i < dados.length; i++){
+                let registro = dados[i];
+                labels.push(registro.cargo);
+                valores.push(registro.quantidade_usuarios)
+            }
+            
+
+            const config = {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Quantidade de usuários',
+                        data: valores,
+                        backgroundColor: ['#f7b731', '#10ac84', '#9b59b6'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Quantidade de usuários',
+                        font: {
+                            size: 20,
+                            family: 'Barlow, sans-serif'
+                        },
+                        color: 'black'
+                    }
+                }
+            }
+            };
+
+            new Chart(
+                document.getElementById('chart-qtd-asa'),
+                config
+            );
+        }
+
+        // ['#f7b731', '#10ac84', '#9b59b6']
+        // function buscarInformacoes() {
+        //     fetch(`buscar-usuarios-do-sistema/:${idHospitalVar}`, {
+        //         method: "GET",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //         },
+        //         body: JSON.stringify({
+
+        //             idHospitalServer: idHospitalVar
+
+        //         }),
+        //     })
+        //         .then((resposta) => {
+        //             if (resposta.ok) {
+        //                 console.log(resposta);
+        //             }
+        //         })
+        //         .catch((erro) => {
+        //             console.error("Erro na requisição: ", erro);
+        //             alert("Erro na conexão com o servidor.");
+        //         });
+        // }
+
+        function irTelaCadastroFuncionario() {
+            window.location.href = "cadastroFuncionarios.html";
         }
 
         const infoBtns = document.querySelectorAll('.infoBtn');
@@ -370,38 +478,6 @@
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) modal.style.display = 'none';
             });
-        });
-
-
-        const ctx1 = document.getElementById('chart-qtd-asa').getContext('2d');
-        new Chart(ctx1, {
-            type: 'doughnut',
-            data: {
-                labels: [`Analista: ${2}`,`Suporte: ${1}`, `Administrador: ${3}`],
-                datasets: [{
-                    data: [2, 1, 3],
-                    backgroundColor: ['#f7b731', '#10ac84', '#9b59b6'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right'
-                    },
-                    title: {
-                        display: true,
-                        text: 'Quantidade de usuários',
-                        font: {
-                            size: 20,
-                            family: 'Barlow, sans-serif'
-                        },
-                        color: 'black'
-                    }
-                }
-            }
         });
 
         const ctx2 = document.getElementById('chart-alertas-resolvidos').getContext('2d');
