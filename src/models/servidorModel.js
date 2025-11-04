@@ -1,9 +1,9 @@
 var database = require("../database/config")
 
-async function cadastrarServidor(hostname, ip, localizacao, fkHospital, porcentagemCpu, porcentagemRam, porcentagemDisco){
+async function cadastrarServidor(hostname, ip, localizacao, fkHospital, fkUsuario, porcentagemCpu, porcentagemRam, porcentagemDisco){
     var instrucaoInserirServidor = `
-        INSERT INTO servidores (hostname, ip, localizacao, fkHospital) values 
-        ('${hostname}', '${ip}', '${localizacao}', ${fkHospital})
+        INSERT INTO servidores (hostname, ip, localizacao, fkHospital, fkUsuario) values 
+        ('${hostname}', '${ip}', '${localizacao}', ${fkHospital}, '${fkUsuario}')
     `;
     await database.executar(instrucaoInserirServidor);
     

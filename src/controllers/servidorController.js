@@ -10,8 +10,9 @@ function cadastrarServidor(req, res){
     var porcentagemDisco = req.body.porcentagemDiscoServer;
 
     var fkHospital = req.body.fkHospitalServer;
+    var fkUsuario = req.body.fkUsuarioServer;
 
-    servidorModel.cadastrarServidor(hostname, ip, localizacao, fkHospital, porcentagemCpu, porcentagemRam, porcentagemDisco)
+    servidorModel.cadastrarServidor(hostname, ip, localizacao, fkHospital,fkUsuario, porcentagemCpu, porcentagemRam, porcentagemDisco)
         .then(
             function (resultadoCadastrarServidor){
                 res.json(resultadoCadastrarServidor);

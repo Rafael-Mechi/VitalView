@@ -50,6 +50,7 @@ create table usuario (
 	telefone varchar(20),
     email varchar(100),
     senha varchar(45),
+    data_criacao date,
 	fkcargo int not null,
     fkHospital int not null,
     foreign key (fkHospital) references hospital(idHospital),
@@ -65,7 +66,9 @@ create table servidores (
     ip varchar(80) not null,
     localizacao varchar(75) not null,
     fkHospital int,
-    foreign key(fkHospital) references hospital(idHospital)
+    fkUsuario int,
+    foreign key(fkHospital) references hospital(idHospital),
+    foreign key(fkUsuario) references usuario(idUsuario)
 );
 
 -- insert into servidores (hostname, ip, fkHospital) values
@@ -138,8 +141,11 @@ insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) val
 "admin", "333", "333", "admin@hsl.com", "123", 3, 2
 );
 
-insert into servidores(hostname, ip, localizacao, fkHospital) values
-('srv1', '192.0.0.1', 'Sala dos servidores', 1);
+insert into servidores(hostname, ip, localizacao, fkHospital, fkUsuario) values
+('srv1', '192.0.0.1', 'Sala dos servidores', 1, 2);
+
+insert into servidores(hostname, ip, localizacao, fkHospital, fkUsuario) values
+('srv2', '192.0.0.2', 'Sala dos servidores', 1, 2);
 
 insert into componentes(fkTipo, fkServidor, limite) values
 (1, 1, 83.5),
@@ -154,6 +160,19 @@ select * from tipoComponente;
 select * from componentes;
 select * from alerta;
 
-truncate table alerta;
+SELECT 
+  u.idUsuario AS ID,
+  u.nome AS Nome,
+  u.email AS Email,
+  c.nome AS Cargo,
+  u.data_criacao AS 'Data de criação',
+  COALESCE(GROUP_CONCAT(s.hostname SEPARATOR ', '), 'Nenhum') AS 'Servidores criados'
+FROM usuario u
+INNER JOIN hospital h ON h.idHospital = u.fkHospital
+LEFT JOIN servidores s ON s.fkUsuario = u.idUsuario
+INNER JOIN cargo c ON c.idcargo = u.fkcargo
+GROUP BY u.idUsuario;
+
+
 
 -- drop database vitalview;

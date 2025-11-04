@@ -248,6 +248,8 @@
 
       let fkHospitalVar = sessionStorage.FK_HOSPITAL;
 
+      let fkUsuarioVar = sessionStorage.ID_USUARIO;
+
       if (porcentagem_cpuVar == "") {
         porcentagem_cpuVar = 83.5;
       }
@@ -276,7 +278,8 @@
           porcentagemRamServer: porcentagem_ramVar,
           porcentagemDiscoServer: porcentagem_discoVar,
 
-          fkHospitalServer: fkHospitalVar
+          fkHospitalServer: fkHospitalVar,
+          fkUsuarioServer: fkUsuarioVar
 
         }),
       })
