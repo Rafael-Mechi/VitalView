@@ -116,9 +116,9 @@
                         <p style="text-align: justify; font-size: 20px;">
                             Define o nível de produtividade da equipe com base na porcentagem de alertas
                             resolvidos:<br><br>
-                            &lt; 25%: <span style="color: #f75454;">baixa produtividade</span><br>
-                            &gt;= 25% e &lt;= 75%: <span style="color: #f7b731;">média produtividade</span><br>
-                            &gt; 75%: <span style="color: #32b9cd;">alta produtividade</span>
+                            &lt; 25%: <span style="color: #f75454;"><b>baixa produtividade</b></span><br>
+                            &gt;= 25% e &lt;= 75%: <span style="color: #f7b731;"><b>média produtividade</b></span><br>
+                            &gt; 75%: <span style="color: #32b9cd;"><b>alta produtividade</b></span>
                         </p>
                         <button type="button" class="closeBtn">Fechar</button>
                     </div>
@@ -377,7 +377,7 @@
         new Chart(ctx1, {
             type: 'doughnut',
             data: {
-                labels: ['Analista', 'Suporte', 'Administrador'],
+                labels: [`Analista: ${2}`,`Suporte: ${1}`, `Administrador: ${3}`],
                 datasets: [{
                     data: [2, 1, 3],
                     backgroundColor: ['#f7b731', '#10ac84', '#9b59b6'],
@@ -408,7 +408,7 @@
         new Chart(ctx2, {
             type: 'pie',
             data: {
-                labels: ['Pendente', 'Resolvido'],
+                labels: [`Pendente: ${4}`, `Resolvido: ${32}`],
                 datasets: [{
                     data: [4, 32],
                     backgroundColor: ['#f75454', '#32b9cd']
