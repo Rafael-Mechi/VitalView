@@ -57,6 +57,10 @@
                 <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
                         src="./assets/dashboard-icons/layout.svg" style="width: 20px; margin-right: 4px;"><a
                         href="dashboardSuporteMicro.html">Dash Suporte Micro</a></li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/wifi (1).svg" style="width: 20px; margin-right: 4px;"><a
+                        href="dashRede.html">Dashboard Rede</a>
+                </li>
             </div>
 
             <div class="menu_baixo">
@@ -84,64 +88,106 @@
         </ul>
     </nav>
 
-    <main class="grid">
+    <section class="container">
+        <section class="nav-dash">
+            <section class="secao_logo">
+                <a href="dashboardAnalista.html">
+                    <img src="assets/LogoVitalView.png" alt="Logo VitalView" class="logo">
+                </a>
+            </section>
 
+            <section class="secao_logo">
+                <h1 class="titulo_header" style="margin-left: 10px;">VitalView</h1>
+            </section>
         </section>
 
-        <!-- Latência (linha) -->
-        <section class="card latencia">
-            <h3>Latência</h3>
-            <div class="caption">(em milissegundos)</div>
-            <div class="chart-box">
-                <canvas id="latenciaChart"></canvas>
+        <main class="grid">
+            <div class="parteCima">
+                <div class="kpis">
+                    <section class="card kpi pacotes">
+                        <h3>Perda de Pacotes</h3>
+                        <div class="caption">Pacotes perdidos</div>
+                        <div class="kpi-number alerta" id="pacotes-lost">8</div>
+                        <div class="badge alerta" id="pacotes-status">Alerta</div>
+                    </section>
+
+                    <section class="card kpi conexoes">
+                        <h3>Conexões</h3>
+                        <div class="caption">Conexões ativas</div>
+                        <div class="kpi-number" id="conexoes-ativas">39</div>
+                        <div class="badge" id="conexoes-status">Normal</div>
+                    </section>
+                </div>
+
+                <section class="card banda">
+                    <h3>Uso de Banda</h3>
+                    <div class="caption">
+                        <span class="legend-dot legend-used"></span> Banda Usada
+                        <span style="margin-left:14px" class="legend-dot legend-cap"></span> Capacidade de Banda
+                    </div>
+
+                    <div class="chart-box">
+                        <canvas id="bandaChart"></canvas>
+                    </div>
+
+                    <div class="badge" id="banda-status">Normal</div>
+                </section>
+
+                <section class="card latencia">
+                    <h3>Latência</h3>
+                    <div class="caption">(em milissegundos)</div>
+                    <div class="chart-box">
+                        <canvas id="latenciaChart"></canvas>
+                    </div>
+                    <div class="badge">Normal</div>
+                </section>
             </div>
-            <div class="badge">Normal</div>
-        </section>
 
+            <div class="parteBaixo">    
+                <section class="card trafego">
+                    <h3>Velocidade de Tráfego de Rede</h3>
+                    <div class="caption">(megabits por segundo)</div>
 
-        <!-- Velocidade de Tráfego de Rede (download/upload) -->
-        <section class="card trafego">
-            <h3>Velocidade de Tráfego de Rede</h3>
-            <div class="caption">(megabits por segundo)</div>
+                    <div class="row">
+                        <div class="kpi">
+                            <strong>Download</strong>
+                        </div>
+                        <div class="bar-wrap" aria-label="barra download">
+                            <div class="bar" id="bar-down"></div>
+                        </div>
+                        <div class="value"> <span id="val-down">87</span> Mbps</div>
+                        <div class="badge" style="position:static; transform:none; margin-left:8px" id="down-status">
+                            Normal
+                        </div>
+                    </div>
 
+                    <div class="row">
+                        <div class="kpi">
+                            <strong>Upload</strong>
+                        </div>
+                        <div class="bar-wrap" aria-label="barra upload">
+                            <div class="bar alerta" id="bar-up"></div>
+                        </div>
+                        <div class="value"> <span id="val-up">18</span> Mbps</div>
+                        <div class="badge alerta" style="position:static; transform:none; margin-left:8px"
+                            id="up-status">
+                            Alerta
+                        </div>
+                    </div>
+                </section>
 
-            <div class="row">
-                <div class="kpi">
-                    <strong>Download</strong>
-                </div>
-                <div class="bar-wrap" aria-label="barra download">
-                    <div class="bar" id="bar-down"></div>
-                </div>
-                <div class="value"> <span id="val-down">18</span> Mbps</div>
-                <div class="badge" style="position:static; transform:none; margin-left:8px" id="down-status">Normal
-                </div>
+                <section class="card entrada">
+                    <h3>Velocidade de entrada e saída</h3>
+                    <div class="caption">(megabits por segundo)</div>
+                    <div class="chart-box">
+                        <canvas id="ioChart"></canvas>
+                    </div>
+                    <div class="badge">Normal</div>
+                </section>
             </div>
+        </main>
 
-
-            <div class="row">
-                <div class="kpi">
-                    <strong>Upload</strong>
-                </div>
-                <div class="bar-wrap" aria-label="barra upload">
-                    <div class="bar alerta" id="bar-up"></div>
-                </div>
-                <div class="value"> <span id="val-up">87</span> Mbps</div>
-                <div class="badge alerta" style="position:static; transform:none; margin-left:8px" id="up-status">Alerta
-                </div>
-            </div>
-        </section>
-
-
-        <!-- Velocidade de entrada e saída (linha dupla) -->
-        <section class="card entrada">
-            <h3>Velocidade de entrada e saída</h3>
-            <div class="caption">(megabits por segundo)</div>
-            <div class="chart-box">
-                <canvas id="ioChart"></canvas>
-            </div>
-            <div class="badge">Normal</div>
-        </section>
-    </main>
+    </section>
 
     <script src="js/permissoes.js"></script>
 
@@ -161,7 +207,7 @@
             aplicarCargoNaUI();
         }
 
-        // ====== Latência (linha) ======
+        // Latência (linha)
         const horas = ['12:05', '12:10', '12:15', '12:20', '12:25', '12:30', '12:35', '18:00', '19:00', '19:05'];
         const latVals = [12, 22, 25, 30, 33, 30, 22, 18, 23, 20];
         new Chart(document.getElementById('latenciaChart'), {
@@ -189,7 +235,7 @@
         });
 
 
-        // ====== Velocidade de entrada e saída (linha dupla) ======
+        // Velocidade de entrada e saída (linha dupla) 
         const ioLabels = ['07:45', '10:50', '13:55', '18:00', '19:05'];
         const entrada = [240, 380, 180, 420, 440];
         const saida = [320, 240, 460, 470, 480];
@@ -212,21 +258,92 @@
         });
 
 
-        // ====== Barras de download/upload ======
+        // Barras de download/upload 
         function setBar(el, value, max) {
             const pct = Math.max(0, Math.min(100, (value / max) * 100));
             el.style.width = pct + '%';
         }
-        setBar(document.getElementById('bar-down'), 18, 100);
-        setBar(document.getElementById('bar-up'), 87, 100);
+        setBar(document.getElementById('bar-down'), 87, 100);
+        setBar(document.getElementById('bar-up'), 18, 100);
 
 
-        // (Opcional) regra simples para rótulos de status
-        const up = 87; const down = 18;
+        const up = 18; const down = 87;
         const upBadge = document.getElementById('up-status');
         const downBadge = document.getElementById('down-status');
         if (up > 80) { upBadge.classList.add('alerta'); upBadge.textContent = 'Alerta'; }
         if (down <= 50) { downBadge.textContent = 'Normal'; }
+
+        const METRICAS = {
+            pacotesPerdidos: 8,
+            conexoesAtivas: 39,
+            banda: { capacidade: 300, usada: 78 }
+        };
+
+        function setBadge(el, status) {
+            el.classList.remove('ok', 'atencao', 'alerta');
+            if (status === 'Alerta') el.classList.add('alerta');
+            if (status === 'Atenção') el.classList.add('atencao');
+            if (status === 'Normal') el.classList.add('ok');
+            el.textContent = status;
+        }
+
+        // Perda de Pacotes
+        const pacLost = document.getElementById('pacotes-lost');
+        const pacBadge = document.getElementById('pacotes-status');
+        pacLost.textContent = METRICAS.pacotesPerdidos;
+
+        // alerta se >= 5 pacotes perdidos
+        setBadge(pacBadge, METRICAS.pacotesPerdidos >= 5 ? 'Alerta' : 'Normal');
+        pacLost.classList.toggle('alerta', METRICAS.pacotesPerdidos >= 5);
+        pacLost.classList.toggle('ok', METRICAS.pacotesPerdidos < 5);
+
+        // Conexões
+        const conVal = document.getElementById('conexoes-ativas');
+        const conBadge = document.getElementById('conexoes-status');
+        conVal.textContent = METRICAS.conexoesAtivas;
+
+        // regra exemplo: normal se 10–200 conexões
+        const conexoesNormal = METRICAS.conexoesAtivas >= 10 && METRICAS.conexoesAtivas <= 200;
+        setBadge(conBadge, conexoesNormal ? 'Normal' : 'Alerta');
+        conVal.classList.toggle('ok', conexoesNormal);
+        conVal.classList.toggle('alerta', !conexoesNormal);
+
+        // Uso de Banda
+        const usado = METRICAS.banda.usada;
+        const capacidade = METRICAS.banda.capacidade;
+        const livre = Math.max(capacidade - usado, 0);
+
+        new Chart(document.getElementById('bandaChart'), {
+            type: 'pie',
+            data: {
+                labels: ['Usado', 'Livre'],
+                datasets: [{
+                    data: [usado, livre],
+                    borderWidth: 1,
+                    backgroundColor: ['#0ea5e9', '#14b8a6'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => {
+                                const v = ctx.parsed;
+                                const pct = capacidade ? ((v / capacidade) * 100).toFixed(1) : 0;
+                                const lbl = ctx.label === 'Usado' ? 'Usado' : 'Livre';
+                                const val = ctx.label === 'Usado' ? usado : livre;
+                                return `${lbl}: ${val} Mbps (${pct}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+
     </script>
 </body>
 

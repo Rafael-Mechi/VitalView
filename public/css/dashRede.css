@@ -332,154 +332,289 @@ a:hover {
         grid-template-columns: 1.2fr .8fr
     }
 }
+/* Interior da dash*/
 
-/* -------------------------------------------------- */
-/*                    DASHBOARD EM SI                 */
-/* -------------------------------------------------- */
+:root {
+  --vv-bg: #f7f8fb;
+  --vv-surface: #ffffff;
+  --vv-text: #1f2937;
+  --vv-muted: #6b7280;
+  --vv-border: #e5e7eb;
 
-:root{
-}
-.badge.alerta{background:#ffecec; color:#b91c1c; border-color:#ffc9c9}
-
-
-/* Areas */
-.perda{grid-area:perda; text-align:center}
-.conex{grid-area:conex; text-align:center}
-.uso{grid-area:uso}
-.latencia{grid-area:latencia}
-.trafego{grid-area:trafego}
-.entrada{grid-area:entrada}
-
-
-.legend {
-display:flex; gap:10px; align-items:center; margin-top:8px; color:var(--muted); font-size:.9rem
-}
-.dot { width:10px; height:10px; border-radius:50% }
-
-
-/* Progress bars */
-.row { display:flex; justify-content:space-between; align-items:center; margin:18px 0 10px }
-.kpi { display:flex; align-items:center; gap:12px }
-.bar-wrap{ flex:1; height:14px; background:#eef6f7; border-radius:999px; overflow:hidden; box-shadow: inset 0 1px 2px rgba(16,24,40,.06) }
-.bar{ height:100%; background:linear-gradient(90deg, var(--teal), var(--teal-2)); width:0% }
-.bar.alerta{ background:linear-gradient(90deg, #ff8a8a, #ff6b6b) }
-.value{ font-size:1.25rem; font-weight:800 }
-
-
-/* Tiny caption below titles */
-.caption { color:var(--muted); font-size:.8rem; margin-top:-2px }
-
-
-/* Canvas sizing */
-.chart-box{ height:260px }
-.chart-box.pie{ height:220px }
-
-
-/* Small helper */
-.note { color:var(--muted); font-size:.82rem }
-
-.bar{ background:linear-gradient(90deg, var(--teal), var(--teal-2)); }
-
-.menu ul { background: linear-gradient(white); }
-
-/* === Paleta usada também no JS (equivalente ao teal/teal2) === */
-:root{
-  --teal:  #14b8a6; /* verde-água */
-  --teal-2:#0ea5e9; /* azul */
+  --vv-teal: #14b8a6;  
+  --vv-cyan: #0ea5e9;   
+  --vv-ok: #10b981;
+  --vv-warn: #f59e0b;
+  --vv-alert: #ef4444;
+  --vv-badge-bg: #f1f5f9;
+  --vv-grid-gap: 16px;
+  --vv-radius: 16px;
+  --vv-shadow: 0 8px 24px rgba(0,0,0,.06);
 }
 
-/* === Grid base da página === */
-.grid{
-  display: grid;
-  gap: 18px;
-  padding: 16px 18px;
-  /* ajuste colunas padrão (mobile-first) */
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "latencia"
-    "trafego"
-    "entrada";
-}
-/* já existe um @media (min-width: 1000px) com columns; 
-   vamos completar a malha aqui também */
-@media (min-width: 1000px){
-  .grid{
-    /* mantém o que você já tinha (1.2fr .8fr) */
-    grid-template-columns: 1.2fr .8fr;
-    grid-template-areas:
-      "latencia trafego"
-      "entrada  trafego";
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --vv-bg: #0b1220;
+    --vv-surface: #0f172a;
+    --vv-text: #e5e7eb;
+    --vv-muted: #94a3b8;
+    --vv-border: #1e293b;
+    --vv-badge-bg: #111827;
+    --vv-shadow: 0 8px 24px rgba(0,0,0,.35);
   }
 }
 
-/* === Conserta o fundo do menu === */
-.menu ul{
-  /* antes: background: linear-gradient(white);  (inválido) */
-  background: #fff; /* ou: linear-gradient(#fff, #fff) */
+
+.container {
+  background: var(--vv-bg);
+  min-height: 100dvh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-/* === (Opcional) base para .badge, já que você usa .badge e .badge.alerta === */
-.badge{
-  display:inline-block;
-  padding: 4px 10px;
-  font-size: .85rem;
-  border: 1px solid #e5e7eb;
+
+.nav-dash {
+  padding: 12px 20px 0;
+}
+
+
+.grid {
+  gap: var(--vv-grid-gap);
+  padding: 20px;
+}
+
+.parteCima {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+}
+
+.kpis {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 300px;
+}
+
+.parteBaixo {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+}
+
+.card.entrada {
+    width: 630px;
+    height: 330px;
+}
+
+.card.trafego {
+    width: 600px;
+}
+
+.card.latencia {
+    width: 630px;
+}
+
+.card.kpi.pacotes {
+    height: 165px;
+}
+
+.card.kpi.conexoes {
+    height: 165px;
+}
+
+
+.card.latencia   { grid-column: span 6; }
+.card.trafego    { grid-column: span 6; }
+.card.entrada    { grid-column: span 12; }
+
+@media (max-width: 1100px) {
+  .card.latencia { grid-column: span 12; }
+  .card.trafego  { grid-column: span 12; }
+  .card.entrada  { grid-column: span 12; }
+}
+
+@media (max-width: 680px) {
+  .grid { padding: 12px; gap: 12px; }
+}
+
+.card {
+  background: var(--vv-surface);
+  border: 1px solid var(--vv-border);
+  border-radius: var(--vv-radius);
+  box-shadow: var(--vv-shadow);
+  padding: 16px 16px 12px;
+  position: relative;
+  overflow: clip;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(0,0,0,.08);
+  border-color: color-mix(in oklab, var(--vv-border) 70%, var(--vv-teal));
+}
+
+.card h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--vv-text);
+  margin-bottom: 2px;
+  letter-spacing: .2px;
+}
+
+.caption {
+  font-size: .82rem;
+  color: var(--vv-muted);
+  margin-bottom: 10px;
+}
+
+.chart-box {
+  width: 100%;
+  height: 260px;         
+  position: relative;
+}
+
+@media (max-width: 680px) {
+  .chart-box { height: 220px; }
+}
+
+.chart-box > canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.badge {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  transform: translateY(0);
+  padding: 6px 10px;
+  font-size: .78rem;
+  font-weight: 700;
   border-radius: 999px;
-  background:#f9fafb;
-  color:#111827;
-}
-.badge.alerta{
-  background:#ffecec;
-  color:#b91c1c;
-  border-color:#ffc9c9;
+  letter-spacing: .3px;
+  background: var(--vv-badge-bg);
+  color: var(--vv-teal);
+  border: 1px solid color-mix(in oklab, var(--vv-badge-bg) 70%, var(--vv-teal));
 }
 
-html, body{
-  /* se o menu “andar” estranho, troque flex por block: */
-  display: block;          /* em vez de display:flex; */
-  justify-content: initial;/* remove centralização */
+.badge.ok      { color: var(--vv-ok);   border-color: color-mix(in oklab, var(--vv-badge-bg) 70%, var(--vv-ok)); }
+.badge.atencao { color: var(--vv-warn); border-color: color-mix(in oklab, var(--vv-badge-bg) 70%, var(--vv-warn)); }
+.badge.alerta  { color: var(--vv-alert);border-color: color-mix(in oklab, var(--vv-badge-bg) 70%, var(--vv-alert)); }
+
+/* Linha KPI e barra (download/upload)*/
+.trafego .row {
+  display: grid;
+  grid-template-columns: 120px 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 6px;
+  border-radius: 12px;
+  border: 1px dashed var(--vv-border);
+  background: linear-gradient(0deg, rgba(20,184,166,0.04), rgba(14,165,233,0.04));
 }
 
-/* Cartões básicos */
-.card{
-  background:#fff;
-  border-radius: var(--radius, 16px);
-  box-shadow: var(--shadow, 0 3px 6px rgba(0,0,0,.14));
-  padding: 16px 18px;
+.trafego .row + .row { margin-top: 10px; }
+
+.kpi {
+  font-size: .9rem;
+  color: var(--vv-text);
 }
 
-/* Grid principal (dá espaço pro trilho do hambúrguer) */
-.grid{
-  display:grid;
-  gap: 18px;
-  padding: 16px 18px;
-  margin-left: 70px; /* libera 45px do trilho + folga */
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "latencia"
-    "trafego"
-    "entrada";
+.value {
+  font-variant-numeric: tabular-nums;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-weight: 700;
+  color: var(--vv-text);
+  white-space: nowrap;
 }
 
-@media (min-width: 1000px){
-  .grid{
-    grid-template-columns: 1.2fr .8fr;
-    grid-template-areas:
-      "latencia trafego"
-      "entrada  trafego";
-  }
+/* Container da barra */
+.bar-wrap {
+  position: relative;
+  height: 14px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--vv-border) 60%, transparent);
+  overflow: hidden;
+  border: 1px solid var(--vv-border);
 }
 
-/* Deixa os canvases ocuparem a caixa definida */
-.chart-box{ height:260px; position: relative; }
-.chart-box > canvas{ width:100% !important; height:100% !important; }
-
-/* Gradiente das barras usa variáveis que precisamos garantir */
-:root{
-  --teal:  #14b8a6;
-  --teal-2:#0ea5e9;
+.bar {
+  height: 100%;
+  width: 0%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--vv-cyan), var(--vv-teal));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.3);
+  transition: width .9s cubic-bezier(.22,1,.36,1);
 }
-.bar{ background:linear-gradient(90deg, var(--teal), var(--teal-2)); }
 
-/* Corrige fundo do menu (se ainda estiver com linear-gradient(white)) */
-.menu ul{ background:#fff; }
+
+.bar.alerta {
+  background: linear-gradient(90deg, #f97316, #ef4444);
+}
+
+@media (prefers-color-scheme: dark) {
+  .bar-wrap { border-color: #0b1220; }
+}
+
+.card:focus-within {
+  outline: 2px solid color-mix(in oklab, var(--vv-teal) 40%, transparent);
+  outline-offset: 2px;
+}
+
+a, button, .bar-wrap {
+  transition: filter .2s ease, transform .2s ease;
+}
+
+.bar-wrap:focus-visible {
+  outline: 2px solid var(--vv-cyan);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card, .bar { transition: none !important; }
+}
+
+.mt-8 { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+
+.card.kpi.pacotes { grid-column: span 3; }
+.card.kpi.conexoes { grid-column: span 3; }
+.card.banda { grid-column: span 6; }
+
+@media (max-width: 1100px) {
+  .card.kpi.pacotes,
+  .card.kpi.conexoes,
+  .card.banda { grid-column: span 12; }
+}
+
+
+.kpi-number {
+  font-size: 2.6rem;
+  line-height: 1;
+  font-weight: 800;
+  text-align: center;
+  margin: 4px 0 12px;
+  color: var(--vv-teal);
+  font-variant-numeric: tabular-nums;
+}
+.kpi-number.ok { color: var(--vv-ok); }
+.kpi-number.atencao { color: var(--vv-warn); }
+.kpi-number.alerta { color: var(--vv-alert); }
+
+.legend-dot {
+  display: inline-block;
+  width: 10px; height: 10px;
+  border-radius: 999px;
+  margin-right: 6px;
+  vertical-align: middle;
+  border: 1px solid rgba(0,0,0,.06);
+}
+.legend-used { background: #0ea5e9; }
+.legend-cap  { background: #14b8a6; }
