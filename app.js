@@ -20,6 +20,7 @@ var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuarios");
 var servidorRouter = require("./src/routes/servidores");
 var controleUsuariosRouter = require("./src/routes/controleUsuarios");
+var suporteMicroRoutes = require("./src/routes/suporteMicroRoutes")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -31,6 +32,7 @@ app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
 app.use("/servidores", servidorRouter);
 app.use("/controle-usuarios", controleUsuariosRouter)
+app.use("/suporteMicroRoutes",suporteMicroRoutes)
 
 
 app.listen(PORTA_APP, function () {
