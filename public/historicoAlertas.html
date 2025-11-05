@@ -118,17 +118,6 @@
           </tr>
         </thead>
         <tbody id="info-alertas">
-          <tr>
-            <td>006</td>
-            <td>10/02/2020 00:00</td>
-            <td>Pacs-01</td>
-            <td>CPU</td>
-            <td>90%</td>
-            <td><span class="status critico">Em alerta</span></td>
-            <td>
-              <button class="btn-resolver">Resolver</button>
-            </td>
-          </tr>
         </tbody>
       </table>
     </section>
@@ -143,6 +132,7 @@
   aplicarCargoNaUI();
 
   let idHospital = sessionStorage.FK_HOSPITAL;
+  let idUsuario = sessionStorage.ID_USUARIO;
 
   function carregarInformacoes() {
     buscarHistoricoAlertas();
@@ -173,40 +163,83 @@
     let tbodyAlertas = document.getElementById("info-alertas");
     tbodyAlertas.innerHTML = "";
 
-    let idAlerta;
-    let servidor;
-    let data_hora;
-    let componente;
-    let registro;
-    let status;
-    let acoes;
-
     for (let i = 0; i < dados.length; i++) {
-      idAlerta = dados[i].id_alerta;
-      servidor = dados[i].servidor;
-      data_hora = new Date(dados[i].data_hora);
-      data_hora_formatada = data_hora.toLocaleString("pt-BR", {
+      let idAlerta = dados[i].id_alerta;
+      let servidor = dados[i].servidor;
+      let data_hora = new Date(dados[i].data_hora);
+      let data_hora_formatada = data_hora.toLocaleString("pt-BR", {
         timeZone: "UTC"
       });
-      componente = dados[i].componente;
-      registro = dados[i].registro;
+      let componente = dados[i].componente;
+      let registro = dados[i].registro;
+      let status = dados[i].status;
+
+      let registroStatus = "";
+      if (status == "Em alerta") {
+        registroStatus = `<td><span class="status critico">${status}</span></td>`;
+      } else {
+        registroStatus = `<td><span class="status resolvido">${status}</span></td>`;
+      }
+
+      let botaoHTML = "";
+      if (status === "Em alerta") {
+        botaoHTML = `<button class="btn-resolver" onclick="resolverAlerta(this)">Resolver</button>`;
+      } else {
+        botaoHTML = `<button class="btn-resolver resolvido" disabled>Resolvido</button>`;
+      }
 
       let linha = `
-          <tr>
-                    <td>${idAlerta}</td>
-                    <td>${servidor}</td>
-                    <td>${data_hora_formatada}</td>
-                    <td>${componente}</td>
-                    <td>${registro}</td>
-                    <td><span class="status critico">Em alerta</span></td>
-                    <td>
-                <button class="btn-resolver">Resolver</button>
-              </td>
-                </tr>
-        `
+      <tr>
+        <td>${idAlerta}</td>
+        <td>${servidor}</td>
+        <td>${data_hora_formatada}</td>
+        <td>${componente}</td>
+        <td>${registro}</td>
+        ${registroStatus}
+        <td>${botaoHTML}</td>
+      </tr>
+    `;
 
-        tbodyAlertas.innerHTML += linha;
+      tbodyAlertas.innerHTML += linha;
     }
+  }
+
+
+  function resolverAlerta(botaoResolver) {
+    // sobe até a linha (<tr>)
+    let linha = botaoResolver.closest('tr');
+    let idAlerta = linha.querySelector('td').textContent;
+
+    let agora = new Date();
+    let dataSQL = agora.toISOString().slice(0, 19).replace('T', ' ');
+    console.log("DATA-HORA: " + dataSQL);
+
+
+    fetch(`/historico-alertas/resolver-alerta/${idAlerta}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        dataSQL: dataSQL,
+        idUsuario: idUsuario
+      })
+    })
+      .then(response => {
+        if (response.ok) {
+          response.json().then(resposta => {
+            alert("Alerta corrigido com sucesso!");
+            botaoResolver.disabled = true;
+            botaoResolver.textContent = "Resolvido";
+          })
+        }
+      })
+      .catch((erro) => {
+        console.error("Erro na requisição: ", erro);
+        alert("Erro na conexão com o servidor.");
+      });
+
+    console.log('ID do alerta:', idAlerta);
   }
 
   document.addEventListener("DOMContentLoaded", () => {

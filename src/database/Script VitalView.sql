@@ -113,6 +113,7 @@ create table alerta(
 id int primary key auto_increment,
 data_alerta datetime not null,
 registro float not null,
+status_alerta varchar(15) not null default 'Em alerta',
 fkComponente int not null,
 
 foreign key (fkComponente) references componentes (idComponente)
@@ -123,14 +124,15 @@ id int primary key auto_increment,
 data_correcao datetime not null,
 
 fkAlerta int not null,
+fkUsuario int not null,
 
-foreign key (fkAlerta) references alerta(id)
+foreign key (fkAlerta) references alerta(id),
+foreign key (fkUsuario) references usuario(idUsuario)
 
 );
 
-
-insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
-"analista", "333", "333", "analista@hsl.com", "123", 1, 1
+insert into usuario (nome, cpf, telefone, email, senha, data_criacao, fkCargo, fkHospital) values(
+"analista", "333", "333", "analista@hsl.com", "123", "2025-10-10", 1, 1
 );
 
 insert into usuario (nome, cpf, telefone, email, senha, data_criacao, fkCargo, fkHospital) values(
@@ -142,11 +144,11 @@ insert into usuario (nome, cpf, telefone, email, senha, data_criacao, fkCargo, f
 );
 
 insert into usuario (nome, cpf, telefone, email, senha, data_criacao, fkCargo, fkHospital) values(
-"suporte2", "333", "333", "suporte2@hsl.com", "2025-10-10", "123", 2, 2
+"suporte2", "333", "333", "suporte2@hsl.com", "123", "2025-10-10",  2, 2
 );
 
-insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
-"analista", "333", "333", "analista@hsl.com", "123", 1, 2
+insert into usuario (nome, cpf, telefone, email, senha, data_criacao, fkCargo, fkHospital) values(
+"analista", "333", "333", "analista@hsl.com", "123", "2025-10-10", 1, 2
 );
 
 insert into servidores(hostname, ip, localizacao, fkHospital, fkUsuario) values
@@ -155,10 +157,20 @@ insert into servidores(hostname, ip, localizacao, fkHospital, fkUsuario) values
 insert into servidores(hostname, ip, localizacao, fkHospital, fkUsuario) values
 ('srv2', '192.0.0.2', 'Sala dos servidores', 1, 2);
 
+insert into servidores(hostname, ip, localizacao, fkHospital, fkUsuario) values
+('servidor100', '192.0.0.2', 'Sala dos servidores', 2, 2),
+('servidor101', '192.0.0.2', 'Sala dos servidores', 2, 2);
+
 insert into componentes(fkTipo, fkServidor, limite) values
 (1, 1, 83.5),
 (2, 1, 41.6),
 (3, 1, 90.0);
+
+insert into componentes(fkTipo, fkServidor, limite) values 
+('1', '3', 99.0),
+('2', '3', 89.0),
+('3', '3', 80.0),
+('1', '4', 96.0);
 
 INSERT INTO alerta (data_alerta, registro, fkComponente)
 VALUES 
@@ -167,12 +179,6 @@ VALUES
 
 INSERT INTO alerta (data_alerta, registro, fkComponente)
 VALUES
-('2025-11-04 14:35:00', 72.5, 16),
-('2025-11-04 15:10:00', 88.3, 17),
-('2025-11-04 15:10:00', 88.3, 19);
-
-insert into componentes(fkTipo, fkServidor, limite) values 
-('1', '3', 99.0),
-('2', '3', 89.0),
-('3', '3', 80.0),
-('1', '4', 96.0);
+('2025-11-04 14:35:00', 72.5, 4),
+('2025-11-04 15:10:00', 88.3, 5),
+('2025-11-04 15:10:00', 88.3,6);

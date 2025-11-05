@@ -7,7 +7,8 @@ function buscarAlertas(idHospital) {
     s.hostname AS servidor,
     a.data_alerta AS 'data_hora',
     t.nome AS componente,
-    a.registro AS 'registro'
+    a.registro AS 'registro',
+    a.status_alerta as 'status'
     FROM alerta a
     INNER JOIN componentes c ON a.fkComponente = c.idComponente
     INNER JOIN tipoComponente t ON c.fkTipo = t.idTipo
@@ -19,6 +20,23 @@ function buscarAlertas(idHospital) {
     return database.executar(instrucao);
 }
 
+async function resolverAlerta(dataSQL, idAlerta, idUsuario){
+    var instrucao = `
+        INSERT INTO correcao_alerta (data_correcao, fkAlerta, fkUsuario) VALUES
+        ('${dataSQL}', ${idAlerta}, ${idUsuario})
+    `;
+    await database.executar(instrucao);
+
+    var atualizaAlerta = `
+    UPDATE alerta SET status_alerta = 'Resolvido' WHERE id = ${idAlerta}
+    `;
+
+    await database.executar(atualizaAlerta);
+
+return idAlerta;
+}
+
 module.exports = {
-    buscarAlertas
+    buscarAlertas,
+    resolverAlerta
 };

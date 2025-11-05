@@ -56,6 +56,16 @@ a:hover {
     font-family: "Barlow";
 }
 
+button:disabled {
+  background-color: gray;
+}
+
+button:disabled:hover {
+  opacity: 75%;
+  background-color: gray;
+}
+
+
 body {
     font-family: 'Barlow', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #fff;

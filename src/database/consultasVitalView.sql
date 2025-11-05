@@ -20,11 +20,12 @@ GROUP BY c.idcargo, c.nome;
 
 -- buscar histórico de alertas
 SELECT
-	a.id,
-    s.hostname AS Servidor,
-    a.data_alerta AS 'Data e hora do alerta',
-    t.nome AS Componente,
-    a.registro AS 'Registro (%)'
+    a.id as id_alerta,
+    s.hostname AS servidor,
+    a.data_alerta AS 'data_hora',
+    t.nome AS componente,
+    a.registro AS 'registro',
+    a.status_alerta as 'status'
     FROM alerta a
     INNER JOIN componentes c ON a.fkComponente = c.idComponente
     INNER JOIN tipoComponente t ON c.fkTipo = t.idTipo
