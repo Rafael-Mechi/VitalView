@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Rede</title>
+    <link rel="stylesheet" href="css/dashRede.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <script src="js/sessao.js"></script>
+</head>
+
+<body>
+
+    <nav class="menu">
+        <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
+
+        <section class="hamburguer">
+            <span class="menu_lateral">
+                <div class="icones_topo">
+                    <img class="img_hamb" src="assets/LogoVitalView.png">
+                    <img src="./assets/dashboard-icons/activity.svg" data-role="Analista,Administrador">
+                    <img src="./assets/dashboard-icons/bar-chart.svg" data-role="Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/layout.svg" data-role="Técnico,Administrador">
+                </div>
+
+                <div class="icones_baixo">
+                    <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador"
+                        style="width: 28px; height: 28px;">
+                    <img src="./assets/dashboard-icons/calendar.svg" data-role="Analista,Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/users.svg" data-role="Administrador">
+                    <img src="./assets/dashboard-icons/hard-drive.svg" data-role="Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/help-circle.svg" data-role="Analista,Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/log-out.svg" data-role="Analista,Técnico,Administrador">
+                </div>
+            </span>
+        </section>
+
+        <ul>
+            <div class="title_hamb">
+                <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
+                <h2 class="hamb_nome">VitalView</h2>
+            </div>
+            <div class="menu_topo">
+                <h3 class="title_menu">Dashboards</h3>
+                <li style="display: flex; align-items: center;" data-role="Analista,Administrador,Técnico">
+                    <img src="./assets/dashboard-icons/home.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="bemVindo.html">Home</a>
+                </li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Administrador" class="pagina-ativa">
+                    <img src="./assets/dashboard-icons/activity.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="dashboardAnalista.html">Dash Analista</a>
+                </li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/bar-chart.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="dashboardSuporteMacro.html">Dash Suporte Macro</a></li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/layout.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="dashboardSuporteMicro.html">Dash Suporte Micro</a></li>
+            </div>
+
+            <div class="menu_baixo">
+                <h3 class="title_menu">Outras Opções</h3>
+                <li style="display: flex; align-items: center;" data-role="Administrador"><img
+                        src="./assets/dashboard-icons/gerenciar-usuarios.png" style="width: 20px; margin-right: 4px;"><a
+                        href="dashControleSistema.html">Gerenciar usuários</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/calendar.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="historicoAlertas.html">Histórico de Alertas</a></li>
+                <li style="display: flex; align-items: center;" data-role="Administrador"><img
+                        src="./assets/dashboard-icons/users.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="cadastroFuncionarios.html">Cadastro Funcionário</a></li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/hard-drive.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="cadastroServidores.html">Cadastro Servidores</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/help-circle.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1"
+                        target="_blank">Central de Serviço</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/log-out.svg" style="width: 20px; margin-right: 4px;"><a
+                        onclick="limparSessao()">Sair</a></li>
+            </div>
+        </ul>
+    </nav>
+
+    <main class="grid">
+
+        </section>
+
+        <!-- Latência (linha) -->
+        <section class="card latencia">
+            <h3>Latência</h3>
+            <div class="caption">(em milissegundos)</div>
+            <div class="chart-box">
+                <canvas id="latenciaChart"></canvas>
+            </div>
+            <div class="badge">Normal</div>
+        </section>
+
+
+        <!-- Velocidade de Tráfego de Rede (download/upload) -->
+        <section class="card trafego">
+            <h3>Velocidade de Tráfego de Rede</h3>
+            <div class="caption">(megabits por segundo)</div>
+
+
+            <div class="row">
+                <div class="kpi">
+                    <strong>Download</strong>
+                </div>
+                <div class="bar-wrap" aria-label="barra download">
+                    <div class="bar" id="bar-down"></div>
+                </div>
+                <div class="value"> <span id="val-down">18</span> Mbps</div>
+                <div class="badge" style="position:static; transform:none; margin-left:8px" id="down-status">Normal
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="kpi">
+                    <strong>Upload</strong>
+                </div>
+                <div class="bar-wrap" aria-label="barra upload">
+                    <div class="bar alerta" id="bar-up"></div>
+                </div>
+                <div class="value"> <span id="val-up">87</span> Mbps</div>
+                <div class="badge alerta" style="position:static; transform:none; margin-left:8px" id="up-status">Alerta
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Velocidade de entrada e saída (linha dupla) -->
+        <section class="card entrada">
+            <h3>Velocidade de entrada e saída</h3>
+            <div class="caption">(megabits por segundo)</div>
+            <div class="chart-box">
+                <canvas id="ioChart"></canvas>
+            </div>
+            <div class="badge">Normal</div>
+        </section>
+    </main>
+
+    <script src="js/permissoes.js"></script>
+
+    <script>
+
+        protegerPagina(['Técnico', 'Administrador']);
+        aplicarCargoNaUI();
+
+        const teal = '#14b8a6';
+        const teal2 = '#0ea5e9';
+
+        // Evita crash se permissoes.js não estiver carregado
+        if (typeof protegerPagina === 'function') {
+            protegerPagina(['Técnico', 'Administrador']);
+        }
+        if (typeof aplicarCargoNaUI === 'function') {
+            aplicarCargoNaUI();
+        }
+
+        // ====== Latência (linha) ======
+        const horas = ['12:05', '12:10', '12:15', '12:20', '12:25', '12:30', '12:35', '18:00', '19:00', '19:05'];
+        const latVals = [12, 22, 25, 30, 33, 30, 22, 18, 23, 20];
+        new Chart(document.getElementById('latenciaChart'), {
+            type: 'line',
+            data: {
+                labels: horas,
+                datasets: [{
+                    label: 'Latência',
+                    data: latVals,
+                    borderColor: teal,
+                    backgroundColor: teal,
+                    tension: .35,
+                    pointRadius: 3,
+                    fill: false
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { beginAtZero: true, grid: { color: '#eef2f7' } }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+
+        // ====== Velocidade de entrada e saída (linha dupla) ======
+        const ioLabels = ['07:45', '10:50', '13:55', '18:00', '19:05'];
+        const entrada = [240, 380, 180, 420, 440];
+        const saida = [320, 240, 460, 470, 480];
+
+
+        new Chart(document.getElementById('ioChart'), {
+            type: 'line',
+            data: {
+                labels: ioLabels,
+                datasets: [
+                    { label: 'Entrada', data: entrada, borderColor: teal2, backgroundColor: teal2, tension: .35, pointRadius: 3, fill: false },
+                    { label: 'Saída', data: saida, borderColor: teal, backgroundColor: teal, tension: .35, pointRadius: 3, fill: false }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: { x: { grid: { display: false } }, y: { beginAtZero: true, grid: { color: '#eef2f7' } } },
+                plugins: { legend: { position: 'top' } }
+            }
+        });
+
+
+        // ====== Barras de download/upload ======
+        function setBar(el, value, max) {
+            const pct = Math.max(0, Math.min(100, (value / max) * 100));
+            el.style.width = pct + '%';
+        }
+        setBar(document.getElementById('bar-down'), 18, 100);
+        setBar(document.getElementById('bar-up'), 87, 100);
+
+
+        // (Opcional) regra simples para rótulos de status
+        const up = 87; const down = 18;
+        const upBadge = document.getElementById('up-status');
+        const downBadge = document.getElementById('down-status');
+        if (up > 80) { upBadge.classList.add('alerta'); upBadge.textContent = 'Alerta'; }
+        if (down <= 50) { downBadge.textContent = 'Normal'; }
+    </script>
+</body>
+
+</html>

@@ -21,6 +21,7 @@ var usuarioRouter = require("./src/routes/usuarios");
 var servidorRouter = require("./src/routes/servidores");
 var controleUsuariosRouter = require("./src/routes/controleUsuarios");
 var suporteMicroRoutes = require("./src/routes/suporteMicroRoutes")
+var historicoAlertaRouter = require("./src/routes/historicoAlertas")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -33,6 +34,7 @@ app.use("/usuarios", usuarioRouter);
 app.use("/servidores", servidorRouter);
 app.use("/controle-usuarios", controleUsuariosRouter)
 app.use("/suporteMicroRoutes",suporteMicroRoutes)
+app.use("/historico-alertas", historicoAlertaRouter)
 
 
 app.listen(PORTA_APP, function () {

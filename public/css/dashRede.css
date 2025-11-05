@@ -1,0 +1,485 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;600;700&display=swap');
+
+@font-face {
+    font-family: 'Lato';
+    src: url(../fonts/Lato/Lato-Regular.ttf) format('truetype');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* -------------------------------------------------- */
+/*                 BODY E ESTRUTURA BASE              */
+/* -------------------------------------------------- */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: 'Barlow', 'Segoe UI', Tahoma, sans-serif;
+    overflow-x: hidden;
+    color: #333;
+    background-color: #c5c5c5;
+    display: flex;
+    justify-content: center;
+}
+
+/* -------------------------------------------------- */
+/*                       HEADER                       */
+/* -------------------------------------------------- */
+header {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.titulo_header {
+    color: #d65e5f;
+    font-size: 28px;
+}
+
+.periodo_select {
+    height: 40px;
+    border-radius: 20px;
+    background-color: #e2e2e2;
+    border: none;
+}
+
+.data-hora {
+    width: 250px;
+    border-radius: 10px;
+    height: 75%;
+    background-color: #e2e2e2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-around;
+    margin-left: auto;
+}
+
+.data-hora button {
+    border: none;
+    border-radius: 10px;
+    height: 70%;
+    width: 18%;
+    cursor: pointer;
+}
+
+.data-hora button:hover {
+    border: none;
+    border-radius: 10px;
+    height: 80%;
+    width: 18%;
+    background-color: #38b6ff;
+    color: white;
+    transition: 0.5s;
+}
+
+/* -------------------------------------------------- */
+/*                    NAV DASHBOARD                   */
+/* -------------------------------------------------- */
+.nav-dash {
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    /* background-color: #05cf0533; */
+}
+
+/* -------------------------------------------------- */
+/*                     CONTAINER                      */
+/* -------------------------------------------------- */
+.container {
+    margin-top: 10px;
+    margin-left: 60px;
+    margin-right: 10px;
+    width: 98%;
+    height: 97%;
+    background-color: #ffffff;
+    border-radius: 23px;
+    height: fit-content;
+}
+
+#kpi-uso-disco{
+    padding: 0px;
+}
+
+/* -------------------------------------------------- */
+/*                      LOGO                          */
+/* -------------------------------------------------- */
+.secao_logo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo {
+    width: 32px;
+    height: auto;
+    object-fit: cover;
+}
+
+.linha {
+    width: 60%;
+    height: 3px;
+    background: linear-gradient(to right, #e74c3c, #f31212);
+    margin-top: 8px;
+    border-radius: 2px;
+}
+
+/* -------------------------------------------------- */
+/*                     LINKS E TEXTO                  */
+/* -------------------------------------------------- */
+a {
+    color: black;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+a:hover {
+    color: #e74c3c;
+}
+
+/* -------------------------------------------------- */
+/*                   MENU HAMBÚRGUER                  */
+/* -------------------------------------------------- */
+.menu {
+    position: relative;
+    margin-bottom: 22px;
+}
+
+.menu .hamburguer {
+    width: 45px;
+    height: 100%;
+    position: absolute;
+    cursor: pointer;
+    z-index: 10001;
+}
+
+.menu .hamburguer span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 0.6rem;
+    background-color: #ffffff;
+    border-radius: 0.2rem;
+    transition: all 0.2s ease-in-out;
+    border-radius: 15px;
+    margin-top: 8px;
+}
+
+.menu .check_hamburguer {
+    position: absolute;
+    width: 45px;
+    height: 100vh;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10002;
+}
+
+.menu .check_hamburguer:checked~.hamburguer span:nth-child(1) {
+    transform-origin: 0% 0%;
+    transform: scaleX(1.35) translateX(-60px);
+
+}
+
+.menu .check_hamburguer:checked~.hamburguer span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu .check_hamburguer:checked~.hamburguer span:nth-child(3) {
+    transform-origin: 0% 100%;
+    transform: scaleX(1.35) translateX(-60px);
+}
+
+.menu .title_hamb {
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    margin-left: 20px;
+}
+
+.menu .img_hamb {
+    max-width: 40px;
+}
+
+.menu .hamb_nome {
+    color: #df2525;
+    margin-left: 15px;
+    margin-top: 10px;
+}
+
+.menu ul {
+    list-style: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 230px;
+    height: 100vh;
+    background: linear-gradient(white);
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.26);
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    z-index: 10000;
+    border-radius: 40px;
+    margin-left: 10px;
+}
+
+.menu .check_hamburguer:checked~ul {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.menu ul li {
+    display: flex;
+    padding: 0.7rem 1.2rem;
+    transition: background 0.2s;
+}
+
+.menu ul li:hover {
+    background: rgba(11, 11, 11, 0.1);
+}
+
+.menu ul li a {
+    font-size: 1.1rem;
+    color: #000;
+}
+
+.title_menu {
+    margin-left: 32px;
+    margin-bottom: 20px;
+    color: #505050;
+}
+
+.menu_topo {
+    margin-top: 40px;
+}
+
+.menu_baixo {
+    margin-top: 15%;
+}
+
+.icones_topo {
+    padding-top: 5px;
+    margin-bottom: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.icones_topo img {
+    margin-bottom: 10px;
+}
+
+.icones_baixo {
+    margin-top: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.icones_baixo img {
+    margin: 10px;
+}
+
+.pagina-ativa{
+  background-color:#e6e6e6;
+}
+
+/* -------------------------------------------------- */
+/*                    RESPONSIVIDADE                  */
+/* -------------------------------------------------- */
+@media (max-width: 900px) {
+    .row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        width: 100%;
+    }
+}
+
+:root {
+    --bg: #f6f7fb;
+    --card: #ececec;
+    --ink: #1f2a37;
+    --muted: #6b7280;
+    --accent: #ef4444;
+    --ok: #10b981;
+    --chip: #f3f4f6;
+    --shadow: 0 3px 6px rgba(0, 0, 0, 0.144);
+    --radius: 16px;
+}
+
+
+@media (min-width: 1000px) {
+    .grid {
+        grid-template-columns: 1.2fr .8fr
+    }
+}
+
+/* -------------------------------------------------- */
+/*                    DASHBOARD EM SI                 */
+/* -------------------------------------------------- */
+
+:root{
+}
+.badge.alerta{background:#ffecec; color:#b91c1c; border-color:#ffc9c9}
+
+
+/* Areas */
+.perda{grid-area:perda; text-align:center}
+.conex{grid-area:conex; text-align:center}
+.uso{grid-area:uso}
+.latencia{grid-area:latencia}
+.trafego{grid-area:trafego}
+.entrada{grid-area:entrada}
+
+
+.legend {
+display:flex; gap:10px; align-items:center; margin-top:8px; color:var(--muted); font-size:.9rem
+}
+.dot { width:10px; height:10px; border-radius:50% }
+
+
+/* Progress bars */
+.row { display:flex; justify-content:space-between; align-items:center; margin:18px 0 10px }
+.kpi { display:flex; align-items:center; gap:12px }
+.bar-wrap{ flex:1; height:14px; background:#eef6f7; border-radius:999px; overflow:hidden; box-shadow: inset 0 1px 2px rgba(16,24,40,.06) }
+.bar{ height:100%; background:linear-gradient(90deg, var(--teal), var(--teal-2)); width:0% }
+.bar.alerta{ background:linear-gradient(90deg, #ff8a8a, #ff6b6b) }
+.value{ font-size:1.25rem; font-weight:800 }
+
+
+/* Tiny caption below titles */
+.caption { color:var(--muted); font-size:.8rem; margin-top:-2px }
+
+
+/* Canvas sizing */
+.chart-box{ height:260px }
+.chart-box.pie{ height:220px }
+
+
+/* Small helper */
+.note { color:var(--muted); font-size:.82rem }
+
+.bar{ background:linear-gradient(90deg, var(--teal), var(--teal-2)); }
+
+.menu ul { background: linear-gradient(white); }
+
+/* === Paleta usada também no JS (equivalente ao teal/teal2) === */
+:root{
+  --teal:  #14b8a6; /* verde-água */
+  --teal-2:#0ea5e9; /* azul */
+}
+
+/* === Grid base da página === */
+.grid{
+  display: grid;
+  gap: 18px;
+  padding: 16px 18px;
+  /* ajuste colunas padrão (mobile-first) */
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "latencia"
+    "trafego"
+    "entrada";
+}
+/* já existe um @media (min-width: 1000px) com columns; 
+   vamos completar a malha aqui também */
+@media (min-width: 1000px){
+  .grid{
+    /* mantém o que você já tinha (1.2fr .8fr) */
+    grid-template-columns: 1.2fr .8fr;
+    grid-template-areas:
+      "latencia trafego"
+      "entrada  trafego";
+  }
+}
+
+/* === Conserta o fundo do menu === */
+.menu ul{
+  /* antes: background: linear-gradient(white);  (inválido) */
+  background: #fff; /* ou: linear-gradient(#fff, #fff) */
+}
+
+/* === (Opcional) base para .badge, já que você usa .badge e .badge.alerta === */
+.badge{
+  display:inline-block;
+  padding: 4px 10px;
+  font-size: .85rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  background:#f9fafb;
+  color:#111827;
+}
+.badge.alerta{
+  background:#ffecec;
+  color:#b91c1c;
+  border-color:#ffc9c9;
+}
+
+html, body{
+  /* se o menu “andar” estranho, troque flex por block: */
+  display: block;          /* em vez de display:flex; */
+  justify-content: initial;/* remove centralização */
+}
+
+/* Cartões básicos */
+.card{
+  background:#fff;
+  border-radius: var(--radius, 16px);
+  box-shadow: var(--shadow, 0 3px 6px rgba(0,0,0,.14));
+  padding: 16px 18px;
+}
+
+/* Grid principal (dá espaço pro trilho do hambúrguer) */
+.grid{
+  display:grid;
+  gap: 18px;
+  padding: 16px 18px;
+  margin-left: 70px; /* libera 45px do trilho + folga */
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "latencia"
+    "trafego"
+    "entrada";
+}
+
+@media (min-width: 1000px){
+  .grid{
+    grid-template-columns: 1.2fr .8fr;
+    grid-template-areas:
+      "latencia trafego"
+      "entrada  trafego";
+  }
+}
+
+/* Deixa os canvases ocuparem a caixa definida */
+.chart-box{ height:260px; position: relative; }
+.chart-box > canvas{ width:100% !important; height:100% !important; }
+
+/* Gradiente das barras usa variáveis que precisamos garantir */
+:root{
+  --teal:  #14b8a6;
+  --teal-2:#0ea5e9;
+}
+.bar{ background:linear-gradient(90deg, var(--teal), var(--teal-2)); }
+
+/* Corrige fundo do menu (se ainda estiver com linear-gradient(white)) */
+.menu ul{ background:#fff; }

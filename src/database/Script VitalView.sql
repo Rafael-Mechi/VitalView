@@ -113,40 +113,42 @@ create table alerta(
 id int primary key auto_increment,
 data_alerta datetime not null,
 registro float not null,
+status_alerta varchar(15) not null default 'Em alerta',
 fkComponente int not null,
 
 foreign key (fkComponente) references componentes (idComponente)
-);
+) auto_increment = 100;
 
 create table correcao_alerta(
 id int primary key auto_increment,
 data_correcao datetime not null,
 
 fkAlerta int not null,
+fkUsuario int not null,
 
-foreign key (fkAlerta) references alerta(id)
+foreign key (fkAlerta) references alerta(id),
+foreign key (fkUsuario) references usuario(idUsuario)
 
 );
 
-
-insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
-"analista", "333", "333", "analista@hsl.com", "123", 1, 1
+insert into usuario (nome, cpf, telefone, email, senha, data_criacao, fkCargo, fkHospital) values(
+"analista", "333", "333", "analista@hsl.com", "123", "2025-10-10", 1, 1
 );
 
-insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
-"suporte", "333", "333", "suporte@hsl.com", "123", 2, 2
+insert into usuario (nome, cpf, telefone, email, senha, data_criacao, fkCargo, fkHospital) values(
+"suporte", "333", "333", "suporte@hsl.com", "123", "2025-10-10", 2, 2
 );
 
-insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
-"admin", "333", "333", "admin@hsl.com", "123", 3, 2
+insert into usuario (nome, cpf, telefone, email, senha, data_criacao, fkCargo, fkHospital) values(
+"admin", "333", "333", "admin@hsl.com", "123", "2025-10-10", 3, 2
 );
 
-insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
-"suporte2", "333", "333", "suporte2@hsl.com", "123", 2, 2
+insert into usuario (nome, cpf, telefone, email, senha, data_criacao, fkCargo, fkHospital) values(
+"suporte2", "333", "333", "suporte2@hsl.com", "123", "2025-10-10",  2, 2
 );
 
-insert into usuario (nome, cpf, telefone, email, senha, fkCargo, fkHospital) values(
-"analista", "333", "333", "analista@hsl.com", "123", 1, 2
+insert into usuario (nome, cpf, telefone, email, senha, data_criacao, fkCargo, fkHospital) values(
+"analista", "333", "333", "analista@hsl.com", "123", "2025-10-10", 1, 2
 );
 
 insert into servidores(hostname, ip, localizacao, fkHospital, fkUsuario) values
@@ -155,44 +157,28 @@ insert into servidores(hostname, ip, localizacao, fkHospital, fkUsuario) values
 insert into servidores(hostname, ip, localizacao, fkHospital, fkUsuario) values
 ('srv2', '192.0.0.2', 'Sala dos servidores', 1, 2);
 
+insert into servidores(hostname, ip, localizacao, fkHospital, fkUsuario) values
+('servidor100', '192.0.0.2', 'Sala dos servidores', 2, 2),
+('servidor101', '192.0.0.2', 'Sala dos servidores', 2, 2);
+
 insert into componentes(fkTipo, fkServidor, limite) values
 (1, 1, 83.5),
 (2, 1, 41.6),
 (3, 1, 90.0);
 
-select * from usuario;
-select * from servidores;
-select * from hospital;
-select * from cargo;
-select * from tipoComponente;
-select * from componentes;
-select * from alerta;
+insert into componentes(fkTipo, fkServidor, limite) values 
+('1', '3', 99.0),
+('2', '3', 89.0),
+('3', '3', 80.0),
+('1', '4', 96.0);
 
-update usuario set data_criacao = "2025-01-10" where idUsuario between 1 and 5;
+INSERT INTO alerta (data_alerta, registro, fkComponente)
+VALUES 
+('2025-11-04 10:30:00', 92.7, 1),  -- CPU do servidor 1
+('2025-11-04 10:45:00', 88.3, 3);  -- Disco do servidor 1
 
-SELECT 
-  u.idUsuario AS ID,
-  u.nome AS Nome,
-  u.email AS Email,
-  c.nome AS Cargo,
-  u.data_criacao AS 'Data de criação',
-  COALESCE(GROUP_CONCAT(s.hostname SEPARATOR ', '), 'Nenhum') AS 'Servidores criados'
-FROM usuario u
-INNER JOIN hospital h ON h.idHospital = u.fkHospital
-LEFT JOIN servidores s ON s.fkUsuario = u.idUsuario
-INNER JOIN cargo c ON c.idcargo = u.fkcargo
-WHERE idHospital = 2
-GROUP BY u.idUsuario;
-
-SELECT 
-  c.nome AS Cargo,
-  COUNT(u.idUsuario) AS 'Quantidade de usuários'
-FROM cargo c
-LEFT JOIN usuario u ON u.fkCargo = c.idcargo
-WHERE u.fkHospital = 2
-GROUP BY c.idcargo, c.nome;
-
-
-
-
--- drop database vitalview;
+INSERT INTO alerta (data_alerta, registro, fkComponente)
+VALUES
+('2025-11-04 14:35:00', 72.5, 4),
+('2025-11-04 15:10:00', 88.3, 5),
+('2025-11-04 15:10:00', 88.3,6);

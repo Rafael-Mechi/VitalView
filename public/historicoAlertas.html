@@ -10,7 +10,7 @@
   <script src="js/sessao.js"></script>
 </head>
 
-<body>
+<body onload="carregarInformacoes()">
 
   <header class="escuro">
     <section class="container">
@@ -28,7 +28,8 @@
             </div>
 
             <div class="icones_baixo">
-              <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador" style="width: 28px; height: 28px;">
+              <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador"
+                style="width: 28px; height: 28px;">
               <img src="./assets/dashboard-icons/calendar.svg" data-role="Analista,Técnico,Administrador">
               <img src="./assets/dashboard-icons/users.svg" data-role="Administrador">
               <img src="./assets/dashboard-icons/hard-drive.svg" data-role="Técnico,Administrador">
@@ -107,45 +108,16 @@
       <table class="tabela-alertas">
         <thead>
           <tr>
-            <th>Data</th>
-            <th>Hora</th>
+            <th>ID do alerta</th>
             <th>Servidor</th>
-            <th>Mensagem</th>
+            <th>Data e hora do alerta</th>
+            <th>Componente</th>
+            <th>Registro</th>
             <th>Status</th>
             <th>Ações</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>21/09/2025</td>
-            <td>20:15</td>
-            <td>Pacs-01</td>
-            <td>CPU acima de 90%</td>
-            <td><span class="status critico">Em alerta</span></td>
-            <td>
-              <button class="btn-resolver">Resolver</button>
-            </td>
-          </tr>
-          <tr>
-            <td>21/09/2025</td>
-            <td>19:40</td>
-            <td>Pacs-02</td>
-            <td>Espaço em disco baixo</td>
-            <td><span class="status critico">Em alerta</span></td>
-            <td>
-              <button class="btn-resolver">Resolver</button>
-            </td>
-          </tr>
-          <tr>
-            <td>21/09/2025</td>
-            <td>18:55</td>
-            <td>Pacs-03</td>
-            <td>Processo DICOM reiniciado</td>
-            <td><span class="status resolvido">Resolvido</span></td>
-            <td>
-              <button class="btn-resolver">Resolver</button>
-            </td>
-          </tr>
+        <tbody id="info-alertas">
         </tbody>
       </table>
     </section>
@@ -158,6 +130,117 @@
 <script>
   protegerPagina(['Analista', 'Técnico', 'Administrador']);
   aplicarCargoNaUI();
+
+  let idHospital = sessionStorage.FK_HOSPITAL;
+  let idUsuario = sessionStorage.ID_USUARIO;
+
+  function carregarInformacoes() {
+    buscarHistoricoAlertas();
+  }
+
+  function buscarHistoricoAlertas() {
+    fetch(`/historico-alertas/buscar-historico-alertas/${idHospital}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          response.json().then(resposta => {
+            console.log("Dado recebido: ", resposta);
+            gerarTabelaAlertas(resposta)
+          })
+        }
+      })
+      .catch((erro) => {
+        console.error("Erro na requisição: ", erro);
+        alert("Erro na conexão com o servidor.");
+      });
+  }
+
+  function gerarTabelaAlertas(dados) {
+    let tbodyAlertas = document.getElementById("info-alertas");
+    tbodyAlertas.innerHTML = "";
+
+    for (let i = 0; i < dados.length; i++) {
+      let idAlerta = dados[i].id_alerta;
+      let servidor = dados[i].servidor;
+      let data_hora = new Date(dados[i].data_hora);
+      let data_hora_formatada = data_hora.toLocaleString("pt-BR", {
+        timeZone: "UTC"
+      });
+      let componente = dados[i].componente;
+      let registro = dados[i].registro;
+      let status = dados[i].status;
+
+      let registroStatus = "";
+      if (status == "Em alerta") {
+        registroStatus = `<td><span class="status critico">${status}</span></td>`;
+      } else {
+        registroStatus = `<td><span class="status resolvido">${status}</span></td>`;
+      }
+
+      let botaoHTML = "";
+      if (status === "Em alerta") {
+        botaoHTML = `<button class="btn-resolver" onclick="resolverAlerta(this)">Resolver</button>`;
+      } else {
+        botaoHTML = `<button class="btn-resolver resolvido" disabled>Resolvido</button>`;
+      }
+
+      let linha = `
+      <tr>
+        <td>${idAlerta}</td>
+        <td>${servidor}</td>
+        <td>${data_hora_formatada}</td>
+        <td>${componente}</td>
+        <td>${registro}</td>
+        ${registroStatus}
+        <td>${botaoHTML}</td>
+      </tr>
+    `;
+
+      tbodyAlertas.innerHTML += linha;
+    }
+  }
+
+
+  function resolverAlerta(botaoResolver) {
+    // sobe até a linha (<tr>)
+    let linha = botaoResolver.closest('tr');
+    let idAlerta = linha.querySelector('td').textContent;
+
+    let agora = new Date();
+    let dataSQL = agora.toISOString().slice(0, 19).replace('T', ' ');
+    console.log("DATA-HORA: " + dataSQL);
+
+
+    fetch(`/historico-alertas/resolver-alerta/${idAlerta}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        dataSQL: dataSQL,
+        idUsuario: idUsuario
+      })
+    })
+      .then(response => {
+        if (response.ok) {
+          response.json().then(resposta => {
+            alert("Alerta corrigido com sucesso!");
+            botaoResolver.disabled = true;
+            botaoResolver.textContent = "Resolvido";
+          })
+        }
+      })
+      .catch((erro) => {
+        console.error("Erro na requisição: ", erro);
+        alert("Erro na conexão com o servidor.");
+      });
+
+    console.log('ID do alerta:', idAlerta);
+  }
 
   document.addEventListener("DOMContentLoaded", () => {
     const tabela = document.querySelector(".tabela-alertas");
