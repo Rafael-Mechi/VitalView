@@ -26,7 +26,8 @@
                 </div>
 
                 <div class="icones_baixo">
-                    <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador" style="width: 28px; height: 28px;">
+                    <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador"
+                        style="width: 28px; height: 28px;">
                     <img src="./assets/dashboard-icons/calendar.svg" data-role="Analista,Técnico,Administrador">
                     <img src="./assets/dashboard-icons/users.svg" data-role="Administrador">
                     <img src="./assets/dashboard-icons/hard-drive.svg" data-role="Técnico,Administrador">
@@ -121,14 +122,6 @@
                     <option value="5">Nesta semana</option>
                 </select>
             </section>
-
-            <!-- <section class="data-hora">
-                <button>1min</button>
-                <button>10min</button>
-                <button>1h</button>
-                <button>24h</button>
-                <button>7d</button>
-            </section> -->
         </section>
 
         <section class="container-de-sessoes">
@@ -164,28 +157,6 @@
                         </table>
                     </div>
 
-                    <!-- <table class="server-info">
-                        <tr>
-                            <td><strong>Hostname:</strong></td>
-                            <td>PACS-01</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Endereço IP:</strong></td>
-                            <td>192.168.1.10</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Localização:</strong></td>
-                            <td>Radiologia Central</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Qtd. RAM:</strong></td>
-                            <td>128 GB</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Qtd. Disco:</strong></td>
-                            <td>5 TB</td>
-                        </tr>
-                    </table> -->
                 </section>
                 <section class="sessao-lateral-esquerda-itens" id="lista-processos">
                     <h3>Lista de Processos</h3>
@@ -323,13 +294,34 @@
             </section>
         </section>
     </section>
-    <script src="js/dashboard.js"></script>
-
     <script src="js/permissoes.js"></script>
-
+    <script src="js/backendSuporteMicro.js"></script>
     <script>
         protegerPagina(['Técnico', 'Administrador']);
         aplicarCargoNaUI();
+
+        idServidor = 1
+
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch(`/suporteMicroRoutes/buscar-dados-banco/${idServidor}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        response.json().then(resposta => {
+                            console.log("Dado recebido: ", resposta);
+                        })
+                    }
+                })
+                .catch((erro) => {
+                    console.error("Erro na requisição: ", erro);
+                    alert("Erro na conexão com o servidor.");
+                });
+
+        });
 
         const velocimetroram = document.getElementById('velocimetroram').getContext('2d');
 
