@@ -182,3 +182,29 @@ VALUES
 ('2025-11-04 14:35:00', 72.5, 4),
 ('2025-11-04 15:10:00', 88.3, 5),
 ('2025-11-04 15:10:00', 88.3,6);
+
+-- Usuário 2 resolveu 3 alertas
+INSERT INTO correcao_alerta (data_correcao, fkAlerta, fkUsuario) VALUES
+('2025-11-02 09:10:00', 100, 2),
+('2025-11-03 11:25:00', 101, 2),
+('2025-11-04 16:40:00', 102, 2);
+
+-- Usuário 3 resolveu 5 alertas
+INSERT INTO correcao_alerta (data_correcao, fkAlerta, fkUsuario) VALUES
+('2025-11-01 08:15:00', 103, 3),
+('2025-11-02 13:45:00', 104, 3),
+('2025-11-03 10:20:00', 105, 3),
+('2025-11-04 15:10:00', 106, 3),
+('2025-11-05 18:05:00', 107, 3);
+
+-- Usuário 4 resolveu 2 alertas
+INSERT INTO correcao_alerta (data_correcao, fkAlerta, fkUsuario) VALUES
+('2025-11-03 09:30:00', 108, 4),
+('2025-11-04 17:55:00', 109, 4);
+
+-- Usuário 5 resolveu 4 alertas
+INSERT INTO correcao_alerta (data_correcao, fkAlerta, fkUsuario) VALUES
+('2025-11-01 14:00:00', 100, 5),
+('2025-11-02 15:35:00', 101, 5),
+('2025-11-03 13:45:00', 102, 5),
+('2025-11-05 08:50:00', 103, 5);

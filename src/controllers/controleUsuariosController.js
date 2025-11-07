@@ -44,7 +44,73 @@ function buscarUsuariosSistema(req, res){
         )
 }
 
+function buscarResolucaoDeAlertas(req, res){
+    let idHospital = req.params.idHospital;
+
+    controleUsuariosModel.buscarResolucaoDeAlertas(idHospital)
+        .then(
+            function (resultadoBuscarQtdUsuarios){
+                res.json(resultadoBuscarQtdUsuarios);
+                console.log(resultadoBuscarQtdUsuarios);
+            }
+        ).catch(
+            function(erro){
+                console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao tentar a resolução de alertas! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+            }
+        )
+}
+
+function usuariosMaisAlertasResolvidos(req, res){
+    let idHospital = req.params.idHospital;
+
+    controleUsuariosModel.usuariosMaisAlertasResolvidos(idHospital)
+        .then(
+            function (resultadoBuscarQtdUsuarios){
+                res.json(resultadoBuscarQtdUsuarios);
+                console.log(resultadoBuscarQtdUsuarios);
+            }
+        ).catch(
+            function(erro){
+                console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao tentar buscar os usuários com mais alertas resolvidos! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+            }
+        )
+}
+
+function buscarAlertasResolvidosPendentes(req, res){
+    let idHospital = req.params.idHospital;
+
+    controleUsuariosModel.buscarAlertasResolvidosPendentes(idHospital)
+        .then(
+            function (resultadoBuscarQtdUsuarios){
+                res.json(resultadoBuscarQtdUsuarios);
+                console.log(resultadoBuscarQtdUsuarios);
+            }
+        ).catch(
+            function(erro){
+                console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao tentar buscar os alertas pendentes x resolvidos! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+            }
+        )
+}
+
 module.exports = {
     buscarQtdUsuarios,
-    buscarUsuariosSistema
+    buscarUsuariosSistema,
+    buscarResolucaoDeAlertas,
+    usuariosMaisAlertasResolvidos,
+    buscarAlertasResolvidosPendentes
 }

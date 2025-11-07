@@ -11,6 +11,7 @@ console.log("Usuário do banco:", process.env.AMBIENTE_PROCESSO);
 var express = require("express");
 var cors = require("cors");
 var path = require("path");
+require('dotenv').config();
 var PORTA_APP = process.env.APP_PORT;
 var HOST_APP = process.env.APP_HOST;
 

@@ -45,7 +45,7 @@
                     <img src="./assets/dashboard-icons/home.svg" style="width: 20px; margin-right: 4px;"><a
                         href="bemVindo.html">Home</a>
                 </li>
-                <li style="display: flex; align-items: center;" data-role="Analista,Administrador" class="pagina-ativa">
+                <li style="display: flex; align-items: center;" data-role="Analista,Administrador">
                     <img src="./assets/dashboard-icons/activity.svg" style="width: 20px; margin-right: 4px;"><a
                         href="dashboardAnalista.html">Dash Analista</a>
                 </li>
@@ -55,7 +55,7 @@
                 <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
                         src="./assets/dashboard-icons/layout.svg" style="width: 20px; margin-right: 4px;"><a
                         href="dashboardSuporteMicro.html">Dash Suporte Micro</a></li>
-                        <li style="display: flex; align-items: center;" data-role="Técnico,Administrador">
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador">
                     <img src="./assets/dashboard-icons/wifi (1).svg" style="width: 20px; margin-right: 4px;"><a
                         href="dashRede.html">Dashboard Rede</a>
                 </li>
@@ -63,7 +63,7 @@
 
             <div class="menu_baixo">
                 <h3 class="title_menu">Outras Opções</h3>
-                <li style="display: flex; align-items: center;" data-role="Administrador"><img
+                <li style="display: flex; align-items: center;" data-role="Administrador" class="pagina-ativa"><img
                         src="./assets/dashboard-icons/gerenciar-usuarios.png" style="width: 20px; margin-right: 4px;"><a
                         href="dashControleSistema.html">Gerenciar usuários</a></li>
                 <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
@@ -180,95 +180,16 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th id="th-sup-esquerdo">Cód</th>
+                                    <th id="th-sup-esquerdo">ID do alerta</th>
                                     <th>Usuário</th>
-                                    <th>Email</th>
                                     <th>Cargo</th>
-                                    <th>Descrição</th>
                                     <th>Componente</th>
-                                    <th>Uso</th>
-                                    <th>Status</th>
-                                    <th id="th-sup-direito">Data</th>
+                                    <th>Uso durante o alerta</th>
+                                    <th id="th-sup-direito">Data e hora da correção</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Rafael</td>
-                                    <td>rafael@hsl.com</td>
-                                    <td>Analista</td>
-                                    <td>Sobrecarga de CPU</td>
-                                    <td>CPU</td>
-                                    <td>98.2%</td>
-                                    <td>Resolvido</td>
-                                    <td>09/11/2025</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Ana</td>
-                                    <td>ana@hsl.com</td>
-                                    <td>Suporte</td>
-                                    <td>Sobrecarga de RAM</td>
-                                    <td>RAM</td>
-                                    <td>92.8%</td>
-                                    <td>Resolvido</td>
-                                    <td>11/11/2025</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Carlos</td>
-                                    <td>carlos@hsl.com</td>
-                                    <td>Suporte</td>
-                                    <td>Sobrecarga de Disco</td>
-                                    <td>Disco</td>
-                                    <td>86.3%</td>
-                                    <td>Resolvido</td>
-                                    <td>01/12/2025</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>Ana</td>
-                                    <td>ana@hsl.com</td>
-                                    <td>Suporte</td>
-                                    <td>Sobrecarga de RAM</td>
-                                    <td>RAM</td>
-                                    <td>99.1%</td>
-                                    <td>Resolvido</td>
-                                    <td>03/12/2025</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>Pedro</td>
-                                    <td>pedro@hsl.com</td>
-                                    <td>Analista</td>
-                                    <td>Sobrecarga de CPU</td>
-                                    <td>CPU</td>
-                                    <td>89.5%</td>
-                                    <td>Resolvido</td>
-                                    <td>09/12/2025</td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>Lucas</td>
-                                    <td>lucas@hsl.com</td>
-                                    <td>Suporte</td>
-                                    <td>Sobrecarga de Disco</td>
-                                    <td>Disco</td>
-                                    <td>91.7%</td>
-                                    <td>Resolvido</td>
-                                    <td>12/12/2025</td>
-                                </tr>
-                                <tr>
-                                    <td>7</td>
-                                    <td>Mariana</td>
-                                    <td>mariana@hsl.com</td>
-                                    <td>Analista</td>
-                                    <td>Sobrecarga de RAM</td>
-                                    <td>RAM</td>
-                                    <td>95.4%</td>
-                                    <td>Resolvido</td>
-                                    <td>15/12/2025</td>
-                                </tr>
+                            <tbody id="info-alertas-resolvidos">
+
                             </tbody>
                         </table>
                     </div>
@@ -288,6 +209,9 @@
         function carregarInformacoes() {
             buscarQtdUsuarios();
             buscarUsuariosSistema();
+            buscarResolucaoAlertas();
+            buscarUsuariosMaisAlertasResolvidos();
+            buscarAlertasPendentesResolvidos();
         }
 
         function buscarQtdUsuarios() {
@@ -425,72 +349,110 @@
             }
         }
 
+        function buscarResolucaoAlertas() {
+            fetch(`/controle-usuarios/buscar-resolucao-de-alertas/${idHospitalVar}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        response.json().then(resposta => {
+                            console.log("Dado recebido: ", resposta);
+                            gerarTabelaResolucaoAlertas(resposta)
+                        })
+                    }
+                })
+                .catch((erro) => {
+                    console.error("Erro na requisição: ", erro);
+                    alert("Erro na conexão com o servidor.");
+                });
+        }
+
+        
+
+        function gerarTabelaResolucaoAlertas(dados) {
+            let tbodyUsuarios = document.getElementById("info-alertas-resolvidos");
+            tbodyUsuarios.innerHTML = "";
+
+            let idAlerta;
+            let usuario;
+            let cargo;
+            let componente;
+            let usoAlerta;
+
+            for (let i = 0; i < dados.length; i++) {
+                let registro = dados[i];
+
+                idAlerta = registro.id_alerta;
+                usuario = registro.usuario;
+                usoAlerta = registro.uso_no_alerta;
+                cargo = registro.cargo;
+                componente = registro.componente;
+                let dataHoraCorrecao = new Date(registro.data_hora_correcao);
+                let dataFormatada = dataHoraCorrecao.toLocaleDateString("pt-BR", {
+                    timeZone: "UTC"
+                });
+
+                let linha = `
+                <tr>
+                    <td>${idAlerta}</td>
+                    <td>${usuario}</td>
+                    <td>${cargo}</td>
+                    <td>${componente}</td>
+                    <td>${usoAlerta}%</td>
+                    <td>${dataFormatada}</td>
+                </tr>
+                `
+
+                tbodyUsuarios.innerHTML += linha;
+            }
+        }
+
 
         function irTelaCadastroFuncionario() {
             window.location.href = "cadastroFuncionarios.html";
         }
 
-        const infoBtns = document.querySelectorAll('.infoBtn');
-        const modals = document.querySelectorAll('.modal');
-        const closeBtns = document.querySelectorAll('.closeBtn');
-
-        infoBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const target = btn.dataset.target;
-                document.getElementById(target).style.display = 'flex';
-            });
-        });
-
-        closeBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                btn.closest('.modal').style.display = 'none';
-            });
-        });
-
-        modals.forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) modal.style.display = 'none';
-            });
-        });
-
-        const ctx2 = document.getElementById('chart-alertas-resolvidos').getContext('2d');
-        new Chart(ctx2, {
-            type: 'pie',
-            data: {
-                labels: [`Pendente: ${4}`, `Resolvido: ${32}`],
-                datasets: [{
-                    data: [4, 32],
-                    backgroundColor: ['#f75454', '#32b9cd']
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Alertas Resolvidos',
-                        font: {
-                            size: 20,
-                            family: 'Barlow, sans-serif'
-                        },
-                        color: 'black',
-                    }
+        function buscarUsuariosMaisAlertasResolvidos(){
+            fetch(`/controle-usuarios/buscar-usuarios-com-mais-alertas-resolvidos/${idHospitalVar}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
                 }
-            }
-        });
+            })
+                .then(response => {
+                    if (response.ok) {
+                        response.json().then(resposta => {
+                            console.log("Usuários com mais alertas resolvidos: ", resposta);
+                            gerarRankingUsuarios(resposta)
+                        })
+                    }
+                })
+                .catch((erro) => {
+                    console.error("Erro na requisição: ", erro);
+                    alert("Erro na conexão com o servidor.");
+                });
+        }
 
-        const ctx3 = document.getElementById('chart-usuarios-alertas').getContext('2d');
-        new Chart(ctx3, {
+        function gerarRankingUsuarios(dados){
+        let listaUsuarios = [];
+        let listaTotalResolvidos = [];
+
+        for(let i = 0; i < dados.length; i++){
+            listaUsuarios.push(dados[i].usuario);
+            listaTotalResolvidos.push(dados[i].total_resolvidos);
+        }
+
+            const ctx3 = document.getElementById('chart-usuarios-alertas').getContext('2d');
+        new Chart(ctx3, { 
             type: 'bar',
             data: {
-                labels: ['Rafael', 'Fritz', 'Carlos', 'Ana', 'Pedro'],
+                labels: listaUsuarios,
                 datasets: [{
-                    label: 'Alertas Resolvidos',
-                    data: [15, 12, 8, 6, 4],
+                    label: `Mais resolvidos: ${listaUsuarios[0]}`,
+                    data: listaTotalResolvidos,
                     backgroundColor: ['#f75454', '#32b9cd', '#ffd60a', '#10b981', '#8b5cf6'],
                     borderWidth: 1,
                     borderRadius: 8,
@@ -539,6 +501,86 @@
                     }
                 }
             }
+        });
+    }
+
+    function buscarAlertasPendentesResolvidos(){
+        fetch(`/controle-usuarios/buscar-quantidade-alertas-resolvidos-x-pendentes/${idHospitalVar}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    response.json().then(resposta => {
+                        console.log("Alertas resolvidos x em alerta: ", resposta);
+                        gerarGraficoResolvidoPendente(resposta)
+                    })
+                }
+            })
+            .catch((erro) => {
+                console.error("Erro na requisição: ", erro);
+                alert("Erro na conexão com o servidor.");
+            });
+    }
+
+    function gerarGraficoResolvidoPendente(dados){
+        let pendentes = dados[0].pendentes;
+        let resolvidos = dados[0].resolvidos;
+
+        const ctx2 = document.getElementById('chart-alertas-resolvidos').getContext('2d');
+        new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: [`Pendentes: ${pendentes}`, `Resolvidos: ${resolvidos}`],
+                datasets: [{
+                    data: [pendentes, resolvidos],
+                    backgroundColor: ['#f75454', '#32b9cd']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Alertas Resolvidos',
+                        font: {
+                            size: 20,
+                            family: 'Barlow, sans-serif'
+                        },
+                        color: 'black',
+                    }
+                }
+            }
+        });
+    }
+
+        const infoBtns = document.querySelectorAll('.infoBtn');
+        const modals = document.querySelectorAll('.modal');
+        const closeBtns = document.querySelectorAll('.closeBtn');
+
+        infoBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.dataset.target;
+                document.getElementById(target).style.display = 'flex';
+            });
+        });
+
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.closest('.modal').style.display = 'none';
+            });
+        });
+
+        modals.forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.style.display = 'none';
+            });
         });
     </script>
 </body>

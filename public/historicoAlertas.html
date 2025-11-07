@@ -112,13 +112,13 @@
       <table class="tabela-alertas">
         <thead>
           <tr>
-            <th>ID do alerta</th>
+            <th id="th-sup-esquerdo">ID do alerta</th>
             <th>Servidor</th>
             <th>Data e hora do alerta</th>
             <th>Componente</th>
             <th>Registro</th>
             <th>Status</th>
-            <th>Ações</th>
+            <th id="th-sup-direito">Ações</th>
           </tr>
         </thead>
         <tbody id="info-alertas">
@@ -198,7 +198,7 @@
         <td>${servidor}</td>
         <td>${data_hora_formatada}</td>
         <td>${componente}</td>
-        <td>${registro}</td>
+        <td>${registro}%</td>
         ${registroStatus}
         <td>${botaoHTML}</td>
       </tr>
