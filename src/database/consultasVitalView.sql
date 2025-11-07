@@ -71,5 +71,21 @@ GROUP BY u.idUsuario, u.nome, c.nome
 ORDER BY total_resolvidos DESC
 LIMIT 5;
 
+SELECT
+    (SELECT COUNT(a.id)
+     FROM alerta a
+     INNER JOIN componentes c ON a.fkComponente = c.idComponente
+     INNER JOIN servidores s ON c.fkServidor = s.idServidor
+     INNER JOIN hospital h ON s.fkHospital = h.idHospital
+     WHERE h.idHospital = 2
+       AND a.id NOT IN (SELECT fkAlerta FROM correcao_alerta)
+    ) AS pendentes,
 
-select * from usuario;
+    (SELECT COUNT(ca.id)
+     FROM correcao_alerta ca
+     INNER JOIN alerta a ON ca.fkAlerta = a.id
+     INNER JOIN componentes c ON a.fkComponente = c.idComponente
+     INNER JOIN servidores s ON c.fkServidor = s.idServidor
+     INNER JOIN hospital h ON s.fkHospital = h.idHospital
+     WHERE h.idHospital = 2
+    ) AS resolvidos;
