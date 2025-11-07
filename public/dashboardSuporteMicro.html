@@ -123,7 +123,7 @@
         <section class="container-de-sessoes">
             <section class="sessao-lateral-esquerda">
                 <section id="nome-servidor">
-                    <h1>PACS-01</h1><span class="status ativo">Ativo</span>
+                    <h1 id="hostName">PACS-01</h1><span class="status ativo">Ativo</span>
                 </section>
                 <section class="sessao-lateral-esquerda-itens" id="informações-servidor">
 
@@ -132,16 +132,16 @@
                             <tbody>
                                 <tr>
                                     <td><strong>Hostname:</strong></td>
-                                    <td>PACS-01</td>
+                                    <td id="hostName2">PACS-01</td>
 
                                 </tr>
                                 <tr>
                                     <td><strong>Endereço IP:</strong></td>
-                                    <td>192.168.1.10</td>
+                                    <td id="ip">192.168.1.10</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Localização:</strong></td>
-                                    <td>Radiologia Central</td>
+                                    <td id="localizacao">Radiologia Central</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Qtd. RAM:</strong></td>
@@ -296,10 +296,38 @@
         protegerPagina(['Técnico', 'Administrador']);
         aplicarCargoNaUI();
 
+
         idServidor = 1
+        key = "saida.json"
 
         document.addEventListener("DOMContentLoaded", () => {
             fetch(`/suporteMicroRoutes/buscar-dados-banco/${idServidor}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        response.json().then(resposta => {
+                            console.log("Dado recebido: ", resposta);
+                            let ip = resposta[0].ip;
+                            let hostname = resposta[0].hostname;
+                            let localizacao = resposta[0].localizacao;
+                            document.getElementById("ip").innerHTML = ip;
+                            document.getElementById("hostName").innerHTML = hostname;
+                            document.getElementById("hostName2").innerHTML = hostname;
+                            document.getElementById("localizacao").innerHTML = localizacao;
+                        })
+                    }
+                })
+                .catch((erro) => {
+                    console.error("Erro na requisição: ", erro);
+                    alert("Erro na conexão com o servidor.");
+                });
+
+
+            fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -316,8 +344,18 @@
                     console.error("Erro na requisição: ", erro);
                     alert("Erro na conexão com o servidor.");
                 });
-
         });
+
+
+
+
+
+
+
+
+
+        // -------------------------------------------------------------------------------------------------------
+
 
         const velocimetroram = document.getElementById('velocimetroram').getContext('2d');
 

@@ -2,7 +2,7 @@ var suporteMicroModel = require("../models/suporteMicroModel")
 
 function buscarDadosServidores(req, res) {
 
-    const { idServidor } = req.params; 
+    const { idServidor } = req.params;
 
     suporteMicroModel.buscarDadosServidores(idServidor)
         .then(
@@ -21,6 +21,22 @@ function buscarDadosServidores(req, res) {
         )
 }
 
+async function pegarDadosBucket(req, res) {
+    const bucketName = process.env.AWS_BUCKET_NAME;
+    const fileKey = req.params.key;
+
+    try {
+        const fileContent = await suporteMicroModel.pegarDadosBucketModel(bucketName, fileKey);
+        res.send(fileContent);
+    } catch (error) {
+        console.error("Erro ao buscar no bucket:", error);
+        res.status(500).send("Erro ao buscar arquivo");
+    }
+}
+
+
+
 module.exports = {
-    buscarDadosServidores
+    buscarDadosServidores,
+    pegarDadosBucket
 }
