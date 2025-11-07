@@ -176,7 +176,7 @@ INSERT INTO alerta (data_alerta, registro, fkComponente)
 VALUES 
 ('2025-11-04 10:30:00', 92.7, 1),  -- CPU do servidor 1
 ('2025-11-04 10:45:00', 88.3, 3);  -- Disco do servidor 1
-
+	
 INSERT INTO alerta (data_alerta, registro, fkComponente)
 VALUES
 ('2025-11-04 14:35:00', 72.5, 4),
