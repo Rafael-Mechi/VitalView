@@ -103,50 +103,34 @@
 
         <main class="grid">
             <div class="parteCima">
-                <div class="kpis">
-                    <section class="card kpi pacotes">
-                        <h3>Perda de Pacotes</h3>
-                        <div class="caption">Pacotes perdidos</div>
-                        <div class="kpi-number alerta" id="pacotes-lost">8</div>
-                        <div class="badge alerta" id="pacotes-status">Alerta</div>
-                    </section>
 
-                    <section class="card kpi conexoes">
-                        <h3>Conexões</h3>
-                        <div class="caption">Conexões ativas</div>
-                        <div class="kpi-number" id="conexoes-ativas">39</div>
-                        <div class="badge" id="conexoes-status">Normal</div>
-                    </section>
-                </div>
+                <section class="card kpi pacotes">
+                    <h3>Perda de Pacotes</h3>
+                    <div class="caption">Percentual (%)</div>
+                    <div class="kpi-number" id="loss-pct">--%</div>
+                    <div class="badge" id="loss-status">--</div>
+                </section>
 
-                <section class="card banda">
-                    <h3>Uso de Banda</h3>
-                    <div class="caption">
-                        <span class="legend-dot legend-used"></span> Banda Usada
-                        <span style="margin-left:14px" class="legend-dot legend-cap"></span> Capacidade de Banda
-                    </div>
-
-                    <div class="chart-box">
-                        <canvas id="bandaChart"></canvas>
-                    </div>
-
-                    <div class="badge" id="banda-status">Normal</div>
+                <section class="card kpi conexoes">
+                    <h3>Conexões</h3>
+                    <div class="caption">Conexões ativas</div>
+                    <div class="kpi-number" id="conexoes-ativas">39</div>
+                    <div class="badge" id="conexoes-status">Normal</div>
                 </section>
 
                 <section class="card latencia">
                     <h3>Latência</h3>
-                    <div class="caption">(em milissegundos)</div>
-                    <div class="chart-box">
-                        <canvas id="latenciaChart"></canvas>
-                    </div>
-                    <div class="badge">Normal</div>
+                    <div class="caption">Tempo de resposta (ms)</div>
+                    <div class="kpi-number" id="latencia-atual">--</div>
+                    <div class="badge" id="latencia-status">--</div>
                 </section>
+
             </div>
 
-            <div class="parteBaixo">    
+            <div class="parteBaixo">
                 <section class="card trafego">
                     <h3>Velocidade de Tráfego de Rede</h3>
-                    <div class="caption">(megabits por segundo)</div>
+                    <div class="caption">(Megabits por segundo)</div>
 
                     <div class="row">
                         <div class="kpi">
@@ -177,8 +161,8 @@
                 </section>
 
                 <section class="card entrada">
-                    <h3>Velocidade de entrada e saída</h3>
-                    <div class="caption">(megabits por segundo)</div>
+                    <h3>Pacotes Enviados e Recebidos</h3>
+                    <div class="caption">(Quantidade de pacotes IN/OUT)</div>
                     <div class="chart-box">
                         <canvas id="ioChart"></canvas>
                     </div>
@@ -193,13 +177,22 @@
 
     <script>
 
-        protegerPagina(['Técnico', 'Administrador']);
-        aplicarCargoNaUI();
+        function setBadge(el, status, numberEl) {
 
-        const teal = '#14b8a6';
-        const teal2 = '#0ea5e9';
+            el.classList.remove('ok', 'alerta');
+            if (status === 'Alerta') el.classList.add('alerta');
+            if (status === 'Normal') el.classList.add('ok');
+            el.textContent = status;
 
-        // Evita crash se permissoes.js não estiver carregado
+
+            if (numberEl) {
+                numberEl.classList.remove('ok', 'alerta');
+                if (status === 'Alerta') numberEl.classList.add('alerta');
+                if (status === 'Normal') numberEl.classList.add('ok');
+            }
+        }
+
+
         if (typeof protegerPagina === 'function') {
             protegerPagina(['Técnico', 'Administrador']);
         }
@@ -207,143 +200,91 @@
             aplicarCargoNaUI();
         }
 
-        // Latência (linha)
-        const horas = ['12:05', '12:10', '12:15', '12:20', '12:25', '12:30', '12:35', '18:00', '19:00', '19:05'];
-        const latVals = [12, 22, 25, 30, 33, 30, 22, 18, 23, 20];
-        new Chart(document.getElementById('latenciaChart'), {
-            type: 'line',
-            data: {
-                labels: horas,
-                datasets: [{
-                    label: 'Latência',
-                    data: latVals,
-                    borderColor: teal,
-                    backgroundColor: teal,
-                    tension: .35,
-                    pointRadius: 3,
-                    fill: false
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                scales: {
-                    x: { grid: { display: false } },
-                    y: { beginAtZero: true, grid: { color: '#eef2f7' } }
-                },
-                plugins: { legend: { display: false } }
+        const teal = '#14b8a6';
+        const teal2 = '#0ea5e9';
+
+        // estado mocado dos meus dados
+        const METRICAS = {
+            pacotesPerdidos: 8,
+            conexoesAtivas: 39,
+            banda: { capacidade: 300, usada: 78 },
+            ping: {
+                rttMsAtual: 23,
+                enviados: 10,
+                perdidos: 1
             }
-        });
+        };
 
+        // KPI: Latência 
+        const latNow = document.getElementById('latencia-atual');
+        const latBadge = document.getElementById('latencia-status');
+        if (latNow && latBadge) {
+            latNow.textContent = METRICAS.ping.rttMsAtual + ' ms';
+            if (METRICAS.ping.rttMsAtual <= 80) setBadge(latBadge, 'Normal', latNow);
+            else setBadge(latBadge, 'Alerta', latNow);
+        }
 
-        // Velocidade de entrada e saída (linha dupla) 
-        const ioLabels = ['07:45', '10:50', '13:55', '18:00', '19:05'];
-        const entrada = [240, 380, 180, 420, 440];
-        const saida = [320, 240, 460, 470, 480];
+        // KPI: Perda de Pacotes (%)
+        const lossPctEl = document.getElementById('loss-pct');
+        const lossBadge = document.getElementById('loss-status');
+        if (lossPctEl && lossBadge) {
+            const perdaPct = METRICAS.ping.enviados > 0
+                ? (METRICAS.ping.perdidos / METRICAS.ping.enviados) * 100
+                : 0;
+            lossPctEl.textContent = perdaPct.toFixed(1) + '%';
+            if (perdaPct < 5) setBadge(lossBadge, 'Normal', lossPctEl);
+            else setBadge(lossBadge, 'Alerta', lossPctEl);
+        }
 
-
-        new Chart(document.getElementById('ioChart'), {
-            type: 'line',
-            data: {
-                labels: ioLabels,
-                datasets: [
-                    { label: 'Entrada', data: entrada, borderColor: teal2, backgroundColor: teal2, tension: .35, pointRadius: 3, fill: false },
-                    { label: 'Saída', data: saida, borderColor: teal, backgroundColor: teal, tension: .35, pointRadius: 3, fill: false }
-                ]
-            },
-            options: {
-                maintainAspectRatio: false,
-                scales: { x: { grid: { display: false } }, y: { beginAtZero: true, grid: { color: '#eef2f7' } } },
-                plugins: { legend: { position: 'top' } }
-            }
-        });
-
+        // KPI: Conexões
+        const conVal = document.getElementById('conexoes-ativas');
+        const conBadge = document.getElementById('conexoes-status');
+        if (conVal && conBadge) {
+            conVal.textContent = METRICAS.conexoesAtivas;
+            const ok = METRICAS.conexoesAtivas >= 10 && METRICAS.conexoesAtivas <= 200;
+            setBadge(conBadge, ok ? 'Normal' : 'Alerta', conVal);
+        }
 
         // Barras de download/upload 
         function setBar(el, value, max) {
             const pct = Math.max(0, Math.min(100, (value / max) * 100));
             el.style.width = pct + '%';
         }
-        setBar(document.getElementById('bar-down'), 87, 100);
-        setBar(document.getElementById('bar-up'), 18, 100);
-
-
-        const up = 18; const down = 87;
+        const barDown = document.getElementById('bar-down');
+        const barUp = document.getElementById('bar-up');
+        if (barDown && barUp) {
+            setBar(barDown, 87, 100);
+            setBar(barUp, 18, 100);
+        }
+        const up = 18, down = 87;
         const upBadge = document.getElementById('up-status');
         const downBadge = document.getElementById('down-status');
-        if (up > 80) { upBadge.classList.add('alerta'); upBadge.textContent = 'Alerta'; }
-        if (down <= 50) { downBadge.textContent = 'Normal'; }
+        if (upBadge) { if (up > 80) { upBadge.classList.add('alerta'); upBadge.textContent = 'Alerta'; } }
+        if (downBadge) { if (down <= 50) { downBadge.textContent = 'Normal'; } }
 
-        const METRICAS = {
-            pacotesPerdidos: 8,
-            conexoesAtivas: 39,
-            banda: { capacidade: 300, usada: 78 }
-        };
+        // Linha IN/OUT 
+        const ioCanvas = document.getElementById('ioChart');
+        if (ioCanvas && window.Chart) {
+            const ioLabels = ['07:45', '10:50', '13:55', '18:00', '19:05'];
+            const entrada = [40, 80, 10, 25, 40];
+            const saida = [10, 30, 5, 12, 30];
 
-        function setBadge(el, status) {
-            el.classList.remove('ok', 'atencao', 'alerta');
-            if (status === 'Alerta') el.classList.add('alerta');
-            if (status === 'Atenção') el.classList.add('atencao');
-            if (status === 'Normal') el.classList.add('ok');
-            el.textContent = status;
-        }
-
-        // Perda de Pacotes
-        const pacLost = document.getElementById('pacotes-lost');
-        const pacBadge = document.getElementById('pacotes-status');
-        pacLost.textContent = METRICAS.pacotesPerdidos;
-
-        // alerta se >= 5 pacotes perdidos
-        setBadge(pacBadge, METRICAS.pacotesPerdidos >= 5 ? 'Alerta' : 'Normal');
-        pacLost.classList.toggle('alerta', METRICAS.pacotesPerdidos >= 5);
-        pacLost.classList.toggle('ok', METRICAS.pacotesPerdidos < 5);
-
-        // Conexões
-        const conVal = document.getElementById('conexoes-ativas');
-        const conBadge = document.getElementById('conexoes-status');
-        conVal.textContent = METRICAS.conexoesAtivas;
-
-        // regra exemplo: normal se 10–200 conexões
-        const conexoesNormal = METRICAS.conexoesAtivas >= 10 && METRICAS.conexoesAtivas <= 200;
-        setBadge(conBadge, conexoesNormal ? 'Normal' : 'Alerta');
-        conVal.classList.toggle('ok', conexoesNormal);
-        conVal.classList.toggle('alerta', !conexoesNormal);
-
-        // Uso de Banda
-        const usado = METRICAS.banda.usada;
-        const capacidade = METRICAS.banda.capacidade;
-        const livre = Math.max(capacidade - usado, 0);
-
-        new Chart(document.getElementById('bandaChart'), {
-            type: 'pie',
-            data: {
-                labels: ['Usado', 'Livre'],
-                datasets: [{
-                    data: [usado, livre],
-                    borderWidth: 1,
-                    backgroundColor: ['#0ea5e9', '#14b8a6'],
-                    hoverOffset: 4
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: (ctx) => {
-                                const v = ctx.parsed;
-                                const pct = capacidade ? ((v / capacidade) * 100).toFixed(1) : 0;
-                                const lbl = ctx.label === 'Usado' ? 'Usado' : 'Livre';
-                                const val = ctx.label === 'Usado' ? usado : livre;
-                                return `${lbl}: ${val} Mbps (${pct}%)`;
-                            }
-                        }
-                    }
+            new Chart(ioCanvas, {
+                type: 'line',
+                data: {
+                    labels: ioLabels,
+                    datasets: [
+                        { label: 'Entrada', data: entrada, borderColor: teal2, backgroundColor: teal2, tension: .35, pointRadius: 3, fill: false },
+                        { label: 'Saída', data: saida, borderColor: teal, backgroundColor: teal, tension: .35, pointRadius: 3, fill: false }
+                    ]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: { x: { grid: { display: false } }, y: { beginAtZero: true, grid: { color: '#eef2f7' } } },
+                    plugins: { legend: { position: 'top' } }
                 }
-            }
-        });
-
-
+            });
+        }
     </script>
 </body>
 

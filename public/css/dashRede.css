@@ -393,13 +393,6 @@ a:hover {
     width: 100%;
 }
 
-.kpis {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 300px;
-}
-
 .parteBaixo {
     display: flex;
     flex-direction: row;
@@ -417,15 +410,18 @@ a:hover {
 }
 
 .card.latencia {
-    width: 630px;
+    height: 165px;
+    width: 405px;
 }
 
 .card.kpi.pacotes {
     height: 165px;
+    width: 405px;
 }
 
 .card.kpi.conexoes {
     height: 165px;
+    width: 405px;
 }
 
 
@@ -505,7 +501,6 @@ a:hover {
 }
 
 .badge.ok      { color: var(--vv-ok);   border-color: color-mix(in oklab, var(--vv-badge-bg) 70%, var(--vv-ok)); }
-.badge.atencao { color: var(--vv-warn); border-color: color-mix(in oklab, var(--vv-badge-bg) 70%, var(--vv-warn)); }
 .badge.alerta  { color: var(--vv-alert);border-color: color-mix(in oklab, var(--vv-badge-bg) 70%, var(--vv-alert)); }
 
 /* Linha KPI e barra (download/upload)*/
@@ -601,11 +596,10 @@ a, button, .bar-wrap {
   font-weight: 800;
   text-align: center;
   margin: 4px 0 12px;
-  color: var(--vv-teal);
+  color: var(--vv-ok);
   font-variant-numeric: tabular-nums;
 }
 .kpi-number.ok { color: var(--vv-ok); }
-.kpi-number.atencao { color: var(--vv-warn); }
 .kpi-number.alerta { color: var(--vv-alert); }
 
 .legend-dot {
