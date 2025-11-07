@@ -250,6 +250,8 @@ a:hover {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    max-height: 500px; /* altura que mostra só 10 linhas + cabeçalho (mas n ta funcionando chat) */
+    overflow-y: auto;
 }
 
 .tabela-alertas thead {
@@ -265,6 +267,14 @@ a:hover {
 
 .tabela-alertas tr:nth-child(even) {
     background: #f9fafb;
+}
+
+#th-sup-esquerdo {
+    border-top-left-radius: 10px;
+}
+
+#th-sup-direito {
+    border-top-right-radius: 10px;
 }
 
 /* Status */
