@@ -7,6 +7,7 @@
     <title>Controle do Sistema</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
     <link rel="stylesheet" href="css/dashControleSistema.css">
+    <script src="js/sessao.js"></script>
 </head>
 
 <body onload="carregarInformacoes()">
@@ -137,15 +138,15 @@
                                 <div class="formulario">
                                     <div class="campo">
                                         <span>Nome:</span>
-                                        <input id="nome_input" type="text" placeholder="Seu nome" />
+                                        <input id="nome_input" type="text" placeholder="Novo nome" />
                                     </div>
                                     <div class="campo">
                                         <span>CPF:</span>
-                                        <input id="cpf_input" type="text" placeholder="Seu cpf" />
+                                        <input id="cpf_input" type="text" placeholder="Novo cpf" />
                                     </div>
                                     <div class="campo">
                                         <span>Telefone:</span>
-                                        <input id="telefone_input" type="text" placeholder="Seu telefone" />
+                                        <input id="telefone_input" type="text" placeholder="Novo telefone" />
                                     </div>
                                 </div>
                             </div>
@@ -177,6 +178,28 @@
                                             onclick="fecharModal()">Cancelar</button>
                                         <button id="atualizar" type="submit" class="btn save"
                                             onclick="atualizarUsuario()">Atualizar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MODAL EXCLUSÃO DE FUNCIONÁRIO-->
+                <div id="modalExcluirUsuario" class="modal">
+                    <div class="modal-content">
+                        <div class="container-funcionario-exclusao-funcionario">
+                            <div class="card-exclusao-usuario">
+                                <div class="formulario">
+                                    <div class="campo">
+                                        <span>Digite "Excluir" para confirmar a exclusão deste usuário</span>
+                                        <input id="excluir_input" type="text" placeholder="Excluir" />
+                                        <div class="form-actions">
+                                            <button type="reset" class="btn cancel"
+                                                onclick="fecharModal()">Cancelar</button>
+                                            <button id="btn_excluir" type="submit" class="btn excluir disabled"
+                                                onclick="excluirUsuario()" disabled>Excluir</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -721,7 +744,7 @@
             let telefoneAtualizado = telefone_input.value;
             let emailAtualizado = email_input.value;
             let senhaAtualizada = senha_input.value;
-            let fkCargoAtualizado =  Number(cargo_input.value);
+            let fkCargoAtualizado = Number(cargo_input.value);
 
             fetch(`/controle-usuarios/atualizar-usuario/${idUsuario}`, {
                 method: "PUT",
@@ -742,7 +765,7 @@
                     console.log(resposta);
                     alert(`Usuário alterado com sucesso!`)
                     fecharModal();
-                    buscarUsuariosSistema();
+                    location.reload();
                 }
 
             }).catch(function (erro) {
@@ -752,6 +775,9 @@
 
         function fecharModal() {
             modalEditarUsuario.style.display = "none";
+            modalExcluirUsuario.style.display = "none";
+
+            excluir_input.removeEventListener('input', atualizarEstadoBotaoExclusao);
         }
 
         function popularSelectCargos() {
@@ -769,6 +795,82 @@
                 opt.textContent = cargo.nome;
                 cargoSelect.appendChild(opt);
             });
+        }
+
+        function excluirUsuario(botao) {
+            let linha = botao.closest("tr");
+            let colunas = linha.querySelectorAll("td");
+
+            let idUsuario = colunas[0].textContent;
+            let nome = colunas[1].textContent;
+
+            fetch(`/controle-usuarios/buscar-usuario/${idUsuario}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        response.json().then(resposta => {
+                            console.log("Usuário retornado: ", resposta);
+                            modalExcluirUsuario.style.display = "flex";
+
+                            excluir_input.value = "";
+                            atualizarEstadoBotaoExclusao();
+
+                            excluir_input.addEventListener('input', atualizarEstadoBotaoExclusao);
+
+                            document.getElementById("btn_excluir").onclick = function () {
+                                confirmarExclusaoUsuario(idUsuario);
+                            };
+                        }
+                        )
+                    }
+                })
+        }
+
+        function atualizarEstadoBotaoExclusao() {
+            let btnExcluir = document.getElementById("btn_excluir");
+            let inputTexto = document.getElementById("excluir_input").value;
+
+            if (inputTexto === "Excluir") {
+                btnExcluir.classList.remove("disabled");
+                btnExcluir.disabled = false;
+            } else {
+                btnExcluir.classList.add("disabled");
+                btnExcluir.disabled = true;
+            }
+        }
+
+        function confirmarExclusaoUsuario(idUsuario) {
+            let excluir = excluir_input.value;
+
+            if (excluir != "Excluir") {
+                alert("Digite 'Excluir' para remover este usuário");
+                return;
+            }
+
+            else {
+                fetch(`/controle-usuarios/excluir-usuario/${idUsuario}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        idUsuarioServer: idUsuario
+                    })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            response.json().then(resposta => {
+                                alert("Usuário removido com sucesso!");
+                                fecharModal();
+                                location.reload();
+                            })
+                        }
+                    })
+            }
         }
     </script>
 </body>

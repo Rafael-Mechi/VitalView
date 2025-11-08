@@ -157,6 +157,28 @@ function atualizarUsuario(req, res){
         )
 }
 
+function excluirUsuario(req, res){
+    let idUsuario = req.body.idUsuarioServer;
+    
+    controleUsuariosModel.excluirUsuario(idUsuario)
+        .then(
+            function (resultadoBuscarUsuario){
+                res.json(resultadoBuscarUsuario);
+                console.log(resultadoBuscarUsuario);
+            }
+
+        ).catch(
+            function(erro){
+                console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao tentar excluir este usuário! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+            }
+        )
+}
+
 module.exports = {
     buscarQtdUsuarios,
     buscarUsuariosSistema,
@@ -164,5 +186,6 @@ module.exports = {
     usuariosMaisAlertasResolvidos,
     buscarAlertasResolvidosPendentes,
     buscarUsuario,
-    atualizarUsuario
+    atualizarUsuario,
+    excluirUsuario
 }

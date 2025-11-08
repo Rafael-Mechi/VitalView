@@ -31,5 +31,8 @@ router.put("/atualizar-usuario/:idUsuario", function (req, res) {
         controleUsuariosController.atualizarUsuario(req, res);
 });
 
+router.put("/excluir-usuario/:idUsuario", function (req, res) {
+        controleUsuariosController.excluirUsuario(req, res);
+});
 
 module.exports = router;

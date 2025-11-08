@@ -20,10 +20,9 @@ function autenticar(req, res) {
                     if (resultadoAutenticar.length == 1) {
                         console.log(resultadoAutenticar);
                         res.json(resultadoAutenticar[0])
-                        //let fkHospital = resultadoAutenticar[0].fkHospital // PROVISÓRIO PARA SALVAR A FK DO HOSPITAL. DEIXAR ASSIM PODE DAR PROBLEMA, POIS ASSIM É POSSÍVEL QUE SOMENTE 1 USUÁRIO ENTRE NO SISTEMA
                     }
                     else if (resultadoAutenticar.length == 0) {
-                        res.status(403).send("Email e/ou senha inválido(s)");
+                        res.status(403).send("Email e/ou senha inválido(s), ou você não tem acesso ao sistema");
                     } else {
                         res.status(403).send("Mais de um usuário com o mesmo login e senha!");
                     }

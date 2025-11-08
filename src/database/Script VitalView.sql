@@ -51,8 +51,11 @@ create table usuario (
     email varchar(100),
     senha varchar(45),
     data_criacao date,
+    ativo boolean default true,
+    
 	fkcargo int not null,
     fkHospital int not null,
+		
     foreign key (fkHospital) references hospital(idHospital),
 	foreign key (fkcargo) references cargo(idcargo)
 );
@@ -172,39 +175,31 @@ insert into componentes(fkTipo, fkServidor, limite) values
 ('3', '3', 80.0),
 ('1', '4', 96.0);
 
-INSERT INTO alerta (data_alerta, registro, fkComponente)
-VALUES 
-('2025-11-04 10:30:00', 92.7, 1),  -- CPU do servidor 1
-('2025-11-04 10:45:00', 88.3, 3);  -- Disco do servidor 1
-
-INSERT INTO alerta (data_alerta, registro, fkComponente)
+-- ALERTAS do hospital 2
+INSERT INTO alerta (id, data_alerta, registro, fkComponente)
 VALUES
-('2025-11-04 14:35:00', 72.5, 4),
-('2025-11-04 15:10:00', 88.3, 5),
-('2025-11-04 15:10:00', 88.3,6);
+(100, '2025-11-04 14:35:00', 72.5, 4),  -- CPU servidor 3
+(101, '2025-11-04 15:10:00', 88.3, 5),  -- Memória servidor 3
+(102, '2025-11-04 15:10:00', 88.3, 6),  -- Disco servidor 3
+(103, '2025-11-04 16:30:00', 90.2, 7),  -- CPU servidor 4
+(104, '2025-11-04 16:30:00', 90.2, 7);  -- CPU servidor 4
 
--- Usuário 2 resolveu 3 alertas
-INSERT INTO correcao_alerta (data_correcao, fkAlerta, fkUsuario) VALUES
-('2025-11-02 09:10:00', 100, 2),
-('2025-11-03 11:25:00', 101, 2),
-('2025-11-04 16:40:00', 102, 2);
 
--- Usuário 3 resolveu 5 alertas
+-- Usuário 2 (suporte) resolveu 2 alertas
 INSERT INTO correcao_alerta (data_correcao, fkAlerta, fkUsuario) VALUES
-('2025-11-01 08:15:00', 103, 3),
-('2025-11-02 13:45:00', 104, 3),
-('2025-11-03 10:20:00', 105, 3),
-('2025-11-04 15:10:00', 106, 3),
-('2025-11-05 18:05:00', 107, 3);
+('2025-11-04 16:40:00', 100, 2),
+('2025-11-04 17:00:00', 101, 2);
 
--- Usuário 4 resolveu 2 alertas
+-- Usuário 3 (admin) resolveu 1 alerta
 INSERT INTO correcao_alerta (data_correcao, fkAlerta, fkUsuario) VALUES
-('2025-11-03 09:30:00', 108, 4),
-('2025-11-04 17:55:00', 109, 4);
+('2025-11-04 17:30:00', 102, 3);
 
--- Usuário 5 resolveu 4 alertas
+-- Usuário 4 (suporte2) resolveu 1 alerta
 INSERT INTO correcao_alerta (data_correcao, fkAlerta, fkUsuario) VALUES
-('2025-11-01 14:00:00', 100, 5),
-('2025-11-02 15:35:00', 101, 5),
-('2025-11-03 13:45:00', 102, 5),
-('2025-11-05 08:50:00', 103, 5);
+('2025-11-04 17:55:00', 103, 4);
+
+-- Usuário 5 (analista) resolveu 1 alerta
+INSERT INTO correcao_alerta (data_correcao, fkAlerta, fkUsuario) VALUES
+('2025-11-05 08:50:00', 104, 5);
+
+select * from usuario;

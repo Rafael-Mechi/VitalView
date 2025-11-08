@@ -7,7 +7,7 @@ function buscarQtdUsuarios(idHospital) {
             COUNT(u.idUsuario) AS quantidade_usuarios
         FROM cargo c
         LEFT JOIN usuario u ON u.fkCargo = c.idcargo
-        WHERE u.fkHospital = ${idHospital}
+        WHERE u.fkHospital = ${idHospital} AND u.ativo = 1
         GROUP BY c.idcargo, c.nome;
     `;
     return database.executar(instrucao);
@@ -26,7 +26,7 @@ function buscarUsuariosSistema(idHospital) {
     INNER JOIN hospital h ON h.idHospital = u.fkHospital
     LEFT JOIN servidores s ON s.fkUsuario = u.idUsuario
     INNER JOIN cargo c ON c.idcargo = u.fkcargo
-    WHERE idHospital = ${idHospital}
+    WHERE idHospital = ${idHospital} AND u.ativo = 1
     GROUP BY u.idUsuario;`;
 
     return database.executar(instrucao);
@@ -106,7 +106,7 @@ function buscarUsuario(idUsuario) {
         SELECT u.*
         FROM usuario u
         INNER JOIN hospital h ON h.idHospital = u.fkHospital
-        WHERE u.idUsuario = ${idUsuario};
+        WHERE u.idUsuario = ${idUsuario} AND u.ativo = 1;
     `
     return database.executar(instrucaoSql);
 }
@@ -138,6 +138,15 @@ function atualizarUsuario(idUsuario, nome, cpf, telefone, email, senha, cargo) {
     return database.executar(instrucaoSql);
 }
 
+function excluirUsuario(idUsuario) {
+    var instrucaoSql = `
+        UPDATE usuario
+        SET ativo = 0
+        WHERE idUsuario = ${idUsuario};
+    `
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     buscarQtdUsuarios,
     buscarUsuariosSistema,
@@ -145,5 +154,6 @@ module.exports = {
     usuariosMaisAlertasResolvidos,
     buscarAlertasResolvidosPendentes,
     buscarUsuario,
-    atualizarUsuario
+    atualizarUsuario,
+    excluirUsuario
 };

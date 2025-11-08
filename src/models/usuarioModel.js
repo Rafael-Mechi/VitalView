@@ -13,9 +13,9 @@ function autenticar(email, senha) {
             c.nome AS cargo
         FROM usuario u
         JOIN cargo c ON c.idcargo = u.fkcargo
-        WHERE u.email = '${email}' AND u.senha = '${senha}';
+        WHERE u.email = '${email}' AND u.senha = '${senha}' AND u.ativo = 1;
     `;
-    console.log("Cadastro realizado: \n" + instrucaoSql);
+    console.log("Autenticação realizada: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 
