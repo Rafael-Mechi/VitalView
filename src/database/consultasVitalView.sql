@@ -89,3 +89,9 @@ SELECT
      INNER JOIN hospital h ON s.fkHospital = h.idHospital
      WHERE h.idHospital = 2
     ) AS resolvidos;
+
+-- buscar usuario
+SELECT u.*
+FROM usuario u
+INNER JOIN hospital h ON h.idHospital = u.fkHospital
+WHERE u.idUsuario = 3 AND h.idHospital = 2;

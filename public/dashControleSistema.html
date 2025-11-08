@@ -113,7 +113,7 @@
                             class="infoBtn" data-target="infoModalProdutividade">&#9432</button></h1>
                 </div>
 
-                <!-- MODAL -->
+                <!-- MODAL MTTR-->
                 <div id="infoModalProdutividade" class="modal">
                     <div class="modal-content">
                         <h3>Nível de produtividade</h3>
@@ -126,6 +126,61 @@
                             &gt; 75%: <span style="color: #32b9cd;"><b>alta produtividade</b></span>
                         </p>
                         <button type="button" class="closeBtn">Fechar</button>
+                    </div>
+                </div>
+
+                <!-- MODAL EDIÇÃO DE FUNCIONÁRIO-->
+                <div id="modalEditarUsuario" class="modal">
+                    <div class="modal-content">
+                        <div class="container-funcionario">
+                            <div class="card">
+                                <div class="formulario">
+                                    <div class="campo">
+                                        <span>Nome:</span>
+                                        <input id="nome_input" type="text" placeholder="Seu nome" />
+                                    </div>
+                                    <div class="campo">
+                                        <span>CPF:</span>
+                                        <input id="cpf_input" type="text" placeholder="Seu cpf" />
+                                    </div>
+                                    <div class="campo">
+                                        <span>Telefone:</span>
+                                        <input id="telefone_input" type="text" placeholder="Seu telefone" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="formulario">
+                                    <div class="campo">
+                                        <span>E-mail:</span>
+                                        <input id="email_input" type="text" placeholder="meuemail@provedor.com" />
+                                    </div>
+                                    <div class="campo">
+                                        <span>Nova senha:</span>
+                                        <input id="senha_input" type="password" placeholder="******" />
+                                    </div>
+                                    <div class="campo">
+                                        <span>Confirmação da Senha:</span>
+                                        <input id="confirmacao_senha_input" type="password" placeholder="******" />
+                                    </div>
+
+                                    <div class="campo">
+                                        <span>Cargo:</span>
+                                        <select name="" id="cargo_input">
+                                            <option value="">Escolha uma opção</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-actions">
+                                        <button type="reset" class="btn cancel"
+                                            onclick="fecharModal()">Cancelar</button>
+                                        <button id="atualizar" type="submit" class="btn save"
+                                            onclick="atualizarUsuario()">Atualizar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -203,8 +258,38 @@
     </section>
 
     <script>
-
         let idHospitalVar = sessionStorage.FK_HOSPITAL;
+
+        let infoBtns = document.querySelectorAll('.infoBtn');
+        let modals = document.querySelectorAll('.modal');
+        let closeBtns = document.querySelectorAll('.closeBtn');
+        let editarUsuarioModal = document.querySelector('.btn-editar-usuario');
+
+        infoBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                let target = btn.dataset.target;
+                document.getElementById(target).style.display = 'flex';
+            });
+        });
+
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.closest('.modal').style.display = 'none';
+            });
+        });
+
+        modals.forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.style.display = 'none';
+            });
+        });
+
+        document.addEventListener("click", (event) => {
+            if (event.target.classList.contains("btn-editar-usuario")) {
+                editarUsuario(event.target);
+            }
+        });
+
 
         function carregarInformacoes() {
             buscarQtdUsuarios();
@@ -212,6 +297,7 @@
             buscarResolucaoAlertas();
             buscarUsuariosMaisAlertasResolvidos();
             buscarAlertasPendentesResolvidos();
+            popularSelectCargos();
         }
 
         function buscarQtdUsuarios() {
@@ -248,7 +334,7 @@
             }
 
 
-            const config = {
+            let config = {
                 type: 'doughnut',
                 data: {
                     labels: labels,
@@ -339,8 +425,8 @@
                     <td>${dataFormatada}</td>
                     <td>${servidoresCriados}</td>
                     <td class="acao-icons">
-                        <span>&#9998;</span>
-                        <span>&#x1F5D1;</span>
+                        <button class="btn-editar-usuario" onclick="editarUsuario(this)" title="Editar usuário">&#9998;</button>
+                        <button class="btn-excluir-usuario" onclick="excluirUsuario(this)">&#x1F5D1;</button>
                     </td>
                 </tr>
                 `
@@ -370,7 +456,7 @@
                 });
         }
 
-        
+
 
         function gerarTabelaResolucaoAlertas(dados) {
             let tbodyUsuarios = document.getElementById("info-alertas-resolvidos");
@@ -415,7 +501,7 @@
             window.location.href = "cadastroFuncionarios.html";
         }
 
-        function buscarUsuariosMaisAlertasResolvidos(){
+        function buscarUsuariosMaisAlertasResolvidos() {
             fetch(`/controle-usuarios/buscar-usuarios-com-mais-alertas-resolvidos/${idHospitalVar}`, {
                 method: "GET",
                 headers: {
@@ -436,152 +522,254 @@
                 });
         }
 
-        function gerarRankingUsuarios(dados){
-        let listaUsuarios = [];
-        let listaTotalResolvidos = [];
+        function gerarRankingUsuarios(dados) {
+            let listaUsuarios = [];
+            let listaTotalResolvidos = [];
 
-        for(let i = 0; i < dados.length; i++){
-            listaUsuarios.push(dados[i].usuario);
-            listaTotalResolvidos.push(dados[i].total_resolvidos);
+            for (let i = 0; i < dados.length; i++) {
+                listaUsuarios.push(dados[i].usuario);
+                listaTotalResolvidos.push(dados[i].total_resolvidos);
+            }
+
+            let ctx3 = document.getElementById('chart-usuarios-alertas').getContext('2d');
+            new Chart(ctx3, {
+                type: 'bar',
+                data: {
+                    labels: listaUsuarios,
+                    datasets: [{
+                        label: `Mais resolvidos: ${listaUsuarios[0]}`,
+                        data: listaTotalResolvidos,
+                        backgroundColor: ['#f75454', '#32b9cd', '#ffd60a', '#10b981', '#8b5cf6'],
+                        borderWidth: 1,
+                        borderRadius: 8,
+                        borderSkipped: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Cinco usuários com mais alertas resolvidos',
+                            font: {
+                                size: 16,
+                                weight: 'bold',
+                            },
+                            color: 'black',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Quantidade de Alertas',
+                                color: 'black'
+                            },
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Usuários',
+                                color: 'black'
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
         }
 
-            const ctx3 = document.getElementById('chart-usuarios-alertas').getContext('2d');
-        new Chart(ctx3, { 
-            type: 'bar',
-            data: {
-                labels: listaUsuarios,
-                datasets: [{
-                    label: `Mais resolvidos: ${listaUsuarios[0]}`,
-                    data: listaTotalResolvidos,
-                    backgroundColor: ['#f75454', '#32b9cd', '#ffd60a', '#10b981', '#8b5cf6'],
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    borderSkipped: false,
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Cinco usuários com mais alertas resolvidos',
-                        font: {
-                            size: 16,
-                            weight: 'bold',
-                        },
-                        color: 'black',
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Quantidade de Alertas',
-                            color: 'black'
-                        },
-                        grid: {
-                            color: 'rgba(0,0,0,0.1)'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Usuários',
-                            color: 'black'
-                        },
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    function buscarAlertasPendentesResolvidos(){
-        fetch(`/controle-usuarios/buscar-quantidade-alertas-resolvidos-x-pendentes/${idHospitalVar}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        })
-            .then(response => {
-                if (response.ok) {
-                    response.json().then(resposta => {
-                        console.log("Alertas resolvidos x em alerta: ", resposta);
-                        gerarGraficoResolvidoPendente(resposta)
-                    })
+        function buscarAlertasPendentesResolvidos() {
+            fetch(`/controle-usuarios/buscar-quantidade-alertas-resolvidos-x-pendentes/${idHospitalVar}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
                 }
             })
-            .catch((erro) => {
-                console.error("Erro na requisição: ", erro);
-                alert("Erro na conexão com o servidor.");
-            });
-    }
+                .then(response => {
+                    if (response.ok) {
+                        response.json().then(resposta => {
+                            console.log("Alertas resolvidos x em alerta: ", resposta);
+                            gerarGraficoResolvidoPendente(resposta)
+                        })
+                    }
+                })
+                .catch((erro) => {
+                    console.error("Erro na requisição: ", erro);
+                    alert("Erro na conexão com o servidor.");
+                });
+        }
 
-    function gerarGraficoResolvidoPendente(dados){
-        let pendentes = dados[0].pendentes;
-        let resolvidos = dados[0].resolvidos;
+        function gerarGraficoResolvidoPendente(dados) {
+            let pendentes = dados[0].pendentes;
+            let resolvidos = dados[0].resolvidos;
 
-        const ctx2 = document.getElementById('chart-alertas-resolvidos').getContext('2d');
-        new Chart(ctx2, {
-            type: 'pie',
-            data: {
-                labels: [`Pendentes: ${pendentes}`, `Resolvidos: ${resolvidos}`],
-                datasets: [{
-                    data: [pendentes, resolvidos],
-                    backgroundColor: ['#f75454', '#32b9cd']
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Alertas Resolvidos',
-                        font: {
-                            size: 20,
-                            family: 'Barlow, sans-serif'
+            let ctx2 = document.getElementById('chart-alertas-resolvidos').getContext('2d');
+            new Chart(ctx2, {
+                type: 'pie',
+                data: {
+                    labels: [`Pendentes: ${pendentes}`, `Resolvidos: ${resolvidos}`],
+                    datasets: [{
+                        data: [pendentes, resolvidos],
+                        backgroundColor: ['#f75454', '#32b9cd']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
                         },
-                        color: 'black',
+                        title: {
+                            display: true,
+                            text: 'Alertas Resolvidos',
+                            font: {
+                                size: 20,
+                                family: 'Barlow, sans-serif'
+                            },
+                            color: 'black',
+                        }
                     }
                 }
-            }
-        });
-    }
-
-        const infoBtns = document.querySelectorAll('.infoBtn');
-        const modals = document.querySelectorAll('.modal');
-        const closeBtns = document.querySelectorAll('.closeBtn');
-
-        infoBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const target = btn.dataset.target;
-                document.getElementById(target).style.display = 'flex';
             });
-        });
+        }
 
-        closeBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                btn.closest('.modal').style.display = 'none';
-            });
-        });
 
-        modals.forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) modal.style.display = 'none';
+        function editarUsuario(botao) {
+            let linha = botao.closest("tr");
+            let colunas = linha.querySelectorAll("td");
+
+            let idUsuario = colunas[0].textContent;
+            let nome = colunas[1].textContent;
+            let email = colunas[2].textContent;
+            let cargoNome = colunas[3].textContent;
+            let dataCriacao = colunas[4].textContent;
+            let servidoresCriados = colunas[5].textContent;
+
+            fetch(`/controle-usuarios/buscar-usuario/${idUsuario}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        response.json().then(resposta => {
+                            console.log("Usuário recebido: ", resposta);
+
+                            let cpfUsuario = resposta[0].cpf;
+                            let telefoneUsuario = resposta[0].telefone;
+                            let senhaUsuario = resposta[0].senha;
+                            let cargoUsuario = resposta[0].cargoNome;
+                            let idCargo = resposta[0].fkcargo;
+
+                            nome_input.value = nome;
+                            cpf_input.value = cpfUsuario;
+                            telefone_input.value = telefoneUsuario;
+                            email_input.value = email;
+                            senha_input.value = "";
+                            confirmacao_senha_input.value = "";
+
+                            modalEditarUsuario.style.display = "flex";
+
+                            document.addEventListener("DOMContentLoaded", () => {
+                                let cargoSelect = document.getElementById("cargo_input");
+
+
+                                let cargos = [
+                                    { nome: "Analista", id: 1 },
+                                    { nome: "Técnico", id: 2 },
+                                    { nome: "Administrador", id: 3 }
+                                ];
+
+                                cargos.forEach(cargo => {
+                                    let opt = document.createElement("option");
+                                    opt.value = cargo.id;
+                                    opt.textContent = cargo.nome;
+                                    cargoSelect.appendChild(opt);
+                                });
+                            });
+
+                            document.getElementById("atualizar").onclick = function () {
+                                atualizarUsuario(idUsuario);
+                            };
+                        })
+                    }
+                })
+                .catch((erro) => {
+                    console.error("Erro na requisição: ", erro);
+                    alert("Erro na conexão com o servidor.");
+                });
+        }
+
+        function atualizarUsuario(idUsuario) {
+
+            let nomeAtualizado = nome_input.value;
+            let cpfAtualizado = cpf_input.value;
+            let telefoneAtualizado = telefone_input.value;
+            let emailAtualizado = email_input.value;
+            let senhaAtualizada = senha_input.value;
+            let fkCargoAtualizado =  Number(cargo_input.value);
+
+            fetch(`/controle-usuarios/atualizar-usuario/${idUsuario}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    idUsuarioServer: idUsuario,
+                    nomeServer: nomeAtualizado,
+                    cpfServer: cpfAtualizado,
+                    telefoneServer: telefoneAtualizado,
+                    emailServer: emailAtualizado,
+                    senhaNovaServer: senhaAtualizada,
+                    cargoServer: fkCargoAtualizado
+                })
+            }).then(function (resposta) {
+                if (resposta.ok) {
+                    console.log(resposta);
+                    alert(`Usuário alterado com sucesso!`)
+                    fecharModal();
+                    buscarUsuariosSistema();
+                }
+
+            }).catch(function (erro) {
+                console.log(erro);
+            })
+        }
+
+        function fecharModal() {
+            modalEditarUsuario.style.display = "none";
+        }
+
+        function popularSelectCargos() {
+            let cargoSelect = document.getElementById("cargo_input");
+
+            let cargos = [
+                { nome: "Analista", id: 1 },
+                { nome: "Técnico", id: 2 },
+                { nome: "Administrador", id: 3 }
+            ];
+
+            cargos.forEach(cargo => {
+                const opt = document.createElement("option");
+                opt.value = cargo.id;
+                opt.textContent = cargo.nome;
+                cargoSelect.appendChild(opt);
             });
-        });
+        }
     </script>
 </body>
 

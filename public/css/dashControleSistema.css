@@ -377,13 +377,143 @@ a:hover {
     background: white;
     padding: 20px;
     border-radius: 8px;
-    max-width: 400px;
+    max-width: 800px;
     text-align: center;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-.closeBtn{
-margin-top: 10px;
+.closeBtn {
+    margin-top: 10px;
+}
+
+/* -------------------------------------------------- */
+/*               MODAL EDITAR USUÁRIO                 */
+/* -------------------------------------------------- */
+.container-funcionario {
+    display: flex;
+    width: 100%;
+    height: 80%;
+    margin: auto;
+    margin-top: 15px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card {
+    display: flex;
+    padding: 18px 32px;
+    width: 50%;
+    flex-direction: column;
+    gap: 16px;
+    color: #333;
+}
+
+.formulario {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+}
+
+
+.formulario .campo {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.formulario .campo>span {
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #df2525;
+}
+
+
+.formulario input,
+.formulario select {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+
+.formulario input:focus,
+.formulario select:focus {
+    border-color: #e01919;
+    box-shadow: 0 0 0 3px rgba(224, 25, 25, 0.12);
+}
+
+.formulario select:hover,
+.formulario input:hover {
+    border-color: #b5b5b5;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn.cancel {
+    background: #ccc;
+    color: #000;
+}
+
+.btn.cancel:hover {
+    background: #aaa;
+}
+
+.btn.save {
+    background: #32b9cd;
+    color: #fff;
+}
+
+.btn.save:hover {
+    background: #1a636e;
+}
+
+.alerta_erro {
+    display: flex;
+    justify-content: center;
+    margin: 0 0 8px;
+}
+
+.card_erro {
+    display: none;
+    color: #000;
+    background-color: #fff;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 2px solid #e01919;
+    font-size: 0.95rem;
+    font-weight: 500;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+
+#section_aguardar.loading-section {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.28);
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
 }
 
 /* -------------------------------------------------- */
@@ -416,7 +546,8 @@ margin-top: 10px;
 }
 
 .tabela-scroll {
-    max-height: 250px; /* altura que mostra só 5 linhas + cabeçalho */
+    max-height: 250px;
+    /* altura que mostra só 5 linhas + cabeçalho */
     overflow-y: auto;
 }
 
@@ -449,6 +580,18 @@ margin-top: 10px;
     border-radius: 4px;
     transition: background-color 0.2s;
     color: #32b9cd;
+}
+
+.btn-editar-usuario {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-excluir-usuario {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
 }
 
 .btn-adicionar:hover {
@@ -547,15 +690,15 @@ tr:nth-child(even) {
         margin-right: 8px;
         width: 98%;
     }
-    
+
     .container-principal {
         width: 98%;
     }
-    
+
     .secao-alertas-grafico {
         flex-direction: column;
     }
-    
+
     .grafico-alertas {
         height: 300px;
     }
@@ -568,54 +711,54 @@ tr:nth-child(even) {
         width: 99%;
         border-radius: 15px;
     }
-    
+
     .nav-dash {
         width: 98%;
         flex-direction: column;
         gap: 10px;
         padding: 10px 0;
     }
-    
+
     .container-principal {
         width: 99%;
         padding: 8px;
         gap: 15px;
     }
-    
+
     .container-graficos {
         flex-direction: column;
     }
-    
+
     .grafico-container,
     .div-alta-produtividade {
         height: 250px;
         min-height: 250px;
     }
-    
+
     .tabela-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
     }
-    
+
     .tabela-acoes {
         width: 100%;
         justify-content: space-between;
     }
-    
+
     .tabela-scroll {
         max-height: 200px;
         overflow-x: auto;
     }
-    
+
     table {
         min-width: 800px;
     }
-    
+
     .secao-alertas-grafico {
         flex-direction: column;
     }
-    
+
     .modal-content {
         margin: 0 15px;
         max-width: 90%;
@@ -626,55 +769,55 @@ tr:nth-child(even) {
     body {
         flex-direction: column;
     }
-    
+
     .container {
         margin: 5px;
         width: auto;
         border-radius: 12px;
     }
-    
+
     .menu ul {
         width: 200px;
     }
-    
+
     .titulo_header {
         font-size: 24px;
     }
-    
+
     .div-alta-produtividade h1 {
         font-size: 28px;
         text-align: center;
     }
-    
+
     .kpis {
         flex-direction: column;
     }
-    
+
     .kpi {
         flex: 1 1 auto;
         width: 100%;
     }
-    
+
     .tabela-acoes {
         flex-direction: column;
         gap: 10px;
         width: 100%;
     }
-    
+
     .filtro-select,
     .btn-adicionar {
         width: 100%;
         text-align: center;
     }
-    
+
     .modal-content {
         padding: 15px;
     }
-    
+
     .modal-content h3 {
         font-size: 18px;
     }
-    
+
     .modal-content p {
         font-size: 16px;
     }
@@ -685,12 +828,12 @@ tr:nth-child(even) {
         margin: 2px;
         border-radius: 10px;
     }
-    
+
     .container-principal {
         padding: 5px;
         gap: 10px;
     }
-    
+
     .grafico-container,
     .div-alta-produtividade,
     .tabela-container,
@@ -699,53 +842,53 @@ tr:nth-child(even) {
         padding: 12px;
         border-radius: 8px;
     }
-    
+
     .div-alta-produtividade h1 {
         font-size: 22px;
     }
-    
+
     .tabela-header h2 {
         font-size: 18px;
     }
-    
+
     .menu ul {
         width: 180px;
     }
-    
+
     .menu ul li a {
         font-size: 1rem;
     }
-    
+
     .title_menu {
         margin-left: 20px;
         font-size: 14px;
     }
-    
+
     .nav-dash {
         padding: 5px 0;
     }
-    
+
     .titulo_header {
         font-size: 20px;
     }
-    
+
     .logo {
         width: 28px;
     }
-    
+
     .modal-content {
         margin: 0 10px;
         padding: 12px;
     }
-    
+
     .modal-content h3 {
         font-size: 16px;
     }
-    
+
     .modal-content p {
         font-size: 14px;
     }
-    
+
     .closeBtn {
         padding: 8px 16px;
         font-size: 14px;
@@ -757,19 +900,19 @@ tr:nth-child(even) {
     .div-alta-produtividade h1 {
         font-size: 20px;
     }
-    
+
     .tabela-header h2 {
         font-size: 16px;
     }
-    
+
     .menu ul {
         width: 160px;
     }
-    
+
     .menu .title_hamb {
         margin-left: 10px;
     }
-    
+
     .menu .hamb_nome {
         font-size: 16px;
         margin-left: 10px;
@@ -782,11 +925,11 @@ tr:nth-child(even) {
         height: auto;
         min-height: 100vh;
     }
-    
+
     .tabela-scroll {
         max-height: 150px;
     }
-    
+
     .grafico-container,
     .div-alta-produtividade {
         height: 200px;
@@ -796,6 +939,7 @@ tr:nth-child(even) {
 
 /* Melhorias para acessibilidade em telas touch */
 @media (hover: none) and (pointer: coarse) {
+
     .btn-adicionar,
     .infoBtn,
     .acao-icons span {
@@ -805,11 +949,11 @@ tr:nth-child(even) {
         align-items: center;
         justify-content: center;
     }
-    
+
     .menu ul li {
         padding: 1rem 1.2rem;
     }
-    
+
     .filtro-select {
         padding: 12px 18px;
     }

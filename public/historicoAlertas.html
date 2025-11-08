@@ -247,18 +247,18 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    const tabela = document.querySelector(".tabela-alertas");
+    let tabela = document.querySelector(".tabela-alertas");
 
     // Delegação de eventos (funciona para todos os botões da tabela)
     tabela.addEventListener("click", (event) => {
       if (event.target.classList.contains("btn-lido")) {
-        const statusCell = event.target.closest("tr").querySelector(".status");
+        let statusCell = event.target.closest("tr").querySelector(".status");
         statusCell.textContent = "Lido";
         statusCell.className = "status lido";
       }
 
       if (event.target.classList.contains("btn-resolver")) {
-        const statusCell = event.target.closest("tr").querySelector(".status");
+        let statusCell = event.target.closest("tr").querySelector(".status");
         statusCell.textContent = "Resolvido";
         statusCell.className = "status resolvido";
       }

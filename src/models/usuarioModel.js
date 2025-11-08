@@ -29,7 +29,7 @@ async function cadastrar(nome, cpf, telefone, email, senha, fkCargo, fkHospital)
     return database.executar(sqlCadastro);
 }
 
-function procurarCargos(){
+function procurarCargos() {
     var instrucaoSql = `select idcargo, nome from cargo;`
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);

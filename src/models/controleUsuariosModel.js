@@ -101,10 +101,49 @@ function buscarAlertasResolvidosPendentes(idHospital) {
     return database.executar(instrucao);
 }
 
+function buscarUsuario(idUsuario) {
+    var instrucaoSql = `
+        SELECT u.*
+        FROM usuario u
+        INNER JOIN hospital h ON h.idHospital = u.fkHospital
+        WHERE u.idUsuario = ${idUsuario};
+    `
+    return database.executar(instrucaoSql);
+}
+
+function atualizarUsuario(idUsuario, nome, cpf, telefone, email, senha, cargo) {
+    var instrucaoSql = `
+    UPDATE usuario SET
+            nome = '${nome}',
+            cpf = '${cpf}',
+            telefone = '${telefone}',
+            email = '${email}',
+            senha = '${senha}',
+            fkcargo = ${cargo}
+            WHERE idUsuario = ${idUsuario}
+    `
+
+    if (!senha) {
+        instrucaoSql = `
+    UPDATE usuario SET
+            nome = '${nome}',
+            cpf = '${cpf}',
+            telefone = '${telefone}',
+            email = '${email}',
+            fkCargo = ${cargo}
+            WHERE idUsuario = ${idUsuario}
+    `
+    }
+
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     buscarQtdUsuarios,
     buscarUsuariosSistema,
     buscarResolucaoDeAlertas,
     usuariosMaisAlertasResolvidos,
-    buscarAlertasResolvidosPendentes
+    buscarAlertasResolvidosPendentes,
+    buscarUsuario,
+    atualizarUsuario
 };
