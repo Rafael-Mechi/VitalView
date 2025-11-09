@@ -181,8 +181,16 @@
 
         <div class="div_taxa">
           <div class="centralizador">
-            
+            <div class="UD_texto_esquerda">
+              <div class="p_esquerda">Latência média (IO)</div>
+              <div class="numero_uso_disco"><h1>20.2 ms</h1></div>
+              <div class="p_esquerda">Tempo médio de resposta</div>
+            </div>
+            <div class="UD_texto_direita">
+              <p style="color: green;">▼ +0.3 ms</p>
+            </div>
           </div>
+          <canvas id="graficoLatencia"></canvas>
         </div>
 
 
@@ -331,6 +339,54 @@ const ctx2 = document.getElementById('graficoTaxaTransferencia').getContext('2d'
     graficoTaxa.data.datasets[0].data.push(Math.random() * 100);
     graficoTaxa.update();
   }, 1000);
+
+
+
+//GRAFICO LATENCIA MÉDIA (io)
+const ctxLatencia = document.getElementById('graficoLatencia').getContext('2d');
+
+  const graficoLatencia = new Chart(ctxLatencia, {
+    type: 'bar',
+    data: {
+      labels: ['Latência média'],
+      datasets: [{
+        data: [22.7], // valor inicial mockado
+        backgroundColor: 'rgba(0, 255, 180, 0.8)',
+        borderRadius: 8,
+        barThickness: 10
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          min: 0,
+          max: 100, // define o limite máximo de latência (mock)
+          display: false,
+          grid: { display: false }
+        },
+        y: {
+          display: false,
+          grid: { display: false }
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false }
+      },
+      animation: { duration: 500 }
+    }
+  });
+
+  // Simula atualização com dados mockados
+  setInterval(() => {
+    const novoValor = Math.random() * 60; //MUDAR AQUI PARA FETCH DO BUCKET
+    graficoLatencia.data.datasets[0].data = [novoValor];
+    graficoLatencia.update();
+  }, 1500);
+
 
 </script>
 
