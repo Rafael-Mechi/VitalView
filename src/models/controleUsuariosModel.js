@@ -13,7 +13,7 @@ function buscarQtdUsuarios(idHospital) {
     return database.executar(instrucao);
 }
 
-function buscarUsuariosSistema(idHospital) {
+function buscarUsuariosSistema(idHospital, filtro) {
     var instrucao = `
         SELECT 
     u.idUsuario AS id,
@@ -27,7 +27,26 @@ function buscarUsuariosSistema(idHospital) {
     LEFT JOIN servidores s ON s.fkUsuario = u.idUsuario
     INNER JOIN cargo c ON c.idcargo = u.fkcargo
     WHERE idHospital = ${idHospital} AND u.ativo = 1
-    GROUP BY u.idUsuario;`;
+    GROUP BY u.idUsuario
+    ORDER BY u.${filtro};`;
+
+    if(filtro == "cargo"){
+        instrucao = `
+        SELECT 
+    u.idUsuario AS id,
+    u.nome AS nome,
+    u.email AS email,
+    c.nome AS cargo,
+    u.data_criacao AS data_criacao,
+    COALESCE(GROUP_CONCAT(s.hostname SEPARATOR ', '), 'Nenhum') AS 'servidores_criados'
+    FROM usuario u
+    INNER JOIN hospital h ON h.idHospital = u.fkHospital
+    LEFT JOIN servidores s ON s.fkUsuario = u.idUsuario
+    INNER JOIN cargo c ON c.idcargo = u.fkcargo
+    WHERE idHospital = ${idHospital} AND u.ativo = 1
+    GROUP BY u.idUsuario
+    ORDER BY c.nome;`
+    }
 
     return database.executar(instrucao);
 }

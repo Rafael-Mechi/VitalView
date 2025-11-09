@@ -213,9 +213,9 @@
                 <div class="tabela-header">
                     <h2>Usuários do Sistema</h2>
                     <div class="tabela-acoes">
-                        <select class="filtro-select">
-                            <option value="">Filtrar por</option>
-                            <option value="id">id</option>
+                        <span>Filtrar por:</span>
+                        <select class="filtro-select" id="filtro">
+                            <option value="idUsuario">id</option>
                             <option value="nome">nome</option>
                             <option value="cargo">cargo</option>
                             <option value="data_criacao">data de criação</option>
@@ -395,11 +395,13 @@
         }
 
         function buscarUsuariosSistema() {
-            fetch(`/controle-usuarios/buscar-usuarios-do-sistema/${idHospitalVar}`, {
+            let filtroEscolhido = filtro.value;
+            
+            fetch(`/controle-usuarios/buscar-usuarios-do-sistema/${idHospitalVar}?filtro=${filtroEscolhido}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                }
+                },
             })
                 .then(response => {
                     if (response.ok) {
@@ -414,6 +416,10 @@
                     alert("Erro na conexão com o servidor.");
                 });
         }
+
+        filtro.addEventListener('change', () => {
+            buscarUsuariosSistema();
+        });
 
         function gerarTabelaUsuariosSistema(dados) {
             let tbodyUsuarios = document.getElementById("info-usuarios");

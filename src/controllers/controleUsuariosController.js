@@ -24,8 +24,9 @@ function buscarQtdUsuarios(req, res){
 
 function buscarUsuariosSistema(req, res){
     let idHospital = req.params.idHospital;
+    let filtro = req.query.filtro;
 
-    controleUsuariosModel.buscarUsuariosSistema(idHospital)
+    controleUsuariosModel.buscarUsuariosSistema(idHospital, filtro)
         .then(
             function (resultadoBuscarQtdUsuarios){
                 res.json(resultadoBuscarQtdUsuarios);
@@ -109,7 +110,7 @@ function buscarAlertasResolvidosPendentes(req, res){
 
 function buscarUsuario(req, res){
     let idUsuario = req.params.idUsuario;
-    
+
     controleUsuariosModel.buscarUsuario(idUsuario)
         .then(
             function (resultadoBuscarUsuario){
