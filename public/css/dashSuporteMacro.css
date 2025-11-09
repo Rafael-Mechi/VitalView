@@ -429,6 +429,77 @@ a:hover {
   gap: 5px;
 }
 
+/* Botão de informação (igual ao do cadastro de servidor) */
+/* Botão de informação (IGUAL ao cadastroServidores) */
+.infoBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  color: white;
+  background-color: #32b9cd;
+}
+
+.infoBtn:hover {
+  background-color: white;
+  color: #32b9cd;
+}
+
+/* Container para alinhar título + botão (NOVO) */
+.kpi-title-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.kpi-title-container p {
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.closeBtn {
+    background: #32b9cd;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.closeBtn:hover {
+    background: #2a9bb3;
+}
+
 /* ===== TABELA ===== */
 .tabela-servidores {
   background: white;
@@ -620,19 +691,14 @@ tr:nth-child(even) {
   font-size: 13px;
 }
 
-.status-badge.critico {
-  background: #ffe3e3;
-  color: #e00;
-}
-
-.status-badge.atencao {
-  background: #fff3cd;
-  color: #e68a00;
+.status-badge.alerta {
+    background: #ffe3e3;
+    color: #e00;
 }
 
 .status-badge.normal {
-  background: #e6f7f7;
-  color: #1a8c8c;
+    background: #e6f7f7;
+    color: #1a8c8c;
 }
 
 /* ===== BARRAS DE USO ===== */

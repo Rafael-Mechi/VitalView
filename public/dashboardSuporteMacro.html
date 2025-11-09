@@ -106,44 +106,92 @@
         <div class="wrap">
             <section class="kpis">
                 <div class="kpi">
-                    <p style="font-weight: bold;">Servidores em Risco</p>
-                    <div class="value">3<span>/5</span></div>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <p style="font-weight: bold; margin: 0;">Servidores em Risco</p>
+                        <button type="button" class="infoBtn" data-target="infoModalRisco">&#9432</button>
+                    </div>
+                    <div class="value">0<span>/0</span></div>
                     <p class="sub">Monitoramento ativo</p>
                 </div>
+
                 <div class="kpi">
-                    <p style="font-weight: bold;">Alertas</p>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <p style="font-weight: bold; margin: 0;">Alertas</p>
+                        <button type="button" class="infoBtn" data-target="infoModalAlertas">&#9432</button>
+                    </div>
                     <div class="value-serv">
-                        23
-                        <span class="tendencia aumento">▲+5</span>
-                        <!-- ou -->
-                        <!-- <span class="tendencia queda">▼</span> -->
+                        0
+                        <span class="tendencia">+0</span>
                     </div>
                     <p class="sub">Últimas ocorrências (nas últimas 24 horas)</p>
                 </div>
 
                 <div class="kpi" id="kpi-uso-disco">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    </div>
                     <canvas class="card card_grafico_disco" id="graficoPizza"
                         style="width: 100%; height: 100%; padding-bottom: 10px; padding-right: 10px;"></canvas>
                 </div>
             </section>
 
+            <!-- Modais de Informação -->
+            <div id="infoModalRisco" class="modal">
+                <div class="modal-content">
+                    <h3>Servidores em Risco</h3>
+                    <p style="text-align: justify;">
+                        Mostra quantos servidores estão atualmente em estado de <b>alerta</b>
+                        em relação ao total monitorado. Um servidor é considerado em alerta quando
+                        um ou mais componentes (CPU, RAM, Disco) ultrapassam os limites configurados.
+                    </p>
+                    <button type="button" class="closeBtn">Fechar</button>
+                </div>
+            </div>
+
+            <div id="infoModalAlertas" class="modal">
+                <div class="modal-content">
+                    <h3>Alertas do Sistema</h3>
+                    <p style="text-align: justify;">
+                        Esta métrica mostra o número total de alertas gerados por todos os servidores monitorados
+                        <b>nas últimas 24 horas</b>. Inclui alertas de CPU, RAM, Disco e outros componentes críticos.
+                        <br><br>
+                        A <b>tendência (▲▼)</b> indica se houve aumento ou diminuição em relação ao período anterior.
+                    </p>
+                    <button type="button" class="closeBtn">Fechar</button>
+                </div>
+            </div>
+
+            <div id="infoModalDisco" class="modal">
+                <div class="modal-content">
+                    <h3>Distribuição de Status</h3>
+                    <p style="text-align: justify;">
+                        Este gráfico mostra a <b>proporção de servidores</b> que estão em alerta versus
+                        os que estão operando normalmente. Ajuda a identificar rapidamente se os problemas
+                        estão concentrados em poucos servidores ou são generalizados.
+                        <br><br>
+                        <b>Vermelho:</b> Servidores com alertas ativos<br>
+                        <b>Azul:</b> Servidores operando normalmente
+                    </p>
+                    <button type="button" class="closeBtn">Fechar</button>
+                </div>
+            </div>
 
             <section class="tabela-servidores">
                 <div class="tabela-header">
                     <nav class="abas">
                         <img src="assets/imgs/filtro.png">
-                        <a href="#" class="aba ativa">Todos</a>
-                        <a href="#" class="aba">Críticos</a>
-                        <a href="#" class="aba">Maior CPU</a>
-                        <a href="#" class="aba">Maior RAM</a>
-                        <a href="#" class="aba">Maior Disco</a>
-                        <a href="#" class="aba">Mais Alertas</a>
+                        <a href="#" class="aba ativa" data-filtro="todos">Todos</a>
+                        <a href="#" class="aba" data-filtro="alerta">Em Alerta</a>
+                        <a href="#" class="aba" data-filtro="cpu">Maior CPU</a>
+                        <a href="#" class="aba" data-filtro="ram">Maior RAM</a>
+                        <a href="#" class="aba" data-filtro="disco">Maior Disco</a>
+                        <a href="#" class="aba" data-filtro="alertas">Mais Alertas</a>
                     </nav>
                     <div class="tabela-acao">
-                        <h3 class="total-servidores">Servidores Cadastrados: <span class="badge-total">5</span></h3>
+                        <h3 class="total-servidores">Servidores Cadastrados: <span class="badge-total">0</span></h3>
                         <div class="campo-pesquisa">
-                            <input type="text" placeholder="Pesquisar..." class="input-pesquisa">
-                            <button class="btn-pesquisa"><img src="assets/imgs/lupa.png" alt=""></button>
+                            <input type="text" placeholder="Pesquisar servidores..." class="input-pesquisa">
+                            <button class="btn-pesquisa"><img src="assets/dashboard-icons/search.svg"
+                                    alt="Pesquisar"></button>
                         </div>
                         <a href="cadastroServidores.html" class="btn-novo">Novo +</a>
                     </div>
@@ -155,325 +203,21 @@
                             <tr>
                                 <th>Servidor</th>
                                 <th>Status</th>
-                                <th>CPU%</th>
-                                <th>RAM%</th>
-                                <th>Disco%</th>
+                                <th>Limite CPU%</th>
+                                <th>Limite RAM%</th>
+                                <th>Limite Disco%</th>
                                 <th>Alertas</th>
                                 <th>Tempo em Alerta</th>
-                                <th></th>
+                                <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="nomeServidor"><a>Pacs-01</a></td>
-                                <td><span class="status-badge critico">● Crítico</span></td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso critico" style="width: 92%;">
-                                            <p>92%</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso critico" style="width: 87%;">87%</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 60%;">60%</div>
-                                    </div>
-                                </td>
-                                <td><span class="alerta-badge">12</span></td>
-                                <td>00:16:31</td>
-                                <td>
-                                    <div class="btn-grupo">
-                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
-                                                style="width: 20px;" alt="" href="dashboardSuporteMicro.html"></button>
-                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
-                                                style="width: 20px;" alt=""></button>
-                                        <button class="btn-network" ><img src="assets/imgs/rede.png"
-                                                style="width: 20px;" alt=""></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="nomeServidor"><a>Pacs-02</a></td>
-                                <td><span class="status-badge critico">● Crítico</span></td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso critico" style="width: 80%;">80%</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 40%;">40%</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso critico" style="width: 80%;">80%</div>
-                                    </div>
-                                </td>
-                                <td><span class="alerta-badge">8</span></td>
-                                <td>00:10:05</td>
-                                <td>
-                                    <div class="btn-grupo">
-                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
-                                                style="width: 20px;" alt="" href="dashboardSuporteMicro.html"></button>
-                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
-                                                style="width: 20px;" alt=""></button>
-                                        <button class="btn-network" ><img src="assets/imgs/rede.png"
-                                                style="width: 20px;" alt=""></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="nomeServidor"><a>Pacs-03</a></td>
-                                <td><span class="status-badge critico">● Crítico</span></td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 40%;">40%</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 60%;">60%</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso critico" style="width: 85%;">85%</div>
-                                    </div>
-                                </td>
-                                <td><span class="alerta-badge">3</span></td>
-                                <td>00:05:22</td>
-                                <td>
-                                    <div class="btn-grupo">
-                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
-                                                style="width: 20px;" alt="" href="dashboardSuporteMicro.html"></button>
-                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
-                                                style="width: 20px;" alt=""></button>
-                                        <button class="btn-network" ><img src="assets/imgs/rede.png"
-                                                style="width: 20px;" alt=""></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="nomeServidor"><a>Pacs-04</a></td>
-                                <td><span class="status-badge normal">● Normal</span></td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 30%;">30%</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 25%;">25%</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 40%;">40%</div>
-                                    </div>
-                                </td>
-                                <td><span class="alerta-badge">0</span></td>
-                                <td>--:--:--</td>
-                                <td>
-                                    <div class="btn-grupo">
-                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
-                                                style="width: 20px;" alt="" href="dashboardSuporteMicro.html"></button>
-                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
-                                                style="width: 20px;" alt=""></button>
-                                        <button class="btn-network" ><img src="assets/imgs/rede.png"
-                                                style="width: 20px;" alt=""></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="nomeServidor"><a>Pacs-05</a></td>
-                                <td><span class="status-badge normal">● Normal</span></td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 30%;">30%</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 30%;">30%</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 20%;">20%</div>
-                                    </div>
-                                </td>
-                                <td><span class="alerta-badge">0</span></td>
-                                <td>--:--:--</td>
-                                <td>
-                                    <div class="btn-grupo">
-                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
-                                                style="width: 20px;" alt="" href="dashboardSuporteMicro.html"></button>
-                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
-                                                style="width: 20px;" alt=""></button>
-                                        <button class="btn-network"><img src="assets/imgs/rede.png"
-                                                style="width: 20px;" alt=""></button>
-                                    </div>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td class="nomeServidor"><a>Pacs-06</a></td>
-                                <td><span class="status-badge normal">● Normal</span></td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 50%;">50%</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 20%;">20%</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 30%;">30%</div>
-                                    </div>
-                                </td>
-                                <td><span class="alerta-badge">0</span></td>
-                                <td>--:--:--</td>
-                                <td>
-                                    <div class="btn-grupo">
-                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
-                                                style="width: 20px;" alt="" href="dashboardSuporteMicro.html"></button>
-                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
-                                                style="width: 20px;" alt=""></button>
-                                        <button class="btn-network" ><img src="assets/imgs/rede.png"
-                                                style="width: 20px;" alt=""></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="nomeServidor"><a>Pacs-07</a></td>
-                                <td><span class="status-badge normal">● Normal</span></td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 20%;">20%</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 42%;">42%</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 35%;">35%</div>
-                                    </div>
-                                </td>
-                                <td><span class="alerta-badge">0</span></td>
-                                <td>--:--:--</td>
-                                <td>
-                                    <div class="btn-grupo">
-                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
-                                                style="width: 20px;" alt="" href="dashboardSuporteMicro.html"></button>
-                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
-                                                style="width: 20px;" alt=""></button>
-                                        <button class="btn-network" ><img src="assets/imgs/rede.png"
-                                                style="width: 20px;" alt=""></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="nomeServidor"><a>Pacs-08</a></td>
-                                <td><span class="status-badge normal">● Normal</span></td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 30%;">30%</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 10%;">10%</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 05%;">05%</div>
-                                    </div>
-                                </td>
-                                <td><span class="alerta-badge">0</span></td>
-                                <td>--:--:--</td>
-                                <td>
-                                    <div class="btn-grupo">
-                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
-                                                style="width: 20px;" alt="" href="dashboardSuporteMicro.html"></button>
-                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
-                                                style="width: 20px;" alt=""></button>
-                                        <button class="btn-network" ><img src="assets/imgs/rede.png"
-                                                style="width: 20px;" alt=""></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="nomeServidor"><a>Pacs-09</a></td>
-                                <td><span class="status-badge normal">● Normal</span></td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 45%;">45%</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 28%;">28%</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 50%;">50%</div>
-                                    </div>
-                                </td>
-                                <td><span class="alerta-badge">0</span></td>
-                                <td>--:--:--</td>
-                                <td>
-                                    <div class="btn-grupo">
-                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
-                                                style="width: 20px;" alt="" href="dashboardSuporteMicro.html"></button>
-                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
-                                                style="width: 20px;" alt=""></button>
-                                        <button class="btn-network" ><img src="assets/imgs/rede.png"
-                                                style="width: 20px;" alt=""></button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="nomeServidor"><a>Pacs-10</a></td>
-                                <td><span class="status-badge normal">● Normal</span></td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 35%;">35%</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 60%;">60%</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="barra-progresso">
-                                        <div class="barra-uso normal" style="width: 20%;">20%</div>
-                                    </div>
-                                </td>
-                                <td><span class="alerta-badge">0</span></td>
-                                <td>--:--:--</td>
-                                <td>
-                                    <div class="btn-grupo">
-                                        <button class="btn-server" onclick="window.location.href='dashboardSuporteMicro.html'"><img src="assets/imgs/server.png"
-                                                style="width: 20px;" alt=""></button>
-                                        <button class="btn-disk" onclick="window.location.href='dashControleSistema.html'"><img src="assets/imgs/disco.png"
-                                                style="width: 20px;" alt=""></button>
-                                        <button class="btn-network" ><img src="assets/imgs/rede.png"
-                                                style="width: 20px;" alt=""></button>
+                            <tr id="loading-row">
+                                <td colspan="8" style="text-align: center; padding: 40px;">
+                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                                        <div>Carregando dados dos servidores...</div>
+                                        <div style="font-size: 12px; color: #666;">Os dados serão atualizados
+                                            automaticamente</div>
                                     </div>
                                 </td>
                             </tr>
@@ -484,73 +228,7 @@
         </div>
     </section>
 
-    <!-- Script principal -->
-    <script>
-
-        const ctx = document.getElementById('graficoPizza').getContext('2d');
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['30% Alerta', '70% Normal',],
-                datasets: [{
-                    data: [30, 70],
-                    backgroundColor: ['#f75454', '#32b9cd'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: false,
-                plugins: {
-                    legend: {
-                        position: 'right'
-                    },
-                    title: {
-                        display: true,
-                        text: 'Distribuição alertas',
-                        font: {
-                            size: 17,
-                            weight: 'bold',
-                        },
-                        color: 'black'
-
-                    }
-                }
-            }
-        });
-
-        window.onload = () => {
-            const canvas = document.getElementById('pizzaResumo');
-            if (!canvas) {
-                console.error("Canvas 'pizzaResumo' não encontrado!");
-                return;
-            }
-
-            const ctxResumo = canvas.getContext('2d');
-            new Chart(ctxResumo, {
-                type: 'pie',
-                data: {
-                    labels: ['Normais', 'Críticos'],
-                    datasets: [{
-                        data: [60, 40],
-                        backgroundColor: ['#6ce5e8', '#ff4d4d'],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: ctx => `${ctx.label}: ${ctx.raw}%`
-                            }
-                        }
-                    }
-                }
-            });
-        };
-    </script>
+    <script src="js/dashSuporteMacro.js"></script>
 
 </body>
 
