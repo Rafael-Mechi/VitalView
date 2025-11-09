@@ -204,6 +204,8 @@
 
   // GRAFICO PRINCIPAL DE ATIVIDADE
   const ctx = document.getElementById("graficoAtividade").getContext("2d");
+  const valorAtividade = document.querySelector(".texto_esquerda h1");
+  const horaAtualizacao = document.querySelector(".texto_direita p:last-child");
 
   const dadosMock = {
     labels: ["00h", "04h", "08h", "12h", "16h", "20h"],
@@ -211,7 +213,7 @@
       {
         label: "Atividade (%)",
         data: [10, 50, 70, 50, 33, 50],
-        borderColor: "#008c99",
+        borderColor: "#00c49f",
         backgroundColor: "rgba(0,196,159,0.2)",
         fill: true,
         tension: 0.3,
@@ -226,12 +228,13 @@
     scales: {
       y: {
         beginAtZero: true,
-        grid: { color: "#f0f0f0" },
-        ticks: { color: "#666" },
+        max: 100,
+        grid: { color: "rgba(255,255,255,0.05)" },
+        ticks: { color: "#aaa" },
       },
       x: {
         grid: { display: false },
-        ticks: { color: "#666" },
+        ticks: { color: "#aaa" },
       },
     },
     plugins: {
@@ -242,6 +245,10 @@
         bodyColor: "#fff",
       },
     },
+    animation: {
+      duration: 600,
+      easing: "easeOutQuart"
+    }
   };
 
   const graficoAtividade = new Chart(ctx, {
@@ -250,8 +257,25 @@
     options: opcoes,
   });
 
+  // ---- Mock de atualização automática ----
+  setInterval(() => {
+    const novoValor = Math.floor(Math.random() * 100); // valor entre 0 e 100
+    const dataset = graficoAtividade.data.datasets[0];
 
-// GRAFICO DE USO DE DISCO
+    dataset.data.shift();
+    dataset.data.push(novoValor);
+    graficoAtividade.update();
+
+    // Atualiza o número do h1
+    valorAtividade.textContent = `${novoValor}%`;
+
+    // Atualiza o horário da última atualização
+    const agora = new Date();
+    const hora = agora.toLocaleTimeString("pt-BR", { hour12: false });
+    horaAtualizacao.textContent = hora;
+  }, 1500);
+
+//---------------- GRAFICO DE USO DE DISCO------------------------
 const ctx1 = document.getElementById('graficoUsoDeDisco').getContext('2d');
 
 new Chart(ctx1, {
@@ -291,7 +315,7 @@ new Chart(ctx1, {
   }
 });
 
-//GRAFICO TAXA DE TRANSFERENCIA LEITURA E ESCRITA:
+//--------------GRAFICO TAXA DE TRANSFERENCIA LEITURA E ESCRITA:---------
 const ctx2 = document.getElementById('graficoTaxaTransferencia').getContext('2d');
 
   // Mock inicial de dados
@@ -342,7 +366,7 @@ const ctx2 = document.getElementById('graficoTaxaTransferencia').getContext('2d'
 
 
 
-//GRAFICO LATENCIA MÉDIA (io)
+//-------------GRAFICO LATENCIA MÉDIA (io)----------------
 const ctxLatencia = document.getElementById('graficoLatencia').getContext('2d');
 
   const graficoLatencia = new Chart(ctxLatencia, {
