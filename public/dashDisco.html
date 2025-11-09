@@ -199,10 +199,8 @@
 
 </body>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-
-  // GRAFICO PRINCIPAL DE ATIVIDADE
+  // ---------------- GRAFICO PRINCIPAL DE ATIVIDADE ----------------
   const ctx = document.getElementById("graficoAtividade").getContext("2d");
   const valorAtividade = document.querySelector(".texto_esquerda h1");
   const horaAtualizacao = document.querySelector(".texto_direita p:last-child");
@@ -245,10 +243,7 @@
         bodyColor: "#fff",
       },
     },
-    animation: {
-      duration: 600,
-      easing: "easeOutQuart"
-    }
+    animation: { duration: 600, easing: "easeOutQuart" },
   };
 
   const graficoAtividade = new Chart(ctx, {
@@ -257,70 +252,72 @@
     options: opcoes,
   });
 
-  // ---- Mock de atualização automática ----
   setInterval(() => {
-    const novoValor = Math.floor(Math.random() * 100); // valor entre 0 e 100
+    const novoValor = Math.floor(Math.random() * 100);
     const dataset = graficoAtividade.data.datasets[0];
-
     dataset.data.shift();
     dataset.data.push(novoValor);
     graficoAtividade.update();
 
-    // Atualiza o número do h1
     valorAtividade.textContent = `${novoValor}%`;
 
-    // Atualiza o horário da última atualização
     const agora = new Date();
-    const hora = agora.toLocaleTimeString("pt-BR", { hour12: false });
-    horaAtualizacao.textContent = hora;
+    horaAtualizacao.textContent = agora.toLocaleTimeString("pt-BR", { hour12: false });
   }, 1500);
 
-//---------------- GRAFICO DE USO DE DISCO------------------------
-const ctx1 = document.getElementById('graficoUsoDeDisco').getContext('2d');
 
-new Chart(ctx1, {
-  type: 'bar',
-  data: {
-    labels: ['Uso de Disco'],
-    datasets: [{
-      label: 'Usado',
-      data: [94.4],
-      backgroundColor: '#008c99',
-      borderRadius: 10,
-      barThickness: 20
-    }]
-  },
-  options: {
-    indexAxis: 'y',
-    scales: {
-      x: {
-        min: 0,
-        max: 100,
-        ticks: {
-          callback: value => value + '%'
-        }
-      },
-      y: {
-        display: false
-      }
+  // ---------------- GRAFICO DE USO DE DISCO ----------------
+  const ctx1 = document.getElementById('graficoUsoDeDisco').getContext('2d');
+  const valorUso = document.querySelectorAll('.numero_uso_disco h1')[0];
+  const textoUso = document.querySelectorAll('.p_esquerda')[1];
+  const variacaoUso = document.querySelectorAll('.UD_texto_direita p')[0];
+
+  const graficoUso = new Chart(ctx1, {
+    type: 'bar',
+    data: {
+      labels: ['Uso de Disco'],
+      datasets: [{
+        label: 'Usado',
+        data: [94.4],
+        backgroundColor: '#008c99',
+        borderRadius: 10,
+        barThickness: 20
+      }]
     },
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: context => `${context.parsed.x}% usado`
-        }
-      }
+    options: {
+      indexAxis: 'y',
+      scales: {
+        x: {
+          min: 0,
+          max: 100,
+          ticks: { callback: value => value + '%' }
+        },
+        y: { display: false }
+      },
+      plugins: { legend: { display: false }, tooltip: { enabled: false } }
     }
-  }
-});
+  });
 
-//--------------GRAFICO TAXA DE TRANSFERENCIA LEITURA E ESCRITA:---------
-const ctx2 = document.getElementById('graficoTaxaTransferencia').getContext('2d');
+  setInterval(() => {
+    const novoValor = (Math.random() * 100).toFixed(1);
+    graficoUso.data.datasets[0].data = [novoValor];
+    graficoUso.update();
 
-  // Mock inicial de dados
+    valorUso.textContent = `${novoValor}%`;
+    textoUso.textContent = `${(novoValor * 5).toFixed(1)} GB usados de 500 GB`;
+
+    const variacao = (Math.random() * 1 - 0.5).toFixed(1);
+    variacaoUso.textContent = `${variacao >= 0 ? "▲" : "▼"} ${variacao}%`;
+    variacaoUso.style.color = variacao >= 0 ? "red" : "green";
+  }, 2000);
+
+
+  // ---------------- TAXA DE TRANSFERÊNCIA ----------------
+  const ctx2 = document.getElementById('graficoTaxaTransferencia').getContext('2d');
+  const valorTaxa = document.querySelectorAll('.numero_uso_disco h1')[1];
+  const variacaoTaxa = document.querySelectorAll('.UD_texto_direita p')[1];
+
   const dadosMock2 = Array.from({ length: 30 }, () => Math.random() * 100);
-
   const graficoTaxa = new Chart(ctx2, {
     type: 'bar',
     data: {
@@ -338,43 +335,38 @@ const ctx2 = document.getElementById('graficoTaxaTransferencia').getContext('2d'
       responsive: true,
       maintainAspectRatio: false,
       scales: {
-        x: {
-          display: false
-        },
-        y: {
-          display: false,
-          min: 0,
-          max: 100
-        }
+        x: { display: false },
+        y: { display: false, min: 0, max: 100 }
       },
-      plugins: {
-        legend: { display: false },
-        tooltip: { enabled: false }
-      },
-      animation: {
-        duration: 500
-      }
+      plugins: { legend: { display: false }, tooltip: { enabled: false } },
+      animation: { duration: 500 }
     }
   });
 
-  // Simula atualização (mock)
   setInterval(() => {
+    const novoValor = (Math.random() * 200).toFixed(1);
     graficoTaxa.data.datasets[0].data.shift();
-    graficoTaxa.data.datasets[0].data.push(Math.random() * 100);
+    graficoTaxa.data.datasets[0].data.push(novoValor);
     graficoTaxa.update();
-  }, 1000);
+
+    const variacao = (Math.random() * 2 - 1).toFixed(1);
+    valorTaxa.textContent = `${novoValor} MB/s`;
+    variacaoTaxa.textContent = `${variacao >= 0 ? "▲" : "▼"} ${variacao} MB/s`;
+    variacaoTaxa.style.color = variacao >= 0 ? "green" : "red";
+  }, 1200);
 
 
-
-//-------------GRAFICO LATENCIA MÉDIA (io)----------------
-const ctxLatencia = document.getElementById('graficoLatencia').getContext('2d');
+  // ---------------- LATÊNCIA MÉDIA ----------------
+  const ctxLatencia = document.getElementById('graficoLatencia').getContext('2d');
+  const valorLatencia = document.querySelectorAll('.numero_uso_disco h1')[2];
+  const variacaoLatencia = document.querySelectorAll('.UD_texto_direita p')[2];
 
   const graficoLatencia = new Chart(ctxLatencia, {
     type: 'bar',
     data: {
       labels: ['Latência média'],
       datasets: [{
-        data: [22.7], // valor inicial mockado
+        data: [22.7],
         backgroundColor: 'rgba(0, 255, 180, 0.8)',
         borderRadius: 8,
         barThickness: 10
@@ -385,34 +377,27 @@ const ctxLatencia = document.getElementById('graficoLatencia').getContext('2d');
       responsive: true,
       maintainAspectRatio: false,
       scales: {
-        x: {
-          min: 0,
-          max: 100, // define o limite máximo de latência (mock)
-          display: false,
-          grid: { display: false }
-        },
-        y: {
-          display: false,
-          grid: { display: false }
-        }
+        x: { min: 0, max: 100, display: false, grid: { display: false } },
+        y: { display: false, grid: { display: false } }
       },
-      plugins: {
-        legend: { display: false },
-        tooltip: { enabled: false }
-      },
+      plugins: { legend: { display: false }, tooltip: { enabled: false } },
       animation: { duration: 500 }
     }
   });
 
-  // Simula atualização com dados mockados
   setInterval(() => {
-    const novoValor = Math.random() * 60; //MUDAR AQUI PARA FETCH DO BUCKET
+    const novoValor = (Math.random() * 60).toFixed(1);
     graficoLatencia.data.datasets[0].data = [novoValor];
     graficoLatencia.update();
+
+    valorLatencia.textContent = `${novoValor} ms`;
+
+    const variacao = (Math.random() * 2 - 1).toFixed(1);
+    variacaoLatencia.textContent = `${variacao >= 0 ? "▲" : "▼"} ${variacao} ms`;
+    variacaoLatencia.style.color = variacao >= 0 ? "red" : "green";
   }, 1500);
-
-
 </script>
+
 
 </html>
 
