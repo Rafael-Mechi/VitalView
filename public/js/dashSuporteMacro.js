@@ -138,11 +138,6 @@ function atualizarGrafico(distribuicao) {
     const ctx = document.getElementById('graficoPizza');
     if (!ctx) return;
 
-    // Destrói gráfico existente (Ajuda na atualização dos 30 segundos)
-    if (window.pizzaChart) {
-        window.pizzaChart.destroy();
-    }
-
     // Calclando porcentagens
     const total = distribuicao.normais + distribuicao.alertas; 
     const percentNormais = total > 0 ? Math.round((distribuicao.normais / total) * 100) : 0;
@@ -340,6 +335,4 @@ document.addEventListener('DOMContentLoaded', function () {
     // Carregar dados da API
     carregarDashboard();
 
-    // Atualizar a cada 30 segundos, ta deixando o gráfico gordao se pa que eu tiro
-    setInterval(carregarDashboard, 30000);
 });
