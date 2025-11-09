@@ -1,315 +1,297 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="css/dashDisco.css" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
-    <script src="js/sessao.js"></script>
-  </head>
 
-  <body>
-    <nav class="menu">
-      <input
-        type="checkbox"
-        name="chk_hamburguer"
-        id="chk_hamburguer"
-        class="check_hamburguer"
-      />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="css/dashDisco.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="js/sessao.js"></script>
+</head>
 
-      <section class="hamburguer">
-        <span class="menu_lateral">
-          <div class="icones_topo">
-            <img class="img_hamb" src="assets/LogoVitalView.png" />
-            <img
-              src="./assets/dashboard-icons/home.svg"
-              data-role="Analista,Administrador,Técnico"
-            />
-            <img
-              src="./assets/dashboard-icons/activity.svg"
-              data-role="Analista,Administrador"
-            />
-            <img
-              src="./assets/dashboard-icons/bar-chart.svg"
-              data-role="Técnico,Administrador"
-            />
-            <img
-              src="./assets/dashboard-icons/layout.svg"
-              data-role="Técnico,Administrador"
-            />
-          </div>
+<body>
 
-          <div class="icones_baixo">
-            <img
-              src="./assets/dashboard-icons/calendar.svg"
-              data-role="Analista,Técnico,Administrador"
-            />
-            <img
-              src="./assets/dashboard-icons/users.svg"
-              data-role="Administrador"
-            />
-            <img
-              src="./assets/dashboard-icons/hard-drive.svg"
-              data-role="Técnico,Administrador"
-            />
-            <img
-              src="./assets/dashboard-icons/help-circle.svg"
-              data-role="Analista,Técnico,Administrador"
-            />
-            <img
-              src="./assets/dashboard-icons/log-out.svg"
-              data-role="Analista,Técnico,Administrador"
-            />
-          </div>
-        </span>
-      </section>
+  <nav class="menu">
+    <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
 
-      <ul>
-        <div class="title_hamb">
-          <img class="img_hamb" src="assets/LogoVitalView.png" alt="" />
-          <h2 class="hamb_nome">VitalView</h2>
-        </div>
-        <div class="menu_topo">
-          <h3 class="title_menu">Dashboards</h3>
-          <li
-            style="display: flex; align-items: center"
-            data-role="Analista,Administrador,Técnico"
-          >
-            <img
-              src="./assets/dashboard-icons/home.svg"
-              style="width: 20px; margin-right: 4px"
-            /><a href="bemVindo.html">Home</a>
-          </li>
-          <li
-            style="display: flex; align-items: center"
-            data-role="Analista,Administrador"
-          >
-            <img
-              src="./assets/dashboard-icons/activity.svg"
-              style="width: 20px; margin-right: 4px"
-            /><a href="dashboardAnalista.html">Dash Analista</a>
-          </li>
-          <li
-            style="display: flex; align-items: center"
-            data-role="Técnico,Administrador"
-          >
-            <img
-              src="./assets/dashboard-icons/bar-chart.svg"
-              style="width: 20px; margin-right: 4px"
-            /><a href="dashboardSuporteMacro.html">Dash Suporte Macro</a>
-          </li>
-          <li
-            style="display: flex; align-items: center"
-            data-role="Técnico,Administrador"
-            class="pagina-ativa"
-          >
-            <img
-              src="./assets/dashboard-icons/layout.svg"
-              style="width: 20px; margin-right: 4px"
-            /><a href="dashboardSuporteMicro.html">Dash Suporte Micro</a>
-          </li>
-          <li style="display: flex; align-items: center;" data-role="Técnico,Administrador">
-                    <img src="./assets/dashboard-icons/wifi (1).svg" style="width: 20px; margin-right: 4px;"><a
-                        href="dashRede.html">Dashboard Rede</a>
-                </li>
+    <section class="hamburguer">
+      <span class="menu_lateral">
+        <div class="icones_topo">
+          <img class="img_hamb" src="assets/LogoVitalView.png">
+          <img src="./assets/dashboard-icons/home.svg" data-role="Analista,Administrador,Técnico">
+          <img src="./assets/dashboard-icons/activity.svg" data-role="Analista,Administrador">
+          <img src="./assets/dashboard-icons/bar-chart.svg" data-role="Técnico,Administrador">
+          <img src="./assets/dashboard-icons/layout.svg" data-role="Técnico,Administrador">
         </div>
 
-        <div class="menu_baixo">
-          <h3 class="title_menu">Outras Opções</h3>
-          <li
-            style="display: flex; align-items: center"
-            data-role="Analista,Técnico,Administrador"
-          >
-            <img
-              src="./assets/dashboard-icons/calendar.svg"
-              style="width: 20px; margin-right: 4px"
-            /><a href="historicoAlertas.html">Histórico de Alertas</a>
-          </li>
-          <li
-            style="display: flex; align-items: center"
-            data-role="Administrador"
-          >
-            <img
-              src="./assets/dashboard-icons/users.svg"
-              style="width: 20px; margin-right: 4px"
-            /><a href="cadastroFuncionarios.html">Cadastro Funcionário</a>
-          </li>
-          <li
-            style="display: flex; align-items: center"
-            data-role="Técnico,Administrador"
-          >
-            <img
-              src="./assets/dashboard-icons/hard-drive.svg"
-              style="width: 20px; margin-right: 4px"
-            /><a href="cadastroServidores.html">Cadastro Servidores</a>
-          </li>
-          <li
-            style="display: flex; align-items: center"
-            data-role="Analista,Técnico,Administrador"
-          >
-            <img
-              src="./assets/dashboard-icons/help-circle.svg"
-              style="width: 20px; margin-right: 4px"
-            /><a
-              href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1"
-              target="_blank"
-              >Central de Serviço</a
-            >
-          </li>
-          <li
-            style="display: flex; align-items: center"
-            data-role="Analista,Técnico,Administrador"
-          >
-            <img
-              src="./assets/dashboard-icons/log-out.svg"
-              style="width: 20px; margin-right: 4px"
-            /><a onclick="limparSessao()">Sair</a>
-          </li>
+        <div class="icones_baixo">
+          <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador"
+            style="width: 28px; height: 28px;">
+          <img src="./assets/dashboard-icons/calendar.svg" data-role="Analista,Técnico,Administrador">
+          <img src="./assets/dashboard-icons/users.svg" data-role="Administrador">
+          <img src="./assets/dashboard-icons/hard-drive.svg" data-role="Técnico,Administrador">
+          <img src="./assets/dashboard-icons/help-circle.svg" data-role="Analista,Técnico,Administrador">
+          <img src="./assets/dashboard-icons/log-out.svg" data-role="Analista,Técnico,Administrador">
         </div>
-      </ul>
-    </nav>
-
-    <section class="container">
-      <section class="nav-dash">
-        <section class="secao_logo">
-          <a href="bemVindo.html">
-            <img
-              src="assets/LogoVitalView.png"
-              alt="Logo VitalView"
-              class="logo"
-            />
-          </a>
-        </section>
-        <section class="secao_logo">
-          <h1 class="titulo_header">VitalView</h1>
-        </section>
-      </section>
-
-      <section class="container-de-sessoes">
-        <button>Gerenciar Arquivos</button>
-
-        <!-- KPIS: -->
-
-        <div class="bloco_kpi_disco">
-          <div class="kpi_resumo_armazenamento">
-            <div class="centralizador">
-              <div class="numero_resumo">94%</div>
-              <div class="centralizador_superior">
-                <div>Resumo do armazenamento</div>
-                <div>Espaço</div>
-                <div>Última atualização: agora</div>
-              </div>
-              <div class="centralizar_inferior">
-                <div>Espaço usado</div>
-                <div>
-                  186.75 GB
-                  <span class="variacao positiva">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="14"
-                      height="14"
-                      fill="green"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M12 4l6 6h-4v10h-4V10H6z" />
-                    </svg>
-                    +0.2%
-                  </span>
-                </div>
-                <div>Espaço livre</div>
-                <div>59.25 GB</div>
-              </div>
-              <div class="div_graficoLinha">=============</div>
-              <div>(últimas 24h)</div>
-            </div>
-          </div>
-
-          <div class="kpi_projecao_sobrecarga">
-            <div class="centralizador">
-              <div>Projeção de Sobrecarga (85%)</div>
-              <div
-                class="numero_previsao"
-                style="font-size: 2em; font-weight: bold; color: red"
-              >
-                2026-04-22
-              </div>
-              <div>(120 dias restantes)</div>
-              <div>
-                <p style="color: blue">Crescimento médio: 1.5 GB/dia</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="container-divs_inferiores">
-          <div class="div_taxa">
-            <div class="centralizador">
-              <div class="centralizador_superior">
-                <div>Taxa de Leitura</div>
-                <div class="variacao positiva">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    fill="green"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 4l6 6h-4v10h-4V10H6z" />
-                  </svg>
-                  +1 MB/s
-                </div>
-              </div>
-              <div class="numero_taxa">116 MB/s</div>
-              <div class="div_grafico_taxa">////// \\\\\ /////</div>
-            </div>
-          </div>
-
-          <div class="div_taxa">
-            <div class="centralizador">
-              <div class="centralizador_superior">
-                <div>Latência Média (IO)</div>
-                <div class="variacao negativa">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    fill="red"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 20l-6-6h4V4h4v10h4z" />
-                  </svg>
-                  -2 ms
-                </div>
-              </div>
-              <div class="numero_taxa">16 ms</div>
-              <div class="div_grafico_taxa">////// \\\\\ /////</div>
-            </div>
-          </div>
-
-          <div class="div_taxa">
-            <div class="centralizador">
-              <div class="centralizador_superior">
-                <div>Tempo de Atividade (IO Busy)</div>
-                <div class="variacao negativa">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    fill="red"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 20l-6-6h4V4h4v10h4z" />
-                  </svg>
-                  -1%
-                </div>
-              </div>
-              <div class="numero_taxa">35%</div>
-              <div class="div_grafico_taxa">////// \\\\\ /////</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      </span>
     </section>
-  </body>
+
+    <ul>
+      <div class="title_hamb">
+        <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
+        <h2 class="hamb_nome">VitalView</h2>
+      </div>
+      <div class="menu_topo">
+        <h3 class="title_menu">Dashboards</h3>
+        <li style="display: flex; align-items: center;" data-role="Analista,Administrador,Técnico">
+          <img src="./assets/dashboard-icons/home.svg" style="width: 20px; margin-right: 4px;"><a
+            href="bemVindo.html">Home</a>
+        </li>
+        <li style="display: flex; align-items: center;" data-role="Analista,Administrador"><img
+            src="./assets/dashboard-icons/activity.svg" style="width: 20px; margin-right: 4px;"><a
+            href="dashboardAnalista.html">Dash Analista</a></li>
+        <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
+            src="./assets/dashboard-icons/bar-chart.svg" style="width: 20px; margin-right: 4px;"><a
+            href="dashboardSuporteMacro.html">Dash Suporte Macro</a></li>
+        <li style="display: flex; align-items: center;" data-role="Técnico,Administrador" class="pagina-ativa">
+          <img src="./assets/dashboard-icons/layout.svg" style="width: 20px; margin-right: 4px;"><a
+            href="dashboardSuporteMicro.html">Dash Suporte Micro</a>
+        </li>
+        <li style="display: flex; align-items: center;" data-role="Técnico,Administrador">
+          <img src="./assets/dashboard-icons/wifi (1).svg" style="width: 20px; margin-right: 4px;"><a
+            href="dashRede.html">Dashboard Rede</a>
+        </li>
+      </div>
+
+      <div class="menu_baixo">
+        <h3 class="title_menu">Outras Opções</h3>
+        <li style="display: flex; align-items: center;" data-role="Administrador"><img
+            src="./assets/dashboard-icons/gerenciar-usuarios.png" style="width: 20px; margin-right: 4px;"><a
+            href="dashControleSistema.html">Gerenciar usuários</a></li>
+        <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+            src="./assets/dashboard-icons/calendar.svg" style="width: 20px; margin-right: 4px;"><a
+            href="historicoAlertas.html">Histórico de Alertas</a></li>
+        <li style="display: flex; align-items: center;" data-role="Administrador"><img
+            src="./assets/dashboard-icons/users.svg" style="width: 20px; margin-right: 4px;"><a
+            href="cadastroFuncionarios.html">Cadastro Funcionário</a></li>
+        <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
+            src="./assets/dashboard-icons/hard-drive.svg" style="width: 20px; margin-right: 4px;"><a
+            href="cadastroServidores.html">Cadastro Servidores</a></li>
+        <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+            src="./assets/dashboard-icons/help-circle.svg" style="width: 20px; margin-right: 4px;"><a
+            href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1" target="_blank">Central de
+            Serviço</a></li>
+        <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+            src="./assets/dashboard-icons/log-out.svg" style="width: 20px; margin-right: 4px;"><a
+            onclick="limparSessao()">Sair</a></li>
+      </div>
+    </ul>
+  </nav>
+
+
+  <section class="container">
+    <section class="nav-dash">
+      <section class="secao_logo">
+        <a href="bemVindo.html">
+          <img src="assets/LogoVitalView.png" alt="Logo VitalView" class="logo" />
+        </a>
+      </section>
+      <section class="secao_logo">
+        <h1 class="titulo_header">VitalView</h1>
+      </section>
+      <button class="botao_arquivos">Gerenciar Arquivos</button>
+    </section>
+
+    <section class="container-de-sessoes">
+
+      <!-- KPIS: -->
+
+      <!-- <div class="centralizador">
+            <div class="numero_resumo">94%</div>
+            <div class="centralizador_superior">
+              <div>Resumo do armazenamento</div>
+              <div>Espaço</div>
+              <div>Última atualização: agora</div>
+            </div>
+            <div class="centralizar_inferior">
+              <div>Espaço usado</div>
+              <div>
+                186.75 GB
+                <span class="variacao positiva">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="green" viewBox="0 0 24 24"><path d="M12 4l6 6h-4v10h-4V10H6z" /></svg>+0.2%</span>
+              </div>
+              <div>Espaço livre</div>
+              <div>59.25 GB</div>
+            </div>
+            <div class="div_graficoLinha">=============</div>
+            <div>(últimas 24h)</div>
+          </div> -->
+
+      <div class="bloco_kpi_disco">
+
+        <div class="kpi_grafico_atividade">
+          <div class="centralizador_titulo">
+            <div class="texto_esquerda">
+                <p>Tempo de atividade</p>
+                <h1>5%</h1>
+            </div>
+            <div class="texto_direita">
+              <p>Última atualiazação</p>
+              <p>20:55:09</p>
+            </div>
+          </div>
+          <div class="grafico_atividade">
+            <canvas id="graficoAtividade"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="container-divs_inferiores">
+
+        <div class="div_taxa">
+          <div class="centralizador">
+            <div class="UD_texto_esquerda">
+              <div class="p_esquerda">Uso de Disco</div>
+              <div class="numero_uso_disco"><h1>94.4%</h1></div>
+              <div class="p_esquerda">210.5 GB usados de 500 GB</div>
+            </div>
+            <div class="UD_texto_direita">
+              <p>+0.4%</p>
+            </div>
+            <canvas id="graficoUsoDeDisco"></canvas>
+          </div>
+        </div>
+
+        <div class="div_taxa">
+          <div class="centralizador">
+            <div class="centralizador_superior">
+              <div>Latência Média (IO)</div>
+              <div class="variacao negativa">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="red" viewBox="0 0 24 24">
+                  <path d="M12 20l-6-6h4V4h4v10h4z" />
+                </svg>
+                -2 ms
+              </div>
+            </div>
+            <div class="numero_taxa">16 ms</div>
+            <div class="div_grafico_taxa">////// \\\\\ /////</div>
+          </div>
+        </div>
+
+        <div class="div_taxa">
+          <div class="centralizador">
+            <div class="centralizador_superior">
+              <div>Tempo de Atividade (IO Busy)</div>
+              <div class="variacao negativa">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="red" viewBox="0 0 24 24">
+                  <path d="M12 20l-6-6h4V4h4v10h4z" />
+                </svg>
+                -1%
+              </div>
+            </div>
+            <div class="numero_taxa">35%</div>
+            <div class="div_grafico_taxa">////// \\\\\ /////</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+  // GRAFICO PRINCIPAL DE ATIVIDADE
+  const ctx = document.getElementById("graficoAtividade").getContext("2d");
+
+  const dadosMock = {
+    labels: ["00h", "04h", "08h", "12h", "16h", "20h"],
+    datasets: [
+      {
+        label: "Atividade (%)",
+        data: [10, 50, 70, 50, 33, 50],
+        borderColor: "#008c99",
+        backgroundColor: "rgba(0,196,159,0.2)",
+        fill: true,
+        tension: 0.3,
+        pointRadius: 0,
+      },
+    ],
+  };
+
+  const opcoes = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: { color: "#f0f0f0" },
+        ticks: { color: "#666" },
+      },
+      x: {
+        grid: { display: false },
+        ticks: { color: "#666" },
+      },
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: "#222",
+        titleColor: "#fff",
+        bodyColor: "#fff",
+      },
+    },
+  };
+
+  const graficoAtividade = new Chart(ctx, {
+    type: "line",
+    data: dadosMock,
+    options: opcoes,
+  });
+
+
+// GRAFICO DE USO DE DISCO
+const ctx1 = document.getElementById('graficoUsoDeDisco').getContext('2d');
+
+new Chart(ctx1, {
+  type: 'bar',
+  data: {
+    labels: ['Uso de Disco'],
+    datasets: [{
+      label: 'Usado',
+      data: [94.4],
+      backgroundColor: '#6a1b9a',
+      borderRadius: 10,
+      barThickness: 20
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    scales: {
+      x: {
+        min: 0,
+        max: 100,
+        ticks: {
+          callback: value => value + '%'
+        }
+      },
+      y: {
+        display: false
+      }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: context => `${context.parsed.x}% usado`
+        }
+      }
+    }
+  }
+});
+
+</script>
+
 </html>

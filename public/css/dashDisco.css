@@ -103,7 +103,7 @@ header {
 
   padding: 0 20px;
   width: 100%;
-  height: 10%;
+  height: 7%;
   display: flex;
   align-items: center;
   /* background-color: #05cf0533; */
@@ -113,6 +113,8 @@ header {
 /*                     CONTAINER                      */
 /* -------------------------------------------------- */
 .container {
+  display: flex;
+  flex-direction: column;
   margin-top: 7px;
   margin-left: 60px;
   margin-right: 10px;
@@ -282,7 +284,7 @@ img {
 
 
 /* -------------------------------------------------- */
-/*                  TÍTULOS DE SEÇÕES                 */
+/*                  TÃTULOS DE SEÃ‡Ã•ES                 */
 /* -------------------------------------------------- */
 .section-title {
   font-size: 1.4rem;
@@ -713,24 +715,76 @@ h3 {
 /*                     KPIs E CONTAINERS              */
 /* -------------------------------------------------- */
 
+.botao_arquivos {
+  width: 40%;
+  border: none;
+  margin-left: 70%;
+  margin-top: 20px;
+  padding: 10px;
+    border-radius: 2rem;
+    font-size: 1em;
+    background-color: #32b9cd;
+    cursor: pointer;
+    color: white;
+    box-shadow: var(--shadow);
+    transition: background-color 0.3s ease;
+}
 
+.botao_arquivos:hover {
+    background-color: #28a3b0;
+}
 
 .bloco_kpi_disco {
     display: flex;
-    justify-content: space-between;
-    gap: 20px;
+    gap: 10px;
     margin: 20px;
-    width: 100%;
+    margin-left: 5%;
+    width: 90%;
+    height: 600px;
+    background-color: #c5c5c5;
+    border-radius: 2rem;
 }
 
-.kpi_resumo_armazenamento,
-.kpi_projecao_sobrecarga {
+.kpi_grafico_atividade {
+    margin-left: 10%;
+    margin: 1%;
     background: white;
     border-radius: 12px;
     padding: 20px;
-    flex: 1;
-    box-shadow: var(--shadow);
+    width: 100%;
+
 }
+
+.centralizador_titulo {
+  display: flex;
+  justify-content: space-between;
+    margin-bottom: 1%;
+}
+
+.texto_esquerda {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+}
+
+.texto_esquerda p {
+  width: 100%;
+}
+
+
+.texto_direita p {
+ font-weight: 100;
+}
+
+.grafico_atividade {
+    width: 100%;
+    height: 300px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+
+
 
 .centralizador {
     display: flex;
@@ -740,91 +794,52 @@ h3 {
     gap: 10px;
 }
 
-.numero_resumo {
-    font-size: 2.5em;
-    font-weight: bold;
-    color: #32b9cd;
-}
 
-.numero_previsao {
-    font-size: 2em;
-    font-weight: bold;
-    color: var(--accent);
-}
-
-.centralizador_superior {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    width: 100%;
-}
-
-.centralizar_inferior {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
-}
 
 .container-divs_inferiores {
     display: flex;
     justify-content: space-between;
+    width: 100%;
     gap: 20px;
-    margin: 20px;
-    width: calc(100% - 40px);
+    margin: 20px 0;
+    background-color: #c5c5c5;
 }
 
 .div_taxa {
     background: white;
     border-radius: 12px;
-    padding: 20px;
-    flex: 1;
+    padding: 10px;
     box-shadow: var(--shadow);
+    height: 200px;
+    width: 30%;
+    position: relative;
 }
 
-.numero_taxa {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: #2a2a2a;
-}
-
-.variacao {
+  .centralizador {
+    position: relative;
     display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.9em;
-    font-weight: 500;
-}
-
-.variacao.positiva {
-    color: var(--ok);
-}
-
-.variacao.negativa {
-    color: var(--accent);
-}
-
-.div_graficoLinha,
-.div_grafico_taxa {
+    flex-direction: column;
     width: 100%;
-    height: 60px;
-    background: var(--bg);
-    border-radius: 8px;
-    margin: 10px 0;
+    height: 100%;
+  
 }
 
-/* Ajustes responsivos */
-@media (max-width: 1200px) {
-    .bloco_kpi_disco,
-    .container-divs_inferiores {
-        flex-direction: column;
-    }
-
-    .kpi_resumo_armazenamento,
-    .kpi_projecao_sobrecarga,
-    .div_taxa {
-        width: 100%;
-    }
+.UD_texto_esquerda {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 10px;
 }
 
+.UD_texto_direita {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #32b9cd;
+}
 
+canvas#graficoUsoDeDisco {
+    width: 100% !important;
+    height: 60px !important;
+    margin-top: 10px;
+}
