@@ -388,10 +388,10 @@ a:hover {
   font-weight: 800;
   font-size: 28px;
   color: #e62323;
-  display: flex; /* Mudado para flex */
-  align-items: center; /* Centraliza verticalmente */
-  justify-content: center; /* Centraliza horizontalmente */
-  gap: 8px; /* Espaço entre número e tendência */
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  gap: 8px;
 }
 
 .kpi .sub {
@@ -429,8 +429,10 @@ a:hover {
   gap: 5px;
 }
 
-/* Botão de informação (igual ao do cadastro de servidor) */
-/* Botão de informação (IGUAL ao cadastroServidores) */
+/* -------------------------------------------------- */
+/*                    BOTÃO DE INFORMAÇÃO                  */
+/* -------------------------------------------------- */
+
 .infoBtn {
   background: none;
   border: none;
@@ -448,7 +450,6 @@ a:hover {
   color: #32b9cd;
 }
 
-/* Container para alinhar título + botão (NOVO) */
 .kpi-title-container {
   display: flex;
   align-items: center;
