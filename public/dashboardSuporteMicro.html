@@ -8,596 +8,303 @@
     <link rel="stylesheet" href="css/dashSuporteMicro.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
     <script src="js/sessao.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.10.2/lottie.min.js"></script>
 </head>
 
 <body>
+    <div id="loading" class="loading">
+    </div>
 
-    <nav class="menu">
-        <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
+    <div id="main-container">
+        <nav class="menu">
+            <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
 
-        <section class="hamburguer">
-            <span class="menu_lateral">
-                <div class="icones_topo">
-                    <img class="img_hamb" src="assets/LogoVitalView.png">
-                    <img src="./assets/dashboard-icons/home.svg" data-role="Analista,Administrador,Técnico">
-                    <img src="./assets/dashboard-icons/activity.svg" data-role="Analista,Administrador">
-                    <img src="./assets/dashboard-icons/bar-chart.svg" data-role="Técnico,Administrador">
-                    <img src="./assets/dashboard-icons/layout.svg" data-role="Técnico,Administrador">
-                </div>
-
-                <div class="icones_baixo">
-                    <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador" style="width: 28px; height: 28px;">
-                    <img src="./assets/dashboard-icons/calendar.svg" data-role="Analista,Técnico,Administrador">
-                    <img src="./assets/dashboard-icons/users.svg" data-role="Administrador">
-                    <img src="./assets/dashboard-icons/hard-drive.svg" data-role="Técnico,Administrador">
-                    <img src="./assets/dashboard-icons/help-circle.svg" data-role="Analista,Técnico,Administrador">
-                    <img src="./assets/dashboard-icons/log-out.svg" data-role="Analista,Técnico,Administrador">
-                </div>
-            </span>
-        </section>
-
-        <ul>
-            <div class="title_hamb">
-                <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
-                <h2 class="hamb_nome">VitalView</h2>
-            </div>
-            <div class="menu_topo">
-                <h3 class="title_menu">Dashboards</h3>
-                <li style="display: flex; align-items: center;" data-role="Analista,Administrador,Técnico">
-                    <img src="./assets/dashboard-icons/home.svg" style="width: 20px; margin-right: 4px;"><a
-                        href="bemVindo.html">Home</a>
-                </li>
-                <li style="display: flex; align-items: center;" data-role="Analista,Administrador"><img
-                        src="./assets/dashboard-icons/activity.svg" style="width: 20px; margin-right: 4px;"><a
-                        href="dashboardAnalista.html">Dash Analista</a></li>
-                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
-                        src="./assets/dashboard-icons/bar-chart.svg" style="width: 20px; margin-right: 4px;"><a
-                        href="dashboardSuporteMacro.html">Dash Suporte Macro</a></li>
-                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador" class="pagina-ativa">
-                    <img src="./assets/dashboard-icons/layout.svg" style="width: 20px; margin-right: 4px;"><a
-                        href="dashboardSuporteMicro.html">Dash Suporte Micro</a>
-                </li>
-                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador">
-                    <img src="./assets/dashboard-icons/wifi (1).svg" style="width: 20px; margin-right: 4px;"><a
-                        href="dashRede.html">Dashboard Rede</a>
-                </li>
-            </div>
-
-            <div class="menu_baixo">
-                <h3 class="title_menu">Outras Opções</h3>
-                <li style="display: flex; align-items: center;" data-role="Administrador"><img
-                        src="./assets/dashboard-icons/gerenciar-usuarios.png" style="width: 20px; margin-right: 4px;"><a
-                        href="dashControleSistema.html">Gerenciar usuários</a></li>
-                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
-                        src="./assets/dashboard-icons/calendar.svg" style="width: 20px; margin-right: 4px;"><a
-                        href="historicoAlertas.html">Histórico de Alertas</a></li>
-                <li style="display: flex; align-items: center;" data-role="Administrador"><img
-                        src="./assets/dashboard-icons/users.svg" style="width: 20px; margin-right: 4px;"><a
-                        href="cadastroFuncionarios.html">Cadastro Funcionário</a></li>
-                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
-                        src="./assets/dashboard-icons/hard-drive.svg" style="width: 20px; margin-right: 4px;"><a
-                        href="cadastroServidores.html">Cadastro Servidores</a></li>
-                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
-                        src="./assets/dashboard-icons/help-circle.svg" style="width: 20px; margin-right: 4px;"><a
-                        href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1"
-                        target="_blank">Central de Serviço</a></li>
-                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
-                        src="./assets/dashboard-icons/log-out.svg" style="width: 20px; margin-right: 4px;"><a
-                        onclick="limparSessao()">Sair</a></li>
-            </div>
-        </ul>
-    </nav>
-
-
-    <section class="container">
-        <section class="nav-dash">
-            <section class="secao_logo">
-                <a href="dashboardAnalista.html">
-                    <img src="assets/LogoVitalView.png" alt="Logo VitalView" class="logo">
-                </a>
-            </section>
-
-            <section class="secao_logo">
-                <h1 class="titulo_header">VitalView</h1>
-            </section>
-
-            <section class="secao_logo" id="escolher-servidor">
-                <select class="periodo_select" name="periodo" id="periodo_select">
-                    <option value="1">Escolher Servidor</option>
-                    <option value="2">Servidor 1</option>
-                    <option value="3">Servidor 2</option>
-                    <option value="4">Servidor 3</option>
-                    <option value="5">Servidor 4</option>
-                    <option value="6">Servidor 5</option>
-                </select>
-            </section>
-
-            <section class="secao_logo">
-                <select class="periodo_select" name="periodo" id="periodo_select">
-                    <option value="1">Escolher período</option>
-                    <option value="2">Agora</option>
-                    <option value="3">Última hora</option>
-                    <option value="4">Durante hoje</option>
-                    <option value="5">Nesta semana</option>
-                </select>
-            </section>
-
-            <!-- <section class="data-hora">
-                <button>1min</button>
-                <button>10min</button>
-                <button>1h</button>
-                <button>24h</button>
-                <button>7d</button>
-            </section> -->
-        </section>
-
-        <section class="container-de-sessoes">
-            <section class="sessao-lateral-esquerda">
-                <section id="nome-servidor">
-                    <h1 id="hostName">PACS-01</h1><span class="status ativo">Ativo</span>
-                </section>
-                <section class="sessao-lateral-esquerda-itens" id="informações-servidor">
-
-                    <div class="card" id="card_processos">
-                        <table class="process-table processes" id="conteudo-servidores">
-                            <tbody>
-                                <tr>
-                                    <td><strong>Hostname:</strong></td>
-                                    <td id="hostName2">PACS-01</td>
-
-                                </tr>
-                                <tr>
-                                    <td><strong>Endereço IP:</strong></td>
-                                    <td id="ip">192.168.1.10</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Localização:</strong></td>
-                                    <td id="localizacao">Radiologia Central</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Qtd. RAM:</strong></td>
-                                    <td>128 GB</td>
-                                </tr>
-                                <td><strong>Qtd. Disco:</strong></td>
-                                <td>5 TB</td>
-                            </tbody>
-                        </table>
+            <section class="hamburguer">
+                <span class="menu_lateral">
+                    <div class="icones_topo">
+                        <img class="img_hamb" src="assets/LogoVitalView.png">
+                        <img src="./assets/dashboard-icons/home.svg" data-role="Analista,Administrador,Técnico">
+                        <img src="./assets/dashboard-icons/activity.svg" data-role="Analista,Administrador">
+                        <img src="./assets/dashboard-icons/bar-chart.svg" data-role="Técnico,Administrador">
+                        <img src="./assets/dashboard-icons/layout.svg" data-role="Técnico,Administrador">
+                        <img src="./assets/dashboard-icons/wifi (1).svg" data-role="Técnico,Administrador">
                     </div>
 
-                    <!-- <table class="server-info">
-                        <tr>
-                            <td><strong>Hostname:</strong></td>
-                            <td>PACS-01</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Endereço IP:</strong></td>
-                            <td>192.168.1.10</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Localização:</strong></td>
-                            <td>Radiologia Central</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Qtd. RAM:</strong></td>
-                            <td>128 GB</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Qtd. Disco:</strong></td>
-                            <td>5 TB</td>
-                        </tr>
-                    </table> -->
-                </section>
-                <section class="sessao-lateral-esquerda-itens" id="lista-processos">
-                    <h3>Lista de Processos</h3>
-                    <div class="card scroll" id="card_processos">
-                        <table class="process-table processes">
-                            <thead>
-                                <tr>
-                                    <th>Processo</th>
-                                    <th>Uso (CPU)</th>
-                                    <th>Uso (RAM)</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>dcm4chee</td>
-                                    <td>32%</td>
-                                    <td>26%</td>
-                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Python</td>
-                                    <td>12%</td>
-                                    <td>34%</td>
-                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
-                                </tr>
-                                <tr>
-                                    <td>systemmd</td>
-                                    <td>45%</td>
-                                    <td>67%</td>
-                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
-                                </tr>
-                                <tr>
-                                    <td>FileSystem</td>
-                                    <td>22%</td>
-                                    <td>10%</td>
-                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
-                                </tr>
-                                <tr>
-                                    <td>StoreSCP</td>
-                                    <td>14%</td>
-                                    <td>9%</td>
-                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Storescu</td>
-                                    <td>32%</td>
-                                    <td>26%</td>
-                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
-                                </tr>
-                                <tr>
-                                    <td>image Indexer</td>
-                                    <td>12%</td>
-                                    <td>34%</td>
-                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
-                                </tr>
-                                <tr>
-                                    <td>dicom-q/r</td>
-                                    <td>45%</td>
-                                    <td>67%</td>
-                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
-                                </tr>
-                                <tr>
-                                    <td>image Converter</td>
-                                    <td>22%</td>
-                                    <td>10%</td>
-                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
-                                </tr>
-                                <tr>
-                                    <td>kswapd</td>
-                                    <td>14%</td>
-                                    <td>9%</td>
-                                    <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
-                                </tr>
-
-                            </tbody>
-                        </table>
+                    <div class="icones_baixo">
+                        <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador"
+                            style="width: 28px; height: 28px;">
+                        <img src="./assets/dashboard-icons/calendar.svg" data-role="Analista,Técnico,Administrador">
+                        <img src="./assets/dashboard-icons/users.svg" data-role="Administrador">
+                        <img src="./assets/dashboard-icons/hard-drive.svg" data-role="Técnico,Administrador">
+                        <img src="./assets/dashboard-icons/help-circle.svg" data-role="Analista,Técnico,Administrador">
+                        <img src="./assets/dashboard-icons/log-out.svg" data-role="Analista,Técnico,Administrador">
                     </div>
+                </span>
+            </section>
+
+            <ul>
+                <div class="title_hamb">
+                    <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
+                    <h2 class="hamb_nome">VitalView</h2>
+                </div>
+                <div class="menu_topo">
+                    <h3 class="title_menu">Dashboards</h3>
+                    <li style="display: flex; align-items: center;" data-role="Analista,Administrador,Técnico">
+                        <img src="./assets/dashboard-icons/home.svg" style="width: 20px; margin-right: 4px;"><a
+                            href="bemVindo.html">Home</a>
+                    </li>
+                    <li style="display: flex; align-items: center;" data-role="Analista,Administrador"><img
+                            src="./assets/dashboard-icons/activity.svg" style="width: 20px; margin-right: 4px;"><a
+                            href="dashboardAnalista.html">Dash Analista</a></li>
+                    <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
+                            src="./assets/dashboard-icons/bar-chart.svg" style="width: 20px; margin-right: 4px;"><a
+                            href="dashboardSuporteMacro.html">Dash Suporte Macro</a></li>
+                    <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"
+                        class="pagina-ativa">
+                        <img src="./assets/dashboard-icons/layout.svg" style="width: 20px; margin-right: 4px;"><a
+                            href="dashboardSuporteMicro.html">Dash Suporte Micro</a>
+                    </li>
+                    <li style="display: flex; align-items: center;" data-role="Técnico,Administrador">
+                        <img src="./assets/dashboard-icons/wifi (1).svg" style="width: 20px; margin-right: 4px;"><a
+                            href="dashRede.html">Dashboard Rede</a>
+                    </li>
+                </div>
+
+                <div class="menu_baixo">
+                    <h3 class="title_menu">Outras Opções</h3>
+                    <li style="display: flex; align-items: center;" data-role="Administrador"><img
+                            src="./assets/dashboard-icons/gerenciar-usuarios.png"
+                            style="width: 20px; margin-right: 4px;"><a href="dashControleSistema.html">Gerenciar
+                            usuários</a></li>
+                    <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+                            src="./assets/dashboard-icons/calendar.svg" style="width: 20px; margin-right: 4px;"><a
+                            href="historicoAlertas.html">Histórico de Alertas</a></li>
+                    <li style="display: flex; align-items: center;" data-role="Administrador"><img
+                            src="./assets/dashboard-icons/users.svg" style="width: 20px; margin-right: 4px;"><a
+                            href="cadastroFuncionarios.html">Cadastro Funcionário</a></li>
+                    <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
+                            src="./assets/dashboard-icons/hard-drive.svg" style="width: 20px; margin-right: 4px;"><a
+                            href="cadastroServidores.html">Cadastro Servidores</a></li>
+                    <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+                            src="./assets/dashboard-icons/help-circle.svg" style="width: 20px; margin-right: 4px;"><a
+                            href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1"
+                            target="_blank">Central de Serviço</a></li>
+                    <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+                            src="./assets/dashboard-icons/log-out.svg" style="width: 20px; margin-right: 4px;"><a
+                            onclick="limparSessao()">Sair</a></li>
+                </div>
+            </ul>
+        </nav>
+
+
+        <section class="container">
+            <section class="nav-dash">
+                <section class="secao_logo">
+                    <a href="dashboardAnalista.html">
+                        <img src="assets/LogoVitalView.png" alt="Logo VitalView" class="logo">
+                    </a>
+                </section>
+
+                <section class="secao_logo">
+                    <h1 class="titulo_header">VitalView</h1>
+                </section>
+
+                <section class="secao_logo" id="escolher-servidor">
+                    <select class="periodo_select" name="periodo" id="periodo_select">
+                        <option value="1">Escolher Servidor</option>
+                        <option value="2">Servidor 1</option>
+                        <option value="3">Servidor 2</option>
+                        <option value="4">Servidor 3</option>
+                        <option value="5">Servidor 4</option>
+                        <option value="6">Servidor 5</option>
+                    </select>
+                </section>
+
+                <section class="secao_logo">
+                    <select class="periodo_select" name="periodo" id="periodo_select">
+                        <option value="1">Escolher período</option>
+                        <option value="2">Agora</option>
+                        <option value="3">Última hora</option>
+                        <option value="4">Durante hoje</option>
+                        <option value="5">Nesta semana</option>
+                    </select>
                 </section>
             </section>
-            <section class="sessao-lateral-direita">
-                <section class="sessao-lateral-direita-itens">
-                    <section class="velocimetro card">
-                        <canvas id="velocimetroram2" style="width: 100%; height: 100%; border-radius: 10px;"></canvas>
+
+            <section class="container-de-sessoes">
+                <section class="sessao-lateral-esquerda">
+                    <section id="nome-servidor">
+                        <h1 id="hostName">PACS-01</h1><span class="status ativo">Ativo</span>
                     </section>
-                    <section class="velocimetro card">
-                        <canvas id="velocimetroram" style="width: 100%; height: 100%; border-radius: 10px;"></canvas>
+                    <section class="sessao-lateral-esquerda-itens" id="informações-servidor">
+
+                        <div class="card" id="card_processos">
+                            <table class="process-table processes" id="conteudo-servidores">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Hostname:</strong></td>
+                                        <td id="hostName2">PACS-01</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Endereço IP:</strong></td>
+                                        <td id="ip">192.168.1.10</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Localização:</strong></td>
+                                        <td id="localizacao">Radiologia Central</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Qtd. RAM:</strong></td>
+                                        <td id="ramTotal">128 GB</td>
+                                    </tr>
+                                    <td><strong>Qtd. Disco:</strong></td>
+                                    <td id="discoTotal">5 TB</td>
+                                </tbody>
+                            </table>
+                        </div>
                     </section>
-                    <section class="velocimetro card" id="uptime">
-                        <div class="uptime">
-                            <h3>Uptime do Sistema</h3>
-                            <div class="uptime-display">
-                                <span id="uptime">09:03:21</span>
-                                <span class="arrow-up">&#9650;</span>
-                            </div>
-                            <p class="legenda">Tempo em Horas</p>
+                    <section class="sessao-lateral-esquerda-itens" id="lista-processos">
+                        <h3>Lista de Processos</h3>
+                        <div class="card scroll" id="card_processos">
+                            <table class="process-table processes">
+                                <thead>
+                                    <tr>
+                                        <th>Processo</th>
+                                        <th>Uso (CPU)</th>
+                                        <th>Uso (RAM)</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>dcm4chee</td>
+                                        <td>32%</td>
+                                        <td>26%</td>
+                                        <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Python</td>
+                                        <td>12%</td>
+                                        <td>34%</td>
+                                        <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>systemmd</td>
+                                        <td>45%</td>
+                                        <td>67%</td>
+                                        <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>FileSystem</td>
+                                        <td>22%</td>
+                                        <td>10%</td>
+                                        <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>StoreSCP</td>
+                                        <td>14%</td>
+                                        <td>9%</td>
+                                        <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Storescu</td>
+                                        <td>32%</td>
+                                        <td>26%</td>
+                                        <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>image Indexer</td>
+                                        <td>12%</td>
+                                        <td>34%</td>
+                                        <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>dicom-q/r</td>
+                                        <td>45%</td>
+                                        <td>67%</td>
+                                        <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>image Converter</td>
+                                        <td>22%</td>
+                                        <td>10%</td>
+                                        <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>kswapd</td>
+                                        <td>14%</td>
+                                        <td>9%</td>
+                                        <td><span class="status ativo" id="ativo-processo">Ativo</span></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
                         </div>
                     </section>
                 </section>
-                <section class="sessao-lateral-direita-itens" id="id_sessao_direita_2">
-                    <section class="row" id="grafico_disco">
-                        <canvas class="card card_grafico_disco" id="graficoPizza"
-                            style="width: 100%; height: 100%; padding-bottom: 10px; padding-right: 10px;"></canvas>
-                    </section>
-                    <section id="projecao">
-                        <div class="projecao">
-                            <div class="card-header">
-                                <span>Projeção de Sobrecarga do disco</span>
-                                <span>Uso</span>
-                                <span>Projeção</span>
-                            </div>
-                            <div class="card-body">
-                                <div class="progress-container">
-                                    <span class="label">PACS-01</span>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill"></div>
-                                    </div>
+                <section class="sessao-lateral-direita">
+                    <section class="sessao-lateral-direita-itens">
+                        <section class="velocimetro card">
+                            <canvas id="velocimetroram2"
+                                style="width: 100%; height: 100%; border-radius: 10px;"></canvas>
+                        </section>
+                        <section class="velocimetro card">
+                            <canvas id="velocimetroram"
+                                style="width: 100%; height: 100%; border-radius: 10px;"></canvas>
+                        </section>
+                        <section class="velocimetro card" id="uptime">
+                            <div class="uptime">
+                                <h3>Uptime do Sistema</h3>
+                                <div class="uptime-display">
+                                    <span id="uptime">09:03:21</span>
+                                    <span class="arrow-up">&#9650;</span>
                                 </div>
-                                <span class="uso">28.6%</span>
-                                <span class="data">22/04/2026</span>
+                                <p class="legenda">Tempo em Horas</p>
                             </div>
+                        </section>
+                    </section>
+                    <section class="sessao-lateral-direita-itens" id="id_sessao_direita_2">
+                        <section class="row" id="grafico_disco">
+                            <canvas class="card card_grafico_disco" id="graficoPizza"
+                                style="width: 100%; height: 100%; padding-bottom: 10px; padding-right: 10px;"></canvas>
+                        </section>
+                        <section id="projecao">
+                            <div class="projecao">
+                                <div class="card-header">
+                                    <span>Projeção de Sobrecarga do disco</span>
+                                    <span>Uso</span>
+                                    <span>Projeção</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="progress-container">
+                                        <span class="label">PACS-01</span>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill"></div>
+                                        </div>
+                                    </div>
+                                    <span class="uso">28.6%</span>
+                                    <span class="data">22/04/2026</span>
+                                </div>
+                            </div>
+                        </section>
+                    </section>
+                    <section class="sessao-lateral-direita-itens">
+                        <div class="card" id="qtd-alertas">
+                            <h2>Total de Alertas</h2>
+                            <h1>12</h1>
+                        </div>
+                        <div class="card uptime">
+                            <canvas id="graficoLinha"
+                                style="width: 100%; height: 100%; background-color: white; border-radius: 10px;"></canvas>
                         </div>
                     </section>
                 </section>
-                <section class="sessao-lateral-direita-itens">
-                    <div class="card" id="qtd-alertas">
-                        <h2>Total de Alertas</h2>
-                        <h1>12</h1>
-                    </div>
-                    <div class="card uptime">
-                        <canvas id="graficoLinha"
-                            style="width: 100%; height: 100%; background-color: white; border-radius: 10px;"></canvas>
-                    </div>
-                </section>
             </section>
         </section>
-    </section>
-    <script src="js/dashboard.js"></script>
+    </div>
 
     <script src="js/permissoes.js"></script>
-
-    <script>
-        protegerPagina(['Técnico', 'Administrador']);
-        aplicarCargoNaUI();
-
-
-        idServidor = 1
-        key = "saida.json"
-
-        document.addEventListener("DOMContentLoaded", () => {git
-            fetch(`/suporteMicroRoutes/buscar-dados-banco/${idServidor}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                }
-            })
-                .then(response => {
-                    if (response.ok) {
-                        response.json().then(resposta => {
-                            console.log("Dado recebido: ", resposta);
-                            let ip = resposta[0].ip;
-                            let hostname = resposta[0].hostname;
-                            let localizacao = resposta[0].localizacao;
-                            document.getElementById("ip").innerHTML = ip;
-                            document.getElementById("hostName").innerHTML = hostname;
-                            document.getElementById("hostName2").innerHTML = hostname;
-                            document.getElementById("localizacao").innerHTML = localizacao;
-                        })
-                    }
-                })
-                .catch((erro) => {
-                    console.error("Erro na requisição: ", erro);
-                    alert("Erro na conexão com o servidor.");
-                });
-
-
-            fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                }
-            })
-                .then(response => {
-                    if (response.ok) {
-                        response.json().then(resposta => {
-                            console.log("Dado recebido: ", resposta);
-                        })
-                    }
-                })
-                .catch((erro) => {
-                    console.error("Erro na requisição: ", erro);
-                    alert("Erro na conexão com o servidor.");
-                });
-        });
-
-
-
-
-
-
-
-
-
-        // -------------------------------------------------------------------------------------------------------
-
-
-        const velocimetroram = document.getElementById('velocimetroram').getContext('2d');
-
-        // Valor atual (0 a 100)
-        const valor = 65;
-
-        new Chart(velocimetroram, {
-            type: 'doughnut',
-            data: {
-                labels: ['Velocidade', 'Restante'],
-                datasets: [{
-                    data: [valor, 100 - valor],
-                    backgroundColor: ['#32b9cd', '#e0e0e0'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                rotation: -90,       // Início do semicírculo
-                circumference: 180,  // Metade do círculo
-                cutout: '65%',       // "Espessura" do velocímetro
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: 'Utilização de RAM',
-                        font: {
-                            size: 18,
-                            weight: 'bold'
-                        },
-                        color: 'black'
-                    },
-                    tooltip: { enabled: false }
-                },
-            },
-            plugins: [{
-                // Adiciona o texto central
-                id: 'textoCentral',
-                afterDraw(chart) {
-                    const { ctx, chartArea: { width, height } } = chart;
-                    ctx.save();
-                    ctx.font = 'bold 28px Barlow';
-                    ctx.fillStyle = '#000';
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.fillText(valor + '%', width / 2, height / 0.9);
-                }
-            }]
-        });
-        const velocimetroram2 = document.getElementById('velocimetroram2').getContext('2d');
-
-        // Valor atual (0 a 100)
-        const valor2 = 58;
-
-        new Chart(velocimetroram2, {
-            type: 'doughnut',
-            data: {
-                labels: ['Velocidade', 'Restante'],
-                datasets: [{
-                    data: [valor2, 100 - valor2],
-                    backgroundColor: ['#32b9cd', '#e0e0e0'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                rotation: -90,       // Início do semicírculo
-                circumference: 180,  // Metade do círculo
-                cutout: '65%',       // "Espessura" do velocímetro
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: 'Utilização de CPU',
-                        font: {
-                            size: 18,
-                            weight: 'bold',
-                        },
-                        color: 'black',
-                    },
-                    tooltip: { enabled: false }
-                },
-            },
-            plugins: [{
-                // Adiciona o texto central
-                id: 'textoCentral',
-                afterDraw(chart) {
-                    const { ctx, chartArea: { width, height } } = chart;
-                    ctx.save();
-                    ctx.font = 'bold 28px "Barlow"';
-                    ctx.fillStyle = '#000';
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.fillText(valor2 + '%', width / 2, height / 0.9);
-                }
-            }]
-        });
-
-        const ctx = document.getElementById('graficoPizza').getContext('2d');
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Livre 1.5T', 'Usado 3.5T'],
-                datasets: [{
-                    data: [30, 70],
-                    backgroundColor: ['#6ce5e8', '#2d8bba'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: false,
-                plugins: {
-                    legend: {
-                        position: 'right'
-                    },
-                    title: {
-                        display: true,
-                        text: 'Utilização de Disco',
-                        font: {
-                            size: 17,
-                            weight: 'bold',
-                        },
-                        color: 'black'
-
-                    }
-                }
-            }
-        });
-
-
-        const ctx3 = document.getElementById('graficoLinha').getContext('2d');
-
-        new Chart(ctx3, {
-            type: 'line',
-            data: {
-                labels: ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'],
-                datasets: [
-                    {
-                        label: 'CPU',
-                        data: [30, 19, 8, 15, 22, 17, 25],
-                        borderColor: '#45d4dc',
-                        backgroundColor: 'rgba(69, 212, 220, 0.2)',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.3,
-                        pointRadius: 5,
-                        pointBackgroundColor: '#45d4dc'
-                    },
-                    {
-                        label: 'RAM',
-                        data: [20, 14, 12, 18, 20, 15, 23],
-                        borderColor: '#1f7f8d',
-                        backgroundColor: 'rgba(31, 127, 141, 0.2)',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.3,
-                        pointRadius: 5,
-                        pointBackgroundColor: '#1f7f8d'
-                    },
-                    {
-                        label: 'DISCO',
-                        data: [8, 12, 15, 10, 18, 22, 19],
-                        borderColor: '#0d3e47',
-                        backgroundColor: 'rgba(13, 62, 71, 0.2)',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.3,
-                        pointRadius: 5,
-                        pointBackgroundColor: '#0d3e47'
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Distribuição de alertas por componente',
-                        font: {
-                            size: 17,
-                            weight: 'bold',
-                        },
-                        color: 'black',
-                    },
-                    legend: {
-                        display: true,
-                        position: 'right' // exibe a legenda para diferenciar CPU, RAM e DISCO
-                    }
-                },
-                scales: {
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Nº Alertas',
-                            color: 'black',
-                            font: {
-                                size: 14,
-                                weight: 'bold',
-                            },
-                        },
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-
-    </script>
+    <script src="js/backendSuporteMicro.js"></script>
 
 </body>

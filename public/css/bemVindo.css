@@ -198,7 +198,8 @@ header {
 }
 
 .menu .check_hamburguer {
-  position: absolute;
+  position: fixed;
+  margin-left: 10px;
   width: 45px;
   height: 100vh;
   opacity: 0;
@@ -304,7 +305,7 @@ header {
 }
 
 .icones_baixo {
-  margin-top: 150px;
+  margin-top: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
