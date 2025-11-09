@@ -441,7 +441,7 @@
                 cargo = registro.cargo;
                 let dataCriacao = new Date(registro.data_criacao);
                 let dataFormatada = dataCriacao.toLocaleDateString("pt-BR", {
-                    timeZone: "UTC"
+                    timeZone: "America/Sao_Paulo"
                 });
                 servidoresCriados = registro.servidores_criados;
 
@@ -506,8 +506,8 @@
                 cargo = registro.cargo;
                 componente = registro.componente;
                 let dataHoraCorrecao = new Date(registro.data_hora_correcao);
-                let dataFormatada = dataHoraCorrecao.toLocaleDateString("pt-BR", {
-                    timeZone: "UTC"
+                let dataFormatada = dataHoraCorrecao.toLocaleString("pt-BR", {
+                    timeZone: "America/Sao_Paulo"
                 });
 
                 let linha = `
@@ -520,7 +520,6 @@
                     <td>${dataFormatada}</td>
                 </tr>
                 `
-
                 tbodyUsuarios.innerHTML += linha;
             }
         }

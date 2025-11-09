@@ -19,11 +19,11 @@ function autenticar(email, senha) {
     return database.executar(instrucaoSql);
 }
 
-async function cadastrar(nome, cpf, telefone, email, senha, fkCargo, fkHospital) {
+async function cadastrar(nome, cpf, telefone, email, senha, data_criacao, fkCargo, fkHospital) {
 
     var sqlCadastro = `
-        insert into usuario (nome, cpf, telefone, email, senha, fkcargo, fkHospital)
-        values ('${nome}', '${cpf}', '${telefone}', '${email}', '${senha}', '${fkCargo}', '${fkHospital}');
+        insert into usuario (nome, cpf, telefone, email, senha, data_criacao, fkcargo, fkHospital)
+        values ('${nome}', '${cpf}', '${telefone}', '${email}', '${senha}', '${data_criacao}', '${fkCargo}', '${fkHospital}');
     `;
     console.log("Executando a instrução SQL: \n" + sqlCadastro);
     return database.executar(sqlCadastro);

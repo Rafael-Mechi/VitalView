@@ -207,9 +207,10 @@
       const email = email_input.value.trim();
       const senha = senha_input.value;
       const confirmacaoSenha = confirmacao_senha_input.value;
+      const agora = new Date();
+      const dataCriacao = agora.toISOString().split("T")[0];
+      
       const fkCargo = cargo_input.value;
-
-
       const fkHospital = sessionStorage.FK_HOSPITAL;
 
       if (!fkHospital) {
@@ -243,6 +244,7 @@
         telefone: telefone,
         email: email,
         senha: senha,
+        data_criacao: dataCriacao,
         fkCargo: Number(fkCargo),
         fkHospital: Number(fkHospital)
       };

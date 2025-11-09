@@ -43,7 +43,7 @@ function cadastrar(req, res) {
     
     console.log("Dados recebidos no cadastro:", req.body);
 
-    const { nome, cpf, telefone, email, senha, fkCargo, fkHospital } = req.body;
+    const { nome, cpf, telefone, email, senha, data_criacao, fkCargo, fkHospital } = req.body;
     if (!nome || !email || !senha || !fkCargo || !cpf || !telefone || !fkHospital) {
         return res.status(400).send("Dados incompletos!");
     }
@@ -64,7 +64,7 @@ function cadastrar(req, res) {
         res.status(400).send("Seu hospital está undefined!");
     }else {
 
-        usuarioModel.cadastrar(nome, cpf, telefone, email, senha, fkCargo, fkHospital)
+        usuarioModel.cadastrar(nome, cpf, telefone, email, senha, data_criacao, fkCargo, fkHospital)
             .then(
                 function (resultado) {
                     res.json(resultado);
