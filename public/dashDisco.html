@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="css/dashDisco.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <script src="js/sessao.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -154,50 +155,40 @@
           <div class="centralizador">
             <div class="UD_texto_esquerda">
               <div class="p_esquerda">Uso de Disco</div>
-              <div class="numero_uso_disco"><h1>94.4%</h1></div>
+              <div class="numero_uso_disco"><h1 style="color: red;">94.4%</h1></div>
               <div class="p_esquerda">210.5 GB usados de 500 GB</div>
             </div>
             <div class="UD_texto_direita">
-              <p>+0.4%</p>
+              <p style="color: red;">▲ +0.4%</p>
             </div>
-            <canvas id="graficoUsoDeDisco"></canvas>
           </div>
+          <canvas id="graficoUsoDeDisco"></canvas>
         </div>
 
         <div class="div_taxa">
           <div class="centralizador">
-            <div class="centralizador_superior">
-              <div>Latência Média (IO)</div>
-              <div class="variacao negativa">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="red" viewBox="0 0 24 24">
-                  <path d="M12 20l-6-6h4V4h4v10h4z" />
-                </svg>
-                -2 ms
-              </div>
+            <div class="UD_texto_esquerda">
+              <div class="p_esquerda">Taxa de Transferência</div>
+              <div class="numero_uso_disco"><h1>107.1 MB/s</h1></div>
+              <div class="p_esquerda">Leitura / Gravação</div>
             </div>
-            <div class="numero_taxa">16 ms</div>
-            <div class="div_grafico_taxa">////// \\\\\ /////</div>
+            <div class="UD_texto_direita">
+              <p style="color: red;">▼ -0.7 MB/s</p>
+            </div>
           </div>
+          <canvas id="graficoTaxaTransferencia"></canvas>
         </div>
 
         <div class="div_taxa">
           <div class="centralizador">
-            <div class="centralizador_superior">
-              <div>Tempo de Atividade (IO Busy)</div>
-              <div class="variacao negativa">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="red" viewBox="0 0 24 24">
-                  <path d="M12 20l-6-6h4V4h4v10h4z" />
-                </svg>
-                -1%
-              </div>
-            </div>
-            <div class="numero_taxa">35%</div>
-            <div class="div_grafico_taxa">////// \\\\\ /////</div>
+            
           </div>
         </div>
-      </div>
+
+
     </section>
   </section>
+
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -262,7 +253,7 @@ new Chart(ctx1, {
     datasets: [{
       label: 'Usado',
       data: [94.4],
-      backgroundColor: '#6a1b9a',
+      backgroundColor: '#008c99',
       borderRadius: 10,
       barThickness: 20
     }]
@@ -292,6 +283,56 @@ new Chart(ctx1, {
   }
 });
 
+//GRAFICO TAXA DE TRANSFERENCIA LEITURA E ESCRITA:
+const ctx2 = document.getElementById('graficoTaxaTransferencia').getContext('2d');
+
+  // Mock inicial de dados
+  const dadosMock2 = Array.from({ length: 30 }, () => Math.random() * 100);
+
+  const graficoTaxa = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+      labels: dadosMock2.map((_, i) => i + 1),
+      datasets: [{
+        label: 'Taxa',
+        data: dadosMock2,
+        backgroundColor: '#008c99',
+        borderRadius: 4,
+        borderSkipped: false,
+        barThickness: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          display: false
+        },
+        y: {
+          display: false,
+          min: 0,
+          max: 100
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false }
+      },
+      animation: {
+        duration: 500
+      }
+    }
+  });
+
+  // Simula atualização (mock)
+  setInterval(() => {
+    graficoTaxa.data.datasets[0].data.shift();
+    graficoTaxa.data.datasets[0].data.push(Math.random() * 100);
+    graficoTaxa.update();
+  }, 1000);
+
 </script>
 
 </html>
+
