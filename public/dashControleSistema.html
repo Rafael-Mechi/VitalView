@@ -396,7 +396,7 @@
 
         function buscarUsuariosSistema() {
             let filtroEscolhido = filtro.value;
-            
+
             fetch(`/controle-usuarios/buscar-usuarios-do-sistema/${idHospitalVar}?filtro=${filtroEscolhido}`, {
                 method: "GET",
                 headers: {
@@ -602,6 +602,10 @@
                             },
                             grid: {
                                 color: 'rgba(0,0,0,0.1)'
+                            },
+                            ticks: {
+                                stepSize: 1,
+                                precision: 0
                             }
                         },
                         x: {
@@ -612,7 +616,7 @@
                             },
                             grid: {
                                 display: false
-                            }
+                            },
                         }
                     }
                 }
