@@ -99,37 +99,90 @@
             <section class="secao_logo">
                 <h1 class="titulo_header" style="margin-left: 10px;">VitalView</h1>
             </section>
+
+            <section class="secao_logo" id="escolher-servidor">
+                <select class="periodo_select" name="periodo" id="periodo_select">
+                    <option value="1">Escolher Servidor</option>
+                    <option value="2">Servidor 1</option>
+                    <option value="3">Servidor 2</option>
+                    <option value="4">Servidor 3</option>
+                    <option value="5">Servidor 4</option>
+                    <option value="6">Servidor 5</option>
+                </select>
+            </section>
         </section>
 
         <main class="grid">
             <div class="parteCima">
 
                 <section class="card kpi pacotes">
-                    <h3>Perda de Pacotes</h3>
+                    <h3>Perda de Pacotes <button type="button" class="infoBtn"
+                            data-target="infoPerdaPacote">&#9432</button></h3>
                     <div class="caption">Percentual (%)</div>
                     <div class="kpi-number" id="loss-pct">--%</div>
                     <div class="badge" id="loss-status">--</div>
                 </section>
 
+                <div id="infoPerdaPacote" class="modal">
+                    <div class="modal-content">
+                        <h3>Perda de Pacotes</h3>
+                        <br>
+                        <p style="text-align: center; font-size: 20px;">
+                            Trás a porcentágem (%) de perda de pacotes durante o tráfego de rede:<br><br>
+                            &lt; 20%: <span style="color: #32b9cd;"><b>Normal</b></span><br>
+                            &gt; 30%: <span style="color: #f75454;"><b>Alerta</b></span>
+                        </p>
+                        <button type="button" class="closeBtn">Fechar</button>
+                    </div>
+                </div>
+
                 <section class="card kpi conexoes">
-                    <h3>Conexões</h3>
+                    <h3>Conexões <button type="button" class="infoBtn" data-target="infoConexao">&#9432</button></h3>
                     <div class="caption">Conexões ativas</div>
                     <div class="kpi-number" id="conexoes-ativas">39</div>
                     <div class="badge" id="conexoes-status">Normal</div>
                 </section>
 
+                <div id="infoConexao" class="modal">
+                    <div class="modal-content">
+                        <h3>Conexões Ativas</h3>
+                        <br>
+                        <p style="text-align: center; font-size: 20px;">
+                            Trás o número de conexões ativas na rede do servidor:<br><br>
+                            &lt; 50: <span style="color: #32b9cd;"><b>Normal</b></span><br>
+                            &gt; 60: <span style="color: #f75454;"><b>Alerta</b></span>
+                        </p>
+                        <button type="button" class="closeBtn">Fechar</button>
+                    </div>
+                </div>
+
                 <section class="card latencia">
-                    <h3>Latência</h3>
+                    <h3>Latência <button type="button" class="infoBtn" data-target="infoLat">&#9432</button></h3>
                     <div class="caption">Tempo de resposta (ms)</div>
                     <div class="kpi-number" id="latencia-atual">--</div>
                     <div class="badge" id="latencia-status">--</div>
                 </section>
 
+                <div id="infoLat" class="modal">
+                    <div class="modal-content">
+                        <h3>Latência</h3>
+                        <br>
+                        <p style="text-align: center; font-size: 20px;">
+                            Mostra qual é a latência em milissegundos (ms) ou seja o tempo que uma requisição leva para
+                            chegar no servidor:<br><br>
+                            &lt; 30ms: <span style="color: #32b9cd;"><b>Normal</b></span><br>
+                            &gt; 40ms: <span style="color: #f75454;"><b>Alerta</b></span>
+                        </p>
+                        <button type="button" class="closeBtn">Fechar</button>
+                    </div>
+                </div>
+
             </div>
 
             <div class="parteBaixo">
                 <section class="card trafego">
-                    <h3>Velocidade de Tráfego de Rede</h3>
+                    <h3>Velocidade de Tráfego de Rede <button type="button" class="infoBtn"
+                            data-target="infoVelocidade">&#9432</button></h3>
                     <div class="caption">(Megabits por segundo)</div>
 
                     <div class="row">
@@ -160,14 +213,43 @@
                     </div>
                 </section>
 
+                <div id="infoVelocidade" class="modal">
+                    <div class="modal-content">
+                        <h3>Velocidade de Tráfego de Rede</h3>
+                        <br>
+                        <p style="text-align: center; font-size: 20px;">
+                            Mostra e compara a velocidade de Download e Upload dos dados no servidor em Megabits po
+                            segundo (Mbps):<br><br>
+                            &lt; 70 Mbps: <span style="color: #32b9cd;"><b>Normal</b></span><br>
+                            &gt; 30 Mbps: <span style="color: #f75454;"><b>Alerta</b></span>
+                        </p>
+                        <button type="button" class="closeBtn">Fechar</button>
+                    </div>
+                </div>
+
                 <section class="card entrada">
-                    <h3>Pacotes Enviados e Recebidos</h3>
+                    <h3>Pacotes Enviados e Recebidos <button type="button" class="infoBtn"
+                            data-target="infoEnvRec">&#9432</button></h3>
                     <div class="caption">(Quantidade de pacotes IN/OUT)</div>
                     <div class="chart-box">
                         <canvas id="ioChart"></canvas>
                     </div>
                     <div class="badge">Normal</div>
                 </section>
+
+                <div id="infoEnvRec" class="modal">
+                    <div class="modal-content">
+                        <h3>Pacotes Enviados e Recebidos</h3>
+                        <br>
+                        <p style="text-align: center; font-size: 20px;">
+                            Trás a comparação entre quantidade de pacotes enviados e recebidos em um gráfico de linhas
+                            ao longo do dia:<br><br>
+                            &lt; 50%: <span style="color: #32b9cd;"><b>Normal</b></span><br>
+                            &gt; 60%: <span style="color: #f75454;"><b>Alerta</b></span>
+                        </p>
+                        <button type="button" class="closeBtn">Fechar</button>
+                    </div>
+                </div>
             </div>
         </main>
 
@@ -176,14 +258,43 @@
     <script src="js/permissoes.js"></script>
 
     <script>
+        // modais do Meki 💅🏻
+        let infoBtns = document.querySelectorAll('.infoBtn');
+        let modals = document.querySelectorAll('.modal');
+        let closeBtns = document.querySelectorAll('.closeBtn');
+
+        infoBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                let target = btn.dataset.target;
+                document.getElementById(target).style.display = 'flex';
+            });
+        });
+
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.closest('.modal').style.display = 'none';
+            });
+        });
+
+        modals.forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.style.display = 'none';
+            });
+        });
+
+        // my permissions bitch 💅🏻
+        if (typeof protegerPagina === 'function') protegerPagina(['Técnico', 'Administrador']);
+        if (typeof aplicarCargoNaUI === 'function') aplicarCargoNaUI();
+
+        // Utilitários dos gráficos
+        const teal = '#14b8a6';
+        const teal2 = '#0ea5e9';
 
         function setBadge(el, status, numberEl) {
-
             el.classList.remove('ok', 'alerta');
             if (status === 'Alerta') el.classList.add('alerta');
             if (status === 'Normal') el.classList.add('ok');
             el.textContent = status;
-
 
             if (numberEl) {
                 numberEl.classList.remove('ok', 'alerta');
@@ -192,22 +303,26 @@
             }
         }
 
-
-        if (typeof protegerPagina === 'function') {
-            protegerPagina(['Técnico', 'Administrador']);
-        }
-        if (typeof aplicarCargoNaUI === 'function') {
-            aplicarCargoNaUI();
+        function setBar(el, value, max) {
+            const pct = Math.max(0, Math.min(100, (value / max) * 100));
+            el.style.width = pct + '%';
+            el.setAttribute('aria-valuenow', value);
         }
 
-        const teal = '#14b8a6';
-        const teal2 = '#0ea5e9';
+        // Variação dos dados mocados
+        function jitter(base, maxStep, min = 0, max = Infinity) {
+            const v = base + (Math.random() * 2 - 1) * maxStep;
+            return Math.max(min, Math.min(max, v));
+        }
 
-        // estado mocado dos meus dados
+        // Dados pré mocados
+        const CAPACIDADE_BANDA = 300;
+        const MAX_PONTOS = 12;
+
         const METRICAS = {
-            pacotesPerdidos: 8,
-            conexoesAtivas: 39,
-            banda: { capacidade: 300, usada: 78 },
+            pacotesPerdidos: 1,
+            conexoesAtivas: 38,
+            banda: { capacidade: CAPACIDADE_BANDA, usadaDown: 85, usadaUp: 18 },
             ping: {
                 rttMsAtual: 23,
                 enviados: 10,
@@ -215,61 +330,37 @@
             }
         };
 
-        // KPI: Latência 
+        // Elementos 
         const latNow = document.getElementById('latencia-atual');
         const latBadge = document.getElementById('latencia-status');
-        if (latNow && latBadge) {
-            latNow.textContent = METRICAS.ping.rttMsAtual + ' ms';
-            if (METRICAS.ping.rttMsAtual <= 80) setBadge(latBadge, 'Normal', latNow);
-            else setBadge(latBadge, 'Alerta', latNow);
-        }
 
-        // KPI: Perda de Pacotes (%)
         const lossPctEl = document.getElementById('loss-pct');
         const lossBadge = document.getElementById('loss-status');
-        if (lossPctEl && lossBadge) {
-            const perdaPct = METRICAS.ping.enviados > 0
-                ? (METRICAS.ping.perdidos / METRICAS.ping.enviados) * 100
-                : 0;
-            lossPctEl.textContent = perdaPct.toFixed(1) + '%';
-            if (perdaPct < 5) setBadge(lossBadge, 'Normal', lossPctEl);
-            else setBadge(lossBadge, 'Alerta', lossPctEl);
-        }
 
-        // KPI: Conexões
         const conVal = document.getElementById('conexoes-ativas');
         const conBadge = document.getElementById('conexoes-status');
-        if (conVal && conBadge) {
-            conVal.textContent = METRICAS.conexoesAtivas;
-            const ok = METRICAS.conexoesAtivas >= 10 && METRICAS.conexoesAtivas <= 200;
-            setBadge(conBadge, ok ? 'Normal' : 'Alerta', conVal);
-        }
 
-        // Barras de download/upload 
-        function setBar(el, value, max) {
-            const pct = Math.max(0, Math.min(100, (value / max) * 100));
-            el.style.width = pct + '%';
-        }
         const barDown = document.getElementById('bar-down');
         const barUp = document.getElementById('bar-up');
-        if (barDown && barUp) {
-            setBar(barDown, 87, 100);
-            setBar(barUp, 18, 100);
-        }
-        const up = 18, down = 87;
-        const upBadge = document.getElementById('up-status');
+        const valDownEl = document.getElementById('val-down');
+        const valUpEl = document.getElementById('val-up');
         const downBadge = document.getElementById('down-status');
-        if (upBadge) { if (up > 80) { upBadge.classList.add('alerta'); upBadge.textContent = 'Alerta'; } }
-        if (downBadge) { if (down <= 50) { downBadge.textContent = 'Normal'; } }
+        const upBadge = document.getElementById('up-status');
 
-        // Linha IN/OUT 
+        // Gráfico entrada e saída
         const ioCanvas = document.getElementById('ioChart');
-        if (ioCanvas && window.Chart) {
-            const ioLabels = ['07:45', '10:50', '13:55', '18:00', '19:05'];
+        let ioChart = null;
+
+        function initChart() {
+            if (!ioCanvas || !window.Chart) return;
+
+            const agora = () => new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+            const ioLabels = Array.from({ length: 5 }, (_, i) => agora());
             const entrada = [40, 80, 10, 25, 40];
             const saida = [10, 30, 5, 12, 30];
 
-            new Chart(ioCanvas, {
+            ioChart = new Chart(ioCanvas, {
                 type: 'line',
                 data: {
                     labels: ioLabels,
@@ -285,7 +376,93 @@
                 }
             });
         }
+
+        function pushChartPoint(inVal, outVal) {
+            if (!ioChart) return;
+            const label = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+            ioChart.data.labels.push(label);
+            ioChart.data.datasets[0].data.push(inVal);
+            ioChart.data.datasets[1].data.push(outVal);
+
+            while (ioChart.data.labels.length > MAX_PONTOS) {
+                ioChart.data.labels.shift();
+                ioChart.data.datasets.forEach(d => d.data.shift());
+            }
+            ioChart.update();
+        }
+
+        // KPI: Conexões
+        function renderKPIs() {
+            // Latência
+            if (latNow && latBadge) {
+                latNow.textContent = Math.round(METRICAS.ping.rttMsAtual) + ' ms';
+                setBadge(latBadge, METRICAS.ping.rttMsAtual <= 80 ? 'Normal' : 'Alerta', latNow);
+            }
+
+            // Perda de Pacotes (%)
+            if (lossPctEl && lossBadge) {
+                const perdaPct = METRICAS.ping.enviados > 0
+                    ? (METRICAS.ping.perdidos / METRICAS.ping.enviados) * 100
+                    : 0;
+                lossPctEl.textContent = perdaPct.toFixed(1) + '%';
+                setBadge(lossBadge, perdaPct < 5 ? 'Normal' : 'Alerta', lossPctEl);
+            }
+
+            // Conexões
+            if (conVal && conBadge) {
+                conVal.textContent = Math.round(METRICAS.conexoesAtivas);
+                const ok = METRICAS.conexoesAtivas >= 10 && METRICAS.conexoesAtivas <= 200;
+                setBadge(conBadge, ok ? 'Normal' : 'Alerta', conVal);
+            }
+
+            // Barras Download/Upload
+            if (barDown && barUp && valDownEl && valUpEl && downBadge && upBadge) {
+                const down = Math.round(METRICAS.banda.usadaDown);
+                const up = Math.round(METRICAS.banda.usadaUp);
+
+                setBar(barDown, down, 100);
+                setBar(barUp, up, 100);
+
+                valDownEl.textContent = down;
+                valUpEl.textContent = up;
+
+                setBadge(downBadge, down >= 70 ? 'Normal' : 'Alerta');
+                setBadge(upBadge, up >= 30 ? 'Normal' : 'Alerta');
+            }
+        }
+
+        // SIMULAÇÃO DE DADOS
+        function tickMock() {
+            // Latência varia suavemente entre 15 e 120 ms
+            METRICAS.ping.rttMsAtual = jitter(METRICAS.ping.rttMsAtual, 6, 15, 120);
+
+            // Pacotes enviados/perdidos
+            METRICAS.ping.enviados = Math.max(1, Math.round(jitter(METRICAS.ping.enviados, 2, 5, 30)));
+            METRICAS.ping.perdidos = Math.round(Math.max(0, Math.min(METRICAS.ping.enviados, jitter(METRICAS.ping.perdidos, 1, 0, 5))));
+
+            // Conexões ativas
+            METRICAS.conexoesAtivas = Math.round(jitter(METRICAS.conexoesAtivas, 5, 12, 220));
+
+            // Consumo de banda simulado (Mbps)
+            METRICAS.banda.usadaDown = jitter(METRICAS.banda.usadaDown, 10, 10, 100);
+            METRICAS.banda.usadaUp = jitter(METRICAS.banda.usadaUp, 5, 2, 100);
+
+            // Gráfico IN/OUT
+            const inPkts = Math.round(jitter(70, 25, 5, 140));
+            const outPkts = Math.round(jitter(40, 20, 3, 100));
+            pushChartPoint(inPkts, outPkts);
+
+            renderKPIs();
+        }
+
+        initChart();
+        renderKPIs();
+        const TIMER_MS = 2000; // 2s
+        const timerId = setInterval(tickMock, TIMER_MS);
+
     </script>
+
 </body>
 
 </html>
