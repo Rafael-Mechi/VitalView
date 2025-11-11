@@ -91,13 +91,13 @@ function atualizarTabela(servidores) {
             <td>${servidor.tempoAlerta}</td>
             <td>
                 <div class="btn-grupo">
-                    <button class="btn-server" onclick="irParaMicro('${servidor.id}')">
+                    <button class="btn-server" onclick="irParaMicro('${servidor.id}','${servidor.nome}','${sessionStorage.FK_HOSPITAL}')">
                         <img src="assets/dashboard-icons/servidorIcon.jpg" style="width: 20px;" alt="Servidor">
                     </button>
-                    <button class="btn-disk" onclick="irParaDisco('${servidor.id}')">
+                    <button class="btn-disk" onclick="irParaDisco('${servidor.id}','${servidor.nome}','${sessionStorage.FK_HOSPITAL}')">
                         <img src="assets/dashboard-icons/disco.jpg" style="width: 20px;" alt="Disco">
                     </button>
-                    <button class="btn-network">
+                    <button class="btn-network" onclick="irParaRede('${servidor.id}','${servidor.nome}','${sessionStorage.FK_HOSPITAL}')">
                         <img src="assets/dashboard-icons/redeIcon.jpg" style="width: 20px;" alt="Rede">
                     </button>
                 </div>
@@ -120,16 +120,16 @@ function atualizarTabela(servidores) {
 }
 
 // Funções para redirecionamento das dash
-function irParaMicro(servidorId) {
-    window.location.href = `dashboardSuporteMicro.html?id=${servidorId}`;
+function irParaMicro(servidorId, nomeServidor, idHospital) {
+    window.location.href = `dashboardSuporteMicro.html?idServidor=${servidorId}&hostname=${nomeServidor}&idhospital=${idHospital}`;
 }
 
-function irParaDisco(servidorId) {
-    window.location.href = `dashDisco.html?id=${servidorId}`;
+function irParaDisco(servidorId,nomeServidor, idHospital) {
+    window.location.href = `dashDisco.html?idServidor=${servidorId}&hostname=${nomeServidor}&idhospital=${idHospital}`;
 }
 
-function irParaRede(servidorId) {
-    window.location.href = `dashRede.html?id=${servidorId}`
+function irParaRede(servidorId, nomeServidor, idHospital) {
+    window.location.href = `dashRede.html?idServidor=${servidorId}&hostname=${nomeServidor}&idhospital=${idHospital}`
 }
 
 

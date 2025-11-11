@@ -1,16 +1,23 @@
+const params = new URLSearchParams(window.location.search);
+protegerPagina(['Técnico', 'Administrador']);
+aplicarCargoNaUI();
+
 let ip
 let hostname
 let ramTotal
 let discoTotal
 let localizacao
 let dadosRecebidos
+let chartCPU = null;
 
+const id = params.get("idServidor");
+const nomeServidor = params.get("hostname");
+const nomeHospital = sessionStorage.NOME_HOSPITAL
 
-protegerPagina(['Técnico', 'Administrador']);
-aplicarCargoNaUI();
+const idServidor = id;
+const key = `${id}_${nomeServidor}_${nomeHospital}.json`;
 
-const idServidor = 1;
-const key = "saida.json";
+console.log(key)
 
 lottie.loadAnimation({
     container: document.getElementById('loading'),
@@ -18,7 +25,7 @@ lottie.loadAnimation({
     loop: true,
     autoplay: true,
     path: './assets/loading/loading.json'
-  });
+});
 
 document.addEventListener("DOMContentLoaded", async () => {
     // Mostra o loading
@@ -50,10 +57,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             dadosRecebidos = dadosBucket;
             discoTotal = bytesParaGB(dadosRecebidos[0]["Disco total (bytes)"]);
             ramTotal = bytesParaGB(dadosRecebidos[0]["RAM total (bytes)"]);
+            discoUsado = bytesParaGB(dadosRecebidos[0]["Disco usado (bytes)"])
+            discoLivre = bytesParaGB(dadosRecebidos[0]["Disco livre (bytes)"])
         }
 
         //Exibe tudo
-        plotarDados();
+        plotarDados(dadosBucket);
 
     } catch (erro) {
         console.error("Erro na requisição:", erro);
@@ -61,8 +70,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-function plotarDados() {
+function plotarDados(dadosBucket) {
     detalhesServidor();
+    utilizaçãoDeDisco();
+    utilizacaoCPU(dadosBucket);
+    utilizacaoDeRam(dadosBucket);
 
     // Esconde o loading e mostra o conteúdo
     document.getElementById("loading").style.display = "none";
@@ -82,139 +94,189 @@ function bytesParaGB(bytes) {
     return (bytes / (1024 ** 3)).toFixed(0);
 }
 
+function totalAlertas() {
 
+
+}
+
+function utilizacaoCPU(dadosBucket) {
+    let i = 0;
+
+    const velocimetroram2 = document.getElementById('velocimetroram2').getContext('2d');
+
+    usoCPU = dadosBucket[0]["Uso de CPU"]
+
+    chartCPU = new Chart(velocimetroram2, {
+        type: 'doughnut',
+        data: {
+            labels: ['Velocidade', 'Restante'],
+            datasets: [{
+                data: [usoCPU, 100 - usoCPU],
+                backgroundColor: ['#32b9cd', '#e0e0e0'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            rotation: -90,       // Início do semicírculo
+            circumference: 180,  // Metade do círculo
+            cutout: '65%',       // "Espessura" do velocímetro
+            plugins: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: 'Utilização de CPU',
+                    font: {
+                        size: 18,
+                        weight: 'bold',
+                    },
+                    color: 'black',
+                },
+                tooltip: { enabled: false }
+            },
+        },
+        plugins: [{
+            // Adiciona o texto central
+            id: 'textoCentral',
+            afterDraw(chart) {
+                const { ctx, chartArea: { width, height } } = chart;
+                ctx.save();
+                ctx.font = 'bold 28px "Barlow"';
+                ctx.fillStyle = '#000';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(usoCPU + '%', width / 2, height / 0.9);
+            }
+        }]
+    });
+
+
+    const interval = setInterval(() => {
+        if (i >= dadosBucket.length) {
+            clearInterval(interval); // para o setInterval quando terminar
+            return;
+        }
+
+        usoCPU = dadosBucket[i]["Uso de CPU"]
+        console.log(usoCPU)
+
+        chartCPU.data.datasets[0].data = [usoCPU, 100 - usoCPU];
+        chartCPU.update();
+
+        i++;
+    }, 2500); // executa a cada 2.5s
+
+}
+
+function utilizacaoDeRam(dadosBucket) {
+    let i = 0;
+
+    const velocimetroram = document.getElementById('velocimetroram').getContext('2d');
+
+    usoRAM = dadosBucket[0]["Uso de RAM"]
+
+    chartRAM = new Chart(velocimetroram, {
+        type: 'doughnut',
+        data: {
+            labels: ['Velocidade', 'Restante'],
+            datasets: [{
+                data: [usoRAM, 100 - usoRAM],
+                backgroundColor: ['#32b9cd', '#e0e0e0'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            rotation: -90,       // Início do semicírculo
+            circumference: 180,  // Metade do círculo
+            cutout: '65%',       // "Espessura" do velocímetro
+            plugins: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: 'Utilização de RAM',
+                    font: {
+                        size: 18,
+                        weight: 'bold'
+                    },
+                    color: 'black'
+                },
+                tooltip: { enabled: false }
+            },
+        },
+        plugins: [{
+            // Adiciona o texto central
+            id: 'textoCentral',
+            afterDraw(chart) {
+                const { ctx, chartArea: { width, height } } = chart;
+                ctx.save();
+                ctx.font = 'bold 28px Barlow';
+                ctx.fillStyle = '#000';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(usoRAM + '%', width / 2, height / 0.9);
+            }
+        }]
+    });
+
+    const interval = setInterval(() => {
+        if (i >= dadosBucket.length) {
+            clearInterval(interval); // para o setInterval quando terminar
+            return;
+        }
+
+        usoRAM = dadosBucket[i]["Uso de RAM"]
+        console.log(usoRAM)
+
+        chartRAM.data.datasets[0].data = [usoRAM, 100 - usoRAM];
+        chartRAM.update();
+
+        i++;
+    }, 2500); // executa a cada 2.5s
+
+}
+
+
+function utilizaçãoDeDisco() {
+
+    porcentagemDiscoUsado = Math.round((discoUsado / discoTotal) * 100)
+
+    const ctx = document.getElementById('graficoPizza').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: [`Livre ${discoTotal - discoUsado} GB`, `Usado ${discoUsado}GB`],
+            datasets: [{
+                data: [100 - porcentagemDiscoUsado, porcentagemDiscoUsado],
+                backgroundColor: ['#6ce5e8', '#2d8bba'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: false,
+            plugins: {
+                legend: {
+                    position: 'right'
+                },
+                title: {
+                    display: true,
+                    text: 'Utilização de Disco',
+                    font: {
+                        size: 17,
+                        weight: 'bold',
+                    },
+                    color: 'black'
+
+                }
+            }
+        }
+    });
+}
 
 
 // -------------------------------------------------------------------------------------------------------
 
 
-const velocimetroram = document.getElementById('velocimetroram').getContext('2d');
-
-// Valor atual (0 a 100)
-const valor = 65;
-
-new Chart(velocimetroram, {
-    type: 'doughnut',
-    data: {
-        labels: ['Velocidade', 'Restante'],
-        datasets: [{
-            data: [valor, 100 - valor],
-            backgroundColor: ['#32b9cd', '#e0e0e0'],
-            borderWidth: 0
-        }]
-    },
-    options: {
-        responsive: true,
-        rotation: -90,       // Início do semicírculo
-        circumference: 180,  // Metade do círculo
-        cutout: '65%',       // "Espessura" do velocímetro
-        plugins: {
-            legend: { display: false },
-            title: {
-                display: true,
-                text: 'Utilização de RAM',
-                font: {
-                    size: 18,
-                    weight: 'bold'
-                },
-                color: 'black'
-            },
-            tooltip: { enabled: false }
-        },
-    },
-    plugins: [{
-        // Adiciona o texto central
-        id: 'textoCentral',
-        afterDraw(chart) {
-            const { ctx, chartArea: { width, height } } = chart;
-            ctx.save();
-            ctx.font = 'bold 28px Barlow';
-            ctx.fillStyle = '#000';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(valor + '%', width / 2, height / 0.9);
-        }
-    }]
-});
-const velocimetroram2 = document.getElementById('velocimetroram2').getContext('2d');
-
-// Valor atual (0 a 100)
-const valor2 = 58;
-
-new Chart(velocimetroram2, {
-    type: 'doughnut',
-    data: {
-        labels: ['Velocidade', 'Restante'],
-        datasets: [{
-            data: [valor2, 100 - valor2],
-            backgroundColor: ['#32b9cd', '#e0e0e0'],
-            borderWidth: 0
-        }]
-    },
-    options: {
-        responsive: true,
-        rotation: -90,       // Início do semicírculo
-        circumference: 180,  // Metade do círculo
-        cutout: '65%',       // "Espessura" do velocímetro
-        plugins: {
-            legend: { display: false },
-            title: {
-                display: true,
-                text: 'Utilização de CPU',
-                font: {
-                    size: 18,
-                    weight: 'bold',
-                },
-                color: 'black',
-            },
-            tooltip: { enabled: false }
-        },
-    },
-    plugins: [{
-        // Adiciona o texto central
-        id: 'textoCentral',
-        afterDraw(chart) {
-            const { ctx, chartArea: { width, height } } = chart;
-            ctx.save();
-            ctx.font = 'bold 28px "Barlow"';
-            ctx.fillStyle = '#000';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(valor2 + '%', width / 2, height / 0.9);
-        }
-    }]
-});
-
-const ctx = document.getElementById('graficoPizza').getContext('2d');
-new Chart(ctx, {
-    type: 'pie',
-    data: {
-        labels: ['Livre 1.5T', 'Usado 3.5T'],
-        datasets: [{
-            data: [30, 70],
-            backgroundColor: ['#6ce5e8', '#2d8bba'],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: false,
-        plugins: {
-            legend: {
-                position: 'right'
-            },
-            title: {
-                display: true,
-                text: 'Utilização de Disco',
-                font: {
-                    size: 17,
-                    weight: 'bold',
-                },
-                color: 'black'
-
-            }
-        }
-    }
-});
 
 
 const ctx3 = document.getElementById('graficoLinha').getContext('2d');

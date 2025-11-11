@@ -10,11 +10,15 @@ function autenticar(email, senha) {
             u.email,
             u.fkHospital,
             u.fkcargo,
-            c.nome AS cargo
+            c.nome AS cargo,
+            h.nome AS nomeHospital
         FROM usuario u
         JOIN cargo c ON c.idcargo = u.fkcargo
+        JOIN hospital h ON h.idHospital = u.fkHospital
         WHERE u.email = '${email}' AND u.senha = '${senha}' AND u.ativo = 1;
     `;
+
+
     console.log("Autenticação realizada: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }

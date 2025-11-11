@@ -28,11 +28,13 @@ function entrar() {
             }
         })
         .then(json => {
+            console.log(json)
             sessionStorage.ID_USUARIO = json.idUsuario;
             sessionStorage.EMAIL_USUARIO = json.email;
             sessionStorage.NOME_USUARIO = json.nome;
             sessionStorage.FK_HOSPITAL = json.fkHospital;
             sessionStorage.CARGO_USUARIO = json.cargo;
+            sessionStorage.NOME_HOSPITAL = json.nomeHospital;
 
             const cargoNormalizado = String(json.cargo || "")
                 .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
