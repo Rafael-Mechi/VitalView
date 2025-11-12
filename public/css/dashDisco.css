@@ -118,7 +118,7 @@ header {
   margin-top: 7px;
   margin-left: 60px;
   margin-right: 10px;
-  width: 98%;
+  width: calc(100% - 70px); /* <--- POR ESSA (60px + 10px = 70px) */
   height: 98%;
   background-color: white;
   border-radius: 23px;
@@ -180,107 +180,15 @@ header {
   margin-top: 2rem;
 }
 
-.caixa_dados,
-.caixa_dados_2 {
-  width: 300px;
-  height: 200px;
-  border: 2px solid black;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-}
 
-.container2 {
-  width: 90%;
-  max-width: 1400px;
-  margin: 2rem auto;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
 
 .container-de-sessoes {
-  width: 95vw;
+  width: 100%;
   height: 88vh;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
 }
-
-.sessao-lateral-esquerda {
-  width: 35%;
-  height: 100%;
-  /* background-color: rgb(119, 197, 119); */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.sessao-lateral-direita {
-  width: 50%;
-  height: 10%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  margin-right: 20px;
-}
-
-.sessao-lateral-direita-itens {
-  width: 100%;
-  height: 31%;
-  padding: 10px;
-  border-radius: 10px;
-  background-color: red;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-bottom: 300px;
-  box-shadow: var(--shadow);
-}
-
-#sessao-disco{
-  padding: 10px;
-}
-
-.sessao-lateral-esquerda-itens {
-  border-radius: 10px;
-  background-color: #c5c5c5;
-  box-shadow: var(--shadow);
-}
-
-.sessao-lateral-direita-itens section {
-  height: 90%;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-direction: column;
-}
-
-.sessao-lateral-direita-itens {
-  border-radius: 10px;
-  gap: 20px;
-}
-
-.sessao-lateral-direita-itens section,
-img {
-  width: 80%;
-}
-
-#card_processos {
-  height: 77%;
-  border-radius: 5px;
-  margin-bottom: 20px;
-}
-
-.mini {
-  margin-left: 2%;
-}
-
 
 
 /* -------------------------------------------------- */
@@ -294,237 +202,11 @@ img {
   border-left: 5px solid #4dd0e1;
   padding-left: 10px;
 }
-
-/* -------------------------------------------------- */
-/*                     LAYOUT BASE                    */
-/* -------------------------------------------------- */
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  justify-content: space-between;
-  height: 90%;
-  width: 80%;
-}
-
-.projecao {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  width: 90%;
-  height: 80%;
-}
-
-#projecao {
-  height: 90%;
-  width: 66%;
-  margin-right: 10px;
-  margin-left: 5px;
-  background-color: white;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#projecao:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-  transition: 0.5s;
-}
-
-/* -------------------------------------------------- */
-/*                        CARDS                       */
-/* -------------------------------------------------- */
-
-#grafico_disco {
-  width: 31.5%;
-  height: 90%;
-}
-
-.card_grafico_disco {
-  flex: 1;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-  transition: 0.5s;
-  height: 95%;
-  width: 100%;
-}
-
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-  transition: 0.5s;
-}
-
-.card--sm {
-  flex: 1;
-  min-width: 220px;
-  text-align: center;
-}
-
-.card--lg {
-  width: 100%;
-  min-height: auto;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  font-size: 18px;
-  font-weight: bold;
-  color: #000;
-  margin-bottom: 20px;
-}
-
-.card-body {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.progress-container {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  flex: 1;
-}
-
-.label {
-  font-size: 13px;
-  color: #008c99;
-  font-weight: 600;
-}
-
-.progress-bar {
-  position: relative;
-  background: #d9f5f7;
-  border-radius: 20px;
-  height: 12px;
-  width: 180px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  background: #45d4dc;
-  height: 100%;
-  width: 28.6%;
-  /* valor proporcional ao uso */
-  border-radius: 20px;
-}
-
-.uso {
-  font-size: 14px;
-  font-weight: 600;
-  color: #008c99;
-  min-width: 55px;
-  text-align: right;
-  margin-right: 32px;
-}
-
-.data {
-  font-size: 14px;
-  font-weight: 600;
-  color: #008c99;
-  min-width: 90px;
-  text-align: right;
-}
-
+------------------------------ */
 
 /* -------------------------------------------------- */
 /*                         KPIs                       */
 /* -------------------------------------------------- */
-.card {
-  position: relative;
-}
-
-.kpi-select {
-  position: absolute;
-  right: 8px;
-  font-size: .8rem;
-  padding: 4px 6px;
-  border-radius: 6px;
-  border: 1px solid #dfe3e8;
-  background: #fff;
-}
-
-.kpi-title {
-  margin-right: 90px;
-}
-
-.card--sm div {
-  margin: 6px 0;
-}
-
-.uptime {
-  background-color: white;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
-  height: 100%;
-  width: 80%;
-}
-
-#uptime {
-  margin-right: 10px;
-}
-
-.legenda {
-  margin: 6px 0 0;
-  color: #7b8a9a;
-  font-size: 12px
-}
-
-.velocimetro {
-  background-color: white;
-}
-
-.uptime-display {
-  font-size: 2em;
-  font-weight: 550;
-  color: #32b9cd;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.arrow-up {
-  color: #32b9cd;
-  margin-left: 8px;
-}
-
-#qtd-alertas {
-  background-color: white;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 40%;
-  padding: 20px;
-}
-
-#qtd-alertas h1 {
-  color: #f75454;
-  margin-bottom: 20px;
-}
-
-#qtd-alertas h2 {
-  font-size: 20px;
-}
-
-
-#escolher-servidor {
-  margin-left: auto;
-}
-
-
 .menu {
   position: relative;
   margin-bottom: 16px;
@@ -674,20 +356,6 @@ img {
 }
 
 /* -------------------------------------------------- */
-/*                    RESPONSIVIDADE                  */
-/* -------------------------------------------------- */
-@media (max-width: 900px) {
-  .row {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .card {
-    width: 100%;
-  }
-}
-
-/* -------------------------------------------------- */
 /*                 TOQUES VISUAIS GERAIS              */
 /* -------------------------------------------------- */
 
@@ -741,7 +409,7 @@ h3 {
     margin-left: 5%;
     margin-bottom: 10px;
     width: 90%;
-    height: 600px;
+    height: auto;
     background-color: #c5c5c5;
     border-radius: 2rem;
 }
@@ -753,7 +421,6 @@ h3 {
     border-radius: 12px;
     padding: 20px;
     width: 100%;
-
 }
 
 .centralizador_titulo {
@@ -772,7 +439,6 @@ h3 {
   width: 100%;
 }
 
-
 .texto_direita p {
  font-weight: 100;
 }
@@ -784,28 +450,26 @@ h3 {
     margin-top: 10px;
 }
 
-
-
-
 .centralizador {
   position: relative;
-    display: flex;
-    flex-direction: column;
-    margin-left: 20px;
-    gap: 10px;
+  display: flex;
+  flex-direction: row; /* <-- MUDADO */
+  justify-content: space-between; /* <-- ADICIONADO */
+  margin-left: 20px;
+  gap: 10px;
 }
 
-
-
 .container-divs_inferiores {
-    display: flex;
-    justify-content: space-evenly;
-    height: 100%;
-    width: 90%;
-    background-color: #c5c5c5;
-    margin-left: 90px;
-    align-items: center;
-    border-radius: 2rem;
+  display: flex;
+  gap: 20px; /* <--- POR ESSA (cria 20px de espaço entre os cards) */
+  /* height: 100%; */
+  width: 90%;
+  background-color: #c5c5c5;
+  margin-left: 5%; /* <--- MUDADO (para igualar ao bloco de cima) */
+  align-items: center;
+  border-radius: 2rem;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .div_taxa {
@@ -816,10 +480,11 @@ h3 {
     padding: 10px;
     box-shadow: var(--shadow);
     height: 270px;
-    width: 30%;
+    flex-grow: 1; /* <--- ADICIONE ESSA */
+    flex-basis: 0; /* <--- ADICIONE ESSA */
+    min-width: 0; /* <--- ADICIONE ESSA (previne que o conteúdo quebre o layout) */
     position: relative;
 }
-
 
 .div_taxa canvas {
     width: 100% !important;
@@ -828,23 +493,23 @@ h3 {
     
 }
 
-
-
 .UD_texto_esquerda {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     margin-bottom: 10px;
-    margin-right: 150px;
+    /* margin-right: 150px; MUDADO*/
     gap: 5px;
     font-weight: 500;
 }
 
 .UD_texto_direita {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    color: #32b9cd;
+  /* position: absolute; */ /* <--- REMOVIDO */
+  /* top: 10px; */ /* <--- REMOVIDO */
+  /* right: 10px; */ /* <--- REMOVIDO */
+  color: #32b9cd;
+  /* Adicione um margin-right para desencostar da borda */
+  margin-right: 10px; 
 }
 
 #graficoUsoDeDisco {
@@ -855,14 +520,8 @@ h3 {
     
 }
 
-
 #graficoLatencia {
   width: 100%;
   height: 12px;
   margin-top: 10px;
 }
-
-
-
-
-
