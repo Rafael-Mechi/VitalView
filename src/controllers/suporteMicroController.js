@@ -21,6 +21,25 @@ function buscarDadosServidores(req, res) {
         )
 }
 
+function buscarListaServidores(req, res) {
+
+    suporteMicroModel.buscarListaServidores()
+        .then(
+            function (resultadoDadosServidores) {
+                res.json(resultadoDadosServidores);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao tentar cadastrar o servidor! Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            }
+        )
+}
+
 async function pegarDadosBucket(req, res) {
     const bucketName = process.env.AWS_BUCKET_NAME;
     const fileKey = req.params.key;
@@ -38,5 +57,6 @@ async function pegarDadosBucket(req, res) {
 
 module.exports = {
     buscarDadosServidores,
-    pegarDadosBucket
+    pegarDadosBucket,
+    buscarListaServidores
 }

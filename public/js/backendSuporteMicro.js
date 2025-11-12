@@ -12,7 +12,7 @@ let chartCPU = null;
 
 const id = params.get("idServidor");
 const nomeServidor = params.get("hostname");
-const nomeHospital = sessionStorage.NOME_HOSPITAL
+const nomeHospital = sessionStorage.NOME_HOSPITAL;
 
 const idServidor = id;
 const key = `${id}_${nomeServidor}_${nomeHospital}.json`;
@@ -75,6 +75,8 @@ function plotarDados(dadosBucket) {
     utilizaçãoDeDisco();
     utilizacaoCPU(dadosBucket);
     utilizacaoDeRam(dadosBucket);
+    escolherServidor();
+    uptimeSistema(dadosBucket);
 
     // Esconde o loading e mostra o conteúdo
     document.getElementById("loading").style.display = "none";
@@ -82,21 +84,69 @@ function plotarDados(dadosBucket) {
 }
 
 function detalhesServidor() {
-    document.getElementById("ip").innerHTML = ip;
-    document.getElementById("hostName").innerHTML = hostname;
-    document.getElementById("hostName2").innerHTML = hostname;
-    document.getElementById("localizacao").innerHTML = localizacao;
-    document.getElementById("ramTotal").innerHTML = `${ramTotal} GB`;
-    document.getElementById("discoTotal").innerHTML = `${discoTotal} GB`;
+    document.getElementById("ip").textContent  = ip;
+    document.getElementById("hostName").textContent  = hostname;
+    document.getElementById("hostName2").textContent  = hostname;
+    document.getElementById("localizacao").textContent  = localizacao;
+    document.getElementById("ramTotal").textContent  = `${ramTotal} GB`;
+    document.getElementById("discoTotal").textContent  = `${discoTotal} GB`;
 }
 
 function bytesParaGB(bytes) {
     return (bytes / (1024 ** 3)).toFixed(0);
 }
 
-function totalAlertas() {
+function totalAlertas(dadosBucket) {
 
+    totalDeAlertas = dadosBucket[i]["Uptime (s)"]
 
+}
+
+function uptimeSistema(dadosBucket){
+    let i = 0
+
+    upTime = dadosBucket[0]["Uso de CPU"]
+
+    const interval = setInterval(() => {
+        if (i >= dadosBucket.length) {
+            clearInterval(interval); // para o setInterval quando terminar
+            return;
+        }
+
+        upTime = dadosBucket[i]["Uptime (s)"]
+        console.log(upTime)
+
+        document.getElementById("uptimeServidor").textContent  = upTime;
+
+        i++;
+    }, 2500); // executa a cada 2.5s
+}
+
+function escolherServidor() {
+    const select = document.getElementById("listaServidores");
+
+    fetch(`/suporteMicroRoutes/buscar-servidores`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+
+            data.forEach(servidor => {
+                const option = document.createElement("option");
+                option.value = servidor.idServidor;
+                option.textContent = servidor.hostname;
+                select.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Erro:', error));
+
+    // evento para redirecionar ao escolher
+    select.addEventListener("change", () => {
+        const servidorSelecionado = select.options[select.selectedIndex];
+        const idServidorSelecionado = servidorSelecionado.value;
+        const hostname = servidorSelecionado.textContent;
+        const idHospital = sessionStorage.FK_HOSPITAL;
+        window.location.href = `dashboardSuporteMicro.html?idServidor=${idServidorSelecionado}&hostname=${hostname}&idhospital=${idHospital}`;
+    })
 }
 
 function utilizacaoCPU(dadosBucket) {
@@ -158,7 +208,6 @@ function utilizacaoCPU(dadosBucket) {
         }
 
         usoCPU = dadosBucket[i]["Uso de CPU"]
-        console.log(usoCPU)
 
         chartCPU.data.datasets[0].data = [usoCPU, 100 - usoCPU];
         chartCPU.update();
@@ -226,7 +275,6 @@ function utilizacaoDeRam(dadosBucket) {
         }
 
         usoRAM = dadosBucket[i]["Uso de RAM"]
-        console.log(usoRAM)
 
         chartRAM.data.datasets[0].data = [usoRAM, 100 - usoRAM];
         chartRAM.update();

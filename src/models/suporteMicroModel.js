@@ -10,6 +10,13 @@ function buscarDadosServidores(idServidor) {
     return database.executar(instrucao);
 }
 
+function buscarListaServidores() {
+    const instrucao = `
+            select * from servidores;
+        `;
+    return database.executar(instrucao);
+}
+
 const pegarDadosBucketModel = async (bucketName, fileKey) => {
 
     s3.listObjectsV2({ Bucket: process.env.AWS_BUCKET_NAME }, (err, data) => {
@@ -31,7 +38,10 @@ const pegarDadosBucketModel = async (bucketName, fileKey) => {
     }
 };
 
+
+
 module.exports = {
     pegarDadosBucketModel,
-    buscarDadosServidores
+    buscarDadosServidores,
+    buscarListaServidores
 };
