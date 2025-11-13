@@ -41,7 +41,7 @@ app.use("/suporteMicroRoutes",suporteMicroRoutes)
 app.use("/historico-alertas", historicoAlertaRouter)
 app.use("/servidores", dashboardMacroRouter);
 app.use("/analista", dashboardAnalistaRouter);
-app.use("/discoRoutes", dashboardDiscoRouter)
+app.use("/dashDiscoRoutes", dashboardDiscoRouter)
 
 app.listen(PORTA_APP, function () {
     console.log(`
