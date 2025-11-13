@@ -2,7 +2,14 @@ async function carregarDashboard() {
     try {
         console.log('Buscando dados do dashboard macro...');
 
-        const response = await fetch('/servidores/dashboard-macro');
+        const idHospital = sessionStorage.FK_HOSPITAL;
+        
+        if (!idHospital) {
+            console.error('ID do hospital não encontrado no sessionStorage');
+            return;
+        }
+
+        const response = await fetch(`/servidores/dashboard-macro?hospital=${idHospital}`);
 
         if (response.ok) {
             const dados = await response.json();
@@ -26,8 +33,44 @@ async function carregarDashboard() {
     }
 }
 
+function alterarFiltroAlertas(tipo) {
+    console.log('Filtro:', tipo);
+    console.log('Dados salvos:', window.dadosDashboard);
+
+    const valorElement = document.getElementById('valor-alertas');
+    const subtituloElement = document.getElementById('subtitulo-alertas');
+    
+    if (!window.dadosDashboard || !window.dadosDashboard.kpis) {
+        console.log('Dados não carregados ainda...');
+        valorElement.innerHTML = '0';
+        return;
+    }
+    
+    const kpis = window.dadosDashboard.kpis;
+    console.log('KPIs disponíveis:', kpis);
+
+    if (tipo === 'geral') {
+        const alertasGerais = kpis.alertasGerais;
+        console.log('Alertas Gerais:', alertasGerais);
+        
+        // Garantindo que seja um número válido
+        const valorFinal = (alertasGerais !== undefined && alertasGerais !== null) ? alertasGerais : 0;
+        valorElement.innerHTML = valorFinal.toString();
+        subtituloElement.textContent = 'Total de ocorrências';
+        
+    } else if (tipo === 'tendencia') {
+        const tendenciaClass = kpis.tendenciaAlertas.includes('+') ? 'aumento' : 'queda';
+        valorElement.innerHTML = `${kpis.alertas24h}<span class="tendencia ${tendenciaClass}">${kpis.tendenciaAlertas}</span>`;
+        subtituloElement.textContent = 'Últimas ocorrências (nas últimas 24 horas)';
+    }
+    
+    console.log('Filtro aplicado com sucesso!!!');
+}
+
 // Atualizar KPIs
 function atualizarKPIs(kpis) {
+    console.log('📊 KPIs recebidos para salvar:', kpis);
+    
     // Servidores em Risco
     const servidoresRiscoElement = document.querySelector('.kpi .value');
     if (servidoresRiscoElement) {
@@ -35,10 +78,18 @@ function atualizarKPIs(kpis) {
     }
 
     // Alertas
-    const valueServ = document.querySelector('.value-serv');
-    if (valueServ) {
-        const tendenciaClass = kpis.tendenciaAlertas.includes('+') ? 'aumento' : 'queda';
-        valueServ.innerHTML = `${kpis.alertas24h}<span class="tendencia ${tendenciaClass}">${kpis.tendenciaAlertas}</span>`;
+    const valorElement = document.getElementById('valor-alertas');
+    const subtituloElement = document.getElementById('subtitulo-alertas');
+    if (valorElement && subtituloElement) {
+        console.log('Alertas Gerais para mostrar:', kpis.alertasGerais);
+        
+        if (kpis.alertasGerais === undefined || kpis.alertasGerais === null) {
+            console.log('alertasGerais está undefined/null, usando 0');
+            valorElement.innerHTML = '0';
+        } else {
+            valorElement.innerHTML = `${kpis.alertasGerais}`;
+        }
+        subtituloElement.textContent = 'Total de ocorrências';
     }
 
     // Total de servidores
@@ -46,6 +97,13 @@ function atualizarKPIs(kpis) {
     if (badgeTotal) {
         badgeTotal.textContent = kpis.totalServidores;
     }
+
+    window.dadosDashboard = { 
+        kpis: kpis 
+    };
+    
+    console.log('Dados salvos em window.dadosDashboard:', window.dadosDashboard);
+    
 }
 
 // Atualizar Tabela
