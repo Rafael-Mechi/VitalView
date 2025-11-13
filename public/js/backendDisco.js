@@ -24,11 +24,7 @@ async function carregarDados() {
     const dados = await resposta.json();
     console.log("Dados recebidos:", dados);
     console.log("Tipo:", typeof dados);
-console.log("Primeiros 10 itens:", Object.entries(dados).slice(0, 10));
-
-
-
-
+    console.log("Primeiros 10 itens:", Object.entries(dados).slice(0, 10));
 
     atualizarDash(dados);
   } catch (erro) {
@@ -132,11 +128,11 @@ const graficoLatencia = new Chart(ctxLatencia, {
 
 // ---------------- FUNÇÃO DE ATUALIZAÇÃO ----------------
 function atualizarDash(dados) {
-  const usoDisco = Number(dados["Uso de Disco"]) || 0;
-  const taxaLeitura = Number(dados["Taxa leitura (MB/s)"]) || 0;
-  const taxaEscrita = Number(dados["Taxa escrita (MB/s)"]) || 0;
-  const latMedia = Number(dados["Latência (ms)"]) || 0;
-  const dataColeta = dados["Data da Coleta"] || new Date();
+  const usoDisco = Number(dados[0]["Uso de Disco"]) || 0;
+  const taxaLeitura = Number(dados[0]["Taxa escrita (MB/s)"])
+  const taxaEscrita = Number(dados[0]["Taxa escrita (MB/s)"])
+  const latMedia = Number(dados[0]["Latência (ms)"])
+  const dataColeta = Number(dados[0]["Data da Coleta"] || new Date());
 
   // Gráfico principal
   const dataset = graficoAtividade.data.datasets[0];
