@@ -38,10 +38,29 @@ const pegarDadosBucketModel = async (bucketName, fileKey) => {
     }
 };
 
+//IGOR: Adicionei aqui ao inves de criar outro model praticamente igual (eu teria que usar os outros metodos acima de qualquer jeito)
+const pegarDadosDiscoModel = async (bucketName, fileKey) => {
+    const params = {
+        Bucket: bucketName,
+        Key: fileKey // caminho para a pasta do json de disco (lembrar de criar no bucket)
+    };
+
+    try {
+        const data = await s3.getObject(params).promise();
+        const jsonData = JSON.parse(data.Body.toString('utf-8'));
+        return jsonData;
+    } catch (error) {
+        console.error('Erro ao acessar o S3:', error);
+        throw error;
+    }
+};
+
+
 
 
 module.exports = {
     pegarDadosBucketModel,
     buscarDadosServidores,
-    buscarListaServidores
+    buscarListaServidores,
+    pegarDadosDiscoModel    
 };

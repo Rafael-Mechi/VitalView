@@ -115,15 +115,20 @@
                 </div>
 
                 <div class="kpi">
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <div
+                        style="display: flex; align-items: center; justify-content: center; gap: 8px; position: relative;">
                         <p style="font-weight: bold; margin: 0;">Alertas</p>
                         <button type="button" class="infoBtn" data-target="infoModalAlertas">&#9432</button>
+                        <select class="filtro-alertas" onchange="alterarFiltroAlertas(this.value)"
+                            style="position: absolute; right: 0; top: 0; padding: 2px 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px; background: white;">
+                            <option value="geral">Geral</option>
+                            <option value="tendencia">Tendência 24h</option>
+                        </select>
                     </div>
-                    <div class="value-serv">
+                    <div class="value-serv" id="valor-alertas">
                         0
-                        <span class="tendencia">+0</span>
                     </div>
-                    <p class="sub">Últimas ocorrências (nas últimas 24 horas)</p>
+                    <p class="sub" id="subtitulo-alertas">Últimas ocorrências (nas últimas 24 horas)</p>
                 </div>
 
                 <div class="kpi" id="kpi-uso-disco">
@@ -151,10 +156,18 @@
                 <div class="modal-content">
                     <h3>Alertas do Sistema</h3>
                     <p style="text-align: justify;">
-                        Esta métrica mostra o número total de alertas gerados por todos os servidores monitorados
-                        <b>nas últimas 24 horas</b>. Inclui alertas de CPU, RAM, Disco e outros componentes críticos.
+                        <b>Modo Geral:</b> Mostra a quantidade de <b>alertas ativos no momento</b> em todos os
+                        servidores
+                        do seu hospital. Reflete a situação atual dos sistemas - se houver 0, significa que não tem
+                        nenhum servidor em alerta, ou que todos os alertas
+                        foram resolvidos.
                         <br><br>
-                        A <b>tendência (▲▼)</b> indica se houve aumento ou diminuição em relação ao período anterior.
+                        <b>Modo Tendência 24h:</b> Mostra quantos <b>novos alertas surgiram nas últimas 24 horas</b> e a
+                        <b>variação (▲▼)</b> em relação ao período anterior. Ajuda a identificar picos de problemas e
+                        a eficiência das ações preventivas.
+                        <br><br>
+                        Use o filtro para alternar entre <b>situação atual (Geral)</b> e <b>análise de novos eventos
+                            (Tendência)</b>.
                     </p>
                     <button type="button" class="closeBtn">Fechar</button>
                 </div>
