@@ -241,7 +241,7 @@ header {
   box-shadow: var(--shadow);
 }
 
-#sessao-disco{
+#sessao-disco {
   padding: 10px;
 }
 
@@ -306,15 +306,25 @@ img {
   width: 80%;
 }
 
-.projecao {
-  display: flex;
+.nome-saude-servidor {
   justify-content: center;
-  flex-direction: column;
-  width: 90%;
-  height: 80%;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
-#projecao {
+.div-bolinhas {
+  width: 100%;
+  gap: 15px;
+}
+
+.saude-servidor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#saude-servidor {
   height: 90%;
   width: 66%;
   margin-right: 10px;
@@ -324,12 +334,64 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 10px;
 }
 
-#projecao:hover {
+#saude-servidor:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
   transition: 0.5s;
+}
+
+.bolinha-saude {
+  background-color: #008c99;
+  height: 24px;
+  width: 24px;
+  border-radius: 100%;
+}
+
+.colum {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 800px;
+  text-align: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+
+.infoBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  color: #32b9cd;
 }
 
 /* -------------------------------------------------- */
@@ -662,6 +724,7 @@ img {
   width: 500px;
 }
 
+
 /* -------------------------------------------------- */
 /*                   MENU HAMBÚRGUER                  */
 /* -------------------------------------------------- */
@@ -942,6 +1005,48 @@ h3 {
 
 .botao-sair:hover {
   background-color: #ffcdd2;
+}
+
+.nivel1 {
+  background-color: #093037;
+
+}
+
+.nivel2 {
+  background-color: #0d4550;
+}
+
+.nivel3 {
+  background-color: #0e5d6b;
+}
+
+.nivel4 {
+  background-color: #187484;
+}
+
+.nivel5 {
+  background-color: #188b9f;
+}
+
+.nivel6 {
+  background-color: #1badc6;
+}
+
+.nivel7 {
+  background-color: #24b8d1;
+}
+
+.nivel8 {
+  background-color: #2cc7e1;
+}
+
+.nivel9 {
+  background-color: #38cde6;
+
+}
+
+.nivel10 {
+  background-color: #4addf6;
 }
 
 /* Loading */

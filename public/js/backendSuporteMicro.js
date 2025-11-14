@@ -2,6 +2,29 @@ const params = new URLSearchParams(window.location.search);
 protegerPagina(['Técnico', 'Administrador']);
 aplicarCargoNaUI();
 
+let infoBtns = document.querySelectorAll('.infoBtn');
+let modals = document.querySelectorAll('.modal');
+let closeBtns = document.querySelectorAll('.closeBtn');
+
+infoBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        let target = btn.dataset.target;
+        document.getElementById(target).style.display = 'flex';
+    });
+});
+
+closeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        btn.closest('.modal').style.display = 'none';
+    });
+});
+
+modals.forEach(modal => {
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.style.display = 'none';
+    });
+});
+
 let ip
 let hostname
 let ramTotal
@@ -55,6 +78,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         //Dados do bucket
         if (dadosBucket.length > 0) {
             dadosRecebidos = dadosBucket;
+            console.log(dadosRecebidos)
             discoTotal = bytesParaGB(dadosRecebidos[0]["Disco total (bytes)"]);
             ramTotal = bytesParaGB(dadosRecebidos[0]["RAM total (bytes)"]);
             discoUsado = bytesParaGB(dadosRecebidos[0]["Disco usado (bytes)"])
@@ -66,9 +90,144 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     } catch (erro) {
         console.error("Erro na requisição:", erro);
-        alert("Erro na conexão com o servidor.");
+        servidorDesconectado()
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("main-container").style.display = "flex";
+
     }
 });
+
+function servidorDesconectado() {
+
+    const velocimetroram2 = document.getElementById('velocimetroram2').getContext('2d');
+
+    usoCPU = 0
+
+    chartCPU = new Chart(velocimetroram2, {
+        type: 'doughnut',
+        data: {
+            labels: ['Velocidade', 'Restante'],
+            datasets: [{
+                data: [usoCPU, 100 - usoCPU],
+                backgroundColor: ['#32b9cd', '#e0e0e0'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            rotation: -90,       // Início do semicírculo
+            circumference: 180,  // Metade do círculo
+            cutout: '65%',       // "Espessura" do velocímetro
+            plugins: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: 'Utilização de CPU',
+                    font: {
+                        size: 18,
+                        weight: 'bold',
+                    },
+                    color: 'black',
+                },
+                tooltip: { enabled: false }
+            },
+        },
+        plugins: [{
+            // Adiciona o texto central
+            id: 'textoCentral',
+            afterDraw(chart) {
+                const { ctx, chartArea: { width, height } } = chart;
+                ctx.save();
+                ctx.font = 'bold 28px "Barlow"';
+                ctx.fillStyle = '#000';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(usoCPU + '%', width / 2, height / 0.9);
+            }
+        }]
+    });
+
+    const velocimetroram = document.getElementById('velocimetroram').getContext('2d');
+
+    usoRAM = 0
+
+    chartRAM = new Chart(velocimetroram, {
+        type: 'doughnut',
+        data: {
+            labels: ['Velocidade', 'Restante'],
+            datasets: [{
+                data: [usoRAM, 100 - usoRAM],
+                backgroundColor: ['#32b9cd', '#e0e0e0'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            rotation: -90,       // Início do semicírculo
+            circumference: 180,  // Metade do círculo
+            cutout: '65%',       // "Espessura" do velocímetro
+            plugins: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: 'Utilização de RAM',
+                    font: {
+                        size: 18,
+                        weight: 'bold'
+                    },
+                    color: 'black'
+                },
+                tooltip: { enabled: false }
+            },
+        },
+        plugins: [{
+            // Adiciona o texto central
+            id: 'textoCentral',
+            afterDraw(chart) {
+                const { ctx, chartArea: { width, height } } = chart;
+                ctx.save();
+                ctx.font = 'bold 28px Barlow';
+                ctx.fillStyle = '#000';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(usoRAM + '%', width / 2, height / 0.9);
+            }
+        }]
+    });
+
+    porcentagemDiscoUsado = 0
+
+    const ctx = document.getElementById('graficoPizza').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: [`Livre ${0} GB`, `Usado ${0}GB`],
+            datasets: [{
+                data: [100 - porcentagemDiscoUsado, porcentagemDiscoUsado],
+                backgroundColor: ['#6ce5e8', '#2d8bba'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: false,
+            plugins: {
+                legend: {
+                    position: 'right'
+                },
+                title: {
+                    display: true,
+                    text: 'Utilização de Disco',
+                    font: {
+                        size: 17,
+                        weight: 'bold',
+                    },
+                    color: 'black'
+
+                }
+            }
+        }
+    });
+}
 
 function plotarDados(dadosBucket) {
     detalhesServidor();
@@ -84,12 +243,12 @@ function plotarDados(dadosBucket) {
 }
 
 function detalhesServidor() {
-    document.getElementById("ip").textContent  = ip;
-    document.getElementById("hostName").textContent  = hostname;
-    document.getElementById("hostName2").textContent  = hostname;
-    document.getElementById("localizacao").textContent  = localizacao;
-    document.getElementById("ramTotal").textContent  = `${ramTotal} GB`;
-    document.getElementById("discoTotal").textContent  = `${discoTotal} GB`;
+    document.getElementById("ip").textContent = ip;
+    document.getElementById("hostName").textContent = hostname;
+    document.getElementById("hostName2").textContent = hostname;
+    document.getElementById("localizacao").textContent = localizacao;
+    document.getElementById("ramTotal").textContent = `${ramTotal} GB`;
+    document.getElementById("discoTotal").textContent = `${discoTotal} GB`;
 }
 
 function bytesParaGB(bytes) {
@@ -102,7 +261,7 @@ function totalAlertas(dadosBucket) {
 
 }
 
-function uptimeSistema(dadosBucket){
+function uptimeSistema(dadosBucket) {
     let i = 0
 
     upTime = dadosBucket[0]["Uso de CPU"]
@@ -116,7 +275,7 @@ function uptimeSistema(dadosBucket){
         upTime = dadosBucket[i]["Uptime (s)"]
         console.log(upTime)
 
-        document.getElementById("uptimeServidor").textContent  = upTime;
+        document.getElementById("uptimeServidor").textContent = upTime;
 
         i++;
     }, 2500); // executa a cada 2.5s
