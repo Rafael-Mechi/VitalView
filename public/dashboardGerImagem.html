@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de imagens</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="css/dashGerImagem.css">
+    <script src="js/sessao.js"></script>
+</head>
+
+<body>
+    <nav class="menu">
+        <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
+
+        <section class="hamburguer">
+            <span class="menu_lateral">
+                <div class="icones_topo">
+                    <img class="img_hamb" src="assets/LogoVitalView.png">
+                    <img src="./assets/dashboard-icons/activity.svg" data-role="Analista,Administrador">
+                    <img src="./assets/dashboard-icons/bar-chart.svg" data-role="Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/layout.svg" data-role="Técnico,Administrador">
+                </div>
+
+                <div class="icones_baixo">
+                    <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador"
+                        style="width: 28px; height: 28px;">
+                    <img src="./assets/dashboard-icons/calendar.svg" data-role="Analista,Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/users.svg" data-role="Administrador">
+                    <img src="./assets/dashboard-icons/hard-drive.svg" data-role="Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/help-circle.svg" data-role="Analista,Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/log-out.svg" data-role="Analista,Técnico,Administrador">
+                </div>
+            </span>
+        </section>
+
+        <ul>
+            <div class="title_hamb">
+                <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
+                <h2 class="hamb_nome">VitalView</h2>
+            </div>
+            <div class="menu_topo">
+                <h3 class="title_menu">Dashboards</h3>
+                <li style="display: flex; align-items: center;" data-role="Analista,Administrador,Técnico">
+                    <img src="./assets/dashboard-icons/home.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="bemVindo.html">Home</a>
+                </li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Administrador">
+                    <img src="./assets/dashboard-icons/activity.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="dashboardAnalista.html">Dash Analista</a>
+                </li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/bar-chart.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="dashboardSuporteMacro.html">Dash Suporte Macro</a></li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/layout.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="dashboardSuporteMicro.html">Dash Suporte Micro</a></li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/wifi (1).svg" style="width: 20px; margin-right: 4px;"><a
+                        href="dashRede.html">Dashboard Rede</a>
+                </li>
+            </div>
+
+            <div class="menu_baixo">
+                <h3 class="title_menu">Outras Opções</h3>
+                <li style="display: flex; align-items: center;" data-role="Administrador" class="pagina-ativa"><img
+                        src="./assets/dashboard-icons/gerenciar-usuarios.png" style="width: 20px; margin-right: 4px;"><a
+                        href="dashControleSistema.html">Gerenciar usuários</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/calendar.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="historicoAlertas.html">Histórico de Alertas</a></li>
+                <li style="display: flex; align-items: center;" data-role="Administrador"><img
+                        src="./assets/dashboard-icons/users.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="cadastroFuncionarios.html">Cadastro Funcionário</a></li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/hard-drive.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="cadastroServidores.html">Cadastro Servidores</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/help-circle.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1"
+                        target="_blank">Central de Serviço</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/log-out.svg" style="width: 20px; margin-right: 4px;"><a
+                        onclick="limparSessao()">Sair</a></li>
+            </div>
+        </ul>
+    </nav>
+
+    <section class="container">
+        <section class="nav-dash">
+            <section class="secao_logo">
+                <a href="dashboardAnalista.html">
+                    <img src="assets/LogoVitalView.png" alt="Logo VitalView" class="logo">
+                </a>
+            </section>
+            <section class="secao_logo">
+                <h1 class="titulo_header">VitalView</h1>
+            </section>
+        </section>
+
+        <div class="container-principal">
+            <div class="graficos">
+                <div class="div_grafico_linhas">
+                    <canvas id="grafico-linhas"></canvas>
+                </div>
+                <div class="div_grafico-barras">
+                    <canvas id="grafico-barras"></canvas>
+                </div>
+            </div>
+
+            <div class="tabela-alertas">
+                <div class="tabela-header">
+                    <div>
+                        <h2>Imagens que podem ser removidas</h2>
+                    </div>
+                    <div class="div_filtro">
+                        <span>Filtrar por:</span>
+                        <select class="filtro-select" id="filtro">
+                            <option value="idUsuario">servidor</option>
+                            <option value="nome">nome do arquivo</option>
+                            <option value="cargo">tamanho</option>
+                            <option value="data_criacao">data de geração</option>
+                            <option value="data_criacao">tempo no sistema</option>
+                        </select>
+                    </div>
+                    
+                </div>
+                
+                <div class="tabela-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th id="th-sup-esquerdo">Servidor</th>
+                                <th>Nome do arquivo</th>
+                                <th>Tamanho</th>
+                                <th>Data de geração</th>
+                                <th id="th-sup-direito">Tempo no sistema</th>
+                            </tr>
+                        </thead>
+                        <tbody id="info-alertas-resolvidos">
+    <tr>
+        <td>srv1</td>
+        <td>raiox_cranio.jpg</td>
+        <td>3.1MB</td>
+        <td>10/03/2005</td>
+        <td>20 anos</td>
+    </tr>
+    <tr>
+        <td>srv2</td>
+        <td>tomografia_torax.jpg</td>
+        <td>2.9MB</td>
+        <td>22/07/2001</td>
+        <td>24 anos</td>
+    </tr>
+    <tr>
+        <td>srv3</td>
+        <td>ressonancia_coluna.jpg</td>
+        <td>4.2MB</td>
+        <td>15/11/2005</td>
+        <td>20 anos</td>
+    </tr>
+    <tr>
+        <td>srv1</td>
+        <td>ultrassom_abdominal.jpg</td>
+        <td>1.8MB</td>
+        <td>03/05/2004</td>
+        <td>21 anos</td>
+    </tr>
+    <tr>
+        <td>srv2</td>
+        <td>angiografia_cerebral.dcm</td>
+        <td>5.7MB</td>
+        <td>28/09/2003</td>
+        <td>22 anos</td>
+    </tr>
+    <tr>
+        <td>srv3</td>
+        <td>tomografia_cerebro.jpg</td>
+        <td>2.3MB</td>
+        <td>01/11/2000</td>
+        <td>25 anos</td>
+    </tr>
+</tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let idHospitalVar = sessionStorage.FK_HOSPITAL;
+
+        const ctx = document.getElementById('grafico-linhas').getContext('2d');
+
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+            'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+        datasets: [
+            {
+                label: 'srv1',
+                data: [420, 480, 550, 610, 680, 740, 800, 850, 900, 940, 970, 1000],
+                borderColor: '#f7b731',
+                backgroundColor: '#f7b731'
+            },
+            {
+                label: 'srv2',
+                data: [300, 330, 360, 395, 430, 470, 510, 545, 580, 610, 640, 670],
+                borderColor: '#10ac84',
+                backgroundColor: '#10ac84'
+            },
+            {
+                label: 'srv3',
+                data: [120, 150, 170, 190, 220, 240, 260, 285, 305, 330, 350, 380],
+                borderColor: '#9b59b6',
+                backgroundColor: '#9b59b6'
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                text: 'Crescimento de Imagens por Servidor',
+                font: {
+                    size: 25,
+                    family: 'Barlow, sans-serif',
+                    weight: 'bold'
+                },
+                color: 'black',
+                padding: 20
+            },
+            legend: {
+                labels: {
+                    position: 'left',
+                    font: {
+                        family: 'Barlow, sans-serif',
+                        size: 14
+                    }
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    font: {
+                        family: 'Barlow, sans-serif',
+                        size: 17
+                    }
+                }
+            },
+            y: {
+                ticks: {
+                    font: {
+                        family: 'Barlow, sans-serif',
+                        size: 15
+                    }
+                }
+            }
+        }
+    }
+});
+
+const ctx2 = document.getElementById('grafico-barras').getContext('2d');
+
+new Chart(ctx2, {
+    type: 'bar',
+    data: {
+        labels: ['srv1', 'srv2', 'srv3'],
+        datasets: [{
+            label: 'Maior quantidade: srv1 - 1000',
+            data: [1000, 670, 380],
+            backgroundColor: ['#f7b731', '#10ac84', '#9b59b6']
+        }]
+    },
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Quantidade de Imagens por Servidor',
+                font: {
+                    size: 25,
+                    family: 'Barlow, sans-serif',
+                    weight: 'bold'
+                },
+                color: 'black',
+                padding: 20
+            },
+            legend: {
+                labels: {
+                    font: {
+                        family: 'Barlow, sans-serif',
+                        size: 14
+                    }
+                }
+            }
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: { 
+                beginAtZero: true,
+                ticks: {
+                    font: {
+                        family: 'Barlow, sans-serif',
+                        size: 12
+                    }
+                }
+            },
+            x: {
+                ticks: {
+                    font: {
+                        family: 'Barlow, sans-serif',
+                        size: 12
+                    }
+                }
+            }
+        }
+    }
+});
+    </script>
+</body>
+
+</html>
