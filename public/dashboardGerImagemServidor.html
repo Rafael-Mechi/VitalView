@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciamento de imagens</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
-    <link rel="stylesheet" href="css/dashGerImagem.css">
+    <link rel="stylesheet" href="css/dashGerImagemServ.css">
     <script src="js/sessao.js"></script>
 </head>
 
@@ -100,19 +100,28 @@
         </section>
 
         <div class="container-principal">
-            <div class="graficos">
-                <div class="div_grafico_linhas">
-                    <canvas id="grafico-linhas"></canvas>
+            <div class="container-graficos">
+                <div class="kpi">
+                    <h2>Total de imagens</h2>
+                    <h2 style="color: #32b9cd;">867</h2>
                 </div>
-                <div class="div_grafico-barras">
-                    <canvas id="grafico-barras"></canvas>
+
+                <div class="kpi">
+                    <h2>Uso de disco (arquivos do tipo imagem)</h2>
+                    <h2 style="color: #32b9cd;">800GB/1024GB</h2>
+                    <h5>912GB/1024GB</h5>
+                </div>
+
+                <div class="kpi">
+                    <h2>Tamanho médio das imagens</h3>
+                    <h2 style="color: #32b9cd;">3MB</h2>
                 </div>
             </div>
 
             <div class="tabela-alertas">
                 <div class="tabela-header">
                     <div>
-                        <h2>Imagens que podem ser removidas: 6</h2>
+                        <h2>Imagens que podem ser removidas: <b>6</b></h2>
                     </div>
                     <div class="div_filtro">
                         <span>Filtrar por:</span>
@@ -124,65 +133,61 @@
                             <option value="data_criacao">tempo no sistema</option>
                         </select>
                     </div>
-                    
                 </div>
-                
+
                 <div class="tabela-scroll">
                     <table>
                         <thead>
                             <tr>
-                                <th id="th-sup-esquerdo">Servidor</th>
-                                <th>Nome do arquivo</th>
+                                <th id="th-sup-esquerdo">Nome do arquivo</th>
                                 <th>Tamanho</th>
                                 <th>Data de geração</th>
                                 <th id="th-sup-direito">Tempo no sistema</th>
                             </tr>
                         </thead>
                         <tbody id="info-alertas-resolvidos">
-    <tr>
-        <td>srv1</td>
-        <td>raiox_cranio.jpg</td>
-        <td>3.1MB</td>
-        <td>10/03/2005</td>
-        <td>20 anos</td>
-    </tr>
-    <tr>
-        <td>srv2</td>
-        <td>tomografia_torax.jpg</td>
-        <td>2.9MB</td>
-        <td>22/07/2001</td>
-        <td>24 anos</td>
-    </tr>
-    <tr>
-        <td>srv3</td>
-        <td>ressonancia_coluna.jpg</td>
-        <td>4.2MB</td>
-        <td>15/11/2005</td>
-        <td>20 anos</td>
-    </tr>
-    <tr>
-        <td>srv1</td>
-        <td>ultrassom_abdominal.jpg</td>
-        <td>1.8MB</td>
-        <td>03/05/2004</td>
-        <td>21 anos</td>
-    </tr>
-    <tr>
-        <td>srv2</td>
-        <td>angiografia_cerebral.dcm</td>
-        <td>5.7MB</td>
-        <td>28/09/2003</td>
-        <td>22 anos</td>
-    </tr>
-    <tr>
-        <td>srv3</td>
-        <td>tomografia_cerebro.jpg</td>
-        <td>2.3MB</td>
-        <td>01/11/2000</td>
-        <td>25 anos</td>
-    </tr>
-</tbody>
+                            <tr>
+                                <td>raiox_cranio.jpg</td>
+                                <td>3.1MB</td>
+                                <td>10/03/2005</td>
+                                <td>20 anos</td>
+                            </tr>
+                            <tr>
+                                <td>tomografia_torax.jpg</td>
+                                <td>2.9MB</td>
+                                <td>22/07/2001</td>
+                                <td>24 anos</td>
+                            </tr>
+                            <tr>
+                                <td>ressonancia_coluna.jpg</td>
+                                <td>4.2MB</td>
+                                <td>15/11/2005</td>
+                                <td>20 anos</td>
+                            </tr>
+                            <tr>
+                                <td>ultrassom_abdominal.jpg</td>
+                                <td>1.8MB</td>
+                                <td>03/05/2004</td>
+                                <td>21 anos</td>
+                            </tr>
+                            <tr>
+                                <td>angiografia_cerebral.dcm</td>
+                                <td>5.7MB</td>
+                                <td>28/09/2003</td>
+                                <td>22 anos</td>
+                            </tr>
+                            <tr>
+                                <td>tomografia_cerebro.jpg</td>
+                                <td>2.3MB</td>
+                                <td>01/11/2000</td>
+                                <td>25 anos</td>
+                            </tr>
+                        </tbody>
                     </table>
+                </div>
+
+                <div class="div_grafico">
+                    <canvas id="grafico-linha"></canvas>
                 </div>
             </div>
         </div>
@@ -191,137 +196,85 @@
     <script>
         let idHospitalVar = sessionStorage.FK_HOSPITAL;
 
-        const ctx = document.getElementById('grafico-linhas').getContext('2d');
+        const labels = [
+            'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+            'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
+        ];
 
-new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-            'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-        datasets: [
-            {
-                label: 'srv1',
-                data: [420, 480, 550, 610, 680, 740, 800, 850, 900, 940, 970, 1000],
-                borderColor: '#f7b731',
-                backgroundColor: '#f7b731'
+        const dataA = [420, 480, 550, 610, 680, 740, 800, 850, 900, 940, 970, 1000];
+
+        const ctx = document.getElementById('grafico-linha').getContext('2d');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'srv1',
+                    data: dataA,
+                    borderColor: '#1ECBE1',
+                    backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
             },
-            {
-                label: 'srv2',
-                data: [300, 330, 360, 395, 430, 470, 510, 545, 580, 610, 640, 670],
-                borderColor: '#10ac84',
-                backgroundColor: '#10ac84'
-            },
-            {
-                label: 'srv3',
-                data: [120, 150, 170, 190, 220, 240, 260, 285, 305, 330, 350, 380],
-                borderColor: '#9b59b6',
-                backgroundColor: '#9b59b6'
-            }
-        ]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            title: {
-                display: true,
-                text: 'Crescimento de Imagens por Servidor',
-                font: {
-                    size: 25,
-                    family: 'Barlow, sans-serif',
-                    weight: 'bold'
-                },
-                color: 'black',
-                padding: 20
-            },
-            legend: {
-                labels: {
-                    position: 'left',
-                    font: {
-                        family: 'Barlow, sans-serif',
-                        size: 14
-                    }
-                }
+            options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        title: {
+            display: true,
+            text: 'Crescimento de Imagens - srv1',
+            color: 'white',
+            font: {
+                size: 20,
+                family: 'Barlow, sans-serif',
+                weight: 'bold'
             }
         },
-        scales: {
-            x: {
-                ticks: {
-                    font: {
-                        family: 'Barlow, sans-serif',
-                        size: 17
-                    }
-                }
-            },
-            y: {
-                ticks: {
-                    font: {
-                        family: 'Barlow, sans-serif',
-                        size: 15
-                    }
+        legend: {
+            display: true,
+            position: 'top',
+            labels: {
+                color: 'white',
+                font: {
+                    family: 'Barlow, sans-serif'
                 }
             }
         }
-    }
-});
-
-const ctx2 = document.getElementById('grafico-barras').getContext('2d');
-
-new Chart(ctx2, {
-    type: 'bar',
-    data: {
-        labels: ['srv1', 'srv2', 'srv3'],
-        datasets: [{
-            label: 'Maior quantidade: srv1 - 1000',
-            data: [1000, 670, 380],
-            backgroundColor: ['#f7b731', '#10ac84', '#9b59b6']
-        }]
     },
-    options: {
-        plugins: {
-            title: {
-                display: true,
-                text: 'Quantidade de Imagens por Servidor',
+    scales: {
+        y: { 
+            min: 0, 
+            max: 1000,
+            ticks: {
+                color: 'white',
                 font: {
-                    size: 25,
-                    family: 'Barlow, sans-serif',
-                    weight: 'bold'
-                },
-                color: 'black',
-                padding: 20
-            },
-            legend: {
-                labels: {
-                    font: {
-                        family: 'Barlow, sans-serif',
-                        size: 14
-                    }
+                    family: 'Barlow, sans-serif'
                 }
+            },
+            title: {
+                display: false
+            },
+            grid: {
+                color: 'rgba(255,255,255,0.2)'
             }
         },
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            y: { 
-                beginAtZero: true,
-                ticks: {
-                    font: {
-                        family: 'Barlow, sans-serif',
-                        size: 12
-                    }
+        x: {
+            ticks: {
+                color: 'white',        // <<< números/nomes do eixo X
+                font: {
+                    family: 'Barlow, sans-serif'
                 }
             },
-            x: {
-                ticks: {
-                    font: {
-                        family: 'Barlow, sans-serif',
-                        size: 12
-                    }
-                }
+            grid: {
+                color: 'rgba(255,255,255,0.2)'
             }
         }
     }
-});
+}
+
+        });
     </script>
 </body>
 
