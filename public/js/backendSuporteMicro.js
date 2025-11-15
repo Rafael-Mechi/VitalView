@@ -39,6 +39,7 @@ const nomeHospital = sessionStorage.NOME_HOSPITAL;
 
 const idServidor = id;
 const key = `${id}_${nomeServidor}_${nomeHospital}.json`;
+const key2 = `csvjson.json`
 
 console.log(key)
 
@@ -57,15 +58,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
         //Faz as duas requisições ao mesmo tempo
-        const [resBanco, resBucket] = await Promise.all([
+        const [resBanco, resBucket, resProcess] = await Promise.all([
             fetch(`/suporteMicroRoutes/buscar-dados-banco/${idServidor}`),
-            fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key}`)
+            fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key}`),
+            fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key2}`)
         ]);
 
         //Converte ambas para JSON
-        const [dadosBanco, dadosBucket] = await Promise.all([
+        const [dadosBanco, dadosBucket, dadosProcessos] = await Promise.all([
             resBanco.json(),
-            resBucket.json()
+            resBucket.json(),
+            resProcess.json()
         ]);
 
         //Dados do banco
@@ -85,8 +88,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             discoLivre = bytesParaGB(dadosRecebidos[0]["Disco livre (bytes)"])
         }
 
+        if (dadosProcessos.length > 0) {
+            console.log(dadosProcessos)
+            // nomeProcesso = dadosProcessos(dadosRecebidos[0]["Nome_Processo"]);
+            // ramProcesso = dadosProcessos(dadosRecebidos[0]["Uso_Ram_Percent"]);
+            // threadsProcesso = dadosProcessos(dadosRecebidos[0]["Num_Threads"])
+            // statusProcesso = dadosProcessos(dadosRecebidos[0]["Status"])
+        }
+
         //Exibe tudo
-        plotarDados(dadosBucket);
+        plotarDados(dadosBucket, dadosProcessos);
 
     } catch (erro) {
         console.error("Erro na requisição:", erro);
@@ -229,18 +240,65 @@ function servidorDesconectado() {
     });
 }
 
-function plotarDados(dadosBucket) {
+function plotarDados(dadosBucket, dadosProcessos) {
     detalhesServidor();
     utilizaçãoDeDisco();
     utilizacaoCPU(dadosBucket);
     utilizacaoDeRam(dadosBucket);
     escolherServidor();
     uptimeSistema(dadosBucket);
+    processosServidor(dadosProcessos);
 
     // Esconde o loading e mostra o conteúdo
     document.getElementById("loading").style.display = "none";
     document.getElementById("main-container").style.display = "flex";
 }
+
+function processosServidor(dadosProcessos) {
+
+    // const containerListaProcessos = document.querySelector("#card_processos");
+
+    const tbody = document.getElementById("tbody-processos");
+
+    // const thead = document.querySelector("#card_processos table thead");
+
+    // if (!tbody) {
+    //     console.error("TBody não encontrado.");
+    //     return;
+    // }
+
+    // // Limpa apenas o tbody, mantendo a tabela e o scroll
+    // tbody.innerHTML = "";
+
+    dadosProcessos.forEach(processo => {
+
+        const linha = document.createElement("tr");
+
+        linha.innerHTML = `
+            <td>
+                <div class="nome-processo" title="${processo.Nome_Processo}">
+                    ${processo.Nome_Processo}
+                </div>
+            </td>
+            <td>${processo.Uso_Ram_Percent}%</td>
+            <td>${processo.Num_Threads}</td>
+
+            <td>
+                <span class="processo-${processo.Status === "running" ? "ativo" : "inativo"}">
+                    ${processo.Status}
+                </span>
+            </td>
+        `;
+
+
+        tbody.appendChild(linha);
+    });
+}
+
+
+
+
+
 
 function detalhesServidor() {
     document.getElementById("ip").textContent = ip;

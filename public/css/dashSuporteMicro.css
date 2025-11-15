@@ -280,7 +280,17 @@ img {
   margin-left: 2%;
 }
 
+.nome-processo {
+  max-width: 80px;
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
 
+/* Esconde a barra de rolagem */
+.nome-processo::-webkit-scrollbar {
+  display: none;
+}
 
 /* -------------------------------------------------- */
 /*                  TÍTULOS DE SEÇÕES                 */
@@ -640,7 +650,9 @@ img {
 /*                    Processos                       */
 /* -------------------------------------------------- */
 
-#lista-processos {
+
+
+#processos-do-servidor {
   height: 44.7vh;
   width: 90%;
   margin-bottom: 20px;
@@ -650,7 +662,6 @@ img {
   flex-direction: column;
   padding-bottom: -10px;
 }
-
 
 .process-table {
   width: 100%;
@@ -672,6 +683,37 @@ img {
   background-color: #f0f0f0;
 }
 
+.processo-ativo {
+  margin-left: -10px;
+  height: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 8px;
+  margin-top: 3px;
+  background-color: #32b9cd;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 0.9em;
+  margin-left: 15px;
+}
+
+.processo-inativo {
+  margin-left: -10px;
+  height: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 8px;
+  margin-top: 3px;
+  background-color: #f75454;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 0.9em;
+  margin-left: 15px;
+}
 
 
 .status.ativo {
@@ -686,11 +728,6 @@ img {
   border-radius: 4px;
   font-size: 0.9em;
   margin-left: 15px;
-}
-
-#ativo-processo {
-  margin-left: -10px;
-  height: 15px;
 }
 
 .card {
