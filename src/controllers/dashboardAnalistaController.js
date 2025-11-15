@@ -27,16 +27,16 @@ function distribuicaoAlertasPorComponente(req, res){
 
     dashboardAnalistaModel.distribuicaoAlertasPorComponente(idHospital)
         .then(
-            function (topServidores){
-                res.json(topServidores);
-                console.log(topServidores);
+            function (alertasPorComponente){
+                res.json(alertasPorComponente);
+                console.log(alertasPorComponente);
             }
 
         ).catch(
             function(erro){
                 console.log(erro);
                     console.log(
-                        "\nHouve um erro ao tentar buscar os top servidores com mais alertas! Erro: ",
+                        "\nHouve um erro ao tentar buscar a distribuição de alertas por componente! Erro: ",
                         erro.sqlMessage
                     );
                     res.status(500).json(erro.sqlMessage);
@@ -49,16 +49,16 @@ function contarAlertasNoPeriodo(req, res){
 
     dashboardAnalistaModel.contarAlertasNoPeriodo(idHospital)
         .then(
-            function (topServidores){
-                res.json(topServidores);
-                console.log(topServidores);
+            function (alertasNoPeriodo){
+                res.json(alertasNoPeriodo);
+                console.log(alertasNoPeriodo);
             }
 
         ).catch(
             function(erro){
                 console.log(erro);
                     console.log(
-                        "\nHouve um erro ao tentar buscar os top servidores com mais alertas! Erro: ",
+                        "\nHouve um erro ao tentar buscar a quantidade de alertas no periodo! Erro: ",
                         erro.sqlMessage
                     );
                     res.status(500).json(erro.sqlMessage);
@@ -66,24 +66,31 @@ function contarAlertasNoPeriodo(req, res){
         )
 }
 
-function distribuicaoAlertasPorComponente(req, res){
+function distribuicaoAlertasAno(req, res){
     let idHospital = req.params.idHospital;
 
-    dashboardAnalistaModel.distribuicaoAlertasPorComponente(idHospital)
+    dashboardAnalistaModel.distribuicaoAlertasAno(idHospital)
         .then(
-            function (topServidores){
-                res.json(topServidores);
-                console.log(topServidores);
+            function (alertasNoAno){
+                res.json(alertasNoAno);
+                console.log(alertasNoAno);
             }
 
         ).catch(
             function(erro){
                 console.log(erro);
                     console.log(
-                        "\nHouve um erro ao tentar buscar os top servidores com mais alertas! Erro: ",
+                        "\nHouve um erro ao tentar buscar a distribuição de alertas no ano! Erro: ",
                         erro.sqlMessage
                     );
                     res.status(500).json(erro.sqlMessage);
             }
         )
 }
+
+module.exports = {
+  topServidoresComMaisAlertas,
+  distribuicaoAlertasPorComponente,
+  contarAlertasNoPeriodo,
+  distribuicaoAlertasAno
+};

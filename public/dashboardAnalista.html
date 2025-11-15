@@ -10,7 +10,7 @@
     <script src="js/sessao.js"></script>
 </head>
 
-<body>
+<body onload="carregarInformacoes()">
 
     <nav class="menu">
         <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
@@ -115,70 +115,39 @@
             <section class="sessao-lateral-esquerda">
                 <section class="sessao-lateral-esquerda-itens">
                     <div class="server-info" role="group" aria-labelledby="t1">
-                        <h3 id="t1" class="titulo-cartao" style="text-align: center;">Top 5 Servidores com mais alertas <small>No [Período]</small>
-                        </h3>
-                        <div class="wrap-canvas">
+                        <h4 id="t1" class="titulo-cartao" style="text-align: center;">Top 5 Servidores com mais alertas <small>No [Período]</small>
+                        </h4>
                             <canvas id="topServidoresChart" aria-label="Top servidores" role="img"></canvas>
-                        </div>
                     </div>
 
-                    <div class="server-info" role="group" aria-labelledby="t2" style=" margin-top: 3%;">
-                        <h3 id="t1" class="titulo-cartao" style="text-align: center;">Distribuição de alertas por componente <small>No [Período]</small>
-                        </h3>
-                        <div class="wrap-canvas">
-                            <canvas id="componentesChart" aria-label="Alertas por componente" role="img"></canvas>
-                        </div>
+                    <div class="server-info" role="group" aria-labelledby="t2" >
+                        <h4 id="t1" class="titulo-cartao" style="text-align: center;">Distribuição de alertas por componente <small>No [Período]</small></h4>
+                        <canvas id="componentesChart" aria-label="Alertas por componente" role="img"></canvas>
                     </div>
                 </section>
 
             </section>
             <section class="sessao-lateral-direita">
-                <section class="sessao-lateral-direita-itens" style="height: 30%;">
+                <section class="sessao-lateral-direita-itens" style="height: 35%;">
                     <section class="velocimetro card">
-                        <h4 id="c1" style="text-align: center;">Disponibilidade <br><small>Durante o [Período]</small>
+                        <h4 id="c1" style="text-align: center; font-size: larger;">Disponibilidade <br><small>Durante o [Período]</small>
                         </h4>
                         <div class="valor grande azul">99.85% <span class="azul">▲</span></div>
                         <p class="legenda">Tempo que os servidores ficaram disponíveis</p>
                     </section>
                     <section class="velocimetro card">
-                        <h4 id="c2" style="text-align: center;">Quantidade total de alertas <br><small>Durante o [Período]</small></h4>
-                        <div class="valor grande vermelho" style="font-size: 40px; margin-bottom: 20px;">12</div>
+                        <h4 id="c2" style="text-align: center; font-size: larger;">Quantidade total de alertas <br><small>Durante o [Período]</small></h4>
+                        <div class="valor grande vermelho" style="font-size: 40px; margin-bottom: 20px;"></div>
                     </section>
                 </section>
                 <section class="sessao-lateral-direita-itens" id="id_sessao_direita_2">
                     <section id="projecao">
                         <div aria-labelledby="lin">
-                            <h4 id="lin" style="font-size: 20px; text-align: center;">Distribuição de alertas ao longo do ano</h4>
+                            <h4 id="lin" style="font-size: larger; text-align: center;">Distribuição de alertas ao longo do ano</h4>
                             <canvas id="linhaAnoChart" aria-label="Distribuição no ano" role="img"
-                                style="height: 200%; width: 200%;"></canvas>
+                                style="height: 300%; width: 200%;"></canvas>
                         </div>
                     </section>
-                </section>
-                <section id="sessao-disco" class="sessao-lateral-direita-itens" style="height: 30%; padding-top: 10px; padding-bottom: 10px;">
-                    <div class="mini">
-                        <h4 style="font-size: 20px;">Projeção de Sobrecarga dos Discos</h4>
-
-                        <div class="servers">
-                            <a href="dashboardSuporteMicro.html" class="name">Servidor 1</a>
-                            <div class="server">
-                            <div class="wrap-mini" style="margin-top: 15px;"><canvas id="mini1"></canvas></div>
-                            </div>
-                            <a href="dashboardSuporteMicro.html">22/12/2025</a>
-
-                            <a href="dashboardSuporteMicro.html" class="name">Servidor 2</a>
-                            <div class="server">
-                                <div class="wrap-mini"><canvas id="mini2"></canvas></div>
-                            </div>
-                            <a href="dashboardSuporteMicro.html">22/04/2026</a>
-
-                            <a href="dashboardSuporteMicro.html" class="name">Servidor 3</a>
-                            <div class="server">
-                                <div class="wrap-mini"><canvas id="mini3"></canvas></div>
-                            </div>
-                            <a href="dashboardSuporteMicro.html">30/11/2026</a>
-
-                        </div>
-                    </div>
                 </section>
             </section>
         </section>
@@ -186,104 +155,6 @@
 
     <script src="js/permissoes.js"></script>
 
-    <script>
-        protegerPagina(['Analista', 'Administrador']);
-        aplicarCargoNaUI();
-
-        Chart.defaults.font.family = "'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif";
-        Chart.defaults.color = "#4b5968";
-        const gridColor = "rgba(0,0,0,.06)";
-
-        // Top 5 Servidores (horizontal)
-        new Chart(document.getElementById('topServidoresChart'), {
-            type: 'bar',
-            data: {
-                labels: ['SERV-PACS', 'PACS-2', 'PACS-3', 'PACS-4', 'PACS-5'],
-                datasets: [{ label: 'Alertas', data: [30, 18, 12, 9, 6], borderRadius: 10, backgroundColor: '#32b9cd' }]
-            },
-            options: {
-                indexAxis: 'y',
-                plugins: { legend: { display: true, labels: { boxWidth: 10, usePointStyle: true, pointStyle: 'circle' } } },
-                scales: {
-                    x: { grid: { color: gridColor }, border: { display: false }, ticks: { stepSize: 5 } },
-                    y: { grid: { display: false }, border: { display: false } }
-                }
-            }
-        });
-
-        // Componentes (barras)
-        new Chart(document.getElementById('componentesChart'), {
-            type: 'bar',
-            data: {
-                labels: ['CPU', 'RAM', 'DISCO'],
-                datasets: [{ data: [8, 12, 16], backgroundColor: ['#32b9cd', '#32b9cd', '#32b9cd'], borderRadius: 12 }]
-            },
-            options: {
-                plugins: { legend: { display: false } },
-                scales: {
-                    x: { grid: { display: false }, border: { display: false } },
-                    y: { grid: { color: gridColor }, border: { display: false }, beginAtZero: true, ticks: { stepSize: 5 } }
-                }
-            }
-        });
-
-        // Linha anual
-        new Chart(document.getElementById('linhaAnoChart'), {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                datasets: [{
-                    label: 'Alertas', data: [25, 12, 15, 10, 14, 32, 18, 9, 6, 3, 1, 2], borderColor: '#32b9cd',
-                    pointBackgroundColor: '#32bccd', pointRadius: 3.5, fill: false, tension: .35
-                }]
-            },
-            options: {
-                plugins: { legend: { display: false, labels: { boxWidth: 5, usePointStyle: true, pointStyle: 'circle' } } },
-                scales: {
-                    x: { grid: { display: false }, border: { display: false } },
-                    y: { grid: { color: gridColor }, border: { display: false }, beginAtZero: true }
-                }
-            }
-        });
-
-        const minis = [
-            { id: 'mini1', valor: 90, cor: '#32b9cd' },
-            { id: 'mini2', valor: 40, cor: '#32b9cd' },
-            { id: 'mini3', valor: 20, cor: '#32b9cd' }
-        ];
-
-        minis.forEach(({ id, valor, cor }) => {
-            const el = document.getElementById(id);
-            if (!el) return;
-            new Chart(el, {
-                type: 'bar',
-                data: {
-                    labels: [''],
-                    datasets: [{
-                        label: 'Uso (%)',
-                        data: [valor],
-                        backgroundColor: cor,
-                        borderRadius: 8,
-                        barPercentage: 0.7,
-                        categoryPercentage: 1.0
-                    }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${c.raw}%` } } },
-                    scales: {
-                        x: {
-                            min: 0, max: 100,
-                            ticks: { callback: v => v + '%' },
-                            grid: { display: false }, border: { display: false }
-                        },
-                        y: { grid: { display: false }, border: { display: false } }
-                    }
-                }
-            });
-        });
-    </script>
+    <script src="js/dashAnalista.js"></script>
 
 </body>

@@ -226,7 +226,7 @@ header {
 }
 
 .sessao-lateral-esquerda {
-  width: 35%;
+  width: 45%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -234,19 +234,17 @@ header {
 }
 
 .sessao-lateral-direita {
-  width: 65%;
+  width: 55%;
   height: 100%;
-  /* background-color: rgb(163, 233, 163); */
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   align-items: center;
   margin-right: 20px;
 }
 
 .sessao-lateral-direita-itens {
   width: 100%;
-  height: 50%;
+  height: 65%;
   padding-left: 10px;
   padding-right: 10px;
   border-radius: 10px;
@@ -255,7 +253,6 @@ header {
   justify-content: space-around;
   align-items: center;
   margin-bottom: 10px;
-
   box-shadow: var(--shadow);
 }
 
@@ -263,7 +260,8 @@ header {
   border-radius: 10px;
   background-color: #c5c5c5;
   box-shadow: var(--shadow);
-  padding: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
   height: 98%;
   align-items: center;
   justify-content: space-around;
@@ -272,6 +270,9 @@ header {
   width: 90%;
 }
 
+.sessao-lateral-esquerda-itens canvas {
+  height: 30%;
+}
 
 .sessao-lateral-direita-itens section {
   height: 90%;
@@ -295,7 +296,6 @@ img {
 #card_processos{
   height: 77%;
   border-radius: 5px;
-  margin-bottom: 20px;
 }
 
 
@@ -303,7 +303,7 @@ img {
 /*                  TÍTULOS DE SEÇÕES                 */
 /* -------------------------------------------------- */
 .section-title {
-  font-size: 1.4rem;
+  font-size: 2.4rem;
   font-weight: 600;
   color: #222;
   margin: 1rem 0 0.5rem;
@@ -328,12 +328,12 @@ img {
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  height: 80%;
+  height: 100%;
   padding: 10px;
 }
 
 #projecao{
-  height: 90%;
+  height: 95%;
   width: 100%;
   background-color: white;
   border-radius: 10px;
@@ -552,7 +552,7 @@ img {
   padding: 2% 5%;
   border-radius: 10px;
   font-size: 20px;
-  height: 50%;
+  height: 48%;
   width: 100%;
 }
 
@@ -561,6 +561,8 @@ img {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
   transition: 0.5s;
 }
+
+.sessao-lateral-esquerda
 
 .processes {
   background-color: white;
