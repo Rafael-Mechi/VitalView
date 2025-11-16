@@ -26,6 +26,7 @@ var historicoAlertaRouter = require("./src/routes/historicoAlertas")
 var dashboardMacroRouter = require("./src/routes/dashboardMacroRoutes");
 var dashboardAnalistaRouter = require("./src/routes/dashboardAnalistaRoutes");
 var dashboardDiscoRouter = require("./src/routes/dashDiscoRoutes")
+var dashboardGerImagem = require("./src/routes/gerImagemRoutes")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -42,6 +43,7 @@ app.use("/historico-alertas", historicoAlertaRouter)
 app.use("/servidores", dashboardMacroRouter);
 app.use("/analista", dashboardAnalistaRouter);
 app.use("/dashDiscoRoutes", dashboardDiscoRouter)
+app.use("/ger-imagem", dashboardGerImagem)
 
 app.listen(PORTA_APP, function () {
     console.log(`

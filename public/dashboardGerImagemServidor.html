@@ -10,7 +10,7 @@
     <script src="js/sessao.js"></script>
 </head>
 
-<body>
+<body onload="carregarInformacoes()">
     <nav class="menu">
         <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
 
@@ -195,6 +195,31 @@
 
     <script>
         let idHospitalVar = sessionStorage.FK_HOSPITAL;
+
+        let key = "suporte/gerenciamento-imagens/1_srv1_hsl.json";
+        let key2 = "1_srv1_hsl.json";
+
+        function carregarInformacoes(){
+            fetch(`/ger-imagem/buscar-dados-bucket/${encodeURIComponent(key)}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        response.json().then(resposta => {
+                            console.log("Dado recebido: ", resposta);
+                        })
+                    }
+                })
+                .catch((erro) => {
+                    console.error("Erro na requisição: ", erro);
+                    alert("Erro na conexão com o servidor.");
+                });
+        }
+
+
 
         const labels = [
             'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
