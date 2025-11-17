@@ -1,3 +1,4 @@
+// CERTIFICAR QUE JA TEM OS ARQUIVOS NO BUCKET E COM O NOME CERTO JSON DE PROCESSOS E JSON DE DADOS
 const params = new URLSearchParams(window.location.search);
 protegerPagina(['Técnico', 'Administrador']);
 aplicarCargoNaUI();
@@ -82,10 +83,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (dadosBucket.length > 0) {
             dadosRecebidos = dadosBucket;
             console.log(dadosRecebidos)
-            discoTotal = bytesParaGB(dadosRecebidos[0]["Disco total (bytes)"]);
-            ramTotal = bytesParaGB(dadosRecebidos[0]["RAM total (bytes)"]);
-            discoUsado = bytesParaGB(dadosRecebidos[0]["Disco usado (bytes)"])
-            discoLivre = bytesParaGB(dadosRecebidos[0]["Disco livre (bytes)"])
+            discoTotal = bytesParaGB(dadosRecebidos[0]["Disco_total_(bytes)"]);
+            ramTotal = bytesParaGB(dadosRecebidos[0]["RAM_total_(bytes)"]);
+            discoUsado = bytesParaGB(dadosRecebidos[0]["Disco_usado_(bytes)"])
+            discoLivre = bytesParaGB(dadosRecebidos[0]["Disco_livre_(bytes)"])
         }
 
         if (dadosProcessos.length > 0) {
@@ -104,14 +105,63 @@ document.addEventListener("DOMContentLoaded", async () => {
         servidorDesconectado()
         document.getElementById("loading").style.display = "none";
         document.getElementById("main-container").style.display = "flex";
-
     }
 });
 
 function servidorDesconectado() {
 
-    const velocimetroram2 = document.getElementById('velocimetroram2').getContext('2d');
+    const statusServidor = document.getElementById("ativo-inativo-desconectado");
+    statusServidor.textContent = "Inativo";
+    statusServidor.style.backgroundColor = "#f75454";
 
+    const saudeServidor = document.getElementById("texto-saude-servidor");
+    saudeServidor.textContent = "Inativo";
+    saudeServidor.style.color = "#f75454";
+    
+    const uptimeSistema = document.getElementById("uptimeServidor");
+    uptimeSistema.style.color = "#f75454";
+
+    const uptimeSistemaSeta = document.getElementById("uptimeServidorSeta");
+    uptimeSistemaSeta.style.color = "#f75454";
+
+    const tbody = document.getElementById("tbody-processos");
+
+    const tr = `
+    <tr>
+        <td>Processo Inativo</td>
+        <td>0%</td>
+        <td>0%</td>
+        <td><span class="status ativo" id="ativo-processo" style="background-color:#f75454">Inativo</span></td>
+    </tr>
+    <tr>
+        <td>Processo Inativo</td>
+        <td>0%</td>
+        <td>0%</td>
+        <td><span class="status ativo" id="ativo-processo" style="background-color:#f75454">Inativo</span></td>
+    </tr>
+    <tr>
+        <td>Processo Inativo</td>
+        <td>0%</td>
+        <td>0%</td>
+        <td><span class="status ativo" id="ativo-processo" style="background-color:#f75454">Inativo</span></td>
+    </tr>
+    <tr>
+        <td>Processo Inativo</td>
+        <td>0%</td>
+        <td>0%</td>
+        <td><span class="status ativo" id="ativo-processo" style="background-color:#f75454">Inativo</span></td>
+    </tr>
+    <tr>
+        <td>Processo Inativo</td>
+        <td>0%</td>
+        <td>0%</td>
+        <td><span class="status ativo" id="ativo-processo" style="background-color:#f75454">Inativo</span></td>
+    </tr>
+    `;
+
+    tbody.insertAdjacentHTML("beforeend", tr);
+
+    const velocimetroram2 = document.getElementById('velocimetroram2').getContext('2d');
     usoCPU = 0
 
     chartCPU = new Chart(velocimetroram2, {
@@ -215,7 +265,7 @@ function servidorDesconectado() {
             labels: [`Livre ${0} GB`, `Usado ${0}GB`],
             datasets: [{
                 data: [100 - porcentagemDiscoUsado, porcentagemDiscoUsado],
-                backgroundColor: ['#6ce5e8', '#2d8bba'],
+                backgroundColor: ['#f75454', '#ca1c1cff'],
                 borderWidth: 1
             }]
         },
@@ -238,9 +288,12 @@ function servidorDesconectado() {
             }
         }
     });
+
 }
 
 function plotarDados(dadosBucket, dadosProcessos) {
+
+    document.getElementById("ativo-inativo-desconectado").textContent = "Ativo";
     detalhesServidor();
     utilizaçãoDeDisco();
     utilizacaoCPU(dadosBucket);
@@ -248,6 +301,8 @@ function plotarDados(dadosBucket, dadosProcessos) {
     escolherServidor();
     uptimeSistema(dadosBucket);
     processosServidor(dadosProcessos);
+    totalAlertas(dadosBucket);
+
 
     // Esconde o loading e mostra o conteúdo
     document.getElementById("loading").style.display = "none";
@@ -256,19 +311,7 @@ function plotarDados(dadosBucket, dadosProcessos) {
 
 function processosServidor(dadosProcessos) {
 
-    // const containerListaProcessos = document.querySelector("#card_processos");
-
     const tbody = document.getElementById("tbody-processos");
-
-    // const thead = document.querySelector("#card_processos table thead");
-
-    // if (!tbody) {
-    //     console.error("TBody não encontrado.");
-    //     return;
-    // }
-
-    // // Limpa apenas o tbody, mantendo a tabela e o scroll
-    // tbody.innerHTML = "";
 
     dadosProcessos.forEach(processo => {
 
@@ -295,11 +338,6 @@ function processosServidor(dadosProcessos) {
     });
 }
 
-
-
-
-
-
 function detalhesServidor() {
     document.getElementById("ip").textContent = ip;
     document.getElementById("hostName").textContent = hostname;
@@ -315,14 +353,30 @@ function bytesParaGB(bytes) {
 
 function totalAlertas(dadosBucket) {
 
-    totalDeAlertas = dadosBucket[i]["Uptime (s)"]
+    totalDeAlertas = 0
+
+    for (i = 0; i < dadosBucket.length; i++) {
+        if (dadosBucket[i]["alertaCpu"] == "sim") {
+            totalDeAlertas++
+        }
+        if (dadosBucket[i]["alertaRam"] == "sim") {
+            totalDeAlertas++
+        }
+        if (dadosBucket[i]["alertaDisco"] == "sim") {
+            totalDeAlertas++
+        }
+    }
+
+    console.log(totalDeAlertas)
+
+    document.getElementById("alertas-totais").textContent = totalDeAlertas;
 
 }
 
 function uptimeSistema(dadosBucket) {
     let i = 0
 
-    upTime = dadosBucket[0]["Uso de CPU"]
+    upTime = dadosBucket[0]["Uptime_(s)"]
 
     const interval = setInterval(() => {
         if (i >= dadosBucket.length) {
@@ -330,13 +384,12 @@ function uptimeSistema(dadosBucket) {
             return;
         }
 
-        upTime = dadosBucket[i]["Uptime (s)"]
-        console.log(upTime)
+        upTime = dadosBucket[i]["Uptime_(s)"]
 
         document.getElementById("uptimeServidor").textContent = upTime;
 
         i++;
-    }, 2500); // executa a cada 2.5s
+    }, 1500); // executa a cada 2.5s
 }
 
 function escolherServidor() {
@@ -371,7 +424,7 @@ function utilizacaoCPU(dadosBucket) {
 
     const velocimetroram2 = document.getElementById('velocimetroram2').getContext('2d');
 
-    usoCPU = dadosBucket[0]["Uso de CPU"]
+    usoCPU = dadosBucket[0]["Uso_de_Cpu"]
 
     chartCPU = new Chart(velocimetroram2, {
         type: 'doughnut',
@@ -424,13 +477,13 @@ function utilizacaoCPU(dadosBucket) {
             return;
         }
 
-        usoCPU = dadosBucket[i]["Uso de CPU"]
+        usoCPU = dadosBucket[i]["Uso_de_Cpu"]
 
         chartCPU.data.datasets[0].data = [usoCPU, 100 - usoCPU];
         chartCPU.update();
 
         i++;
-    }, 2500); // executa a cada 2.5s
+    }, 1500); // executa a cada 2.5s
 
 }
 
@@ -439,7 +492,7 @@ function utilizacaoDeRam(dadosBucket) {
 
     const velocimetroram = document.getElementById('velocimetroram').getContext('2d');
 
-    usoRAM = dadosBucket[0]["Uso de RAM"]
+    usoRAM = dadosBucket[0]["Uso_de_RAM"]
 
     chartRAM = new Chart(velocimetroram, {
         type: 'doughnut',
@@ -491,13 +544,34 @@ function utilizacaoDeRam(dadosBucket) {
             return;
         }
 
-        usoRAM = dadosBucket[i]["Uso de RAM"]
+        usoRAM = dadosBucket[i]["Uso_de_RAM"]
 
         chartRAM.data.datasets[0].data = [usoRAM, 100 - usoRAM];
         chartRAM.update();
 
         i++;
-    }, 2500); // executa a cada 2.5s
+    }, 1500);
+
+}
+
+function distribuicaoDeAlertasPorComponente(dadosBucket) {
+    let i = 0;
+
+    
+
+    const interval = setInterval(() => {
+        if (i >= dadosBucket.length) {
+            clearInterval(interval); // para o setInterval quando terminar
+            return;
+        }
+
+        usoRAM = dadosBucket[i]["Uso_de_RAM"]
+
+        chartRAM.data.datasets[0].data = [usoRAM, 100 - usoRAM];
+        chartRAM.update();
+
+        i++;
+    }, 1500);
 
 }
 
