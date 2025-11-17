@@ -96,6 +96,33 @@ insert into tipoComponente(nome) values(
        ("Disco")
 );
 
+insert into tipoComponente(nome) values( 
+       ("Download")
+);
+
+insert into tipoComponente(nome) values( 
+       ("Upload")
+);
+
+insert into tipoComponente(nome) values( 
+       ("PacoteIn")
+);
+
+insert into tipoComponente(nome) values( 
+       ("PacoteOut")
+);
+
+insert into tipoComponente(nome) values( 
+       ("Conexao")
+);
+
+insert into tipoComponente(nome) values( 
+       ("Latencia")
+);
+
+insert into tipoComponente(nome) values( 
+       ("PerdaPacote")
+);
 
 create table componentes (
     idComponente int primary key auto_increment,
@@ -110,7 +137,6 @@ create table componentes (
     foreign key(fkServidor) references servidores(idServidor)
 );
 use VitalView;
-
 
 create table alerta(
 id int primary key auto_increment,
@@ -167,7 +193,14 @@ insert into servidores(hostname, ip, localizacao, fkHospital, fkUsuario) values
 insert into componentes(fkTipo, fkServidor, limite) values
 (1, 1, 83.5),
 (2, 1, 41.6),
-(3, 1, 90.0);
+(3, 1, 90.0),
+(4, 1, 9.0),
+(5, 1, 0.1),
+(6, 1, 37.1),
+(7, 1, 4.6),
+(8, 1, 34),
+(9, 1, 18.8),
+(10, 1, 0.5);	
 
 insert into componentes(fkTipo, fkServidor, limite) values 
 ('1', '3', 99.0),
@@ -203,3 +236,10 @@ INSERT INTO correcao_alerta (data_correcao, fkAlerta, fkUsuario) VALUES
 ('2025-11-05 08:50:00', 104, 5);
 
 select * from usuario;
+
+select * from componentes;
+
+select * from alerta;
+
+select * from correcao_alerta;
+
