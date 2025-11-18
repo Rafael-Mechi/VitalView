@@ -27,6 +27,7 @@ var dashboardMacroRouter = require("./src/routes/dashboardMacroRoutes");
 var dashboardAnalistaRouter = require("./src/routes/dashboardAnalistaRoutes");
 var dashboardDiscoRouter = require("./src/routes/dashDiscoRoutes")
 var dashboardGerImagem = require("./src/routes/gerImagemRoutes")
+var reqJira = require("./src/routes/jiraRoutes")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -44,6 +45,7 @@ app.use("/servidores", dashboardMacroRouter);
 app.use("/analista", dashboardAnalistaRouter);
 app.use("/dashDiscoRoutes", dashboardDiscoRouter)
 app.use("/ger-imagem", dashboardGerImagem)
+app.use("/jira", reqJira)
 
 app.listen(PORTA_APP, function () {
     console.log(`

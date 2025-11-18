@@ -59,10 +59,10 @@
             <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
                 src="./assets/dashboard-icons/layout.svg" style="width: 20px; margin-right: 4px;"><a
                 href="dashboardSuporteMicro.html">Dash Suporte Micro</a></li>
-                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador">
-                    <img src="./assets/dashboard-icons/wifi (1).svg" style="width: 20px; margin-right: 4px;"><a
-                        href="dashRede.html">Dashboard Rede</a>
-                </li>
+            <li style="display: flex; align-items: center;" data-role="Técnico,Administrador">
+              <img src="./assets/dashboard-icons/wifi (1).svg" style="width: 20px; margin-right: 4px;"><a
+                href="dashRede.html">Dashboard Rede</a>
+            </li>
           </div>
 
           <div class="menu_baixo">
@@ -112,13 +112,10 @@
       <table class="tabela-alertas">
         <thead>
           <tr>
-            <th id="th-sup-esquerdo">ID do alerta</th>
-            <th>Servidor</th>
-            <th>Data e hora do alerta</th>
-            <th>Componente</th>
-            <th>Registro</th>
+            <th id="th-sup-esquerdo">ID do chamado</th>
+            <th>Descrição</th>
             <th>Status</th>
-            <th id="th-sup-direito">Ações</th>
+            <th id="th-sup-direito">Link para o chamado</th>
           </tr>
         </thead>
         <tbody id="info-alertas">
@@ -140,6 +137,34 @@
 
   function carregarInformacoes() {
     buscarHistoricoAlertas();
+    buscarAlertasJira();
+  }
+
+  async function buscarAlertasJira() {
+    let tbodyAlertas = document.getElementById("info-alertas");
+    tbodyAlertas.innerHTML = "";
+
+    let tickets = await (await fetch("/jira/buscar-historico-alertas")).json()
+    console.log(tickets);
+    
+    
+    for(let i = 0; i <= tickets.issues.length; i++){
+      let id = tickets.issues[i].id;
+      let descr = tickets.issues[i].fields.summary;
+      let status = tickets.issues[i].fields.status.name;
+      let url = `https://vitalviewsptech.atlassian.net/jira/servicedesk/projects/SUP/queues/custom/1/${tickets.issues[i].key}`
+      
+      let linha = `
+      <tr>
+        <td>${id}</td>
+        <td>${descr}</td>
+        <td>${status}</td>
+        <td><a href="${url}" target="_blank">${url}</a></td>
+      </tr>
+    `;
+
+      tbodyAlertas.innerHTML += linha;
+    }
   }
 
   function buscarHistoricoAlertas() {
@@ -153,7 +178,7 @@
         if (response.ok) {
           response.json().then(resposta => {
             console.log("Dado recebido: ", resposta);
-            gerarTabelaAlertas(resposta)
+            //gerarTabelaAlertas(resposta)
           })
         }
       })

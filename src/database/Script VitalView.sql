@@ -74,11 +74,10 @@ create table servidores (
     foreign key(fkUsuario) references usuario(idUsuario)
 );
 
--- insert into servidores (hostname, ip, fkHospital) values
--- ('Servidor Principal', '192.168.0.10', 1),
--- ('Servidor Backup', '192.168.0.11', 1);
-
-
+insert into servidores (hostname, ip, localizacao, fkHospital) values
+('Servidor Principal', '192.168.0.10', 'ala01', 1),
+('Servidor Backup', '192.168.0.11', 'ala2', 1),
+('srv1', '123.123.0.33', 'alab', 1);
 
 
 create table tipoComponente (
@@ -97,31 +96,7 @@ insert into tipoComponente(nome) values(
 );
 
 insert into tipoComponente(nome) values( 
-       ("Download")
-);
-
-insert into tipoComponente(nome) values( 
-       ("Upload")
-);
-
-insert into tipoComponente(nome) values( 
-       ("PacoteIn")
-);
-
-insert into tipoComponente(nome) values( 
-       ("PacoteOut")
-);
-
-insert into tipoComponente(nome) values( 
-       ("Conexao")
-);
-
-insert into tipoComponente(nome) values( 
-       ("Latencia")
-);
-
-insert into tipoComponente(nome) values( 
-       ("PerdaPacote")
+       ("Rede")
 );
 
 create table componentes (
@@ -136,6 +111,43 @@ create table componentes (
     foreign key (fkTipo) references tipoComponente(idTipo),
     foreign key(fkServidor) references servidores(idServidor)
 );
+
+create table rede (
+idRede int primary key auto_increment,
+    metrica VARCHAR(45) not null unique
+);
+
+insert into rede (metrica) values
+("Download"),
+("Upload"),
+("PacoteIn"),
+("PacoteOut"),
+("Conexao"),
+("Latencia"),
+("PerdaPacote");
+
+create table limiteRede (
+    idlimite int primary key auto_increment,
+    fkRede int not null,
+    fkServidor int not null,
+    
+    limite decimal(4, 1) not null,
+    
+    constraint chk_limite_rede check (limite <= 100.0),
+    
+    foreign key (fkRede) references rede(idRede),
+    foreign key(fkServidor) references servidores(idServidor)
+    ); 
+    
+insert into limiteRede (fkRede, fkServidor, limite) values 
+(1, 3, 9.0),
+(2, 3, 0.1),
+(3, 3, 37.1),
+(4, 3, 4.6),
+(5, 3, 34),
+(6, 3, 18.8),
+(7, 3, 0.5);
+
 use VitalView;
 
 create table alerta(
@@ -193,20 +205,18 @@ insert into servidores(hostname, ip, localizacao, fkHospital, fkUsuario) values
 insert into componentes(fkTipo, fkServidor, limite) values
 (1, 1, 83.5),
 (2, 1, 41.6),
-(3, 1, 90.0),
-(4, 1, 9.0),
-(5, 1, 0.1),
-(6, 1, 37.1),
-(7, 1, 4.6),
-(8, 1, 34),
-(9, 1, 18.8),
-(10, 1, 0.5);	
+(3, 1, 90.0);	
 
 insert into componentes(fkTipo, fkServidor, limite) values 
 ('1', '3', 99.0),
 ('2', '3', 89.0),
 ('3', '3', 80.0),
 ('1', '4', 96.0);
+
+
+insert into componentes (fkTipo, fkServidor, limite) values
+(4, 3, 100.0);
+
 
 -- ALERTAS do hospital 2
 INSERT INTO alerta (id, data_alerta, registro, fkComponente)
@@ -243,3 +253,6 @@ select * from alerta;
 
 select * from correcao_alerta;
 
+select * from rede;
+
+select * from limiteRede;
