@@ -114,7 +114,7 @@
 
                 <div class="kpi">
                     <h2>Tamanho médio das imagens</h3>
-                    <h2 style="color: #32b9cd;">3MB</h2>
+                        <h2 style="color: #32b9cd;">3MB</h2>
                 </div>
             </div>
 
@@ -142,46 +142,12 @@
                                 <th id="th-sup-esquerdo">Nome do arquivo</th>
                                 <th>Tamanho</th>
                                 <th>Data de geração</th>
-                                <th id="th-sup-direito">Tempo no sistema</th>
+                                <th >Tempo no sistema</th>
+                                <th id="th-sup-direito">Excluir</th>
                             </tr>
                         </thead>
-                        <tbody id="info-alertas-resolvidos">
-                            <tr>
-                                <td>raiox_cranio.jpg</td>
-                                <td>3.1MB</td>
-                                <td>10/03/2005</td>
-                                <td>20 anos</td>
-                            </tr>
-                            <tr>
-                                <td>tomografia_torax.jpg</td>
-                                <td>2.9MB</td>
-                                <td>22/07/2001</td>
-                                <td>24 anos</td>
-                            </tr>
-                            <tr>
-                                <td>ressonancia_coluna.jpg</td>
-                                <td>4.2MB</td>
-                                <td>15/11/2005</td>
-                                <td>20 anos</td>
-                            </tr>
-                            <tr>
-                                <td>ultrassom_abdominal.jpg</td>
-                                <td>1.8MB</td>
-                                <td>03/05/2004</td>
-                                <td>21 anos</td>
-                            </tr>
-                            <tr>
-                                <td>angiografia_cerebral.dcm</td>
-                                <td>5.7MB</td>
-                                <td>28/09/2003</td>
-                                <td>22 anos</td>
-                            </tr>
-                            <tr>
-                                <td>tomografia_cerebro.jpg</td>
-                                <td>2.3MB</td>
-                                <td>01/11/2000</td>
-                                <td>25 anos</td>
-                            </tr>
+                        <tbody id="info-imagens">
+                            
                         </tbody>
                     </table>
                 </div>
@@ -195,11 +161,12 @@
 
     <script>
         let idHospitalVar = sessionStorage.FK_HOSPITAL;
+        let idUsuario = sessionStorage.ID_USUARIO;
 
         let key = "suporte/gerenciamento-imagens/1_srv1_hsl.json";
         let key2 = "1_srv1_hsl.json";
 
-        function carregarInformacoes(){
+        function carregarInformacoes() {
             fetch(`/ger-imagem/buscar-dados-bucket/${encodeURIComponent(key)}`, {
                 method: "GET",
                 headers: {
@@ -210,6 +177,7 @@
                     if (response.ok) {
                         response.json().then(resposta => {
                             console.log("Dado recebido: ", resposta);
+                            gerarTabelaImagens(resposta);
                         })
                     }
                 })
@@ -219,7 +187,75 @@
                 });
         }
 
+        function gerarTabelaImagens(dados) {
+            let tbodyImagens = document.getElementById("info-imagens");
+            tbodyImagens.innerHTML = "";
 
+            let caminhoImagem;
+            let nomeArquivo;
+            let tamanho;
+            let dataGeracao;
+            let tempoNoSistema;
+
+            for(let i = 0; i < dados.length; i++){
+                let registro = dados[i];
+
+                caminhoImagem = registro.caminho_arquivo;
+                nomeArquivo = registro.nome_arquivo;
+                tamanho = registro.tamanho;
+                dataGeracao = registro.data_geracao;
+                tempoNoSistema = registro.anos_no_sistema;
+
+                let linha = `
+                <tr>
+                    <td hidden>${caminhoImagem}</td>
+                    <td>${nomeArquivo}</td>
+                    <td>${tamanho} MB</td>
+                    <td>${dataGeracao}</td>
+                    <td>${tempoNoSistema} anos</td>
+                    <td class="acao-icons">
+                        <button class="btn-excluir-usuario" onclick="excluirImagem(this)">&#x1F5D1;</button>
+                    </td>
+                </tr>
+                `
+                
+                tbodyImagens.innerHTML += linha;
+            }
+        }
+
+        function excluirImagem(botao){
+            
+            let linha = botao.closest("tr");
+            let colunas = linha.querySelectorAll("td");
+
+            let caminhoArquivo = colunas[0].textContent;
+            console.log(caminhoArquivo);
+            console.log(idUsuario);
+            
+            
+            let dataCriacao = new Date();
+            let dataMySQL = dataCriacao.toISOString().slice(0, 19).replace('T', ' ');
+
+            fetch(`ger-imagem/excluir-imagem/${idUsuario}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    idUsuarioServer: idUsuario,
+                    dataServer: dataMySQL,
+                    caminhoArquivoServer: caminhoArquivo
+                })
+            }).then(function (resposta) {
+                if (resposta.ok) {
+                    console.log(resposta);
+                    alert(`Imagem deletada com sucesso!`)
+                }
+
+            }).catch(function (erro) {
+                console.log(erro);
+            })
+        }
 
         const labels = [
             'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
@@ -244,60 +280,60 @@
                 }]
             },
             options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        title: {
-            display: true,
-            text: 'Crescimento de Imagens - srv1',
-            color: 'white',
-            font: {
-                size: 20,
-                family: 'Barlow, sans-serif',
-                weight: 'bold'
-            }
-        },
-        legend: {
-            display: true,
-            position: 'top',
-            labels: {
-                color: 'white',
-                font: {
-                    family: 'Barlow, sans-serif'
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Crescimento de Imagens - srv1',
+                        color: 'white',
+                        font: {
+                            size: 20,
+                            family: 'Barlow, sans-serif',
+                            weight: 'bold'
+                        }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: 'white',
+                            font: {
+                                family: 'Barlow, sans-serif'
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 1000,
+                        ticks: {
+                            color: 'white',
+                            font: {
+                                family: 'Barlow, sans-serif'
+                            }
+                        },
+                        title: {
+                            display: false
+                        },
+                        grid: {
+                            color: 'rgba(255,255,255,0.2)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: 'white',        // <<< números/nomes do eixo X
+                            font: {
+                                family: 'Barlow, sans-serif'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255,255,255,0.2)'
+                        }
+                    }
                 }
             }
-        }
-    },
-    scales: {
-        y: { 
-            min: 0, 
-            max: 1000,
-            ticks: {
-                color: 'white',
-                font: {
-                    family: 'Barlow, sans-serif'
-                }
-            },
-            title: {
-                display: false
-            },
-            grid: {
-                color: 'rgba(255,255,255,0.2)'
-            }
-        },
-        x: {
-            ticks: {
-                color: 'white',        // <<< números/nomes do eixo X
-                font: {
-                    family: 'Barlow, sans-serif'
-                }
-            },
-            grid: {
-                color: 'rgba(255,255,255,0.2)'
-            }
-        }
-    }
-}
 
         });
     </script>

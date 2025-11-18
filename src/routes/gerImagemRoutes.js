@@ -12,6 +12,10 @@ router.get("/buscar-dados-bucket/:key", function(req, res){
     gerImagemController.pegarDadosBucket(req,res);
 })
 
+router.post("/excluir-imagem/:idUsuario", function (req, res) {
+    gerImagemController.excluirImagem(req, res);
+});
+
 // router.get("/buscar-servidores", function(req, res){
 //     suporteMicroController.buscarListaServidores(req,res);
 // })

@@ -53,8 +53,31 @@ async function pegarDadosBucket(req, res) {
     }
 }
 
+function excluirImagem(req, res) {
+    let idUsuario = req.body.idUsuarioServer;
+    let caminho = req.body.caminhoArquivoServer;
+    let data = req.body.dataServer;
 
+    gerImagemModel.excluirImagem(caminho, data, idUsuario)
+        .then(
+            function (resultadoBuscarUsuario){
+                res.json(resultadoBuscarUsuario);
+                console.log(resultadoBuscarUsuario);
+            }
+
+        ).catch(
+            function(erro){
+                console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao tentar excluir esta imagem! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+            }
+        )
+}
 
 module.exports = {
-    pegarDadosBucket
+    pegarDadosBucket,
+    excluirImagem
 }

@@ -60,8 +60,16 @@ create table usuario (
 	foreign key (fkcargo) references cargo(idcargo)
 );
 
-
-
+create table exclusaoAlerta(
+	id int primary key auto_increment,
+    caminhoImagem varchar(155) not null,
+    apagavel tinyint default 1,
+    dataHora datetime not null,
+    
+    fkUsuario int not null,
+    
+    foreign key fkUsuario (fkUsuario) references usuario(idUsuario)
+);
 
 create table servidores (
     idServidor int primary key auto_increment,
