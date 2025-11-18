@@ -146,20 +146,29 @@
 
     let tickets = await (await fetch("/jira/buscar-historico-alertas")).json()
     console.log(tickets);
-    
-    
-    for(let i = 0; i <= tickets.issues.length; i++){
+
+
+    for (let i = 0; i <= tickets.issues.length; i++) {
       let id = tickets.issues[i].id;
       let descr = tickets.issues[i].fields.summary;
       let status = tickets.issues[i].fields.status.name;
       let url = `https://vitalviewsptech.atlassian.net/jira/servicedesk/projects/SUP/queues/custom/1/${tickets.issues[i].key}`
-      
+
+      let registroStatus = ""
+      if (status == "Open") {
+        registroStatus = `<span class="status critico">${status}</span>`;
+      }
+      else {
+        registroStatus = `<span class="status resolvido">${status}</span>`;
+      }
+
+
       let linha = `
       <tr>
         <td>${id}</td>
         <td>${descr}</td>
-        <td>${status}</td>
-        <td><a href="${url}" target="_blank">${url}</a></td>
+        <td>${registroStatus}</td>
+        <td><a href="${url}" target="_blank" style="color:#007bff; text-decoration:underline;">${url}</a></td>
       </tr>
     `;
 
