@@ -102,14 +102,13 @@
         <div class="container-principal">
             <div class="container-graficos">
                 <div class="kpi">
-                    <h2>Total de imagens</h2>
-                    <h2 style="color: #32b9cd;">867</h2>
+                    <h2>Imagem mais pesada:</h2>
+                    <h2 style="color: #32b9cd;">gato-siames.jpg - 1.27MB</h2>
                 </div>
 
                 <div class="kpi">
-                    <h2>Uso de disco (arquivos do tipo imagem)</h2>
-                    <h2 style="color: #32b9cd;">800GB/1024GB</h2>
-                    <h5>912GB/1024GB</h5>
+                    <h2>Crescimento médio de imagens</h2>
+                    <h2 style="color: #32b9cd;">140</h2>
                 </div>
 
                 <div class="kpi">
@@ -121,7 +120,7 @@
             <div class="tabela-alertas">
                 <div class="tabela-header">
                     <div>
-                        <h2>Imagens que podem ser removidas: <b>6</b></h2>
+                        <h2>Imagens que podem ser removidas: <b>3</b></h2>
                     </div>
                     <div class="div_filtro">
                         <span>Filtrar por:</span>
@@ -229,27 +228,21 @@
             let colunas = linha.querySelectorAll("td");
 
             let caminhoArquivo = colunas[0].textContent;
-            console.log(caminhoArquivo);
-            console.log(idUsuario);
+            let tempoNoSistema = colunas[3].textContent;
             
-            
-            let dataCriacao = new Date();
-            let dataMySQL = dataCriacao.toISOString().slice(0, 19).replace('T', ' ');
-
-            fetch(`ger-imagem/excluir-imagem/${idUsuario}`, {
+            fetch(`jira/abrir-chamado-exclusao`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    idUsuarioServer: idUsuario,
-                    dataServer: dataMySQL,
-                    caminhoArquivoServer: caminhoArquivo
+                    caminhoArquivoServer: caminhoArquivo,
+                    tempoNoSistemaServer: tempoNoSistema
                 })
             }).then(function (resposta) {
                 if (resposta.ok) {
                     console.log(resposta);
-                    alert(`Imagem deletada com sucesso!`)
+                    alert(`Chamado para exclusão aberta com sucesso!`)
                 }
 
             }).catch(function (erro) {

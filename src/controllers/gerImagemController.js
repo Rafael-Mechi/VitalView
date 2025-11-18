@@ -77,7 +77,28 @@ function excluirImagem(req, res) {
         )
 }
 
+function buscarExclusoes(){
+    gerImagemModel.buscarExclusoes()
+        .then(
+            function (resultado){
+                res.json(resultado);
+                console.log(resultado);
+            }
+
+        ).catch(
+            function(erro){
+                console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao tentar buscar exclusões! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+            }
+        )
+}
+
 module.exports = {
     pegarDadosBucket,
-    excluirImagem
+    excluirImagem,
+    buscarExclusoes
 }

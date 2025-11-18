@@ -16,6 +16,10 @@ router.post("/excluir-imagem/:idUsuario", function (req, res) {
     gerImagemController.excluirImagem(req, res);
 });
 
+router.get("/buscar-exclusoes", function (req, res){
+    gerImagemController.buscarExclusoes(req, res);
+})
+
 // router.get("/buscar-servidores", function(req, res){
 //     suporteMicroController.buscarListaServidores(req,res);
 // })
