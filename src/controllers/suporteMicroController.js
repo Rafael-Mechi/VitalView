@@ -53,10 +53,32 @@ async function pegarDadosBucket(req, res) {
     }
 }
 
+function buscarAlertasServidores(req, res) {
+
+    const { idServidor } = req.params;
+
+    suporteMicroModel.buscarAlertasServidores(idServidor)
+        .then(
+            function (resultadoDadosServidores) {
+                res.json(resultadoDadosServidores);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao tentar cadastrar o servidor! Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            }
+        )
+}
+
 
 
 module.exports = {
     buscarDadosServidores,
     pegarDadosBucket,
-    buscarListaServidores
+    buscarListaServidores,
+    buscarAlertasServidores
 }

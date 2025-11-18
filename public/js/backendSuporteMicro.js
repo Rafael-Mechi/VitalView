@@ -59,17 +59,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
         //Faz as duas requisições ao mesmo tempo
-        const [resBanco, resBucket, resProcess] = await Promise.all([
+        const [resBanco, resBucket, resProcess, resAlertas] = await Promise.all([
             fetch(`/suporteMicroRoutes/buscar-dados-banco/${idServidor}`),
             fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key}`),
-            fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key2}`)
+            fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key2}`),
+
+            //Arrumar esse fetch
+            fetch(`/suporteMicroRoutes/buscar-dados-banco/${idServidor}`)
         ]);
 
         //Converte ambas para JSON
-        const [dadosBanco, dadosBucket, dadosProcessos] = await Promise.all([
+        const [dadosBanco, dadosBucket, dadosProcessos, alertasBanco] = await Promise.all([
             resBanco.json(),
             resBucket.json(),
-            resProcess.json()
+            resProcess.json(),
+            resAlertas.json(),
         ]);
 
         //Dados do banco
@@ -91,11 +95,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (dadosProcessos.length > 0) {
             console.log(dadosProcessos)
-            // nomeProcesso = dadosProcessos(dadosRecebidos[0]["Nome_Processo"]);
-            // ramProcesso = dadosProcessos(dadosRecebidos[0]["Uso_Ram_Percent"]);
-            // threadsProcesso = dadosProcessos(dadosRecebidos[0]["Num_Threads"])
-            // statusProcesso = dadosProcessos(dadosRecebidos[0]["Status"])
         }
+
+        console.log(alertasBanco)
 
         //Exibe tudo
         plotarDados(dadosBucket, dadosProcessos);
@@ -117,7 +119,7 @@ function servidorDesconectado() {
     const saudeServidor = document.getElementById("texto-saude-servidor");
     saudeServidor.textContent = "Inativo";
     saudeServidor.style.color = "#f75454";
-    
+
     const uptimeSistema = document.getElementById("uptimeServidor");
     uptimeSistema.style.color = "#f75454";
 
@@ -302,6 +304,8 @@ function plotarDados(dadosBucket, dadosProcessos) {
     uptimeSistema(dadosBucket);
     processosServidor(dadosProcessos);
     totalAlertas(dadosBucket);
+    saudeDoServidor(dadosBucket);
+    alertasPelaSemana(dadosBucket);
 
 
     // Esconde o loading e mostra o conteúdo
@@ -384,12 +388,26 @@ function uptimeSistema(dadosBucket) {
             return;
         }
 
-        upTime = dadosBucket[i]["Uptime_(s)"]
+        const upTimeSegundos = dadosBucket[i]["Uptime_(s)"];
+        const tempoFormatado = formatarTempo(upTimeSegundos);
 
-        document.getElementById("uptimeServidor").textContent = upTime;
+        document.getElementById("uptimeServidor").textContent = tempoFormatado;
 
         i++;
     }, 1500); // executa a cada 2.5s
+}
+
+function formatarTempo(segundos) {
+    const h = Math.floor(segundos / 3600);
+    const m = Math.floor((segundos % 3600) / 60);
+    const s = segundos % 60;
+
+    // adiciona zero à esquerda
+    const hh = String(h).padStart(2, "0");
+    const mm = String(m).padStart(2, "0");
+    const ss = String(s).padStart(2, "0");
+
+    return `${hh}:${mm}:${ss}`;
 }
 
 function escolherServidor() {
@@ -557,7 +575,6 @@ function utilizacaoDeRam(dadosBucket) {
 function distribuicaoDeAlertasPorComponente(dadosBucket) {
     let i = 0;
 
-    
 
     const interval = setInterval(() => {
         if (i >= dadosBucket.length) {
@@ -610,6 +627,72 @@ function utilizaçãoDeDisco() {
             }
         }
     });
+}
+
+function saudeDoServidor(dadosBucket) {
+    let i = 0
+
+    const interval = setInterval(() => {
+        if (i >= dadosBucket.length) {
+            clearInterval(interval); // para o setInterval quando terminar
+            return;
+        }
+
+        statusSaudeDoServidor = dadosBucket[i]["saudeServidor"]
+        scoreDoServidor = dadosBucket[i]["scoreSaudeServidor"]
+
+        if (statusSaudeDoServidor == "Saudável") {
+            document.getElementById("texto-saude-servidor").textContent = statusSaudeDoServidor
+            document.getElementById("texto-saude-servidor").style.color = "#4addf6";
+
+            document.getElementById("nivel10").style.backgroundColor = "#4addf6";
+            document.getElementById("nivel9").style.backgroundColor = "#38cde6";
+            document.getElementById("nivel8").style.backgroundColor = "#2cc7e1";
+            document.getElementById("nivel7").style.backgroundColor = "#24b8d1";
+            document.getElementById("nivel6").style.backgroundColor = "#1badc6";
+            document.getElementById("nivel5").style.backgroundColor = "#188b9f";
+            document.getElementById("nivel4").style.backgroundColor = "#187484";
+
+        } else if (statusSaudeDoServidor == "Alerta") {
+            document.getElementById("texto-saude-servidor").textContent = statusSaudeDoServidor
+            document.getElementById("texto-saude-servidor").style.color = "#188b9f";
+
+            document.getElementById("nivel10").style.backgroundColor = "#c5c5c5";
+            document.getElementById("nivel9").style.backgroundColor = "#c5c5c5";
+            document.getElementById("nivel8").style.backgroundColor = "#c5c5c5";
+            document.getElementById("nivel7").style.backgroundColor = "#c5c5c5";
+            document.getElementById("nivel6").style.backgroundColor = "#1badc6";
+            document.getElementById("nivel5").style.backgroundColor = "#188b9f";
+            document.getElementById("nivel4").style.backgroundColor = "#187484";
+
+        } else if (statusSaudeDoServidor == "Crítico") {
+            document.getElementById("texto-saude-servidor").textContent = statusSaudeDoServidor
+            document.getElementById("texto-saude-servidor").style.color = "#093037";
+
+            document.getElementById("nivel10").style.backgroundColor = "#c5c5c5";
+            document.getElementById("nivel9").style.backgroundColor = "#c5c5c5";
+            document.getElementById("nivel8").style.backgroundColor = "#c5c5c5";
+            document.getElementById("nivel7").style.backgroundColor = "#c5c5c5";
+            document.getElementById("nivel6").style.backgroundColor = "#c5c5c5";
+            document.getElementById("nivel5").style.backgroundColor = "#c5c5c5";
+            document.getElementById("nivel4").style.backgroundColor = "#c5c5c5";
+        }
+
+        // document.getElementById("texto-saude-servidor").textContent(statusSaudeDoServidor)
+
+        if (scoreDoServidor = dadosBucket)
+
+
+            i++;
+    }, 1500);
+}
+
+function alertasPelaSemana(dadosBucket){
+    
+}
+
+function alertasPeloDia(){
+
 }
 
 

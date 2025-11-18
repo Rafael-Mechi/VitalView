@@ -16,4 +16,8 @@ router.get("/buscar-servidores", function(req, res){
     suporteMicroController.buscarListaServidores(req,res);
 })
 
+router.get("/buscar-alertas-servidores:idServidor", function(req, res){
+    suporteMicroController.buscarAlertasServidores(req,res);
+})
+
 module.exports = router;
