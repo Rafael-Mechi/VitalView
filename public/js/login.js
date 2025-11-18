@@ -41,11 +41,7 @@ function entrar() {
                 .trim().toLowerCase();
 
             const rota = rotaPorCargo(cargoNormalizado);
-
-            fetch("/ger-imagem/buscar-exclusoes"){
-                
-            }
-
+            
             finalizarAguardar();
             
             window.location.replace(rota);
