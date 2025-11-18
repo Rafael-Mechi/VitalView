@@ -56,7 +56,7 @@ function gerarGraficoTopServidores(dados) {
             datasets: [{
                 label: "Alertas no último mês",
                 data: quantidades,
-                backgroundColor: ["#f87171", "#60a5fa", "#34d399", "#facc15", "#a78bfa"],
+                backgroundColor: ["#093037", "#4addf6", "#32b9cd", "#188b9f"],
                 borderRadius: 8
             }]
         },
@@ -90,7 +90,7 @@ function gerarGraficoDistribuicao(dados) {
             datasets: [{
                 label: "Alertas",
                 data: quantidades,
-                backgroundColor: ["#32b9cd", "#10b981", "#facc15", "#f87171"],
+                backgroundColor: ["#32b9cd", "#4addf6", "#188b9f", "#093037"],
                 borderRadius: 12
             }]
         },
