@@ -63,17 +63,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             fetch(`/suporteMicroRoutes/buscar-dados-banco/${idServidor}`),
             fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key}`),
             fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key2}`),
-
-            //Arrumar esse fetch
-            fetch(`/suporteMicroRoutes/buscar-dados-banco/${idServidor}`)
+            fetch(`/suporteMicroRoutes/buscar-alertas-servidores/${idServidor}`)
         ]);
 
         //Converte ambas para JSON
-        const [dadosBanco, dadosBucket, dadosProcessos, alertasBanco] = await Promise.all([
+        const [dadosBanco, dadosBucket, dadosProcessos, alertasServidor] = await Promise.all([
             resBanco.json(),
             resBucket.json(),
             resProcess.json(),
-            resAlertas.json(),
+            resAlertas.json()
         ]);
 
         //Dados do banco
@@ -97,10 +95,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.log(dadosProcessos)
         }
 
-        console.log(alertasBanco)
+        if (alertasServidor.length > 0) {
+            console.log(alertasServidor)
+        }
 
         //Exibe tudo
-        plotarDados(dadosBucket, dadosProcessos);
+        plotarDados(dadosBucket, dadosProcessos, alertasServidor);
 
     } catch (erro) {
         console.error("Erro na requisição:", erro);
@@ -291,9 +291,86 @@ function servidorDesconectado() {
         }
     });
 
+    setTimeout(() => {
+        const ctx3 = document.getElementById('graficoLinha').getContext('2d');
+
+        new Chart(ctx3, {
+            type: 'line',
+            data: {
+                labels: ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'],
+                datasets: [
+                    {
+                        label: 'CPU',
+                        data: [0, 0, 0, 0, 0, 0, 0],
+                        borderColor: '#f75454',
+                        backgroundColor: '#f75454',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 5,
+                        pointBackgroundColor: '#f75454'
+                    },
+                    {
+                        label: 'RAM',
+                        data: [0, 0, 0, 0, 0, 0, 0],
+                        borderColor: '#ca1c1cff',
+                        backgroundColor: '#ca1c1cff',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 5,
+                        pointBackgroundColor: '#ca1c1cff'
+                    },
+                    {
+                        label: 'DISCO',
+                        data: [0, 0, 0, 0, 0, 0, 0],
+                        borderColor: '#ca1c1cff',
+                        backgroundColor: '#ca1c1cff',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 5,
+                        pointBackgroundColor: '#ca1c1cff'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Distribuição de alertas por componente',
+                        font: {
+                            size: 17,
+                            weight: 'bold',
+                        },
+                        color: 'black',
+                    },
+                    legend: {
+                        display: true,
+                        position: 'right' // exibe a legenda para diferenciar CPU, RAM e DISCO
+                    }
+                },
+                scales: {
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Nº Alertas',
+                            color: 'black',
+                            font: {
+                                size: 14,
+                                weight: 'bold',
+                            },
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }, 50);
 }
 
-function plotarDados(dadosBucket, dadosProcessos) {
+function plotarDados(dadosBucket, dadosProcessos, alertasServidor) {
 
     document.getElementById("ativo-inativo-desconectado").textContent = "Ativo";
     detalhesServidor();
@@ -303,10 +380,12 @@ function plotarDados(dadosBucket, dadosProcessos) {
     escolherServidor();
     uptimeSistema(dadosBucket);
     processosServidor(dadosProcessos);
-    totalAlertas(dadosBucket);
+    totalAlertas(alertasServidor);
     saudeDoServidor(dadosBucket);
-    alertasPelaSemana(dadosBucket);
 
+    setTimeout(() => {
+        distribuicaoDeAlertas24hrs(alertasServidor);
+    }, 50);
 
     // Esconde o loading e mostra o conteúdo
     document.getElementById("loading").style.display = "none";
@@ -355,26 +434,25 @@ function bytesParaGB(bytes) {
     return (bytes / (1024 ** 3)).toFixed(0);
 }
 
-function totalAlertas(dadosBucket) {
+function totalAlertas(alertasServidor) {
 
-    totalDeAlertas = 0
+    let totalAlertas = 0;
+    const agora = new Date();
 
-    for (i = 0; i < dadosBucket.length; i++) {
-        if (dadosBucket[i]["alertaCpu"] == "sim") {
-            totalDeAlertas++
-        }
-        if (dadosBucket[i]["alertaRam"] == "sim") {
-            totalDeAlertas++
-        }
-        if (dadosBucket[i]["alertaDisco"] == "sim") {
-            totalDeAlertas++
+    for (let i = 0; i < alertasServidor.length; i++) {
+
+        const alerta = alertasServidor[i];
+        const data = new Date(alerta.data_hora); // "2025-11-04T18:10:00.000Z"
+
+        const diffHoras = (agora - data) / (1000 * 60 * 60);
+
+        // conta só alertas das últimas 24h
+        if (diffHoras >= 0 && diffHoras <= 24) {
+            totalAlertas++;
         }
     }
 
-    console.log(totalDeAlertas)
-
-    document.getElementById("alertas-totais").textContent = totalDeAlertas;
-
+    document.getElementById("alertas-totais").textContent = totalAlertas;
 }
 
 function uptimeSistema(dadosBucket) {
@@ -572,26 +650,6 @@ function utilizacaoDeRam(dadosBucket) {
 
 }
 
-function distribuicaoDeAlertasPorComponente(dadosBucket) {
-    let i = 0;
-
-
-    const interval = setInterval(() => {
-        if (i >= dadosBucket.length) {
-            clearInterval(interval); // para o setInterval quando terminar
-            return;
-        }
-
-        usoRAM = dadosBucket[i]["Uso_de_RAM"]
-
-        chartRAM.data.datasets[0].data = [usoRAM, 100 - usoRAM];
-        chartRAM.update();
-
-        i++;
-    }, 1500);
-
-}
-
 
 function utilizaçãoDeDisco() {
 
@@ -680,99 +738,114 @@ function saudeDoServidor(dadosBucket) {
 
         // document.getElementById("texto-saude-servidor").textContent(statusSaudeDoServidor)
 
-        if (scoreDoServidor = dadosBucket)
 
-
-            i++;
+        i++;
     }, 1500);
 }
 
-function alertasPelaSemana(dadosBucket){
-    
-}
+function distribuicaoDeAlertas24hrs(alertasServidor) {
 
-function alertasPeloDia(){
+    const agora = new Date();
 
+    // Cria as últimas 24 horas como labels
+    const labels = [];
+    const cpu = Array(24).fill(0);
+    const ram = Array(24).fill(0);
+    const disco = Array(24).fill(0);
+
+    for (let i = 23; i >= 0; i--) {
+        const hora = new Date(agora.getTime() - i * 3600 * 1000);
+        labels.push(hora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }));
+    }
+
+    // Percorre os alertas e conta por hora
+    alertasServidor.forEach(alerta => {
+
+    // A data do JSON é UTC → corrige para horário local do Brasil
+    const dataUTC = new Date(alerta.data_hora);
+    const data = new Date(dataUTC.getTime() + (3 * 60 * 60 * 1000)); // UTC-3
+
+    const diffHoras = (agora - data) / (1000 * 60 * 60);
+
+    if (diffHoras < 0 || diffHoras >= 24) return;
+
+    const index = 23 - Math.trunc(diffHoras);
+
+    if (alerta.componente === "CPU") cpu[index]++;
+    else if (alerta.componente === "Memória") ram[index]++;
+    else if (alerta.componente === "Disco") disco[index]++;
+});
+
+    // Desenha o gráfico
+    const ctx3 = document.getElementById('graficoLinha').getContext('2d');
+
+    new Chart(ctx3, {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: 'CPU',
+                    data: cpu,
+                    borderColor: '#45d4dc',
+                    backgroundColor: 'rgba(69, 212, 220, 0.2)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 5
+                },
+                {
+                    label: 'RAM',
+                    data: ram,
+                    borderColor: '#1f7f8d',
+                    backgroundColor: 'rgba(31, 127, 141, 0.2)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 5
+                },
+                {
+                    label: 'DISCO',
+                    data: disco,
+                    borderColor: '#0d3e47',
+                    backgroundColor: 'rgba(13, 62, 71, 0.2)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 5
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Distribuição de alertas por componente',
+                    font: { size: 17, weight: 'bold' },
+                    color: 'black'
+                },
+                legend: {
+                    display: true,
+                    position: 'right'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Nº Alertas',
+                        color: 'black',
+                        font: { size: 14, weight: 'bold' }
+                    }
+                }
+            }
+        }
+    });
 }
 
 
 // -------------------------------------------------------------------------------------------------------
 
 
-
-
-const ctx3 = document.getElementById('graficoLinha').getContext('2d');
-
-new Chart(ctx3, {
-    type: 'line',
-    data: {
-        labels: ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'],
-        datasets: [
-            {
-                label: 'CPU',
-                data: [30, 19, 8, 15, 22, 17, 25],
-                borderColor: '#45d4dc',
-                backgroundColor: 'rgba(69, 212, 220, 0.2)',
-                borderWidth: 2,
-                fill: true,
-                tension: 0.3,
-                pointRadius: 5,
-                pointBackgroundColor: '#45d4dc'
-            },
-            {
-                label: 'RAM',
-                data: [20, 14, 12, 18, 20, 15, 23],
-                borderColor: '#1f7f8d',
-                backgroundColor: 'rgba(31, 127, 141, 0.2)',
-                borderWidth: 2,
-                fill: true,
-                tension: 0.3,
-                pointRadius: 5,
-                pointBackgroundColor: '#1f7f8d'
-            },
-            {
-                label: 'DISCO',
-                data: [8, 12, 15, 10, 18, 22, 19],
-                borderColor: '#0d3e47',
-                backgroundColor: 'rgba(13, 62, 71, 0.2)',
-                borderWidth: 2,
-                fill: true,
-                tension: 0.3,
-                pointRadius: 5,
-                pointBackgroundColor: '#0d3e47'
-            }
-        ]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            title: {
-                display: true,
-                text: 'Distribuição de alertas por componente',
-                font: {
-                    size: 17,
-                    weight: 'bold',
-                },
-                color: 'black',
-            },
-            legend: {
-                display: true,
-                position: 'right' // exibe a legenda para diferenciar CPU, RAM e DISCO
-            }
-        },
-        scales: {
-            y: {
-                title: {
-                    display: true,
-                    text: 'Nº Alertas',
-                    color: 'black',
-                    font: {
-                        size: 14,
-                        weight: 'bold',
-                    },
-                },
-                beginAtZero: true
-            }
-        }
-    }
-});

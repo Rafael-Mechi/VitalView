@@ -57,7 +57,7 @@ function buscarAlertasServidores(req, res) {
 
     const { idServidor } = req.params;
 
-    suporteMicroModel.buscarAlertasServidores(idServidor)
+    suporteMicroModel.alertasNasUltimas24hrs(idServidor)
         .then(
             function (resultadoDadosServidores) {
                 res.json(resultadoDadosServidores);
