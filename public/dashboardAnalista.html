@@ -102,10 +102,9 @@
 
             <section class="secao_logo">
                 <select class="periodo_select" name="periodo" id="periodo_select">
-                    <option value="1">Escolher periodo</option>
-                    <option value="2">Hoje</option>
+                    <option value="1">Escolher período</option>
                     <option value="3">Nesta semana</option>
-                    <option value="4">Neste mês</option>
+                    <option value="4" selected>Neste mês</option>
                     <option value="5">Neste ano</option>
                 </select>
             </section>
@@ -115,13 +114,13 @@
             <section class="sessao-lateral-esquerda">
                 <section class="sessao-lateral-esquerda-itens">
                     <div class="server-info" role="group" aria-labelledby="t1">
-                        <h4 id="t1" class="titulo-cartao" style="text-align: center;">Top 5 Servidores com mais alertas <small>No [Período]</small>
+                        <h4 id="t1" class="titulo-cartao" style="text-align: center;">Top 5 Servidores com mais alertas <small>No Mês</small>
                         </h4>
                             <canvas id="topServidoresChart" aria-label="Top servidores" role="img"></canvas>
                     </div>
 
                     <div class="server-info" role="group" aria-labelledby="t2" >
-                        <h4 id="t1" class="titulo-cartao" style="text-align: center;">Distribuição de alertas por componente <small>No [Período]</small></h4>
+                        <h4 id="t2" class="titulo-cartao" style="text-align: center;">Distribuição de alertas por componente <small>No Mês</small></h4>
                         <canvas id="componentesChart" aria-label="Alertas por componente" role="img"></canvas>
                     </div>
                 </section>
@@ -130,22 +129,23 @@
             <section class="sessao-lateral-direita">
                 <section class="sessao-lateral-direita-itens" style="height: 35%;">
                     <section class="velocimetro card">
-                        <h4 id="c1" style="text-align: center; font-size: larger;">Dia da semana com mais alertas <br><small>Durante o [Período]</small>
+                        <h4 id="c1" style="text-align: center; font-size: larger;">Dia da semana com mais alertas <br><small>Durante o Mês</small>
                         </h4>
-                        <div class="valor grande azul">Segunda</div>
+                        <div class="valor grande azul">Segunda-feira</div>
                         <p class="legenda">Dia da semana com maior frequência de alertas</p>
                     </section>
                     <section class="velocimetro card">
-                        <h4 id="c2" style="text-align: center; font-size: larger;">Quantidade total de alertas <br><small>Durante o [Período]</small></h4>
-                        <div class="valor grande vermelho" style="font-size: 40px; margin-bottom: 20px;"></div>
+                        <h4 id="c2" style="text-align: center; font-size: larger;">Quantidade total de alertas <br><small>Durante o Mês</small></h4>
+                        <div class="valor grande vermelho" style="font-size: 40px; margin-bottom: 20px;">0</div>
                     </section>
                 </section>
                 <section class="sessao-lateral-direita-itens" id="id_sessao_direita_2">
-                    <section id="projecao">
-                        <div aria-labelledby="lin">
-                            <h4 id="lin" style="font-size: larger; text-align: center;">Distribuição de alertas ao longo do ano</h4>
-                            <canvas id="linhaAnoChart" aria-label="Distribuição no ano" role="img"
-                                style="height: 300%; width: 200%;"></canvas>
+                    <section id="projecao" style="height: 100%; position: relative;">
+                        <div aria-labelledby="lin" style="height: 100%; display: flex; flex-direction: column;">
+                            <h4 id="titulo_grafico_linha" style="font-size: larger; text-align: center; margin-bottom: 10px;">Distribuição de alertas no mês</h4>
+                            <div style="flex: 1; position: relative; min-height: 0;">
+                                <canvas id="linhaAnoChart" aria-label="Distribuição no período" role="img"></canvas>
+                            </div>
                         </div>
                     </section>
                 </section>
@@ -158,3 +158,4 @@
     <script src="js/dashAnalista.js"></script>
 
 </body>
+</html>
