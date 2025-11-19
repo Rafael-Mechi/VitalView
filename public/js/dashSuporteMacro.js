@@ -9,24 +9,19 @@ async function carregarDashboard() {
             return;
         }
 
-        const response = await fetch(`/servidores/dashboard-macro?hospital=${idHospital}`);
+        // BUSCA TUDO EM UMA ROTA SÓ
+        const res = await fetch(`/servidores/dashboard-macro?hospital=${idHospital}`);
+        const dadosCompletos = await res.json();
 
-        if (response.ok) {
-            const dados = await response.json();
-            console.log('Dados recebidos da API:', dados);
+        console.log('Dados completos:', dadosCompletos);
 
-            window.dadosServidores = dados.servidores;
-            // Atualizar KPIs
-            atualizarKPIs(dados.kpis);
-
-            // Atualizar tabela
-            atualizarTabela(dados.servidores);
-
-            // Atualizar gráfico
-            atualizarGrafico(dados.kpis.distribuicao);
-        } else {
-            console.log('API não disponível');
-        }
+        // Processa os dados
+        window.dadosServidores = dadosCompletos.servidores;
+        
+        // Atualiza a interface
+        atualizarKPIs(dadosCompletos.kpis);
+        atualizarTabela(dadosCompletos.servidores);
+        atualizarGrafico(dadosCompletos.kpis.distribuicao);
 
     } catch (error) {
         console.error('Erro ao carregar dashboard:', error);
@@ -50,18 +45,18 @@ function alterarFiltroAlertas(tipo) {
     console.log('KPIs disponíveis:', kpis);
 
     if (tipo === 'geral') {
-        const alertasGerais = kpis.alertasGerais;
-        console.log('Alertas Gerais:', alertasGerais);
+        // MOSTRA ALERTAS ATIVOS AGORA 
+        const alertasAtivos = kpis.alertasGerais;
+        console.log('Alertas Ativos (tempo real):', alertasAtivos);
         
-        // Garantindo que seja um número válido
-        const valorFinal = (alertasGerais !== undefined && alertasGerais !== null) ? alertasGerais : 0;
-        valorElement.innerHTML = valorFinal.toString();
-        subtituloElement.textContent = 'Total de ocorrências';
+        valorElement.innerHTML = alertasAtivos.toString();
+        subtituloElement.textContent = 'Alertas ativos no momento';
         
     } else if (tipo === 'tendencia') {
+        //MOSTRA TENDÊNCIA HISTÓRICA
         const tendenciaClass = kpis.tendenciaAlertas.includes('+') ? 'aumento' : 'queda';
         valorElement.innerHTML = `${kpis.alertas24h}<span class="tendencia ${tendenciaClass}">${kpis.tendenciaAlertas}</span>`;
-        subtituloElement.textContent = 'Últimas ocorrências (nas últimas 24 horas)';
+        subtituloElement.textContent = 'Novos alertas (últimas 24h)';
     }
     
     console.log('Filtro aplicado com sucesso!!!');
@@ -69,7 +64,7 @@ function alterarFiltroAlertas(tipo) {
 
 // Atualizar KPIs
 function atualizarKPIs(kpis) {
-    console.log('📊 KPIs recebidos para salvar:', kpis);
+    console.log('KPIs recebidos para salvar:', kpis);
     
     // Servidores em Risco
     const servidoresRiscoElement = document.querySelector('.kpi .value');

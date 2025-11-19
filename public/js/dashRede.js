@@ -1,3 +1,25 @@
+// Servidor identificator ＼(ﾟｰﾟ＼)
+
+function obterParametrosServidor() {
+    const params = new URLSearchParams(window.location.search);
+
+    let idServidor = params.get('idServidor');
+    let hostname = params.get('hostname');
+    let idHospital = params.get('idhospital');
+
+    //salvo no sessionStorage
+    if (idServidor) sessionStorage.ID_SERVIDOR = idServidor;
+    if (hostname) sessionStorage.HOSTNAME_SERVIDOR = hostname;
+    if (idHospital) sessionStorage.FK_HOSPITAL = idHospital;
+
+    //pega do sessionStorage
+    if (!idServidor) idServidor = sessionStorage.ID_SERVIDOR;
+    if (!hostname) hostname = sessionStorage.HOSTNAME_SERVIDOR;
+    if (!idHospital) idHospital = sessionStorage.FK_HOSPITAL;
+
+    return { idServidor, hostname, idHospital };
+}
+
 // modais do Meki 💅🏻
         let infoBtns = document.querySelectorAll('.infoBtn');
         let modals = document.querySelectorAll('.modal');

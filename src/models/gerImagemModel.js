@@ -38,6 +38,22 @@ const pegarDadosBucketModel = async (bucketName, fileKey) => {
     }
 };
 
+function excluirImagem(caminho, data, idUsuario) {
+    var instrucao = `
+        INSERT INTO exclusaoAlerta (caminhoImagem, dataHora, fkUsuario) values
+        ('${caminho}', '${data}', '${idUsuario}')
+    `
+    return database.executar(instrucao);
+}
+
+function buscarExclusoes(){
+    var instrucao = `
+        SELECT * FROM exclusaoAlerta;
+    `
+
+    return database.executar(instrucao);
+}
+
 //IGOR: Adicionei aqui ao inves de criar outro model praticamente igual (eu teria que usar os outros metodos acima de qualquer jeito)
 // const pegarDadosDiscoModel = async (bucketName, fileKey) => {
 //     const params = {
@@ -59,5 +75,7 @@ const pegarDadosBucketModel = async (bucketName, fileKey) => {
 
 
 module.exports = {
-    pegarDadosBucketModel
+    pegarDadosBucketModel,
+    excluirImagem,
+    buscarExclusoes
 };

@@ -909,3 +909,40 @@ h3 {
   height: 48px;
   margin-top: 15px;
 }
+
+#id_sessao_direita_2 {
+    display: flex;
+    flex-direction: column;
+    height: 65%;
+    overflow: hidden;
+}
+
+#projecao {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    position: relative;
+}
+
+#projecao > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+#projecao canvas {
+    max-height: 100% !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.sessao-lateral-direita-itens {
+    overflow: hidden;
+}
+
+#linhaAnoChart {
+    position: relative !important;
+}

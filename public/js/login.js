@@ -41,7 +41,7 @@ function entrar() {
                 .trim().toLowerCase();
 
             const rota = rotaPorCargo(cargoNormalizado);
-
+            
             finalizarAguardar();
             
             window.location.replace(rota);
