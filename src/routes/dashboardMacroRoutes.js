@@ -1,10 +1,11 @@
 var express = require("express");
 var router = express.Router();
-
 var dashboardMacroController = require("../controllers/dashboardMacroController");
 
-router.get("/dashboard-macro", function (req, res) {
-    dashboardMacroController.buscarDadosDashboard(req, res);
-});
+// Rota principal - Dashboard Macro
+router.get("/dashboard-macro", dashboardMacroController.buscarDadosDashboard);
+
+// Rota para buscar dados do bucket S3
+router.get("/buscar-dados-bucket-macro/:key", dashboardMacroController.buscarDadosBucketMacro);
 
 module.exports = router;
