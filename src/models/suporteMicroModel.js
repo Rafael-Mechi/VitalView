@@ -1,6 +1,12 @@
 var database = require("../database/config");
 var AWS = require('../aws/awsConfig.js');
 const s3 = new AWS.S3();
+const axios = require("axios");
+
+dominio = process.env.JIRA_DOMAIN
+email = process.env.JIRA_EMAIL
+token = process.env.JIRA_API_TOKEN
+
 
 function buscarDadosServidores(idServidor) {
 
@@ -55,31 +61,39 @@ const pegarDadosDiscoModel = async (bucketName, fileKey) => {
     }
 };
 
-function alertasNasUltimas24hrs(idServidor) {
+async function alertasNasUltimas24hrs(idServidor) {
 
-    const instrucao = `
-           SELECT
-    a.id AS id_alerta,
-    s.hostname AS servidor,
-    a.data_alerta AS data_hora,
-    t.nome AS componente,
-    a.registro AS registro,
-    a.status_alerta AS status
-FROM alerta a
-INNER JOIN componentes c ON a.fkComponente = c.idComponente
-INNER JOIN tipoComponente t ON c.fkTipo = t.idTipo
-INNER JOIN servidores s ON c.fkServidor = s.idServidor
-INNER JOIN hospital h ON h.idHospital = s.fkHospital
-WHERE s.hostname = "servidor100"
-  AND a.data_hora >= NOW() - INTERVAL 24 HOUR
-ORDER BY 
-    CASE 
-        WHEN a.status_alerta = 'Em alerta' THEN 1
-        ELSE 2
-    END,
-    a.data_alerta DESC;
-`
-    return database.executar(instrucao);
+    try {
+
+        let jql = 'project = SUP AND resolution = Unresolved ORDER BY created DESC';
+
+        let body = {
+            jql: 'project = SUP AND resolution = Unresolved ORDER BY created DESC',
+            maxResults: 50,
+            fieldsByKeys: true,
+            fields: ["summary", "created"],
+        };
+
+        let response = await axios.post(
+            `${dominio}/rest/api/3/search/jql`,
+            body,
+            {
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    Authorization: `Basic ${Buffer.from(
+                        `${email}:${token}`,
+                    ).toString("base64")}`,
+                },
+            }
+        );
+
+        return response.data;
+
+    } catch (error) {
+        console.error("Erro ao buscar alertas do Jira:", error);
+        throw error;
+    }
 }
 
 

@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         if (alertasServidor.length > 0) {
-            console.log(alertasServidor)
+
         }
 
         //Exibe tudo
@@ -434,22 +434,29 @@ function bytesParaGB(bytes) {
     return (bytes / (1024 ** 3)).toFixed(0);
 }
 
+//ARRUMAR NAS ULTIMAS 24 HRS
 function totalAlertas(alertasServidor) {
+
 
     let totalAlertas = 0;
     const agora = new Date();
 
-    for (let i = 0; i < alertasServidor.length; i++) {
+    for (let i = 0; i < alertasServidor.issues.length; i++) {
 
-        const alerta = alertasServidor[i];
-        const data = new Date(alerta.data_hora); // "2025-11-04T18:10:00.000Z"
+        const data = alertasServidor.issues[i].fields.created;
+        const dateObj = new Date(data);
+        console.log(dateObj.toLocaleString("pt-BR"));
 
-        const diffHoras = (agora - data) / (1000 * 60 * 60);
+        const limite24h = agora.getTime() - (24 * 60 * 60 * 1000);
 
-        // conta só alertas das últimas 24h
-        if (diffHoras >= 0 && diffHoras <= 24) {
-            totalAlertas++;
+        // agora você compara:
+        if (dateObj.getTime() >= limite24h) {
+            console.log("Cai nas últimas 24h:", dateObj);
+            totalAlertas++
         }
+        // console.log("Summary:", alertasServidor.issues[i].fields.summary)
+        // console.log("Summary:", alertasServidor.issues[i].fields.created)
+
     }
 
     document.getElementById("alertas-totais").textContent = totalAlertas;
@@ -494,7 +501,6 @@ function escolherServidor() {
     fetch(`/suporteMicroRoutes/buscar-servidores`)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
 
             data.forEach(servidor => {
                 const option = document.createElement("option");
@@ -745,104 +751,104 @@ function saudeDoServidor(dadosBucket) {
 
 function distribuicaoDeAlertas24hrs(alertasServidor) {
 
-    const agora = new Date();
+    //     const agora = new Date();
 
-    // Cria as últimas 24 horas como labels
-    const labels = [];
-    const cpu = Array(24).fill(0);
-    const ram = Array(24).fill(0);
-    const disco = Array(24).fill(0);
+    //     // Cria as últimas 24 horas como labels
+    //     const labels = [];
+    //     const cpu = Array(24).fill(0);
+    //     const ram = Array(24).fill(0);
+    //     const disco = Array(24).fill(0);
 
-    for (let i = 23; i >= 0; i--) {
-        const hora = new Date(agora.getTime() - i * 3600 * 1000);
-        labels.push(hora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }));
-    }
+    //     for (let i = 23; i >= 0; i--) {
+    //         const hora = new Date(agora.getTime() - i * 3600 * 1000);
+    //         labels.push(hora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }));
+    //     }
 
-    // Percorre os alertas e conta por hora
-    alertasServidor.forEach(alerta => {
+    //     // Percorre os alertas e conta por hora
+    //     alertasServidor.forEach(alerta => {
 
-    // A data do JSON é UTC → corrige para horário local do Brasil
-    const dataUTC = new Date(alerta.data_hora);
-    const data = new Date(dataUTC.getTime() + (3 * 60 * 60 * 1000)); // UTC-3
+    //     // A data do JSON é UTC → corrige para horário local do Brasil
+    //     const dataUTC = new Date(alerta.data_hora);
+    //     const data = new Date(dataUTC.getTime() + (3 * 60 * 60 * 1000)); // UTC-3
 
-    const diffHoras = (agora - data) / (1000 * 60 * 60);
+    //     const diffHoras = (agora - data) / (1000 * 60 * 60);
 
-    if (diffHoras < 0 || diffHoras >= 24) return;
+    //     if (diffHoras < 0 || diffHoras >= 24) return;
 
-    const index = 23 - Math.trunc(diffHoras);
+    //     const index = 23 - Math.trunc(diffHoras);
 
-    if (alerta.componente === "CPU") cpu[index]++;
-    else if (alerta.componente === "Memória") ram[index]++;
-    else if (alerta.componente === "Disco") disco[index]++;
-});
+    //     if (alerta.componente === "CPU") cpu[index]++;
+    //     else if (alerta.componente === "Memória") ram[index]++;
+    //     else if (alerta.componente === "Disco") disco[index]++;
+    // });
 
-    // Desenha o gráfico
-    const ctx3 = document.getElementById('graficoLinha').getContext('2d');
+    //     // Desenha o gráfico
+    //     const ctx3 = document.getElementById('graficoLinha').getContext('2d');
 
-    new Chart(ctx3, {
-        type: 'line',
-        data: {
-            labels,
-            datasets: [
-                {
-                    label: 'CPU',
-                    data: cpu,
-                    borderColor: '#45d4dc',
-                    backgroundColor: 'rgba(69, 212, 220, 0.2)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.3,
-                    pointRadius: 5
-                },
-                {
-                    label: 'RAM',
-                    data: ram,
-                    borderColor: '#1f7f8d',
-                    backgroundColor: 'rgba(31, 127, 141, 0.2)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.3,
-                    pointRadius: 5
-                },
-                {
-                    label: 'DISCO',
-                    data: disco,
-                    borderColor: '#0d3e47',
-                    backgroundColor: 'rgba(13, 62, 71, 0.2)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.3,
-                    pointRadius: 5
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Distribuição de alertas por componente',
-                    font: { size: 17, weight: 'bold' },
-                    color: 'black'
-                },
-                legend: {
-                    display: true,
-                    position: 'right'
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Nº Alertas',
-                        color: 'black',
-                        font: { size: 14, weight: 'bold' }
-                    }
-                }
-            }
-        }
-    });
+    //     new Chart(ctx3, {
+    //         type: 'line',
+    //         data: {
+    //             labels,
+    //             datasets: [
+    //                 {
+    //                     label: 'CPU',
+    //                     data: cpu,
+    //                     borderColor: '#45d4dc',
+    //                     backgroundColor: 'rgba(69, 212, 220, 0.2)',
+    //                     borderWidth: 2,
+    //                     fill: true,
+    //                     tension: 0.3,
+    //                     pointRadius: 5
+    //                 },
+    //                 {
+    //                     label: 'RAM',
+    //                     data: ram,
+    //                     borderColor: '#1f7f8d',
+    //                     backgroundColor: 'rgba(31, 127, 141, 0.2)',
+    //                     borderWidth: 2,
+    //                     fill: true,
+    //                     tension: 0.3,
+    //                     pointRadius: 5
+    //                 },
+    //                 {
+    //                     label: 'DISCO',
+    //                     data: disco,
+    //                     borderColor: '#0d3e47',
+    //                     backgroundColor: 'rgba(13, 62, 71, 0.2)',
+    //                     borderWidth: 2,
+    //                     fill: true,
+    //                     tension: 0.3,
+    //                     pointRadius: 5
+    //                 }
+    //             ]
+    //         },
+    //         options: {
+    //             responsive: true,
+    //             plugins: {
+    //                 title: {
+    //                     display: true,
+    //                     text: 'Distribuição de alertas por componente',
+    //                     font: { size: 17, weight: 'bold' },
+    //                     color: 'black'
+    //                 },
+    //                 legend: {
+    //                     display: true,
+    //                     position: 'right'
+    //                 }
+    //             },
+    //             scales: {
+    //                 y: {
+    //                     beginAtZero: true,
+    //                     title: {
+    //                         display: true,
+    //                         text: 'Nº Alertas',
+    //                         color: 'black',
+    //                         font: { size: 14, weight: 'bold' }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     });
 }
 
 
