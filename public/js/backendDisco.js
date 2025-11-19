@@ -169,3 +169,8 @@ function atualizarDash(dados) {
   variacaoLatencia.textContent = `${variacaoLat >= 0 ? "▲" : "▼"} ${variacaoLat} ms`;
   variacaoLatencia.style.color = variacaoLat >= 0 ? "red" : "green";
 }
+
+
+function irParaTelaDeGestao(){
+  window.location.href = "dashboardGerImagemServidor.html"
+}

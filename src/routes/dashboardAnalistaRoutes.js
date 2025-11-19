@@ -6,5 +6,6 @@ router.get("/top-alertas/:idHospital", dashboardAnalistaController.topServidores
 router.get("/distribuicao-alertas/:idHospital", dashboardAnalistaController.distribuicaoAlertasPorComponente);
 router.get("/quantidade-alertas/:idHospital", dashboardAnalistaController.contarAlertasNoPeriodo);
 router.get("/distribuicao-alertas-ano/:idHospital", dashboardAnalistaController.distribuicaoAlertasAno);
+router.get("/dia-semana-mais-alertas/:idHospital", dashboardAnalistaController.diaSemanaComMaisAlertas);
 
 module.exports = router;

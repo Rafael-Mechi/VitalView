@@ -46,6 +46,14 @@ function excluirImagem(caminho, data, idUsuario) {
     return database.executar(instrucao);
 }
 
+function buscarExclusoes(){
+    var instrucao = `
+        SELECT * FROM exclusaoAlerta;
+    `
+
+    return database.executar(instrucao);
+}
+
 //IGOR: Adicionei aqui ao inves de criar outro model praticamente igual (eu teria que usar os outros metodos acima de qualquer jeito)
 // const pegarDadosDiscoModel = async (bucketName, fileKey) => {
 //     const params = {
@@ -68,5 +76,6 @@ function excluirImagem(caminho, data, idUsuario) {
 
 module.exports = {
     pegarDadosBucketModel,
-    excluirImagem
+    excluirImagem,
+    buscarExclusoes
 };
