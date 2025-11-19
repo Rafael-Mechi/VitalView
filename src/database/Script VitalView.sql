@@ -120,41 +120,47 @@
 		foreign key(fkServidor) references servidores(idServidor)
 	);
 
-	create table rede (
-	idRede int primary key auto_increment,
+	create table metrica (
+	idMetrica int primary key auto_increment,
 		metrica VARCHAR(45) not null unique
 	);
 
-	insert into rede (metrica) values
+	insert into metrica (metrica) values
 	("Download"),
 	("Upload"),
 	("PacoteIn"),
 	("PacoteOut"),
 	("Conexao"),
 	("Latencia"),
-	("PerdaPacote");
+	("PerdaPacote"),
+    ("TaxaLeitura"),
+    ("TaxaEscrita"),
+    ("LatenciaDisco");
 
-	create table limiteRede (
+	create table limiteMetrica (
 		idlimite int primary key auto_increment,
-		fkRede int not null,
+		fkMetrica int not null,
 		fkServidor int not null,
 		
 		limite decimal(4, 1) not null,
 		
-		constraint chk_limite_rede check (limite <= 100.0),
+		constraint chk_limite_metrica check (limite <= 100.0),
 		
-		foreign key (fkRede) references rede(idRede),
+		foreign key (fkMetrica) references metrica(idMetrica),
 		foreign key(fkServidor) references servidores(idServidor)
 		); 
 		
-	insert into limiteRede (fkRede, fkServidor, limite) values 
+	insert into limiteMetrica (fkMetrica, fkServidor, limite) values 
 	(1, 3, 9.0),
 	(2, 3, 0.1),
 	(3, 3, 37.1),
 	(4, 3, 4.6),
 	(5, 3, 34),
 	(6, 3, 18.8),
-	(7, 3, 0.5);
+	(7, 3, 0.5),
+    (8, 3, 0.5),
+    (9, 3, 0.5),
+    (10, 3, 10);
 
 	use VitalView;
 
@@ -263,8 +269,8 @@
 
 	select * from correcao_alerta;
 
-	select * from rede;
+	select * from metrica;
 
-	select * from limiteRede;
+	select * from limiteMetrica;
     
     
