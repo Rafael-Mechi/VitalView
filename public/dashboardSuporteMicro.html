@@ -171,28 +171,35 @@
                 <section class="sessao-lateral-direita">
                     <section class="sessao-lateral-direita-itens">
                         <section class="velocimetro card">
+                            <div class="badge" id="status-cpu">Normal</div>
                             <canvas id="velocimetroram2"
-                                style="width: 100%; height: 100%; border-radius: 10px;"></canvas>
+                                style="width: 100%; height: 100%; border-radius: 10px; margin-right: 45px; margin-top: 5px;"></canvas>
                         </section>
                         <section class="velocimetro card">
+                            <div class="badge" id="status-ram">Normal</div>
                             <canvas id="velocimetroram"
-                                style="width: 100%; height: 100%; border-radius: 10px;"></canvas>
+                                style="width: 100%; height: 100%; border-radius: 10px; margin-right: 45px; margin-top: 5px;"></canvas>
                         </section>
                         <section class="velocimetro card" id="uptime">
                             <div class="uptime">
-                                <h3>Uptime do Sistema</h3>
+                                <h4>Uptime do Sistema</h4>
+                                <div class="badge" id="status-total-alerta">Normal</div>
+                                <div class="caption">Tempo em horas.</div>
                                 <div class="uptime-display">
                                     <span id="uptimeServidor">00:00:00</span>
                                     <span class="arrow-up" id="uptimeServidorSeta">&#9650;</span>
                                 </div>
-                                <p class="legenda">Tempo em Horas</p>
                             </div>
                         </section>
                     </section>
                     <section class="sessao-lateral-direita-itens" id="id_sessao_direita_2">
                         <section class="row" id="grafico_disco">
+                            <div class="badge" id="conexoes-status">Normal</div>
+                            
                             <canvas class="card card_grafico_disco" id="graficoPizza"
-                                style="width: 100%; height: 100%; padding-bottom: 10px; padding-right: 10px;"></canvas>
+                                style="width: 100%; height: 100%; padding-bottom: 10px; padding-right: 10px;">
+                            </canvas>
+                            
                         </section>
                         <section id="saude-servidor">
                             <div class="saude-servidor">
@@ -220,9 +227,12 @@
                     </section>
                     <section class="sessao-lateral-direita-itens">
                         <div class="card" id="qtd-alertas">
+                            <div class="badge" id="status-total-alerta">Normal</div>
                             <h2>Total de Alertas</h2>
+                            <div class="caption">Todos alertas nas ultimas 24 horas.</div>
                             <h1 id="alertas-totais">0</h1>
                         </div>
+                        
                         <div class="card uptime">
                             <canvas id="graficoLinha"
                                 style="width: 100%; height: 100%; background-color: white; border-radius: 10px;"></canvas>
