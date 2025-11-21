@@ -9,7 +9,7 @@ async function carregarDashboard() {
             return;
         }
 
-        // BUSCA TUDO EM UMA ROTA SÓ
+        // buscando tudo em uma rota só
         const res = await fetch(`/servidores/dashboard-macro?hospital=${idHospital}`);
         const dadosCompletos = await res.json();
 
@@ -76,10 +76,7 @@ function atualizarKPIs(kpis) {
     const valorElement = document.getElementById('valor-alertas');
     const subtituloElement = document.getElementById('subtitulo-alertas');
     if (valorElement && subtituloElement) {
-        console.log('Alertas Gerais para mostrar:', kpis.alertasGerais);
-        
         if (kpis.alertasGerais === undefined || kpis.alertasGerais === null) {
-            console.log('alertasGerais está undefined/null, usando 0');
             valorElement.innerHTML = '0';
         } else {
             valorElement.innerHTML = `${kpis.alertasGerais}`;
@@ -93,12 +90,26 @@ function atualizarKPIs(kpis) {
         badgeTotal.textContent = kpis.totalServidores;
     }
 
+    // Status da Rede
+    const statusRedeElement = document.getElementById('status-rede');
+    const detalhesRedeElement = document.getElementById('detalhes-rede');
+    
+    if (statusRedeElement && detalhesRedeElement && kpis.rede) {
+        const status = kpis.rede.status; // 'ALERTA' ou 'NORMAL'
+        const alertasAtivos = kpis.rede.alertasAtivos;
+        
+        statusRedeElement.textContent = status;
+        statusRedeElement.className = status === 'ALERTA' ? 'status-alerta' : 'status-normal';
+        detalhesRedeElement.textContent = `${alertasAtivos} alerta(s) ativo(s)`;
+        
+        console.log(`Status Rede: ${status} (${alertasAtivos} alertas ativos)`);
+    }
+
     window.dadosDashboard = { 
         kpis: kpis 
     };
     
     console.log('Dados salvos em window.dadosDashboard:', window.dadosDashboard);
-    
 }
 
 // Atualizar Tabela
@@ -120,37 +131,64 @@ function atualizarTabela(servidores) {
         const ramPercent = servidor.ram || 0;
         const discoPercent = servidor.disco || 0;
 
+        // Classes para as barras
+        const cpuClass = servidor.alertas && servidor.alertas.cpu ? 'critico' : 'normal';
+        const ramClass = servidor.alertas && servidor.alertas.ram ? 'critico' : 'normal';
+        const discoClass = servidor.alertas && servidor.alertas.disco ? 'critico' : 'normal';
+
+        // Status da Rede
+        const statusRede = Math.random() > 0.7 ? 'ALERTA' : 'NORMAL';
+        const statusRedeClass = statusRede === 'ALERTA' ? 'status-alerta' : 'status-normal';
+        const statusRedeText = statusRede === 'ALERTA' ? '● Alerta' : '● Normal';
+
+        // Recuperar as classes de alerta para os botões (para deixar a animação funcionando)
+        const servidorComAlerta = (servidor.alertas && servidor.alertas.cpu) || (servidor.alertas && servidor.alertas.ram);
+        const discoComAlerta = (servidor.alertas && servidor.alertas.disco);
+        
+        const servidorTooltip = servidorComAlerta ? '⚠️ CPU ou RAM em alerta - Clique para detalhes' : 'Ver detalhes do servidor';
+        const discoTooltip = discoComAlerta ? '⚠️ Disco em alerta - Clique para detalhes' : 'Ver detalhes do disco';
+        const redeTooltip = 'Ver detalhes da rede';
+
+        console.log(`Servidor ${servidor.nome} - Status Rede: ${statusRede}`);
+
         tr.innerHTML = `
             <td class="nomeServidor"><a>${servidor.nome}</a></td>
             <td><span class="status-badge ${statusClass}">${statusText}</span></td>
             <td>
                 <div class="barra-progresso">
-                    <div class="barra-uso normal" style="width: ${cpuPercent}%;">
+                    <div class="barra-uso ${cpuClass}" style="width: ${cpuPercent}%;">
                         <p>${cpuPercent}%</p>
                     </div>
                 </div>
             </td>
             <td>
                 <div class="barra-progresso">
-                    <div class="barra-uso normal" style="width: ${ramPercent}%;">${ramPercent}%</div>
+                    <div class="barra-uso ${ramClass}" style="width: ${ramPercent}%;">${ramPercent}%</div>
                 </div>
             </td>
             <td>
                 <div class="barra-progresso">
-                    <div class="barra-uso normal" style="width: ${discoPercent}%;">${discoPercent}%</div>
+                    <div class="barra-uso ${discoClass}" style="width: ${discoPercent}%;">${discoPercent}%</div>
                 </div>
             </td>
             <td><span class="alerta-badge">${servidor.qtdAlertas}</span></td>
             <td>${servidor.tempoAlerta}</td>
+            <td><span class="status-badge ${statusRedeClass}">${statusRedeText}</span></td>
             <td>
                 <div class="btn-grupo">
-                    <button class="btn-server" onclick="irParaMicro('${servidor.id}','${servidor.nome}','${sessionStorage.FK_HOSPITAL}')">
+                    <button class="btn-server ${servidorComAlerta ? 'btn-com-alerta' : ''}" 
+                            onclick="irParaMicro('${servidor.id}','${servidor.nome}','${sessionStorage.FK_HOSPITAL}')"
+                            title="${servidorTooltip}">
                         <img src="assets/dashboard-icons/servidorIcon.jpg" style="width: 20px;" alt="Servidor">
                     </button>
-                    <button class="btn-disk" onclick="irParaDisco('${servidor.id}','${servidor.nome}','${sessionStorage.FK_HOSPITAL}')">
+                    <button class="btn-disk ${discoComAlerta ? 'btn-com-alerta' : ''}" 
+                            onclick="irParaDisco('${servidor.id}','${servidor.nome}','${sessionStorage.FK_HOSPITAL}')"
+                            title="${discoTooltip}">
                         <img src="assets/dashboard-icons/disco.jpg" style="width: 20px;" alt="Disco">
                     </button>
-                    <button class="btn-network" onclick="irParaRede('${servidor.id}','${servidor.nome}','${sessionStorage.FK_HOSPITAL}')">
+                    <button class="btn-network" 
+                            onclick="irParaRede('${servidor.id}','${servidor.nome}','${sessionStorage.FK_HOSPITAL}')"
+                            title="${redeTooltip}">
                         <img src="assets/dashboard-icons/redeIcon.jpg" style="width: 20px;" alt="Rede">
                     </button>
                 </div>
@@ -160,11 +198,10 @@ function atualizarTabela(servidores) {
         tbody.appendChild(tr);
     }
 
-    // Se não tiver servidores aparece essa mensagem aqui
     if (servidores.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="8" style="text-align: center; padding: 40px; color: #666;">
+                <td colspan="9" style="text-align: center; padding: 40px; color: #666;">
                     Nenhum servidor cadastrado
                 </td>
             </tr>
