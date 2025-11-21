@@ -72,7 +72,7 @@ function buscarAlertasGerais(idHospital) {
 
 // Busca arquivo S3
 const buscarDadosBucketMacro = async (fileKey) => {
-    const bucketName = process.env.AWS_BUCKET_NAME || "vitalview-bucket-json";
+    const bucketName = process.env.AWS_BUCKET_NAME || "bucket-munir-dashmacro";
     
     console.log(`📁 Buscando no S3: ${fileKey}`);
     
