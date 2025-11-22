@@ -40,7 +40,7 @@ const nomeHospital = sessionStorage.NOME_HOSPITAL;
 
 const idServidor = id;
 const key = `${id}_${nomeServidor}_${nomeHospital}.json`;
-const key2 = `dados.json`
+const key2 = `processos_${id}_${nomeServidor}_${nomeHospital}.json`
 
 console.log(key)
 
@@ -53,26 +53,41 @@ lottie.loadAnimation({
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
+
+    console.log(key2)
+
     // Mostra o loading
     document.getElementById("loading").style.display = "flex";
     document.getElementById("main-container").style.display = "none";
 
     try {
         //Faz as duas requisições ao mesmo tempo resBucket, resProcess
-        const [resBanco, resBucket, resProcess ,resAlertas] = await Promise.all([
+        const [resBanco, resLimites, resBucket, resProcess, resAlertas] = await Promise.all([
             fetch(`/suporteMicroRoutes/buscar-dados-banco/${idServidor}`),
+            fetch(`/suporteMicroRoutes/limites-componentes/${idServidor}`),
             fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key}`),
             fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key2}`),
             fetch(`/suporteMicroRoutes/buscar-alertas-servidores/${idServidor}`)
         ]);
 
         //Converte ambas para JSON dadosBucket, dadosProcessos
-        const [dadosBanco,dadosBucket,dadosProcessos,alertasServidor] = await Promise.all([
+        const [dadosBanco, dadosLimites, dadosBucket, dadosProcessos, alertasServidor] = await Promise.all([
             resBanco.json(),
+            resLimites.json(),
             resBucket.json(),
             resProcess.json(),
             resAlertas.json()
         ]);
+
+        if (dadosLimites.length > 0) {
+            limiteCPU = dadosLimites[0].limitePercentual
+            limiteRAM = dadosLimites[1].limitePercentual
+            limiteDisco = dadosLimites[2].limitePercentual
+        }
+
+        console.log(limiteCPU)
+        console.log(limiteDisco)
+        console.log(limiteRAM)
 
         //Dados do banco
         if (dadosBanco.length > 0) {
@@ -102,10 +117,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         //Exibe tudo 
-        plotarDados(dadosBucket, dadosProcessos,alertasServidor);
+        plotarDados(dadosBucket, dadosLimites, dadosProcessos, alertasServidor);
 
     } catch (erro) {
-        console.error("Erro na requisição:", erro);
+        console.log("Erro ao buscar o arquivo do bucket");
+        console.log("Verifique se o voce tem o json principal e o json de processos no bucket");
+        console.log("Verifique se o token do jira está configurado no .env");
+        console.log("Verifique se o servidor que esta tentando acessar tem os parametros de limite cpu ram e disco");
+        console.error(erro)
         servidorDesconectado()
         document.getElementById("loading").style.display = "none";
         document.getElementById("main-container").style.display = "flex";
@@ -417,7 +436,7 @@ function servidorDesconectado() {
 
 //dadosBucket, dadosProcessos
 
-function plotarDados(dadosBucket,dadosProcessos,alertasServidor) {
+function plotarDados(dadosBucket, dadosLimite, dadosProcessos, alertasServidor) {
 
     document.getElementById("ativo-inativo-desconectado").textContent = "Ativo";
     detalhesServidor();
@@ -442,6 +461,7 @@ function plotarDados(dadosBucket,dadosProcessos,alertasServidor) {
 function processosServidor(dadosProcessos) {
 
     const tbody = document.getElementById("tbody-processos");
+    console.log(dadosProcessos)
 
     dadosProcessos.forEach(processo => {
 
@@ -483,6 +503,7 @@ function bytesParaGB(bytes) {
 
 function uptimeSistema(dadosBucket) {
     let i = 0
+    let ultimoUptime = null;
 
     upTime = dadosBucket[0]["Uptime_(s)"]
 
@@ -496,6 +517,21 @@ function uptimeSistema(dadosBucket) {
         const tempoFormatado = formatarTempo(upTimeSegundos);
 
         document.getElementById("uptimeServidor").textContent = tempoFormatado;
+
+        if (ultimoUptime !== null && upTimeSegundos <= ultimoUptime) {
+            console.log("Uptime parou de subir! Último valor:", upTimeSegundos);
+
+            document.getElementById("status-uptime").classList.remove("ok")
+            document.getElementById("status-uptime").classList.add("alerta")
+            document.getElementById("status-uptime").textContent = "Alerta"
+        } else {
+            document.getElementById("status-uptime").classList.remove("alerta")
+            document.getElementById("status-uptime").classList.add("ok")
+            document.getElementById("status-uptime").textContent = "Normal"
+        }
+
+
+        ultimoUptime = upTimeSegundos;
 
         i++;
     }, 1500); // executa a cada 2.5s
@@ -615,6 +651,16 @@ function utilizacaoCPU(dadosBucket) {
         chartCPU.data.datasets[0].data = [usoCPU, 100 - usoCPU];
         chartCPU.update();
 
+        if (usoCPU > limiteCPU) {
+            document.getElementById("status-cpu").classList.remove("ok")
+            document.getElementById("status-cpu").classList.add("alerta")
+            document.getElementById("status-cpu").textContent = "Alerta"
+        } else {
+            document.getElementById("status-cpu").classList.remove("alerta")
+            document.getElementById("status-cpu").classList.add("ok")
+            document.getElementById("status-cpu").textContent = "Normal"
+        }
+
         i++;
     }, 1500); // executa a cada 2.5s
 
@@ -693,9 +739,17 @@ function utilizacaoDeRam(dadosBucket) {
         chartRAM.data.datasets[0].data = [usoRAM, 100 - usoRAM];
         chartRAM.update();
 
+        if (usoRAM > limiteRAM) {
+            document.getElementById("status-ram").classList.remove("ok")
+            document.getElementById("status-ram").classList.add("alerta")
+            document.getElementById("status-ram").textContent = "Alerta"
+        } else {
+            document.getElementById("status-ram").classList.remove("alerta")
+            document.getElementById("status-ram").classList.add("ok")
+            document.getElementById("status-ram").textContent = "Normal"
+        }
         i++;
     }, 1500);
-
 }
 
 
@@ -744,6 +798,17 @@ function utilizaçãoDeDisco() {
             }
         }
     });
+
+    if (porcentagemDiscoUsado > limiteDisco) {
+        document.getElementById("status-disco").classList.remove("ok")
+        document.getElementById("status-disco").classList.add("alerta")
+        document.getElementById("status-disco").textContent = "Alerta"
+
+    } else {
+        document.getElementById("status-disco").classList.remove("alerta")
+        document.getElementById("status-disco").classList.add("ok")
+        document.getElementById("status-disco").textContent = "Normal"
+    }
 }
 
 function saudeDoServidor(dadosBucket) {
@@ -825,8 +890,17 @@ function totalAlertas(alertasServidor) {
                 totalAlertas++
 
             }
-
         }
+    }
+
+    if (totalAlertas >= 3) {
+        document.getElementById("status-total-alerta").classList.remove("ok")
+        document.getElementById("status-total-alerta").classList.add("alerta")
+        document.getElementById("status-total-alerta").textContent = "Alerta"
+    } else {
+        document.getElementById("status-total-alerta").classList.remove("alerta")
+        document.getElementById("status-total-alerta").classList.add("ok")
+        document.getElementById("status-total-alerta").textContent = "Normal"
     }
 
     document.getElementById("alertas-totais").textContent = totalAlertas;

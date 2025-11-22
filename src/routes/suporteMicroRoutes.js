@@ -20,4 +20,8 @@ router.get("/buscar-alertas-servidores/:idServidor", function(req, res){
     suporteMicroController.buscarAlertasServidores(req,res);
 })
 
+router.get("/limites-componentes/:idServidor", function(req,res){
+    suporteMicroController.limitesServidores(req,res);
+})
+
 module.exports = router;
