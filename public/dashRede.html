@@ -105,138 +105,147 @@
             </section>
         </section>
 
-        <main class="grid">
-            <div class="parteCima">
+        <div class="fundo">
 
-                <section class="card kpi pacotes">
-                    <h3>Perda de Pacotes <button type="button" class="infoBtn"
-                            data-target="infoPerdaPacote">&#9432</button></h3>
-                    <div class="caption">Percentual (%)</div>
-                    <div class="kpi-number" id="loss-pct">--%</div>
-                    <div class="badge" id="loss-status">--</div>
-                </section>
+            <main class="grid">
+                <div class="parteCima">
 
-                <div id="infoPerdaPacote" class="modal">
-                    <div class="modal-content">
-                        <h3>Perda de Pacotes</h3>
-                        <br>
-                        <p style="text-align: center; font-size: 20px;">
-                            Trás a porcentágem (%) de perda de pacotes durante o tráfego de rede:<br><br>
-                            Limite configurado: <span id="limit-perda"></span><br><br>
-                        </p>
-                        <button type="button" class="closeBtn">Fechar</button>
-                    </div>
-                </div>
+                    <section class="card kpi pacotes">
+                        <h3>Perda de Pacotes <button type="button" class="infoBtn"
+                                data-target="infoPerdaPacote">&#9432</button></h3>
+                        <div class="caption">Percentual (%)</div>
+                        <div class="kpi-number" id="loss-pct">--%</div>
+                        <div class="badge" id="loss-status">--</div>
+                    </section>
 
-                <section class="card kpi conexoes">
-                    <h3>Conexões <button type="button" class="infoBtn" data-target="infoConexao">&#9432</button></h3>
-                    <div class="caption">Conexões ativas</div>
-                    <div class="kpi-number" id="conexoes-ativas"></div>
-                    <div class="badge" id="conexoes-status">--</div>
-                </section>
-
-                <div id="infoConexao" class="modal">
-                    <div class="modal-content">
-                        <h3>Conexões Ativas</h3>
-                        <br>
-                        <p style="text-align: center; font-size: 20px;">
-                            Trás o número de conexões ativas na rede do servidor:<br><br>
-                            Limite máximo: <span id="limit-con-max"></span><br><br>
-                        </p>
-                        <button type="button" class="closeBtn">Fechar</button>
-                    </div>
-                </div>
-
-                <section class="card latencia">
-                    <h3>Latência <button type="button" class="infoBtn" data-target="infoLat">&#9432</button></h3>
-                    <div class="caption">Tempo de resposta (ms)</div>
-                    <div class="kpi-number" id="latencia-atual">--</div>
-                    <div class="badge" id="latencia-status">--</div>
-                </section>
-
-                <div id="infoLat" class="modal">
-                    <div class="modal-content">
-                        <h3>Latência</h3>
-                        <br>
-                        <p style="text-align: center; font-size: 20px;">
-                            Mostra qual é a latência em milissegundos (ms) ou seja o tempo que uma requisição leva para
-                            chegar no servidor:<br><br>
-                            Limite máximo: <span id="limit-lat"></span><br><br>
-                        </p>
-                        <button type="button" class="closeBtn">Fechar</button>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="parteBaixo">
-                <section class="card trafego">
-                    <h3>Velocidade de Tráfego de Rede <button type="button" class="infoBtn"
-                            data-target="infoVelocidade">&#9432</button></h3>
-                    <div class="caption">(Megabits por segundo)</div>
-
-                    <div class="row">
-                        <div class="kpi">
-                            <strong>Download</strong>
+                    <div id="infoPerdaPacote" class="modal">
+                        <div class="modal-content">
+                            <h3>Perda de Pacotes</h3>
+                            <br>
+                            <p style="text-align: center; font-size: 20px;">
+                                Trás a porcentágem (%) de perda de pacotes durante o tráfego de rede:<br><br>
+                                Limite configurado: <span id="limit-perda"></span><br><br>
+                            </p>
+                            <button type="button" class="closeBtn">Fechar</button>
                         </div>
-                        <div class="bar-wrap" aria-label="barra download">
-                            <div class="bar" id="bar-down"></div>
-                        </div>
-                        <div class="value"> <span id="val-down"></span> Mbps</div>
-                        <div class="badge" id="down-status" style="position:static; transform:none; margin-left:8px">--</div>
                     </div>
 
-                    <div class="row">
-                        <div class="kpi">
-                            <strong>Upload</strong>
-                        </div>
-                        <div class="bar-wrap" aria-label="barra upload">
-                            <div class="bar alerta" id="bar-up"></div>
-                        </div>
-                        <div class="value"> <span id="val-up"></span> Mbps</div>
-                        <div class="badge" id="up-status" style="position:static; transform:none; margin-left:8px">--</div>
-                    </div>
-                </section>
+                    <section class="card kpi conexoes">
+                        <h3>Conexões <button type="button" class="infoBtn" data-target="infoConexao">&#9432</button>
+                        </h3>
+                        <div class="caption">Conexões ativas</div>
+                        <div class="kpi-number" id="conexoes-ativas"></div>
+                        <div class="badge" id="conexoes-status">--</div>
+                    </section>
 
-                <div id="infoVelocidade" class="modal">
-                    <div class="modal-content">
-                        <h3>Velocidade de Tráfego de Rede</h3>
-                        <br>
-                        <p style="text-align: center; font-size: 20px;">
-                            Mostra e compara a velocidade de Download e Upload dos dados no servidor em Megabits po
-                            segundo (Mbps):<br><br>
-                            Limite mínimo de Down: <span id="limit-down"></span><br>
-                            Limite mínimo de Up: <span id="limit-up"></span>
-                        </p>
-                        <button type="button" class="closeBtn">Fechar</button>
+                    <div id="infoConexao" class="modal">
+                        <div class="modal-content">
+                            <h3>Conexões Ativas</h3>
+                            <br>
+                            <p style="text-align: center; font-size: 20px;">
+                                Trás o número de conexões ativas na rede do servidor:<br><br>
+                                Limite máximo: <span id="limit-con-max"></span><br><br>
+                            </p>
+                            <button type="button" class="closeBtn">Fechar</button>
+                        </div>
                     </div>
+
+                    <section class="card latencia">
+                        <h3>Latência <button type="button" class="infoBtn" data-target="infoLat">&#9432</button></h3>
+                        <div class="caption">Tempo de resposta (ms)</div>
+                        <div class="kpi-number" id="latencia-atual">--</div>
+                        <div class="badge" id="latencia-status">--</div>
+                    </section>
+
+                    <div id="infoLat" class="modal">
+                        <div class="modal-content">
+                            <h3>Latência</h3>
+                            <br>
+                            <p style="text-align: center; font-size: 20px;">
+                                Mostra qual é a latência em milissegundos (ms) ou seja o tempo que uma requisição leva
+                                para
+                                chegar no servidor:<br><br>
+                                Limite máximo: <span id="limit-lat"></span><br><br>
+                            </p>
+                            <button type="button" class="closeBtn">Fechar</button>
+                        </div>
+                    </div>
+
                 </div>
 
-                <section class="card entrada">
-                    <h3>Pacotes Enviados e Recebidos <button type="button" class="infoBtn"
-                            data-target="infoEnvRec">&#9432</button></h3>
-                    <div class="caption">(Quantidade de pacotes IN/OUT)</div>
-                    <div class="chart-box">
-                        <canvas id="ioChart"></canvas>
-                    </div>
-                    <div class="badge">Normal</div>
-                </section>
+                <div class="parteBaixo">
+                    <section class="card trafego">
+                        <h3>Velocidade de Tráfego de Rede <button type="button" class="infoBtn"
+                                data-target="infoVelocidade">&#9432</button></h3>
+                        <div class="caption">(Megabits por segundo)</div>
 
-                <div id="infoEnvRec" class="modal">
-                    <div class="modal-content">
-                        <h3>Pacotes Enviados e Recebidos</h3>
-                        <br>
-                        <p style="text-align: center; font-size: 20px;">
-                            Trás a comparação entre quantidade de pacotes enviados e recebidos em um gráfico de linhas
-                            ao longo do dia:<br><br>
-                            Limite máximo de entrada: <span id="limit-in"></span><br>
-                            Limite máximo de saída: <span id="limit-out"></span>
-                        </p>
-                        <button type="button" class="closeBtn">Fechar</button>
+                        <div class="row">
+                            <div class="kpi">
+                                <strong>Download</strong>
+                            </div>
+                            <div class="bar-wrap" aria-label="barra download">
+                                <div class="bar" id="bar-down"></div>
+                            </div>
+                            <div class="value"> <span id="val-down"></span> Mbps</div>
+                            <div class="badge" id="down-status"
+                                style="position:static; transform:none; margin-left:8px">--</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="kpi">
+                                <strong>Upload</strong>
+                            </div>
+                            <div class="bar-wrap" aria-label="barra upload">
+                                <div class="bar alerta" id="bar-up"></div>
+                            </div>
+                            <div class="value"> <span id="val-up"></span> Mbps</div>
+                            <div class="badge" id="up-status" style="position:static; transform:none; margin-left:8px">
+                                --</div>
+                        </div>
+                    </section>
+
+                    <div id="infoVelocidade" class="modal">
+                        <div class="modal-content">
+                            <h3>Velocidade de Tráfego de Rede</h3>
+                            <br>
+                            <p style="text-align: center; font-size: 20px;">
+                                Mostra e compara a velocidade de Download e Upload dos dados no servidor em Megabits po
+                                segundo (Mbps):<br><br>
+                                Limite mínimo de Down: <span id="limit-down"></span><br>
+                                Limite mínimo de Up: <span id="limit-up"></span>
+                            </p>
+                            <button type="button" class="closeBtn">Fechar</button>
+                        </div>
+                    </div>
+
+                    <section class="card entrada">
+                        <h3>Pacotes Enviados e Recebidos <button type="button" class="infoBtn"
+                                data-target="infoEnvRec">&#9432</button></h3>
+                        <div class="caption">(Quantidade de pacotes IN/OUT)</div>
+                        <div class="chart-box">
+                            <canvas id="ioChart"></canvas>
+                        </div>
+                        <div class="badge">Normal</div>
+                    </section>
+
+                    <div id="infoEnvRec" class="modal">
+                        <div class="modal-content">
+                            <h3>Pacotes Enviados e Recebidos</h3>
+                            <br>
+                            <p style="text-align: center; font-size: 20px;">
+                                Trás a comparação entre quantidade de pacotes enviados e recebidos em um gráfico de
+                                linhas
+                                ao longo do dia:<br><br>
+                                Limite máximo de entrada: <span id="limit-in"></span><br>
+                                Limite máximo de saída: <span id="limit-out"></span>
+                            </p>
+                            <button type="button" class="closeBtn">Fechar</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </main>
+            </main>
+
+        </div>
 
     </section>
 
