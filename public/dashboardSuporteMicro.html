@@ -151,7 +151,18 @@
                         </div>
                     </section>
                     <section class="sessao-lateral-esquerda-itens" id="processos-do-servidor">
-                        <h3>Lista de Processos</h3>
+                        <div style="display: flex;flex-direction: row; align-items: center;">
+                            <h3>Lista de Processos</h3>
+                            <select class="periodo_select" name="periodo" id="listaProcessos"
+                                style="width: 80px; height: 35px; font-size: 12px; margin-left: 10px;">
+                                <option value="">Filtrar</option>
+                                <option value="ram">RAM</option>
+                                <option value="threads">Threads</option>
+                                <option value="status-running">Status: Running</option>
+                                <option value="status-stopped">Status: Stopped</option>
+                            </select>
+                        </div>
+
                         <div class="card scroll" id="card_processos">
                             <table class="process-table processes">
                                 <thead>
@@ -193,7 +204,7 @@
                         </section>
                     </section>
                     <section class="sessao-lateral-direita-itens" id="id_sessao_direita_2">
-                        
+
                         <section class="row" id="grafico_disco">
 
                             <div class="badge" id="status-disco">Normal</div>
@@ -201,7 +212,7 @@
                             <canvas class="card card_grafico_disco" id="graficoPizza"
                                 style="width: 100%; height: 100%; padding-bottom: 16px; padding-right: 19px;">
                             </canvas>
-                            
+
                         </section>
                         <section id="saude-servidor">
                             <div class="saude-servidor">
@@ -234,7 +245,7 @@
                             <div class="caption">Todos alertas nas ultimas 24 horas.</div>
                             <h1 id="alertas-totais">0</h1>
                         </div>
-                        
+
                         <div class="card uptime">
                             <canvas id="graficoLinha"
                                 style="width: 100%; height: 100%; background-color: white; border-radius: 10px;"></canvas>
@@ -248,14 +259,11 @@
                 <h3>Saúde do servidor</h3>
                 <br>
                 <p style="text-align: center; font-size: 20px;">
-                    Analisa os principais componentes do servidor e retorna uma saúde do computador<br><br>
-                    Cpu: xx Ram: xx Disco:xx <br><br>
-                    <span style="color: #4addf6;"><b>Saudável</b></span> Servidor estavel dentro dos paremetros
-                    esperados<br>
-                    <span style="color: #188b9f;"><b>Alerta</b></span> Servidor em alerta, requer atenção fasdjlkafsdl
-                    as<br>
-                    <span style="color: #093037;"><b>Crítico</b></span> Servidor em estado critico, requer atenção
-                    imediata!
+                    A saúde do servidor é calculada com base no uso dos três principais componentes:<br>
+                    <br>
+                    <span style="color: #4addf6;"><b>Saudável</b></span> Todos os recursos estão dentro dos parâmetros recomendados.<br>
+                    <span style="color: #188b9f;"><b>Alerta</b></span> Um ou mais componentes estão próximos do limite e requerem atenção.<br>
+                    <span style="color: #093037;"><b>Crítico</b></span> O servidor ultrapassou limites de segurança e necessita de intervenção imediata.
                 </p>
                 <button type="button" class="closeBtn">Fechar</button>
             </div>

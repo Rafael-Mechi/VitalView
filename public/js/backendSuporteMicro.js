@@ -33,6 +33,7 @@ let discoTotal
 let localizacao
 let dadosRecebidos
 let chartCPU = null;
+let processos
 
 const id = params.get("idServidor");
 const nomeServidor = params.get("hostname");
@@ -81,8 +82,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (dadosLimites.length > 0) {
             limiteCPU = dadosLimites[0].limitePercentual
-            limiteRAM = dadosLimites[1].limitePercentual
-            limiteDisco = dadosLimites[2].limitePercentual
+            limiteDisco = dadosLimites[1].limitePercentual
+            limiteRAM = dadosLimites[2].limitePercentual
         }
 
         console.log(limiteCPU)
@@ -116,6 +117,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         }
 
+        processos = dadosProcessos;
+        renderizarProcessos(processos);
         //Exibe tudo 
         plotarDados(dadosBucket, dadosLimites, dadosProcessos, alertasServidor);
 
@@ -483,6 +486,66 @@ function processosServidor(dadosProcessos) {
             </td>
         `;
 
+
+        tbody.appendChild(linha);
+    });
+}
+
+document.getElementById("listaProcessos").addEventListener("change", function () {
+    console.log("teste")
+    const filtro = this.value;
+    const processosFiltrados = filtrarProcessos(processos, filtro);
+    renderizarProcessos(processosFiltrados);
+});
+
+
+function filtrarProcessos(dados, filtro) {
+
+    let processos = [...dados]; // cópia do array original
+
+    switch (filtro) {
+
+        case "ram":
+            processos.sort((a, b) => b.Uso_Ram_Percent - a.Uso_Ram_Percent);
+            break;
+
+        case "threads":
+            processos.sort((a, b) => b.Num_Threads - a.Num_Threads);
+            break;
+
+        case "status-running":
+            processos = processos.filter(p => p.Status === "running");
+            break;
+
+        case "status-stopped":
+            processos = processos.filter(p => p.Status === "stopped");
+            break;
+    }
+
+    return processos;
+}
+
+function renderizarProcessos(dados) {
+    const tbody = document.getElementById("tbody-processos");
+    tbody.innerHTML = ""; // limpa a tabela
+
+    dados.forEach(processo => {
+        const linha = document.createElement("tr");
+
+        linha.innerHTML = `
+            <td>
+                <div class="nome-processo" title="${processo.Nome_Processo}">
+                    ${processo.Nome_Processo}
+                </div>
+            </td>
+            <td>${processo.Uso_Ram_Percent}%</td>
+            <td>${processo.Num_Threads}</td>
+            <td>
+                <span class="processo-${processo.Status === "running" ? "ativo" : "inativo"}">
+                    ${processo.Status}
+                </span>
+            </td>
+        `;
 
         tbody.appendChild(linha);
     });
