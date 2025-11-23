@@ -32,8 +32,12 @@ let ramTotal
 let discoTotal
 let localizacao
 let dadosRecebidos
-let chartCPU = null;
 let processos
+let carregouPagina = false;
+let chartRAM = null;
+let chartCPU = null;
+let graficoDisco = null;
+let graficosAlertas24hrs = null;
 
 const id = params.get("idServidor");
 const nomeServidor = params.get("hostname");
@@ -44,6 +48,7 @@ const key = `${id}_${nomeServidor}_${nomeHospital}.json`;
 const key2 = `processos_${id}_${nomeServidor}_${nomeHospital}.json`
 
 console.log(key)
+console.log(key2)
 
 lottie.loadAnimation({
     container: document.getElementById('loading'),
@@ -55,14 +60,12 @@ lottie.loadAnimation({
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-    console.log(key2)
-
     // Mostra o loading
     document.getElementById("loading").style.display = "flex";
     document.getElementById("main-container").style.display = "none";
 
     try {
-        //Faz as duas requisições ao mesmo tempo resBucket, resProcess
+        //Faz as requisições ao mesmo tempo
         const [resBanco, resLimites, resBucket, resProcess, resAlertas] = await Promise.all([
             fetch(`/suporteMicroRoutes/buscar-dados-banco/${idServidor}`),
             fetch(`/suporteMicroRoutes/limites-componentes/${idServidor}`),
@@ -71,7 +74,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             fetch(`/suporteMicroRoutes/buscar-alertas-servidores/${idServidor}`)
         ]);
 
-        //Converte ambas para JSON dadosBucket, dadosProcessos
+        //Converte ambas para JSON
         const [dadosBanco, dadosLimites, dadosBucket, dadosProcessos, alertasServidor] = await Promise.all([
             resBanco.json(),
             resLimites.json(),
@@ -82,8 +85,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (dadosLimites.length > 0) {
             limiteCPU = dadosLimites[0].limitePercentual
-            limiteDisco = dadosLimites[1].limitePercentual
-            limiteRAM = dadosLimites[2].limitePercentual
+            limiteRAM = dadosLimites[1].limitePercentual
+            limiteDisco = dadosLimites[2].limitePercentual
         }
 
         console.log(limiteCPU)
@@ -107,20 +110,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             discoLivre = bytesParaGB(dadosRecebidos[0]["Disco_livre_(bytes)"])
         }
 
-        if (dadosProcessos.length > 0) {
-            console.log(dadosProcessos)
-        }
-
-        console.log(alertasServidor)
-
-        if (alertasServidor.length > 0) {
-
-        }
-
-        processos = dadosProcessos;
-        renderizarProcessos(processos);
         //Exibe tudo 
-        plotarDados(dadosBucket, dadosLimites, dadosProcessos, alertasServidor);
+        plotarDados(dadosBucket, dadosProcessos, alertasServidor);
+
+
 
     } catch (erro) {
         console.log("Erro ao buscar o arquivo do bucket");
@@ -439,7 +432,10 @@ function servidorDesconectado() {
 
 //dadosBucket, dadosProcessos
 
-function plotarDados(dadosBucket, dadosLimite, dadosProcessos, alertasServidor) {
+
+function plotarDados(dadosBucket, dadosProcessos, alertasServidor) {
+
+    processos = dadosProcessos;
 
     document.getElementById("ativo-inativo-desconectado").textContent = "Ativo";
     detalhesServidor();
@@ -448,7 +444,7 @@ function plotarDados(dadosBucket, dadosLimite, dadosProcessos, alertasServidor) 
     utilizacaoDeRam(dadosBucket);
     escolherServidor();
     uptimeSistema(dadosBucket);
-    processosServidor(dadosProcessos);
+    renderizarProcessos(dadosProcessos);
     saudeDoServidor(dadosBucket);
     totalAlertas(alertasServidor);
 
@@ -456,39 +452,45 @@ function plotarDados(dadosBucket, dadosLimite, dadosProcessos, alertasServidor) 
         distribuicaoDeAlertas24hrs(alertasServidor);
     }, 50);
 
-    // Esconde o loading e mostra o conteúdo
-    document.getElementById("loading").style.display = "none";
-    document.getElementById("main-container").style.display = "flex";
+    if (carregouPagina == false) {
+        // Esconde o loading e mostra o conteúdo
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("main-container").style.display = "flex";
+    }
+
+    carregouPagina = true
+
+    setInterval(buscarDadosDinamicos, 65000);
 }
 
-function processosServidor(dadosProcessos) {
+// Função que faz apenas os fetches dinâmicos
+async function buscarDadosDinamicos() {
+    console.log("puxou novos dados!!")
 
-    const tbody = document.getElementById("tbody-processos");
-    console.log(dadosProcessos)
+    try {
+        const [resBucket, resProcess, resAlertas] = await Promise.all([
+            fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key}`),
+            fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key2}`),
+            fetch(`/suporteMicroRoutes/buscar-alertas-servidores/${idServidor}`)
+        ]);
 
-    dadosProcessos.forEach(processo => {
+        const [dadosBucket, dadosProcessos, alertasServidor] = await Promise.all([
+            resBucket.json(),
+            resProcess.json(),
+            resAlertas.json()
+        ]);
 
-        const linha = document.createElement("tr");
+        // Aqui você processa os dados como quiser
+        console.log("Dados do bucket:", dadosBucket);
+        console.log("Processos:", dadosProcessos);
+        console.log("Alertas:", alertasServidor);
 
-        linha.innerHTML = `
-            <td>
-                <div class="nome-processo" title="${processo.Nome_Processo}">
-                    ${processo.Nome_Processo}
-                </div>
-            </td>
-            <td>${processo.Uso_Ram_Percent}%</td>
-            <td>${processo.Num_Threads}</td>
+        // Chame suas funções de renderização
+        plotarDados(dadosBucket, dadosProcessos, alertasServidor);
 
-            <td>
-                <span class="processo-${processo.Status === "running" ? "ativo" : "inativo"}">
-                    ${processo.Status}
-                </span>
-            </td>
-        `;
-
-
-        tbody.appendChild(linha);
-    });
+    } catch (erro) {
+        console.error("Erro ao buscar dados dinâmicos:", erro);
+    }
 }
 
 document.getElementById("listaProcessos").addEventListener("change", function () {
@@ -528,6 +530,8 @@ function filtrarProcessos(dados, filtro) {
 function renderizarProcessos(dados) {
     const tbody = document.getElementById("tbody-processos");
     tbody.innerHTML = ""; // limpa a tabela
+
+    console.log(dados)
 
     dados.forEach(processo => {
         const linha = document.createElement("tr");
@@ -646,62 +650,63 @@ function utilizacaoCPU(dadosBucket) {
 
     usoCPU = dadosBucket[0]["Uso_de_Cpu"]
 
-    chartCPU = new Chart(velocimetroram2, {
-        type: 'doughnut',
-        data: {
-            labels: ['Velocidade', 'Restante'],
-            datasets: [{
-                data: [usoCPU, 100 - usoCPU],
-                backgroundColor: ['#32b9cd', '#e0e0e0'],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            responsive: true,
-            rotation: -90,       // Início do semicírculo
-            circumference: 180,  // Metade do círculo
-            cutout: '65%',       // "Espessura" do velocímetro
-            plugins: {
-                legend: { display: false },
-                title: {
-                    display: true,
-                    text: 'Utilização de CPU',
-                    font: {
-                        size: 18,
-                        weight: 'bold',
-                    },
-                    color: 'black',
-                },
-                subtitle: {
-                    display: true,
-                    text: 'Consumo atual de recurso.',
-                    font: {
-                        size: 12
-                    },
-                    color: 'gray',
-                    padding: {
-                        top: -8
-                    }
-                },
-                tooltip: { enabled: false }
+    if (!chartCPU) {
+        chartCPU = new Chart(velocimetroram2, {
+            type: 'doughnut',
+            data: {
+                labels: ['Velocidade', 'Restante'],
+                datasets: [{
+                    data: [usoCPU, 100 - usoCPU],
+                    backgroundColor: ['#32b9cd', '#e0e0e0'],
+                    borderWidth: 0
+                }]
             },
-        },
-        plugins: [{
-            // Adiciona o texto central
-            id: 'textoCentral',
-            afterDraw(chart) {
-                const { ctx, chartArea: { width, height } } = chart;
-                ctx.save();
-                ctx.font = 'bold 28px "Barlow"';
-                ctx.fillStyle = '#000';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(usoCPU + '%', width / 2, height / 0.8);
+            options: {
+                responsive: true,
+                rotation: -90,       // Início do semicírculo
+                circumference: 180,  // Metade do círculo
+                cutout: '65%',       // "Espessura" do velocímetro
+                plugins: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Utilização de CPU',
+                        font: {
+                            size: 18,
+                            weight: 'bold',
+                        },
+                        color: 'black',
+                    },
+                    subtitle: {
+                        display: true,
+                        text: 'Consumo atual de recurso.',
+                        font: {
+                            size: 12
+                        },
+                        color: 'gray',
+                        padding: {
+                            top: -8
+                        }
+                    },
+                    tooltip: { enabled: false }
+                },
+            },
+            plugins: [{
+                // Adiciona o texto central
+                id: 'textoCentral',
+                afterDraw(chart) {
+                    const { ctx, chartArea: { width, height } } = chart;
+                    ctx.save();
+                    ctx.font = 'bold 28px "Barlow"';
+                    ctx.fillStyle = '#000';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(usoCPU + '%', width / 2, height / 0.8);
 
-            }
-        }]
-    });
-
+                }
+            }]
+        });
+    }
 
     const interval = setInterval(() => {
         if (i >= dadosBucket.length) {
@@ -736,60 +741,62 @@ function utilizacaoDeRam(dadosBucket) {
 
     usoRAM = dadosBucket[0]["Uso_de_RAM"]
 
-    chartRAM = new Chart(velocimetroram, {
-        type: 'doughnut',
-        data: {
-            labels: ['Velocidade', 'Restante'],
-            datasets: [{
-                data: [usoRAM, 100 - usoRAM],
-                backgroundColor: ['#32b9cd', '#e0e0e0'],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            responsive: true,
-            rotation: -90,       // Início do semicírculo
-            circumference: 180,  // Metade do círculo
-            cutout: '65%',       // "Espessura" do velocímetro
-            plugins: {
-                legend: { display: false },
-                title: {
-                    display: true,
-                    text: 'Utilização de RAM',
-                    font: {
-                        size: 18,
-                        weight: 'bold'
-                    },
-                    color: 'black'
-                },
-                subtitle: {
-                    display: true,
-                    text: 'Consumo atual de recurso.',
-                    font: {
-                        size: 12
-                    },
-                    color: 'gray',
-                    padding: {
-                        top: -8
-                    }
-                },
-                tooltip: { enabled: false }
+    if (!chartRAM) {
+        chartRAM = new Chart(velocimetroram, {
+            type: 'doughnut',
+            data: {
+                labels: ['Velocidade', 'Restante'],
+                datasets: [{
+                    data: [usoRAM, 100 - usoRAM],
+                    backgroundColor: ['#32b9cd', '#e0e0e0'],
+                    borderWidth: 0
+                }]
             },
-        },
-        plugins: [{
-            // Adiciona o texto central
-            id: 'textoCentral',
-            afterDraw(chart) {
-                const { ctx, chartArea: { width, height } } = chart;
-                ctx.save();
-                ctx.font = 'bold 28px Barlow';
-                ctx.fillStyle = '#000';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(usoRAM + '%', width / 2, height / 0.8);
-            }
-        }]
-    });
+            options: {
+                responsive: true,
+                rotation: -90,       // Início do semicírculo
+                circumference: 180,  // Metade do círculo
+                cutout: '65%',       // "Espessura" do velocímetro
+                plugins: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Utilização de RAM',
+                        font: {
+                            size: 18,
+                            weight: 'bold'
+                        },
+                        color: 'black'
+                    },
+                    subtitle: {
+                        display: true,
+                        text: 'Consumo atual de recurso.',
+                        font: {
+                            size: 12
+                        },
+                        color: 'gray',
+                        padding: {
+                            top: -8
+                        }
+                    },
+                    tooltip: { enabled: false }
+                },
+            },
+            plugins: [{
+                // Adiciona o texto central
+                id: 'textoCentral',
+                afterDraw(chart) {
+                    const { ctx, chartArea: { width, height } } = chart;
+                    ctx.save();
+                    ctx.font = 'bold 28px Barlow';
+                    ctx.fillStyle = '#000';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(usoRAM + '%', width / 2, height / 0.8);
+                }
+            }]
+        });
+    }
 
     const interval = setInterval(() => {
         if (i >= dadosBucket.length) {
@@ -821,46 +828,54 @@ function utilizaçãoDeDisco() {
     porcentagemDiscoUsado = Math.round((discoUsado / discoTotal) * 100)
 
     const ctx = document.getElementById('graficoPizza').getContext('2d');
-    new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: [`Livre ${discoTotal - discoUsado} GB`, `Usado ${discoUsado}GB`],
-            datasets: [{
-                data: [100 - porcentagemDiscoUsado, porcentagemDiscoUsado],
-                backgroundColor: ['#6ce5e8', '#2d8bba'],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: false,
-            plugins: {
-                legend: {
-                    position: 'right'
-                },
-                title: {
-                    display: true,
-                    text: 'Utilização de Disco',
-                    font: {
-                        size: 17,
-                        weight: 'bold',
-                    },
-                    color: 'black'
 
-                },
-                subtitle: {
-                    display: true,
-                    text: 'Disco livre | Disco usado.',
-                    font: {
-                        size: 13
+    if (!graficoDisco) {
+        graficoDisco = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: [`Livre ${discoTotal - discoUsado} GB`, `Usado ${discoUsado}GB`],
+                datasets: [{
+                    data: [100 - porcentagemDiscoUsado, porcentagemDiscoUsado],
+                    backgroundColor: ['#6ce5e8', '#2d8bba'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: false,
+                plugins: {
+                    legend: {
+                        position: 'right'
                     },
-                    color: 'gray',
-                    padding: {
-                        top: -8.5
-                    }
-                },
+                    title: {
+                        display: true,
+                        text: 'Utilização de Disco',
+                        font: {
+                            size: 17,
+                            weight: 'bold',
+                        },
+                        color: 'black'
+
+                    },
+                    subtitle: {
+                        display: true,
+                        text: 'Disco livre | Disco usado.',
+                        font: {
+                            size: 13
+                        },
+                        color: 'gray',
+                        padding: {
+                            top: -8.5
+                        }
+                    },
+                }
             }
-        }
-    });
+        });
+    } else {
+        // Atualiza os dados do gráfico sem recriar
+        graficoDisco.data.datasets[0].data = [100 - porcentagemDiscoUsado, porcentagemDiscoUsado];
+        graficoDisco.data.labels = [`Livre ${discoTotal - discoUsado} GB`, `Usado ${discoUsado}GB`];
+        graficoDisco.update(); // importante: atualiza o gráfico na tela
+    }
 
     if (porcentagemDiscoUsado > limiteDisco) {
         document.getElementById("status-disco").classList.remove("ok")
@@ -1011,70 +1026,80 @@ function distribuicaoDeAlertas24hrs(alertasServidor) {
     // Desenha o gráfico
     const ctx3 = document.getElementById('graficoLinha').getContext('2d');
 
-    new Chart(ctx3, {
-        type: 'line',
-        data: {
-            labels,
-            datasets: [
-                {
-                    label: 'CPU',
-                    data: cpu,
-                    borderColor: '#45d4dc',
-                    backgroundColor: 'rgba(69, 212, 220, 0.2)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.3,
-                    pointRadius: 5
-                },
-                {
-                    label: 'RAM',
-                    data: ram,
-                    borderColor: '#1f7f8d',
-                    backgroundColor: 'rgba(31, 127, 141, 0.2)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.3,
-                    pointRadius: 5
-                },
-                {
-                    label: 'DISCO',
-                    data: disco,
-                    borderColor: '#0d3e47',
-                    backgroundColor: 'rgba(13, 62, 71, 0.2)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.3,
-                    pointRadius: 5
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Distribuição de alertas por componente (últimas 24h)',
-                    font: { size: 17, weight: 'bold' },
-                    color: 'black'
-                },
-                legend: {
-                    display: true,
-                    position: 'right'
-                }
+    if (!graficosAlertas24hrs) {
+        graficosAlertas24hrs = new Chart(ctx3, {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [
+                    {
+                        label: 'CPU',
+                        data: cpu,
+                        borderColor: '#45d4dc',
+                        backgroundColor: 'rgba(69, 212, 220, 0.2)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 5
+                    },
+                    {
+                        label: 'RAM',
+                        data: ram,
+                        borderColor: '#1f7f8d',
+                        backgroundColor: 'rgba(31, 127, 141, 0.2)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 5
+                    },
+                    {
+                        label: 'DISCO',
+                        data: disco,
+                        borderColor: '#0d3e47',
+                        backgroundColor: 'rgba(13, 62, 71, 0.2)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 5
+                    }
+                ]
             },
-            scales: {
-                y: {
-                    beginAtZero: true,
+            options: {
+                responsive: true,
+                plugins: {
                     title: {
                         display: true,
-                        text: 'Nº Alertas',
-                        color: 'black',
-                        font: { size: 14, weight: 'bold' }
+                        text: 'Distribuição de alertas por componente (últimas 24h)',
+                        font: { size: 17, weight: 'bold' },
+                        color: 'black'
+                    },
+                    legend: {
+                        display: true,
+                        position: 'right'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Nº Alertas',
+                            color: 'black',
+                            font: { size: 14, weight: 'bold' }
+                        }
                     }
                 }
             }
-        }
-    });
+        });
+    } else {
+        // Atualiza os dados existentes
+        graficosAlertas24hrs.data.datasets[0].data = cpu;
+        graficosAlertas24hrs.data.datasets[1].data = ram;
+        graficosAlertas24hrs.data.datasets[2].data = disco;
+        graficosAlertas24hrs.data.labels = labels; // atualiza labels caso hora mude
+        graficosAlertas24hrs.update(); // renderiza as alterações
+    }
+
 }
 
 
