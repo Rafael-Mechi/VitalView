@@ -1,3 +1,39 @@
+function preencherLimitesNoModal(modalId) {
+    if (!LIMITES) return;
+
+    switch (modalId) {
+
+        case "infoPerdaPacote":
+            document.getElementById("limit-perda").textContent =
+                LIMITES.perdaPacotesMax + "%";
+            break;
+
+        case "infoConexao":
+            document.getElementById("limit-con-max").textContent =
+                LIMITES.conexoesMax;
+            break;
+
+        case "infoLat":
+            document.getElementById("limit-lat").textContent =
+                LIMITES.latenciaMax + " ms";
+            break;
+
+        case "infoVelocidade":
+            document.getElementById("limit-down").textContent =
+                LIMITES.bandDownMin + " Mbps";
+            document.getElementById("limit-up").textContent =
+                LIMITES.bandUpMin + " Mbps";
+            break;
+
+        case "infoEnvRec":
+            document.getElementById("limit-in").textContent =
+                LIMITES.pacotesInMax + " Pacotes";
+            document.getElementById("limit-out").textContent =
+                LIMITES.pacotesOutMax + " Pacotes";
+            break;
+    }
+}
+
 //Modais do Meki 💅🏻
 
 let infoBtns = document.querySelectorAll('.infoBtn');
@@ -7,6 +43,9 @@ let closeBtns = document.querySelectorAll('.closeBtn');
 infoBtns.forEach(function (btn) {
     btn.addEventListener('click', function () {
         let target = btn.dataset.target;
+
+        preencherLimitesNoModal(target);
+
         var modal = document.getElementById(target);
         if (modal) {
             modal.style.display = 'flex';
@@ -35,6 +74,40 @@ modals.forEach(function (modal) {
 
 if (typeof protegerPagina === 'function') protegerPagina(['Técnico', 'Administrador']);
 if (typeof aplicarCargoNaUI === 'function') aplicarCargoNaUI();
+
+document.getElementById("servidor_select").addEventListener("change", function () {
+    const idSel = this.value;
+    const hostnameSel = this.selectedOptions[0].dataset.hostname;
+
+    if (!idSel || !hostnameSel) return;
+
+    window.location.href =
+        `dashRede.html?idServidor=${idSel}&hostname=${hostnameSel}&idhospital=${idHospital}`;
+});
+
+async function carregarServidoresNoSelect() {
+    const select = document.getElementById("servidor_select");
+
+    try {
+        const resp = await fetch(`/rede/listar/${idHospital}`);
+        const lista = await resp.json();
+
+        select.innerHTML = `<option value="">Escolher Servidor</option>`;
+
+        lista.forEach(s => {
+            const op = document.createElement("option");
+            op.value = s.idServidor;
+            op.textContent = s.hostname;
+            op.dataset.hostname = s.hostname;
+            select.appendChild(op);
+        });
+
+        if (idServidor) select.value = idServidor;
+
+    } catch (e) {
+        console.error("Erro ao carregar servidores:", e);
+    }
+}
 
 //parametrinhos do server
 
@@ -132,13 +205,28 @@ async function carregarLimites() {
             return;
         }
 
-        LIMITES = await resp.json();
-        console.log("LIMITES carregados:", LIMITES);
+        const limitesBrutos = await resp.json();
+
+        LIMITES = {};
+
+        limitesBrutos.forEach(l => {
+            switch (l.fkMetrica) {
+                case 7: LIMITES.perdaPacotesMax = l.limite; break;
+                case 5: LIMITES.conexoesMax = l.limite; break;
+                case 6: LIMITES.latenciaMax = l.limite; break;
+                case 1: LIMITES.bandDownMin = l.limite; break;
+                case 2: LIMITES.bandUpMin = l.limite; break;
+                case 3: LIMITES.pacotesInMax = l.limite; break;
+                case 4: LIMITES.pacotesOutMax = l.limite; break;
+            }
+        });
+
+        console.log("LIMITES FINAIS:", LIMITES);
+
     } catch (e) {
         console.error("Erro buscar limites:", e);
     }
 }
-
 
 function atualizarMETRICASComRegistro(r) {
 
@@ -179,8 +267,8 @@ function initChart() {
 
     const ctx = ioCanvas.getContext("2d");
 
-    const corIn = '#2CD4C2';  
-    const corOut = '#0AA8A0';  
+    const corIn = '#2CD4C2';
+    const corOut = '#0AA8A0';
 
     chartRede = new Chart(ctx, {
         type: 'line',
@@ -290,9 +378,9 @@ function renderKPIs() {
         const conexoes = Math.round(METRICAS.conexoesAtivas);
         conVal.textContent = conexoes;
 
-        if (LIMITES?.conexoesMin != null && LIMITES?.conexoesMax != null) {
-            const ok = conexoes >= LIMITES.conexoesMin && conexoes <= LIMITES.conexoesMax;
-            setBadge(conBadge, ok ? 'Normal' : 'Alerta', conVal);
+        if (LIMITES?.conexoesMax != null) {
+            const ok = conexoes <= LIMITES.conexoesMax;
+            setBadge(conBadge, ok ? "Normal" : "Alerta", conVal);
         }
     }
 
@@ -379,8 +467,9 @@ async function tickReal() {
 }
 
 (async function start() {
+    await carregarServidoresNoSelect(); 
     await carregarLimites();
-    await carregarDadosRede();   
-    initChart();                 
+    await carregarDadosRede();
+    initChart();
     setInterval(tickReal, 5000);
 })();

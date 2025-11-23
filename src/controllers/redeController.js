@@ -1,10 +1,21 @@
 var redeModel = require("../models/redeModel");
 
+function listarServidoresPorHospital(req, res) {
+    const idHospital = req.params.idHospital;
+
+    redeModel.listarServidoresPorHospital(idHospital)
+        .then(resultado => res.json(resultado))
+        .catch(erro => {
+            console.error("Erro ao listar servidores:", erro);
+            res.status(500).json(erro);
+        });
+}
+
 function buscarLimites(req, res) {
     var idServidor = req.params.idServidor;
 
     redeModel.buscarLimites(idServidor)
-        .then((resultado) => res.json(resultado[0]))
+        .then((resultado) => res.json(resultado))
         .catch((erro) => res.status(500).json(erro.sqlMessage));
 }
 
@@ -37,5 +48,6 @@ async function buscarDadosRede(req, res) {
 
 module.exports = {
     buscarDadosRede,
-    buscarLimites
+    buscarLimites,
+    listarServidoresPorHospital
 };

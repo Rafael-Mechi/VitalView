@@ -4,6 +4,15 @@ const s3 = new AWS.S3();
 
 const BUCKET_REDE = process.env.AWS_BUCKET_CLIENTE || process.env.AWS_BUCKET_NAME;
 
+function listarServidoresPorHospital(idHospital) {
+    const instrucao = `
+        SELECT idServidor, hostname 
+        FROM servidores
+        WHERE fkHospital = ${idHospital};
+    `;
+    return database.executar(instrucao);
+}
+
 function buscarLimites(idServidor) {
     var sql = `
         SELECT *
@@ -36,6 +45,7 @@ async function pegarDadosRede(hostname) {
 
 module.exports = {
     pegarDadosRede,
-    buscarLimites
+    buscarLimites,
+    listarServidoresPorHospital
 };
 
