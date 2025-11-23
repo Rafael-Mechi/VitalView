@@ -1,5 +1,6 @@
     var dashboardMacroModel = require("../models/dashboardMacroModel");
 var database = require("../database/config");
+const jiraService = require("../services/jiraService"); 
 
 async function buscarDadosDashboard(req, res) {
     try {
@@ -21,25 +22,45 @@ async function buscarDadosDashboard(req, res) {
 
         console.log("✅ Dados do banco buscados!");
 
-        // BUSCA ARQUIVO S3 
+        let statusRedePromise = jiraService.contarAlertasRede().catch(error => {
+            console.log("⚠️ Erro ao buscar Jira:", error.message);
+            return { abertos: 0, resolvidos: 0, total: 0 };
+        });
+
+        // Dados consolidados do hospital
         let dadosS3 = [];
         try {
-            const nomeArquivo = await gerarNomeArquivoDinamico(idHospital);
-            console.log(`📁 Buscando arquivo S3: ${nomeArquivo}`);
-            dadosS3 = await dashboardMacroModel.buscarDadosBucketMacro(nomeArquivo);
-            console.log(`✅ Dados S3 carregados: ${dadosS3.length} registros`);
+            dadosS3 = await buscarDadosConsolidadosS3(idHospital);
+            console.log(`✅ Dados S3 carregados: ${dadosS3.length} servidores`);
         } catch (error) {
             console.log("❌ Erro S3:", error.message);
         }
 
+        console.log("🔍 SERVERS FROM DATABASE for hospital", idHospital, ":");
+dadosServidores.forEach(servidor => {
+    console.log(`   ID: ${servidor.id}, Nome: ${servidor.nome}, Hostname: ${servidor.hostname}`);
+});
+
+// DEBUG: Verificar exatamente quais servidores vieram do S3  
+console.log("🔍 SERVERS FROM S3:");
+if (dadosS3 && dadosS3.length > 0) {
+    dadosS3.forEach(servidor => {
+        console.log(`   ServidorId: ${servidor.ServidorId}, Nome: ${servidor.Nome_da_Maquina}`);
+    });
+} else {
+    console.log("   Nenhum servidor no S3");
+}
+
+const statusRede = await statusRedePromise;
+
         // PROCESSAMENTOS
         const servidores = processarServidoresComS3(dadosServidores, dadosS3);
 
-        //  CALCULA ALERTAS EM TEMPO RELA
+        // CALCULA ALERTAS EM TEMPO REAL
         const servidoresComAlertas = servidores.filter(s => s.status === "alerta").length;
         const totalAlertasAtivos = servidores.reduce((total, servidor) => total + servidor.qtdAlertas, 0);
 
-        //  MANTÉM TENDÊNCIAS HISTÓRICAS DO BANCO
+        // MANTÉM TENDÊNCIAS HISTÓRICAS DO BANCO
         const alertas24h = dadosKPIs[0]?.alertas_24h || 0;
         const alertasAnterior = dadosKPIs[0]?.alertas_anterior || 0;
         const diferenca = alertas24h - alertasAnterior;
@@ -60,12 +81,19 @@ async function buscarDadosDashboard(req, res) {
             distribuicao: {
                 normais: (dadosKPIs[0]?.total_servidores || 0) - servidoresComAlertas,
                 alertas: servidoresComAlertas
+            },
+             rede: {
+                alertasAtivos: statusRede.abertos,
+                alertasResolvidos: statusRede.resolvidos,
+                totalAlertas: statusRede.total,
+                status: statusRede.abertos > 0 ? 'ALERTA' : 'NORMAL'
             }
         };
 
         console.log("KPIs - Tempo real:", {
             alertasAtivos: totalAlertasAtivos,
-            servidoresRisco: servidoresComAlertas
+            servidoresRisco: servidoresComAlertas,
+            redeAlerta: statusRede.abertos > 0 ? 'SIM' : 'NÃO'
         });
         console.log("KPIs - Histórico:", {
             alertas24h: alertas24h,
@@ -86,62 +114,57 @@ async function buscarDadosDashboard(req, res) {
     }
 }
 
-// GERA NOME DO ARQUIVO DINÂMICO
-async function gerarNomeArquivoDinamico(idHospital) {
-    try {
-        // Busca nome do hospital no banco
-        const query = `SELECT nome FROM hospital WHERE idHospital = ${idHospital}`;
-        const hospital = await database.executar(query);
-        
-        if (hospital.length > 0) {
-            const nomeHospital = hospital[0].nome;
-            const nomeFormatado = nomeHospital.replace(/\s+/g, '_');
-            
-            // PADRÃO: id_servidor_[nomeHospital]_1.json
-            const nomeArquivo = `id_servidor_${nomeFormatado}_1.json`;
-            console.log(`📁 Nome do arquivo gerado: ${nomeArquivo}`);
-            return nomeArquivo;
-        }
-    } catch (error) {
-        console.error('Erro ao buscar hospital:', error);
-    }
+// Buscando dados consolidados
+async function buscarDadosConsolidadosS3(idHospital) {
+    const nomeArquivo = `hospital_${idHospital}_dados_servidores.json`;
     
-    // FALLBACK: Se der erro, usa arquivo padrão
-    console.log('📁 Usando arquivo padrão');
-    return 'id_servidor_nomeHospital_1.json';
+    try {
+        console.log(`📁 Buscando dados consolidados: ${nomeArquivo}`);
+        const dados = await dashboardMacroModel.buscarDadosBucketMacro(nomeArquivo);
+        
+        if (dados && dados.length > 0 && dados[0].servidores) {
+            console.log(`✅ Dados S3 carregados: ${dados[0].servidores.length} servidores`);
+            return dados[0].servidores; // Retorna array de servidores
+        }
+        console.log('⚠️ Arquivo S3 vazio ou formato inválido');
+        return [];
+        
+    } catch (error) {
+        console.log('❌ Erro ao buscar dados consolidados:', error.message);
+        return [];
+    }
 }
 
-// PROCESSAMENTO DOS DADOS
+// Buscando por ID
 function processarServidoresComS3(dadosServidores, dadosS3) {
     return dadosServidores.map(servidor => {
-        // Dados padrão do banco
+        // Dados padrão do banco (fallback)
         let cpu = servidor.limite_cpu || 0;
         let ram = servidor.limite_ram || 0; 
         let disco = servidor.limite_disco || 0;
         
-        let usoRealCpu = cpu;
-        let usoRealRam = ram;
-        let usoRealDisco = disco;
-
-        //  SE TEM DADOS S3: USA DADOS REAIS
+        // Buscando dados S3 por ID do servidor
         if (dadosS3 && dadosS3.length > 0) {
-            const ultimoDado = dadosS3[dadosS3.length - 1];
-            usoRealCpu = ultimoDado.Uso_de_Cpu || cpu;
-            usoRealRam = ultimoDado.Uso_de_RAM || ram;
-            usoRealDisco = ultimoDado.Uso_de_Disco || disco;
-            console.log(`✅ Servidor ${servidor.nome} - Dados S3: CPU ${usoRealCpu}%, RAM ${usoRealRam}%, Disco ${usoRealDisco}%`);
-        } else {
-            console.log(`📊 Servidor ${servidor.nome} - Dados do banco`);
+            const servidorS3 = dadosS3.find(s => s.ServidorId === servidor.id);
+            
+            if (servidorS3) {
+                cpu = servidorS3.Uso_de_Cpu || cpu;
+                ram = servidorS3.Uso_de_RAM || ram;
+                disco = servidorS3.Uso_de_Disco || disco;
+                console.log(`✅ S3: ${servidor.nome} (ID:${servidor.id}) - CPU:${cpu}%, RAM:${ram}%, Disco:${disco}%`);
+            } else {
+                console.log(`📊 Servidor ${servidor.nome} (ID:${servidor.id}) - Dados do banco (não encontrado no S3)`);
+            }
         }
 
-        //  CORREÇÃO: CALCULA ALERTAS EM TEMPO REAL
-        const limiteCpu = servidor.limite_cpu || 80; // Fallback 80%
-        const limiteRam = servidor.limite_ram || 80; // Fallback 80%
-        const limiteDisco = servidor.limite_disco || 80; // Fallback 80%
+        // CÁLCULO DE ALERTAS EM TEMPO REAL
+        const limiteCpu = servidor.limite_cpu || 83.5;
+        const limiteRam = servidor.limite_ram || 41.6;
+        const limiteDisco = servidor.limite_disco || 85.0;
         
-        const alertaCpu = usoRealCpu > limiteCpu;
-        const alertaRam = usoRealRam > limiteRam;
-        const alertaDisco = usoRealDisco > limiteDisco;
+        const alertaCpu = cpu > limiteCpu;
+        const alertaRam = ram > limiteRam;
+        const alertaDisco = disco > limiteDisco;
         
         const temAlertasAtivos = alertaCpu || alertaRam || alertaDisco;
         const qtdAlertasAtivos = [alertaCpu, alertaRam, alertaDisco].filter(Boolean).length;
@@ -152,14 +175,14 @@ function processarServidoresComS3(dadosServidores, dadosS3) {
             id: servidor.id,
             nome: servidor.nome,
             status: temAlertasAtivos ? "alerta" : "normal",  
-            cpu: usoRealCpu, 
-            ram: usoRealRam, 
-            disco: usoRealDisco,  
+            cpu: cpu, 
+            ram: ram, 
+            disco: disco,  
             qtdAlertas: qtdAlertasAtivos,  
             tempoAlerta: temAlertasAtivos ? "Agora" : "--:--:--",  
             ip: servidor.ip,
             localizacao: servidor.localizacao,
-            //  DEBUG
+            // DEBUG
             limites: {
                 cpu: limiteCpu,
                 ram: limiteRam, 

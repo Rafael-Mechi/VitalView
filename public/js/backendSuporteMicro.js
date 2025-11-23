@@ -33,6 +33,7 @@ let discoTotal
 let localizacao
 let dadosRecebidos
 let chartCPU = null;
+let processos
 
 const id = params.get("idServidor");
 const nomeServidor = params.get("hostname");
@@ -40,7 +41,7 @@ const nomeHospital = sessionStorage.NOME_HOSPITAL;
 
 const idServidor = id;
 const key = `${id}_${nomeServidor}_${nomeHospital}.json`;
-const key2 = `csvjson.json`
+const key2 = `processos_${id}_${nomeServidor}_${nomeHospital}.json`
 
 console.log(key)
 
@@ -53,26 +54,41 @@ lottie.loadAnimation({
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
+
+    console.log(key2)
+
     // Mostra o loading
     document.getElementById("loading").style.display = "flex";
     document.getElementById("main-container").style.display = "none";
 
     try {
-        //Faz as duas requisições ao mesmo tempo
-        const [resBanco, resBucket, resProcess, resAlertas] = await Promise.all([
+        //Faz as duas requisições ao mesmo tempo resBucket, resProcess
+        const [resBanco, resLimites, resBucket, resProcess, resAlertas] = await Promise.all([
             fetch(`/suporteMicroRoutes/buscar-dados-banco/${idServidor}`),
+            fetch(`/suporteMicroRoutes/limites-componentes/${idServidor}`),
             fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key}`),
             fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key2}`),
             fetch(`/suporteMicroRoutes/buscar-alertas-servidores/${idServidor}`)
         ]);
 
-        //Converte ambas para JSON
-        const [dadosBanco, dadosBucket, dadosProcessos, alertasServidor] = await Promise.all([
+        //Converte ambas para JSON dadosBucket, dadosProcessos
+        const [dadosBanco, dadosLimites, dadosBucket, dadosProcessos, alertasServidor] = await Promise.all([
             resBanco.json(),
+            resLimites.json(),
             resBucket.json(),
             resProcess.json(),
             resAlertas.json()
         ]);
+
+        if (dadosLimites.length > 0) {
+            limiteCPU = dadosLimites[0].limitePercentual
+            limiteDisco = dadosLimites[1].limitePercentual
+            limiteRAM = dadosLimites[2].limitePercentual
+        }
+
+        console.log(limiteCPU)
+        console.log(limiteDisco)
+        console.log(limiteRAM)
 
         //Dados do banco
         if (dadosBanco.length > 0) {
@@ -81,7 +97,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             localizacao = dadosBanco[0].localizacao;
         }
 
-        //Dados do bucket
+        // Dados do bucket
         if (dadosBucket.length > 0) {
             dadosRecebidos = dadosBucket;
             console.log(dadosRecebidos)
@@ -95,15 +111,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.log(dadosProcessos)
         }
 
+        console.log(alertasServidor)
+
         if (alertasServidor.length > 0) {
 
         }
 
-        //Exibe tudo
-        plotarDados(dadosBucket, dadosProcessos, alertasServidor);
+        processos = dadosProcessos;
+        renderizarProcessos(processos);
+        //Exibe tudo 
+        plotarDados(dadosBucket, dadosLimites, dadosProcessos, alertasServidor);
 
     } catch (erro) {
-        console.error("Erro na requisição:", erro);
+        console.log("Erro ao buscar o arquivo do bucket");
+        console.log("Verifique se o voce tem o json principal e o json de processos no bucket");
+        console.log("Verifique se o token do jira está configurado no .env");
+        console.log("Verifique se o servidor que esta tentando acessar tem os parametros de limite cpu ram e disco");
+        console.error(erro)
         servidorDesconectado()
         document.getElementById("loading").style.display = "none";
         document.getElementById("main-container").style.display = "flex";
@@ -127,6 +151,17 @@ function servidorDesconectado() {
     uptimeSistemaSeta.style.color = "#f75454";
 
     const tbody = document.getElementById("tbody-processos");
+
+    document.getElementById("nivel10").style.backgroundColor = "#c5c5c5";
+    document.getElementById("nivel9").style.backgroundColor = "#c5c5c5";
+    document.getElementById("nivel8").style.backgroundColor = "#c5c5c5";
+    document.getElementById("nivel7").style.backgroundColor = "#c5c5c5";
+    document.getElementById("nivel6").style.backgroundColor = "#c5c5c5";
+    document.getElementById("nivel5").style.backgroundColor = "#c5c5c5";
+    document.getElementById("nivel4").style.backgroundColor = "#c5c5c5";
+    document.getElementById("nivel3").style.backgroundColor = "#c5c5c5";
+    document.getElementById("nivel2").style.backgroundColor = "#c5c5c5";
+    document.getElementById("nivel1").style.backgroundColor = "#c5c5c5";
 
     const tr = `
     <tr>
@@ -192,6 +227,17 @@ function servidorDesconectado() {
                     },
                     color: 'black',
                 },
+                subtitle: {
+                    display: true,
+                    text: 'Consumo atual de recurso.',
+                    font: {
+                        size: 12
+                    },
+                    color: 'gray',
+                    padding: {
+                        top: -8
+                    }
+                },
                 tooltip: { enabled: false }
             },
         },
@@ -205,15 +251,7 @@ function servidorDesconectado() {
                 ctx.fillStyle = '#000';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText(usoCPU + '%', width / 2, height / 0.9);
-
-                // posição X/Y do texto principal
-                const x = width / 2;
-                const y = height / 1.4;   // posição perfeita dentro do velocímetro
-
-                ctx.font = '12px "Barlow"';
-                ctx.fillStyle = '#555';
-                ctx.fillText('Consumo atual do recurso.', x, y + -30);
+                ctx.fillText(usoCPU + '%', width / 2, height / 0.8);
             }
         }]
     });
@@ -248,6 +286,17 @@ function servidorDesconectado() {
                     },
                     color: 'black'
                 },
+                subtitle: {
+                    display: true,
+                    text: 'Consumo atual de recurso.',
+                    font: {
+                        size: 12
+                    },
+                    color: 'gray',
+                    padding: {
+                        top: -8
+                    }
+                },
                 tooltip: { enabled: false }
             },
         },
@@ -261,15 +310,7 @@ function servidorDesconectado() {
                 ctx.fillStyle = '#000';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText(usoRAM + '%', width / 2, height / 0.9);
-
-                // posição X/Y do texto principal
-                const x = width / 2;
-                const y = height / 1.4;   // posição perfeita dentro do velocímetro
-
-                ctx.font = '12px "Barlow"';
-                ctx.fillStyle = '#555';
-                ctx.fillText('Consumo atual do recurso.', x, y + -30);
+                ctx.fillText(usoRAM + '%', width / 2, height / 0.8);
             }
         }]
     });
@@ -301,7 +342,17 @@ function servidorDesconectado() {
                         weight: 'bold',
                     },
                     color: 'black'
-
+                },
+                subtitle: {
+                    display: true,
+                    text: 'Disco livre | Disco usado.',
+                    font: {
+                        size: 13
+                    },
+                    color: 'gray',
+                    padding: {
+                        top: -8.5
+                    }
                 }
             }
         }
@@ -386,7 +437,9 @@ function servidorDesconectado() {
     }, 50);
 }
 
-function plotarDados(dadosBucket, dadosProcessos, alertasServidor) {
+//dadosBucket, dadosProcessos
+
+function plotarDados(dadosBucket, dadosLimite, dadosProcessos, alertasServidor) {
 
     document.getElementById("ativo-inativo-desconectado").textContent = "Ativo";
     detalhesServidor();
@@ -396,11 +449,11 @@ function plotarDados(dadosBucket, dadosProcessos, alertasServidor) {
     escolherServidor();
     uptimeSistema(dadosBucket);
     processosServidor(dadosProcessos);
-    totalAlertas(alertasServidor);
     saudeDoServidor(dadosBucket);
+    totalAlertas(alertasServidor);
 
     setTimeout(() => {
-        // distribuicaoDeAlertas24hrs(alertasServidor);
+        distribuicaoDeAlertas24hrs(alertasServidor);
     }, 50);
 
     // Esconde o loading e mostra o conteúdo
@@ -411,6 +464,7 @@ function plotarDados(dadosBucket, dadosProcessos, alertasServidor) {
 function processosServidor(dadosProcessos) {
 
     const tbody = document.getElementById("tbody-processos");
+    console.log(dadosProcessos)
 
     dadosProcessos.forEach(processo => {
 
@@ -437,6 +491,66 @@ function processosServidor(dadosProcessos) {
     });
 }
 
+document.getElementById("listaProcessos").addEventListener("change", function () {
+    console.log("teste")
+    const filtro = this.value;
+    const processosFiltrados = filtrarProcessos(processos, filtro);
+    renderizarProcessos(processosFiltrados);
+});
+
+
+function filtrarProcessos(dados, filtro) {
+
+    let processos = [...dados]; // cópia do array original
+
+    switch (filtro) {
+
+        case "ram":
+            processos.sort((a, b) => b.Uso_Ram_Percent - a.Uso_Ram_Percent);
+            break;
+
+        case "threads":
+            processos.sort((a, b) => b.Num_Threads - a.Num_Threads);
+            break;
+
+        case "status-running":
+            processos = processos.filter(p => p.Status === "running");
+            break;
+
+        case "status-stopped":
+            processos = processos.filter(p => p.Status === "stopped");
+            break;
+    }
+
+    return processos;
+}
+
+function renderizarProcessos(dados) {
+    const tbody = document.getElementById("tbody-processos");
+    tbody.innerHTML = ""; // limpa a tabela
+
+    dados.forEach(processo => {
+        const linha = document.createElement("tr");
+
+        linha.innerHTML = `
+            <td>
+                <div class="nome-processo" title="${processo.Nome_Processo}">
+                    ${processo.Nome_Processo}
+                </div>
+            </td>
+            <td>${processo.Uso_Ram_Percent}%</td>
+            <td>${processo.Num_Threads}</td>
+            <td>
+                <span class="processo-${processo.Status === "running" ? "ativo" : "inativo"}">
+                    ${processo.Status}
+                </span>
+            </td>
+        `;
+
+        tbody.appendChild(linha);
+    });
+}
+
 function detalhesServidor() {
     document.getElementById("ip").textContent = ip;
     document.getElementById("hostName").textContent = hostname;
@@ -450,43 +564,9 @@ function bytesParaGB(bytes) {
     return (bytes / (1024 ** 3)).toFixed(0);
 }
 
-//ARRUMAR NAS ULTIMAS 24 HRS
-function totalAlertas(alertasServidor) {
-
-
-    let totalAlertas = 0;
-    const agora = new Date();
-
-    for (let i = 0; i < alertasServidor.issues.length; i++) {
-
-        let data = alertasServidor.issues[i].fields.created;
-        let alerta = alertasServidor.issues[i].fields.summary;
-        let dateObj = new Date(data);
-        // console.log(dateObj.toLocaleString("pt-BR"));
-
-        const limite24h = agora.getTime() - (24 * 60 * 60 * 1000);
-
-        // agora você compara:
-        if (dateObj.getTime() >= limite24h) {
-
-            if (alerta.includes("Alerta DISCO:") || alerta.includes("Alerta CPU:") || alerta.includes("Alerta RAM:")) {
-                console.log(alerta)
-                // console.log("Cai nas últimas 24h:", dateObj);
-                totalAlertas++
-
-            }
-
-        }
-        // console.log("Summary:", alertasServidor.issues[i].fields.summary)
-        // console.log("Summary:", alertasServidor.issues[i].fields.created)
-
-    }
-
-    document.getElementById("alertas-totais").textContent = totalAlertas;
-}
-
 function uptimeSistema(dadosBucket) {
     let i = 0
+    let ultimoUptime = null;
 
     upTime = dadosBucket[0]["Uptime_(s)"]
 
@@ -500,6 +580,21 @@ function uptimeSistema(dadosBucket) {
         const tempoFormatado = formatarTempo(upTimeSegundos);
 
         document.getElementById("uptimeServidor").textContent = tempoFormatado;
+
+        if (ultimoUptime !== null && upTimeSegundos <= ultimoUptime) {
+            console.log("Uptime parou de subir! Último valor:", upTimeSegundos);
+
+            document.getElementById("status-uptime").classList.remove("ok")
+            document.getElementById("status-uptime").classList.add("alerta")
+            document.getElementById("status-uptime").textContent = "Alerta"
+        } else {
+            document.getElementById("status-uptime").classList.remove("alerta")
+            document.getElementById("status-uptime").classList.add("ok")
+            document.getElementById("status-uptime").textContent = "Normal"
+        }
+
+
+        ultimoUptime = upTimeSegundos;
 
         i++;
     }, 1500); // executa a cada 2.5s
@@ -577,6 +672,17 @@ function utilizacaoCPU(dadosBucket) {
                     },
                     color: 'black',
                 },
+                subtitle: {
+                    display: true,
+                    text: 'Consumo atual de recurso.',
+                    font: {
+                        size: 12
+                    },
+                    color: 'gray',
+                    padding: {
+                        top: -8
+                    }
+                },
                 tooltip: { enabled: false }
             },
         },
@@ -590,15 +696,8 @@ function utilizacaoCPU(dadosBucket) {
                 ctx.fillStyle = '#000';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText(usoCPU + '%', width / 2, height / 0.9);
+                ctx.fillText(usoCPU + '%', width / 2, height / 0.8);
 
-                // posição X/Y do texto principal
-                const x = width / 2;
-                const y = height / 1.4;   // posição perfeita dentro do velocímetro
-
-                ctx.font = '12px "Barlow"';
-                ctx.fillStyle = '#555';
-                ctx.fillText('Consumo atual do recurso.', x, y + -30);
             }
         }]
     });
@@ -614,6 +713,16 @@ function utilizacaoCPU(dadosBucket) {
 
         chartCPU.data.datasets[0].data = [usoCPU, 100 - usoCPU];
         chartCPU.update();
+
+        if (usoCPU > limiteCPU) {
+            document.getElementById("status-cpu").classList.remove("ok")
+            document.getElementById("status-cpu").classList.add("alerta")
+            document.getElementById("status-cpu").textContent = "Alerta"
+        } else {
+            document.getElementById("status-cpu").classList.remove("alerta")
+            document.getElementById("status-cpu").classList.add("ok")
+            document.getElementById("status-cpu").textContent = "Normal"
+        }
 
         i++;
     }, 1500); // executa a cada 2.5s
@@ -653,6 +762,17 @@ function utilizacaoDeRam(dadosBucket) {
                     },
                     color: 'black'
                 },
+                subtitle: {
+                    display: true,
+                    text: 'Consumo atual de recurso.',
+                    font: {
+                        size: 12
+                    },
+                    color: 'gray',
+                    padding: {
+                        top: -8
+                    }
+                },
                 tooltip: { enabled: false }
             },
         },
@@ -666,15 +786,7 @@ function utilizacaoDeRam(dadosBucket) {
                 ctx.fillStyle = '#000';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText(usoRAM + '%', width / 2, height / 0.9);
-
-                // posição X/Y do texto principal
-                const x = width / 2;
-                const y = height / 1.4;   // posição perfeita dentro do velocímetro
-
-                ctx.font = '12px "Barlow"';
-                ctx.fillStyle = '#555';
-                ctx.fillText('Consumo atual do recurso.', x, y + -30);
+                ctx.fillText(usoRAM + '%', width / 2, height / 0.8);
             }
         }]
     });
@@ -690,9 +802,17 @@ function utilizacaoDeRam(dadosBucket) {
         chartRAM.data.datasets[0].data = [usoRAM, 100 - usoRAM];
         chartRAM.update();
 
+        if (usoRAM > limiteRAM) {
+            document.getElementById("status-ram").classList.remove("ok")
+            document.getElementById("status-ram").classList.add("alerta")
+            document.getElementById("status-ram").textContent = "Alerta"
+        } else {
+            document.getElementById("status-ram").classList.remove("alerta")
+            document.getElementById("status-ram").classList.add("ok")
+            document.getElementById("status-ram").textContent = "Normal"
+        }
         i++;
     }, 1500);
-
 }
 
 
@@ -726,10 +846,32 @@ function utilizaçãoDeDisco() {
                     },
                     color: 'black'
 
-                }
+                },
+                subtitle: {
+                    display: true,
+                    text: 'Disco livre | Disco usado.',
+                    font: {
+                        size: 13
+                    },
+                    color: 'gray',
+                    padding: {
+                        top: -8.5
+                    }
+                },
             }
         }
     });
+
+    if (porcentagemDiscoUsado > limiteDisco) {
+        document.getElementById("status-disco").classList.remove("ok")
+        document.getElementById("status-disco").classList.add("alerta")
+        document.getElementById("status-disco").textContent = "Alerta"
+
+    } else {
+        document.getElementById("status-disco").classList.remove("alerta")
+        document.getElementById("status-disco").classList.add("ok")
+        document.getElementById("status-disco").textContent = "Normal"
+    }
 }
 
 function saudeDoServidor(dadosBucket) {
@@ -788,27 +930,82 @@ function saudeDoServidor(dadosBucket) {
     }, 1500);
 }
 
+function totalAlertas(alertasServidor) {
+
+    let totalAlertas = 0;
+    const agora = new Date();
+
+    for (let i = 0; i < alertasServidor.issues.length; i++) {
+
+        let data = alertasServidor.issues[i].fields.created;
+        let alerta = alertasServidor.issues[i].fields.summary;
+        let dateObj = new Date(data);
+        // console.log(dateObj.toLocaleString("pt-BR"));
+
+        const limite24h = agora.getTime() - (24 * 60 * 60 * 1000);
+
+        // agora você compara:
+        if (dateObj.getTime() >= limite24h) {
+
+            if (alerta.includes("Alerta DISCO:") || alerta.includes("Alerta CPU:") || alerta.includes("Alerta RAM:")) {
+                console.log(alerta)
+                // console.log("Cai nas últimas 24h:", dateObj);
+                totalAlertas++
+
+            }
+        }
+    }
+
+    if (totalAlertas >= 3) {
+        document.getElementById("status-total-alerta").classList.remove("ok")
+        document.getElementById("status-total-alerta").classList.add("alerta")
+        document.getElementById("status-total-alerta").textContent = "Alerta"
+    } else {
+        document.getElementById("status-total-alerta").classList.remove("alerta")
+        document.getElementById("status-total-alerta").classList.add("ok")
+        document.getElementById("status-total-alerta").textContent = "Normal"
+    }
+
+    document.getElementById("alertas-totais").textContent = totalAlertas;
+}
+
 function distribuicaoDeAlertas24hrs(alertasServidor) {
-    // Cria as últimas 24 horas como labels
     const labels = [];
     const cpu = Array(24).fill(0);
     const ram = Array(24).fill(0);
     const disco = Array(24).fill(0);
     const agora = new Date();
 
-    let data = alertasServidor.issues[i].fields.created;
-    let alerta = alertasServidor.issues[i].fields.summary;
-    let dateObj = new Date(data);
-    // console.log(dateObj.toLocaleString("pt-BR"));
-
     const limite24h = agora.getTime() - (24 * 60 * 60 * 1000);
 
-    // agora você compara:
-    if (dateObj.getTime() >= limite24h) {
+    // Cria labels das últimas 24h
+    for (let i = 23; i >= 0; i--) {
+        const hora = new Date(agora.getTime() - i * 3600 * 1000);
+        labels.push(hora.getHours().toString().padStart(2, '0') + ':00');
+    }
 
-        if (alerta.includes("Alerta CPU:")) cpu[index]++;
-        else if (alerta.includes("Alerta RAM:")) ram[index]++;
-        else if (alerta.includes("Alerta DISCO")) disco[index]++;
+    for (let i = 0; i < alertasServidor.issues.length; i++) {
+
+        let data = alertasServidor.issues[i].fields.created;
+        let alerta = alertasServidor.issues[i].fields.summary;
+        let dateObj = new Date(data);
+
+        if (dateObj.getTime() >= limite24h) {
+
+            // Calcula índice
+            let diferencaHoras = Math.floor((agora - dateObj) / (1000 * 60 * 60));
+            let index = 23 - diferencaHoras;
+
+            if (index >= 0 && index < 24) {
+                if (alerta.includes("Alerta DISCO:")) {
+                    disco[index]++;
+                } else if (alerta.includes("Alerta CPU:")) {
+                    cpu[index]++;
+                } else if (alerta.includes("Alerta RAM:")) {
+                    ram[index]++;
+                }
+            }
+        }
     }
 
     // Desenha o gráfico
@@ -856,7 +1053,7 @@ function distribuicaoDeAlertas24hrs(alertasServidor) {
             plugins: {
                 title: {
                     display: true,
-                    text: 'Distribuição de alertas por componente',
+                    text: 'Distribuição de alertas por componente (últimas 24h)',
                     font: { size: 17, weight: 'bold' },
                     color: 'black'
                 },
@@ -879,6 +1076,7 @@ function distribuicaoDeAlertas24hrs(alertasServidor) {
         }
     });
 }
+
 
 
 // -------------------------------------------------------------------------------------------------------

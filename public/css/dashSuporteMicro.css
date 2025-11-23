@@ -411,6 +411,14 @@ img {
 #grafico_disco {
   width: 31.5%;
   height: 90%;
+  position: relative;
+}
+
+#status-disco {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
 }
 
 .card_grafico_disco {
@@ -524,8 +532,15 @@ img {
 }
 
 
-.badge.ok      { color: var(--vv-ok);   border-color: color-mix(in oklab, var(--vv-badge-bg) 70%, var(--vv-ok)); }
-.badge.alerta  { color: var(--vv-alert);border-color: color-mix(in oklab, var(--vv-badge-bg) 70%, var(--vv-alert)); }
+.badge.ok {
+  color: var(--vv-ok);
+  border-color: color-mix(in oklab, var(--vv-badge-bg) 70%, var(--vv-ok));
+}
+
+.badge.alerta {
+  color: var(--vv-alert);
+  border-color: color-mix(in oklab, var(--vv-badge-bg) 70%, var(--vv-alert));
+}
 
 .caption {
   font-size: .82rem;
@@ -1149,13 +1164,13 @@ h3 {
   --vv-muted: #6b7280;
   --vv-border: #e5e7eb;
 
-  --vv-teal: #14b8a6;  
-  --vv-cyan: #0ea5e9;   
+  --vv-teal: #14b8a6;
+  --vv-cyan: #0ea5e9;
   --vv-ok: #10b981;
   --vv-warn: #f59e0b;
   --vv-alert: #ef4444;
   --vv-badge-bg: #f1f5f9;
   --vv-grid-gap: 16px;
   --vv-radius: 16px;
-  --vv-shadow: 0 8px 24px rgba(0,0,0,.06);
+  --vv-shadow: 0 8px 24px rgba(0, 0, 0, .06);
 }

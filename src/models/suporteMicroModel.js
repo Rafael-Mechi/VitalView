@@ -16,6 +16,24 @@ function buscarDadosServidores(idServidor) {
     return database.executar(instrucao);
 }
 
+function buscarLimitesServidor(idServidor) {
+
+    const instrucao = `
+           SELECT 
+                s.idServidor,
+                s.hostname,
+                tc.nome AS tipoComponente,
+                c.limite AS limitePercentual
+                FROM componentes c
+                JOIN tipoComponente tc ON c.fkTipo = tc.idTipo
+                JOIN servidores s ON c.fkServidor = s.idServidor
+                WHERE c.fkServidor = ${idServidor}
+                AND tc.nome IN ('Cpu', 'Memória', 'Disco');
+
+        `;
+    return database.executar(instrucao);
+}
+
 function buscarListaServidores() {
     const instrucao = `
             select * from servidores;
@@ -104,5 +122,6 @@ module.exports = {
     buscarDadosServidores,
     buscarListaServidores,
     pegarDadosDiscoModel,
-    alertasNasUltimas24hrs
+    alertasNasUltimas24hrs,
+    buscarLimitesServidor
 };

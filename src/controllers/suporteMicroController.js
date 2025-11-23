@@ -21,6 +21,27 @@ function buscarDadosServidores(req, res) {
         )
 }
 
+function limitesServidores(req, res) {
+
+    const { idServidor } = req.params;
+
+    suporteMicroModel.buscarLimitesServidor(idServidor)
+        .then(
+            function (resultadoDadosServidores) {
+                res.json(resultadoDadosServidores);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao tentar cadastrar o servidor! Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            }
+        )
+}
+
 function buscarListaServidores(req, res) {
 
     suporteMicroModel.buscarListaServidores()
@@ -80,5 +101,6 @@ module.exports = {
     buscarDadosServidores,
     pegarDadosBucket,
     buscarListaServidores,
-    buscarAlertasServidores
+    buscarAlertasServidores,
+    limitesServidores
 }

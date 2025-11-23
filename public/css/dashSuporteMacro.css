@@ -788,6 +788,59 @@ tr:nth-child(even) {
   font-weight: 600;
 }
 
+/*Deixando o alerta com animaçãozinha*/
+
+.btn-com-alerta {
+    position: relative;
+    animation: bounce-alerta 2s infinite;
+    border: 2px solid #e63946 !important;
+    border-radius: 6px !important;
+    background-color: #ffebee !important;
+}
+
+@keyframes bounce-alerta {
+    0%, 20%, 50%, 80%, 100% { 
+        transform: translateY(0); 
+    }
+    40% { 
+        transform: translateY(-3px); 
+    }
+    60% { 
+        transform: translateY(-2px); 
+    }
+}
+
+/* Tooltip customizado*/
+.btn-server[title]:hover::after,
+.btn-disk[title]:hover::after,
+.btn-network[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    font-family: 'Barlow', 'Segoe UI', Tahoma, sans-serif;
+    font-weight: 500;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.status-badge.status-alerta {
+    background: #ffe3e3;
+    color: #e00;
+}
+
+.status-badge.status-normal {
+    background: #e6f7f7;
+    color: #1a8c8c;
+}
+
 .btn-server,
 .btn-disk,
 .btn-network {
@@ -816,11 +869,38 @@ td:last-child {
 
 /* Container dos botões*/
 .btn-grupo {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    width: 100%;
+    padding-right: 0;
 }
+
+/*Para os redirecionamentos ficarem grudados na direita*/
+td:last-child {
+    text-align: right;
+    padding-right: 15px; 
+}
+
+/* Centralizando Status de Rede */
+td:nth-child(8) {
+    text-align: center;
+    vertical-align: middle;
+}
+
+td:last-child {
+    white-space: nowrap;
+}
+
+/* Ajustando largura das colunas para caber tudo la ele kk */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto; 
+}
+
+th:nth-child(1) { width: 15%; } /* Servidor */
+th:nth-child(9) { width: 12%; } /* Ações */
 
 /* Header logo */
 .header-logo {
