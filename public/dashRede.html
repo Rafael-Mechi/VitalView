@@ -1,115 +1,111 @@
-    <!DOCTYPE html>
-    <html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboard Rede</title>
-        <link rel="stylesheet" href="css/dashRede.css">
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Rede</title>
+    <link rel="stylesheet" href="css/dashRede.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
 
-    <body>
+<body>
 
-        <nav class="menu">
-            <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
+    <nav class="menu">
+        <input type="checkbox" name="chk_hamburguer" id="chk_hamburguer" class="check_hamburguer">
 
-            <section class="hamburguer">
-                <span class="menu_lateral">
-                    <div class="icones_topo">
-                        <img class="img_hamb" src="assets/LogoVitalView.png">
-                        <img src="./assets/dashboard-icons/activity.svg" data-role="Analista,Administrador">
-                        <img src="./assets/dashboard-icons/bar-chart.svg" data-role="Técnico,Administrador">
-                        <img src="./assets/dashboard-icons/layout.svg" data-role="Técnico,Administrador">
-                    </div>
+        <section class="hamburguer">
+            <span class="menu_lateral">
+                <div class="icones_topo">
+                    <img class="img_hamb" src="assets/LogoVitalView.png">
+                    <img src="./assets/dashboard-icons/activity.svg" data-role="Analista,Administrador">
+                    <img src="./assets/dashboard-icons/bar-chart.svg" data-role="Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/layout.svg" data-role="Técnico,Administrador">
+                </div>
 
-                    <div class="icones_baixo">
-                        <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador"
-                            style="width: 28px; height: 28px;">
-                        <img src="./assets/dashboard-icons/calendar.svg" data-role="Analista,Técnico,Administrador">
-                        <img src="./assets/dashboard-icons/users.svg" data-role="Administrador">
-                        <img src="./assets/dashboard-icons/hard-drive.svg" data-role="Técnico,Administrador">
-                        <img src="./assets/dashboard-icons/help-circle.svg" data-role="Analista,Técnico,Administrador">
-                        <img src="./assets/dashboard-icons/log-out.svg" data-role="Analista,Técnico,Administrador">
-                    </div>
-                </span>
+                <div class="icones_baixo">
+                    <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador"
+                        style="width: 28px; height: 28px;">
+                    <img src="./assets/dashboard-icons/calendar.svg" data-role="Analista,Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/users.svg" data-role="Administrador">
+                    <img src="./assets/dashboard-icons/hard-drive.svg" data-role="Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/help-circle.svg" data-role="Analista,Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/log-out.svg" data-role="Analista,Técnico,Administrador">
+                </div>
+            </span>
+        </section>
+
+        <ul>
+            <div class="title_hamb">
+                <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
+                <h2 class="hamb_nome">VitalView</h2>
+            </div>
+            <div class="menu_topo">
+                <h3 class="title_menu">Dashboards</h3>
+                <li style="display: flex; align-items: center;" data-role="Analista,Administrador,Técnico">
+                    <img src="./assets/dashboard-icons/home.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="bemVindo.html">Home</a>
+                </li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Administrador" class="pagina-ativa">
+                    <img src="./assets/dashboard-icons/activity.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="dashboardAnalista.html">Dash Analista</a>
+                </li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/bar-chart.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="dashboardSuporteMacro.html">Dash Suporte Macro</a></li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/layout.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="dashboardSuporteMicro.html">Dash Suporte Micro</a></li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador">
+                    <img src="./assets/dashboard-icons/wifi (1).svg" style="width: 20px; margin-right: 4px;"><a
+                        href="dashRede.html">Dashboard Rede</a>
+                </li>
+            </div>
+
+            <div class="menu_baixo">
+                <h3 class="title_menu">Outras Opções</h3>
+                <li style="display: flex; align-items: center;" data-role="Administrador"><img
+                        src="./assets/dashboard-icons/gerenciar-usuarios.png" style="width: 20px; margin-right: 4px;"><a
+                        href="dashControleSistema.html">Gerenciar usuários</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/calendar.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="historicoAlertas.html">Histórico de Alertas</a></li>
+                <li style="display: flex; align-items: center;" data-role="Administrador"><img
+                        src="./assets/dashboard-icons/users.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="cadastroFuncionarios.html">Cadastro Funcionário</a></li>
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/hard-drive.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="cadastroServidores.html">Cadastro Servidores</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/help-circle.svg" style="width: 20px; margin-right: 4px;"><a
+                        href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1"
+                        target="_blank">Central de Serviço</a></li>
+                <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
+                        src="./assets/dashboard-icons/log-out.svg" style="width: 20px; margin-right: 4px;"><a
+                        onclick="limparSessao()">Sair</a></li>
+            </div>
+        </ul>
+    </nav>
+
+    <section class="container">
+        <section class="nav-dash">
+            <section class="secao_logo">
+                <a href="dashboardAnalista.html">
+                    <img src="assets/LogoVitalView.png" alt="Logo VitalView" class="logo">
+                </a>
             </section>
 
-            <ul>
-                <div class="title_hamb">
-                    <img class="img_hamb" src="assets/LogoVitalView.png" alt="">
-                    <h2 class="hamb_nome">VitalView</h2>
-                </div>
-                <div class="menu_topo">
-                    <h3 class="title_menu">Dashboards</h3>
-                    <li style="display: flex; align-items: center;" data-role="Analista,Administrador,Técnico">
-                        <img src="./assets/dashboard-icons/home.svg" style="width: 20px; margin-right: 4px;"><a
-                            href="bemVindo.html">Home</a>
-                    </li>
-                    <li style="display: flex; align-items: center;" data-role="Analista,Administrador" class="pagina-ativa">
-                        <img src="./assets/dashboard-icons/activity.svg" style="width: 20px; margin-right: 4px;"><a
-                            href="dashboardAnalista.html">Dash Analista</a>
-                    </li>
-                    <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
-                            src="./assets/dashboard-icons/bar-chart.svg" style="width: 20px; margin-right: 4px;"><a
-                            href="dashboardSuporteMacro.html">Dash Suporte Macro</a></li>
-                    <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
-                            src="./assets/dashboard-icons/layout.svg" style="width: 20px; margin-right: 4px;"><a
-                            href="dashboardSuporteMicro.html">Dash Suporte Micro</a></li>
-                    <li style="display: flex; align-items: center;" data-role="Técnico,Administrador">
-                        <img src="./assets/dashboard-icons/wifi (1).svg" style="width: 20px; margin-right: 4px;"><a
-                            href="dashRede.html">Dashboard Rede</a>
-                    </li>
-                </div>
-
-                <div class="menu_baixo">
-                    <h3 class="title_menu">Outras Opções</h3>
-                    <li style="display: flex; align-items: center;" data-role="Administrador"><img
-                            src="./assets/dashboard-icons/gerenciar-usuarios.png" style="width: 20px; margin-right: 4px;"><a
-                            href="dashControleSistema.html">Gerenciar usuários</a></li>
-                    <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
-                            src="./assets/dashboard-icons/calendar.svg" style="width: 20px; margin-right: 4px;"><a
-                            href="historicoAlertas.html">Histórico de Alertas</a></li>
-                    <li style="display: flex; align-items: center;" data-role="Administrador"><img
-                            src="./assets/dashboard-icons/users.svg" style="width: 20px; margin-right: 4px;"><a
-                            href="cadastroFuncionarios.html">Cadastro Funcionário</a></li>
-                    <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
-                            src="./assets/dashboard-icons/hard-drive.svg" style="width: 20px; margin-right: 4px;"><a
-                            href="cadastroServidores.html">Cadastro Servidores</a></li>
-                    <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
-                            src="./assets/dashboard-icons/help-circle.svg" style="width: 20px; margin-right: 4px;"><a
-                            href="https://vitalviewsptech.atlassian.net/servicedesk/customer/portal/1"
-                            target="_blank">Central de Serviço</a></li>
-                    <li style="display: flex; align-items: center;" data-role="Analista,Técnico,Administrador"><img
-                            src="./assets/dashboard-icons/log-out.svg" style="width: 20px; margin-right: 4px;"><a
-                            onclick="limparSessao()">Sair</a></li>
-                </div>
-            </ul>
-        </nav>
-
-        <section class="container">
-            <section class="nav-dash">
-                <section class="secao_logo">
-                    <a href="dashboardAnalista.html">
-                        <img src="assets/LogoVitalView.png" alt="Logo VitalView" class="logo">
-                    </a>
-                </section>
-
-                <section class="secao_logo">
-                    <h1 class="titulo_header" style="margin-left: 10px;">VitalView</h1>
-                </section>
-
-                <section class="secao_logo" id="escolher-servidor">
-                    <select class="periodo_select" name="periodo" id="periodo_select">
-                        <option value="1">Escolher Servidor</option>
-                        <option value="2">Servidor 1</option>
-                        <option value="3">Servidor 2</option>
-                        <option value="4">Servidor 3</option>
-                        <option value="5">Servidor 4</option>
-                        <option value="6">Servidor 5</option>
-                    </select>
-                </section>
+            <section class="secao_logo">
+                <h1 class="titulo_header" style="margin-left: 10px;">VitalView</h1>
             </section>
+
+            <section class="secao_logo" id="escolher-servidor">
+                <select class="periodo_select" name="periodo" id="servidor_select">
+                </select>
+            </section>
+        </section>
+
+        <div class="fundo">
 
             <main class="grid">
                 <div class="parteCima">
@@ -128,18 +124,18 @@
                             <br>
                             <p style="text-align: center; font-size: 20px;">
                                 Trás a porcentágem (%) de perda de pacotes durante o tráfego de rede:<br><br>
-                                &lt; 20%: <span style="color: #32b9cd;"><b>Normal</b></span><br>
-                                &gt; 30%: <span style="color: #f75454;"><b>Alerta</b></span>
+                                Limite configurado: <span id="limit-perda"></span><br><br>
                             </p>
                             <button type="button" class="closeBtn">Fechar</button>
                         </div>
                     </div>
 
                     <section class="card kpi conexoes">
-                        <h3>Conexões <button type="button" class="infoBtn" data-target="infoConexao">&#9432</button></h3>
+                        <h3>Conexões <button type="button" class="infoBtn" data-target="infoConexao">&#9432</button>
+                        </h3>
                         <div class="caption">Conexões ativas</div>
                         <div class="kpi-number" id="conexoes-ativas"></div>
-                        <div class="badge" id="conexoes-status">Normal</div>
+                        <div class="badge" id="conexoes-status">--</div>
                     </section>
 
                     <div id="infoConexao" class="modal">
@@ -148,8 +144,7 @@
                             <br>
                             <p style="text-align: center; font-size: 20px;">
                                 Trás o número de conexões ativas na rede do servidor:<br><br>
-                                &lt; 50: <span style="color: #32b9cd;"><b>Normal</b></span><br>
-                                &gt; 60: <span style="color: #f75454;"><b>Alerta</b></span>
+                                Limite máximo: <span id="limit-con-max"></span><br><br>
                             </p>
                             <button type="button" class="closeBtn">Fechar</button>
                         </div>
@@ -167,10 +162,10 @@
                             <h3>Latência</h3>
                             <br>
                             <p style="text-align: center; font-size: 20px;">
-                                Mostra qual é a latência em milissegundos (ms) ou seja o tempo que uma requisição leva para
+                                Mostra qual é a latência em milissegundos (ms) ou seja o tempo que uma requisição leva
+                                para
                                 chegar no servidor:<br><br>
-                                &lt; 30ms: <span style="color: #32b9cd;"><b>Normal</b></span><br>
-                                &gt; 40ms: <span style="color: #f75454;"><b>Alerta</b></span>
+                                Limite máximo: <span id="limit-lat"></span><br><br>
                             </p>
                             <button type="button" class="closeBtn">Fechar</button>
                         </div>
@@ -192,9 +187,8 @@
                                 <div class="bar" id="bar-down"></div>
                             </div>
                             <div class="value"> <span id="val-down"></span> Mbps</div>
-                            <div class="badge" style="position:static; transform:none; margin-left:8px" id="down-status">
-                                Normal
-                            </div>
+                            <div class="badge" id="down-status"
+                                style="position:static; transform:none; margin-left:8px">--</div>
                         </div>
 
                         <div class="row">
@@ -205,10 +199,8 @@
                                 <div class="bar alerta" id="bar-up"></div>
                             </div>
                             <div class="value"> <span id="val-up"></span> Mbps</div>
-                            <div class="badge alerta" style="position:static; transform:none; margin-left:8px"
-                                id="up-status">
-                                Alerta
-                            </div>
+                            <div class="badge" id="up-status" style="position:static; transform:none; margin-left:8px">
+                                --</div>
                         </div>
                     </section>
 
@@ -219,8 +211,8 @@
                             <p style="text-align: center; font-size: 20px;">
                                 Mostra e compara a velocidade de Download e Upload dos dados no servidor em Megabits po
                                 segundo (Mbps):<br><br>
-                                &lt; 70 Mbps: <span style="color: #32b9cd;"><b>Normal</b></span><br>
-                                &gt; 30 Mbps: <span style="color: #f75454;"><b>Alerta</b></span>
+                                Limite mínimo de Down: <span id="limit-down"></span><br>
+                                Limite mínimo de Up: <span id="limit-up"></span>
                             </p>
                             <button type="button" class="closeBtn">Fechar</button>
                         </div>
@@ -241,10 +233,11 @@
                             <h3>Pacotes Enviados e Recebidos</h3>
                             <br>
                             <p style="text-align: center; font-size: 20px;">
-                                Trás a comparação entre quantidade de pacotes enviados e recebidos em um gráfico de linhas
+                                Trás a comparação entre quantidade de pacotes enviados e recebidos em um gráfico de
+                                linhas
                                 ao longo do dia:<br><br>
-                                &lt; 50%: <span style="color: #32b9cd;"><b>Normal</b></span><br>
-                                &gt; 60%: <span style="color: #f75454;"><b>Alerta</b></span>
+                                Limite máximo de entrada: <span id="limit-in"></span><br>
+                                Limite máximo de saída: <span id="limit-out"></span>
                             </p>
                             <button type="button" class="closeBtn">Fechar</button>
                         </div>
@@ -252,11 +245,13 @@
                 </div>
             </main>
 
-        </section>
+        </div>
 
-        <script src="js/permissoes.js"></script>
-        <script src="js/dashRede.js"></script>
-        <script src="js/sessao.js"></script>
-    </body>
+    </section>
 
-    </html>
+    <script src="js/permissoes.js"></script>
+    <script src="js/dashRede.js"></script>
+    <script src="js/sessao.js"></script>
+</body>
+
+</html>
