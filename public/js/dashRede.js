@@ -1,4 +1,42 @@
-// Servidor identificator ＼(ﾟｰﾟ＼)
+//Modais do Meki 💅🏻
+
+let infoBtns = document.querySelectorAll('.infoBtn');
+let modals = document.querySelectorAll('.modal');
+let closeBtns = document.querySelectorAll('.closeBtn');
+
+infoBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+        let target = btn.dataset.target;
+        var modal = document.getElementById(target);
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+    });
+});
+
+closeBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+        var modal = btn.closest('.modal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+
+modals.forEach(function (modal) {
+    modal.addEventListener('click', function (e) {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+
+// Permições
+
+if (typeof protegerPagina === 'function') protegerPagina(['Técnico', 'Administrador']);
+if (typeof aplicarCargoNaUI === 'function') aplicarCargoNaUI();
+
+//parametrinhos do server
 
 function obterParametrosServidor() {
     const params = new URLSearchParams(window.location.search);
@@ -7,12 +45,10 @@ function obterParametrosServidor() {
     let hostname = params.get('hostname');
     let idHospital = params.get('idhospital');
 
-    //salvo no sessionStorage
     if (idServidor) sessionStorage.ID_SERVIDOR = idServidor;
     if (hostname) sessionStorage.HOSTNAME_SERVIDOR = hostname;
     if (idHospital) sessionStorage.FK_HOSPITAL = idHospital;
 
-    //pega do sessionStorage
     if (!idServidor) idServidor = sessionStorage.ID_SERVIDOR;
     if (!hostname) hostname = sessionStorage.HOSTNAME_SERVIDOR;
     if (!idHospital) idHospital = sessionStorage.FK_HOSPITAL;
@@ -20,205 +56,331 @@ function obterParametrosServidor() {
     return { idServidor, hostname, idHospital };
 }
 
-// modais do Meki 💅🏻
-        let infoBtns = document.querySelectorAll('.infoBtn');
-        let modals = document.querySelectorAll('.modal');
-        let closeBtns = document.querySelectorAll('.closeBtn');
+const { idServidor, hostname, idHospital } = obterParametrosServidor();
 
-        infoBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                let target = btn.dataset.target;
-                document.getElementById(target).style.display = 'flex';
-            });
-        });
 
-        closeBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                btn.closest('.modal').style.display = 'none';
-            });
-        });
+// elements dashboardinha
 
-        modals.forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) modal.style.display = 'none';
-            });
-        });
+const latNow = document.getElementById('latencia-atual');
+const latBadge = document.getElementById('latencia-status');
 
-        // my permissions bitch 💅🏻
-        if (typeof protegerPagina === 'function') protegerPagina(['Técnico', 'Administrador']);
-        if (typeof aplicarCargoNaUI === 'function') aplicarCargoNaUI();
+const lossPctEl = document.getElementById('loss-pct');
+const lossBadge = document.getElementById('loss-status');
 
-        // Utilitários dos gráficos
-        const teal = '#14b8a6';
-        const teal2 = '#0ea5e9';
+const conVal = document.getElementById('conexoes-ativas');
+const conBadge = document.getElementById('conexoes-status');
 
-        function setBadge(el, status, numberEl) {
-            el.classList.remove('ok', 'alerta');
-            if (status === 'Alerta') el.classList.add('alerta');
-            if (status === 'Normal') el.classList.add('ok');
-            el.textContent = status;
+const barDown = document.getElementById('bar-down');
+const barUp = document.getElementById('bar-up');
 
-            if (numberEl) {
-                numberEl.classList.remove('ok', 'alerta');
-                if (status === 'Alerta') numberEl.classList.add('alerta');
-                if (status === 'Normal') numberEl.classList.add('ok');
-            }
+const valDownEl = document.getElementById('val-down');
+const valUpEl = document.getElementById('val-up');
+
+const downBadge = document.getElementById('down-status');
+const upBadge = document.getElementById('up-status');
+
+// principais variáveis
+
+let LIMITES = null;
+let ULTIMO_REGISTRO = null;
+
+const CAPACIDADE_BANDA = 300;
+const MAX_PONTOS = 12;
+
+const METRICAS = {
+    pacotesPerdidos: 1,
+    conexoesAtivas: 0,
+    banda: { usadaDown: 0, usadaUp: 0 },
+    ping: {
+        rttMsAtual: 0,
+        enviados: 10,
+        perdidos: 0
+    }
+};
+
+
+function setBadge(el, status, numberEl) {
+    if (!el) return;
+
+    el.classList.remove('ok', 'alerta');
+
+    if (status === 'Alerta') el.classList.add('alerta');
+    if (status === 'Normal') el.classList.add('ok');
+
+    el.textContent = status;
+
+    if (numberEl) {
+        numberEl.classList.remove('ok', 'alerta');
+        if (status === 'Alerta') numberEl.classList.add('alerta');
+        if (status === 'Normal') numberEl.classList.add('ok');
+    }
+}
+
+function setBar(el, value, max) {
+    if (!el) return;
+    const pct = Math.max(0, Math.min(100, (value / max) * 100));
+    el.style.width = pct + '%';
+    el.setAttribute('aria-valuenow', value);
+}
+
+
+async function carregarLimites() {
+    try {
+        const resp = await fetch(`/rede/limites/${idServidor}`);
+        if (!resp.ok) {
+            console.error("Erro carregando limites:", resp.status);
+            return;
         }
 
-        function setBar(el, value, max) {
-            const pct = Math.max(0, Math.min(100, (value / max) * 100));
-            el.style.width = pct + '%';
-            el.setAttribute('aria-valuenow', value);
-        }
+        LIMITES = await resp.json();
+        console.log("LIMITES carregados:", LIMITES);
+    } catch (e) {
+        console.error("Erro buscar limites:", e);
+    }
+}
 
-        // Variação dos dados mocados
-        function jitter(base, maxStep, min = 0, max = Infinity) {
-            const v = base + (Math.random() * 2 - 1) * maxStep;
-            return Math.max(min, Math.min(max, v));
-        }
 
-        // Dados pré mocados
-        const CAPACIDADE_BANDA = 300;
-        const MAX_PONTOS = 12;
+function atualizarMETRICASComRegistro(r) {
 
-        const METRICAS = {
-            pacotesPerdidos: 1,
-            conexoesAtivas: 38,
-            banda: { capacidade: CAPACIDADE_BANDA, usadaDown: 85, usadaUp: 18 },
-            ping: {
-                rttMsAtual: 23,
-                enviados: 10,
-                perdidos: 1
-            }
-        };
+    if (r["Latencia_(ms)"] != null) {
+        METRICAS.ping.rttMsAtual = r["Latencia_(ms)"];
+    }
 
-        // Elementos 
-        const latNow = document.getElementById('latencia-atual');
-        const latBadge = document.getElementById('latencia-status');
+    let perdaPct = 0;
+    if (r["Perda_de_Pacotes_(%)"] != null && r["Perda_de_Pacotes_(%)"] !== "") {
+        perdaPct = r["Perda_de_Pacotes_(%)"];
+    }
 
-        const lossPctEl = document.getElementById('loss-pct');
-        const lossBadge = document.getElementById('loss-status');
+    METRICAS.ping.perdidos = (perdaPct / 100) * METRICAS.ping.enviados;
 
-        const conVal = document.getElementById('conexoes-ativas');
-        const conBadge = document.getElementById('conexoes-status');
+    if (r["Conexões_TCP_ESTABLISHED"] != null) {
+        METRICAS.conexoesAtivas = r["Conexões_TCP_ESTABLISHED"];
+    }
 
-        const barDown = document.getElementById('bar-down');
-        const barUp = document.getElementById('bar-up');
-        const valDownEl = document.getElementById('val-down');
-        const valUpEl = document.getElementById('val-up');
-        const downBadge = document.getElementById('down-status');
-        const upBadge = document.getElementById('up-status');
+    if (r["Net_Down_(Mbps)"] != null) {
+        METRICAS.banda.usadaDown = r["Net_Down_(Mbps)"];
+    }
 
-        // Gráfico entrada e saída
-        const ioCanvas = document.getElementById('ioChart');
-        let ioChart = null;
+    if (r["Net_Up_(Mbps)"] != null) {
+        METRICAS.banda.usadaUp = r["Net_Up_(Mbps)"];
+    }
+}
 
-        function initChart() {
-            if (!ioCanvas || !window.Chart) return;
+let chartRede = null;
+let labelsTempo = [];
+let dadosIn = [];
+let dadosOut = [];
 
-            const agora = () => new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
-            const ioLabels = Array.from({ length: 5 }, (_, i) => agora());
-            const entrada = [40, 80, 10, 25, 40];
-            const saida = [10, 30, 5, 12, 30];
+function initChart() {
 
-            ioChart = new Chart(ioCanvas, {
-                type: 'line',
-                data: {
-                    labels: ioLabels,
-                    datasets: [
-                        { label: 'Entrada', data: entrada, borderColor: teal2, backgroundColor: teal2, tension: .35, pointRadius: 3, fill: false },
-                        { label: 'Saída', data: saida, borderColor: teal, backgroundColor: teal, tension: .35, pointRadius: 3, fill: false }
-                    ]
+    const ioCanvas = document.getElementById("ioChart");
+    if (!ioCanvas || !window.Chart) return;
+
+    const ctx = ioCanvas.getContext("2d");
+
+    const corIn = '#2CD4C2';  
+    const corOut = '#0AA8A0';  
+
+    chartRede = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labelsTempo.length > 0 ? labelsTempo : ["--", "--", "--", "--", "--"],
+            datasets: [
+                {
+                    label: 'Pacotes IN',
+                    data: dadosIn.length > 0 ? dadosIn : [0, 0, 0, 0, 0],
+                    borderColor: corIn,
+                    backgroundColor: corIn + "40",
+                    tension: 0.35,
+                    pointRadius: 3,
+                    fill: false
                 },
-                options: {
-                    maintainAspectRatio: false,
-                    scales: { x: { grid: { display: false } }, y: { beginAtZero: true, grid: { color: '#eef2f7' } } },
-                    plugins: { legend: { position: 'top' } }
+                {
+                    label: 'Pacotes OUT',
+                    data: dadosOut.length > 0 ? dadosOut : [0, 0, 0, 0, 0],
+                    borderColor: corOut,
+                    backgroundColor: corOut + "40",
+                    tension: 0.35,
+                    pointRadius: 3,
+                    fill: false
                 }
-            });
-        }
-
-        function pushChartPoint(inVal, outVal) {
-            if (!ioChart) return;
-            const label = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-
-            ioChart.data.labels.push(label);
-            ioChart.data.datasets[0].data.push(inVal);
-            ioChart.data.datasets[1].data.push(outVal);
-
-            while (ioChart.data.labels.length > MAX_PONTOS) {
-                ioChart.data.labels.shift();
-                ioChart.data.datasets.forEach(d => d.data.shift());
-            }
-            ioChart.update();
-        }
-
-        // KPI: Conexões
-        function renderKPIs() {
-            // Latência
-            if (latNow && latBadge) {
-                latNow.textContent = Math.round(METRICAS.ping.rttMsAtual) + ' ms';
-                setBadge(latBadge, METRICAS.ping.rttMsAtual <= 80 ? 'Normal' : 'Alerta', latNow);
-            }
-
-            // Perda de Pacotes (%)
-            if (lossPctEl && lossBadge) {
-                const perdaPct = METRICAS.ping.enviados > 0
-                    ? (METRICAS.ping.perdidos / METRICAS.ping.enviados) * 100
-                    : 0;
-                lossPctEl.textContent = perdaPct.toFixed(1) + '%';
-                setBadge(lossBadge, perdaPct < 5 ? 'Normal' : 'Alerta', lossPctEl);
-            }
-
-            // Conexões
-            if (conVal && conBadge) {
-                conVal.textContent = Math.round(METRICAS.conexoesAtivas);
-                const ok = METRICAS.conexoesAtivas >= 10 && METRICAS.conexoesAtivas <= 200;
-                setBadge(conBadge, ok ? 'Normal' : 'Alerta', conVal);
-            }
-
-            // Barras Download/Upload
-            if (barDown && barUp && valDownEl && valUpEl && downBadge && upBadge) {
-                const down = Math.round(METRICAS.banda.usadaDown);
-                const up = Math.round(METRICAS.banda.usadaUp);
-
-                setBar(barDown, down, 100);
-                setBar(barUp, up, 100);
-
-                valDownEl.textContent = down;
-                valUpEl.textContent = up;
-
-                setBadge(downBadge, down >= 70 ? 'Normal' : 'Alerta');
-                setBadge(upBadge, up >= 30 ? 'Normal' : 'Alerta');
+            ]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+                x: { grid: { display: false } },
+                y: {
+                    beginAtZero: true,
+                    grid: { color: '#eef2f7' }
+                }
+            },
+            plugins: {
+                legend: { position: 'top' }
             }
         }
+    });
+}
 
-        // SIMULAÇÃO DE DADOS
-        function tickMock() {
-            // Latência varia suavemente entre 15 e 120 ms
-            METRICAS.ping.rttMsAtual = jitter(METRICAS.ping.rttMsAtual, 6, 15, 120);
+function atualizarChartRede(registros) {
 
-            // Pacotes enviados/perdidos
-            METRICAS.ping.enviados = Math.max(1, Math.round(jitter(METRICAS.ping.enviados, 2, 5, 30)));
-            METRICAS.ping.perdidos = Math.round(Math.max(0, Math.min(METRICAS.ping.enviados, jitter(METRICAS.ping.perdidos, 1, 0, 5))));
+    labelsTempo.length = 0;
+    dadosIn.length = 0;
+    dadosOut.length = 0;
 
-            // Conexões ativas
-            METRICAS.conexoesAtivas = Math.round(jitter(METRICAS.conexoesAtivas, 5, 12, 220));
+    registros.forEach(r => {
+        labelsTempo.push(
+            new Date(r["Data_da_Coleta"]).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+        );
+        dadosIn.push(r["Pacotes_IN_(intervalo)"] || 0);
+        dadosOut.push(r["Pacotes_OUT_(intervalo)"] || 0);
+    });
 
-            // Consumo de banda simulado (Mbps)
-            METRICAS.banda.usadaDown = jitter(METRICAS.banda.usadaDown, 10, 10, 100);
-            METRICAS.banda.usadaUp = jitter(METRICAS.banda.usadaUp, 5, 2, 100);
+    if (chartRede) {
+        chartRede.data.labels = labelsTempo;
+        chartRede.data.datasets[0].data = dadosIn;
+        chartRede.data.datasets[1].data = dadosOut;
+        chartRede.update();
+    }
+}
 
-            // Gráfico IN/OUT
-            const inPkts = Math.round(jitter(70, 25, 5, 140));
-            const outPkts = Math.round(jitter(40, 20, 3, 100));
-            pushChartPoint(inPkts, outPkts);
+function pushChartPoint(inValue, outValue) {
+    const hora = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
-            renderKPIs();
+    labelsTempo.push(hora);
+    dadosIn.push(inValue);
+    dadosOut.push(outValue);
+
+    if (labelsTempo.length > 12) {
+        labelsTempo.shift();
+        dadosIn.shift();
+        dadosOut.shift();
+    }
+
+    if (chartRede) chartRede.update();
+}
+
+
+function renderKPIs() {
+
+    // Latência
+    if (latNow && latBadge) {
+        const lat = Math.round(METRICAS.ping.rttMsAtual);
+        latNow.textContent = lat + ' ms';
+
+        if (LIMITES?.latenciaMax != null) {
+            setBadge(latBadge, lat <= LIMITES.latenciaMax ? 'Normal' : 'Alerta', latNow);
+        }
+    }
+
+    // Perda de pacotes
+    if (lossPctEl && lossBadge) {
+        const perdaPct = (METRICAS.ping.perdidos / METRICAS.ping.enviados) * 100;
+        lossPctEl.textContent = perdaPct.toFixed(1) + '%';
+
+        if (LIMITES?.perdaPacotesMax != null) {
+            setBadge(lossBadge, perdaPct <= LIMITES.perdaPacotesMax ? 'Normal' : 'Alerta', lossPctEl);
+        }
+    }
+
+    // Conexões
+    if (conVal && conBadge) {
+        const conexoes = Math.round(METRICAS.conexoesAtivas);
+        conVal.textContent = conexoes;
+
+        if (LIMITES?.conexoesMin != null && LIMITES?.conexoesMax != null) {
+            const ok = conexoes >= LIMITES.conexoesMin && conexoes <= LIMITES.conexoesMax;
+            setBadge(conBadge, ok ? 'Normal' : 'Alerta', conVal);
+        }
+    }
+
+    // down up
+    if (barDown && barUp) {
+        const down = Math.round(METRICAS.banda.usadaDown);
+        const up = Math.round(METRICAS.banda.usadaUp);
+
+        valDownEl.textContent = down;
+        valUpEl.textContent = up;
+
+        setBar(barDown, down, 100);
+        setBar(barUp, up, 100);
+
+        if (LIMITES?.bandDownMin != null) {
+            const estadoDown = down >= LIMITES.bandDownMin ? "Normal" : "Alerta";
+
+            setBadge(downBadge, estadoDown);
+
+            barDown.classList.remove("ok", "alerta");
+
+            if (estadoDown === "Normal") {
+                barDown.classList.add("ok");
+            } else {
+                barDown.classList.add("alerta");
+            }
         }
 
-        initChart();
+        if (LIMITES?.bandUpMin != null) {
+            const estadoUp = up >= LIMITES.bandUpMin ? "Normal" : "Alerta";
+
+            setBadge(upBadge, estadoUp);
+
+            barUp.classList.remove("ok", "alerta");
+
+            if (estadoUp === "Normal") {
+                barUp.classList.add("ok");
+            } else {
+                barUp.classList.add("alerta");
+            }
+        }
+
+    }
+}
+
+async function carregarDadosRede() {
+    try {
+        const resp = await fetch(`/rede/dados/${hostname}`);
+        const dados = await resp.json();
+
+        if (!Array.isArray(dados) || dados.length === 0) return;
+
+        ULTIMO_REGISTRO = dados[dados.length - 1];
+
+        atualizarMETRICASComRegistro(ULTIMO_REGISTRO);
+        atualizarChartRede(dados);
         renderKPIs();
-        const TIMER_MS = 2000; // 2s
-        const timerId = setInterval(tickMock, TIMER_MS);
+
+    } catch (e) {
+        console.error("Erro carregar rede:", e);
+    }
+}
+
+async function tickReal() {
+    try {
+        const resp = await fetch(`/rede/dados/${hostname}`);
+        const dados = await resp.json();
+
+        if (!Array.isArray(dados) || dados.length === 0) return;
+
+        const ultimo = dados[dados.length - 1];
+        atualizarMETRICASComRegistro(ultimo);
+
+        pushChartPoint(
+            ultimo["Pacotes_IN_(intervalo)"] || 0,
+            ultimo["Pacotes_OUT_(intervalo)"] || 0
+        );
+
+        renderKPIs();
+
+    } catch (e) {
+        console.error("Erro tickReal:", e);
+    }
+}
+
+(async function start() {
+    await carregarLimites();
+    await carregarDadosRede();   
+    initChart();                 
+    setInterval(tickReal, 5000);
+})();

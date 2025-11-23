@@ -536,6 +536,9 @@ a:hover {
   transition: width .9s cubic-bezier(.22,1,.36,1);
 }
 
+.bar.ok {
+    background: linear-gradient(90deg, var(--vv-cyan), var(--vv-teal));
+}
 
 .bar.alerta {
   background: linear-gradient(90deg, #f97316, #ef4444);

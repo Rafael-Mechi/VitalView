@@ -1,4 +1,4 @@
-var dashboardMacroModel = require("../models/dashboardMacroModel");
+    var dashboardMacroModel = require("../models/dashboardMacroModel");
 var database = require("../database/config");
 
 async function buscarDadosDashboard(req, res) {
