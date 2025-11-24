@@ -151,7 +151,7 @@ function atualizarDash(dados) {
   graficoUso.data.datasets[0].data = [usoDisco];
   graficoUso.update();
   valorUso.textContent = `${usoDisco.toFixed(1)}%`;
-  textoUso.textContent = `${(usoDisco * 5).toFixed(1)} GB usados de 500 GB`;
+  textoUso.textContent = `${(usoDisco * 5).toFixed(1)} GB usados de ${discoTotal.toFixed()} GB`;
 
   // Taxa de transferência média
   const taxaMedia = ((taxaLeitura + taxaEscrita) / 2).toFixed(2);
