@@ -205,6 +205,8 @@ function irParaMicro(servidorId, nomeServidor, idHospital) {
 }
 
 function irParaDisco(servidorId,nomeServidor, idHospital) {
+    sessionStorage.ID_SERVIDOR = servidorId;
+
     window.location.href = `dashDisco.html?idServidor=${servidorId}&hostname=${nomeServidor}&idhospital=${idHospital}`;
 }
 

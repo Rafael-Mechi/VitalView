@@ -22,6 +22,12 @@ const variacaoLatencia = document.querySelectorAll('.UD_texto_direita p')[2];
 
 // ---------------- FUNÇÃO PRINCIPAL ----------------
 async function carregarDados() {
+  let idServidor = sessionStorage.ID_SERVIDOR;
+  let idHospital = sessionStorage.FK_HOSPITAL;
+  console.log(idServidor);
+  console.log(idHospital);
+  
+  
   try {
     const resposta = await fetch(`/dashDiscoRoutes/buscar-dados-bucket-disco/${key}`);
     if (!resposta.ok) throw new Error("Falha ao buscar dados de disco");
