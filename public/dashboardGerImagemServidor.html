@@ -104,30 +104,30 @@
     <div class="kpi">
         <h2 class="normal">Imagem mais pesada:</h2>
         <div class="sub">Em megabytes</div>
-        <div class="value">gato-siames.jpg - 1.27MB</div>
+        <div class="value" id="div_imagem_mais_pesada"></div>
     </div>
 
     <div class="kpi">
-        <div class="kpi-badge"><span style="color: #32b9cd;">Estável</span></div>
+        <div class="kpi-badge"><span style="color: #32b9cd;" id="span_crescimento"></span></div>
         <h2 class="normal">Crescimento médio de imagens <button type="button" class="infoBtn"
                             data-target="infoCrescimentoImagem">&#9432</button></h3></h2>
         <div class="sub">Imagens por mês</div>
-        <div class="value">140</div>
+        <div class="value" id="div_crescimento_medio_imagem_mes"></div>
     </div>
 
     <div class="kpi">
-        <div class="kpi-badge"><span style="color: #ef4444;">Atenção</span></div>
+        <div class="kpi-badge"><span style="color: #ef4444;" id="span_estabilidade_tamanho_medio_imagem"></span></div>
         <h2 class="normal">Tamanho médio das imagens <button type="button" class="infoBtn"
                             data-target="infoCrescimentoImagem">&#9432</button></h2>
         <div class="sub">Tamanho médio por imagem</div>
-        <div class="value"><span style="color: #ef4444;">3MB</span></div>
+        <div class="value"><span style="color: #ef4444;" id="span_tamanho_medio_imagem"></span></div>
     </div>
 </div>
 
             <div class="tabela-alertas">
                 <div class="tabela-header">
                     <div>
-                        <h2>Imagens que podem ser removidas: <b>3</b></h2>
+                        <h2>Imagens que podem ser removidas: <b id="b_imagens_removiveis"></b></h2>
                     </div>
                     <div class="div_filtro">
                         <span>Filtrar por:</span>
@@ -166,10 +166,12 @@
     </section>
 
     <script>
-        let idHospitalVar = sessionStorage.FK_HOSPITAL;
-        let idUsuario = sessionStorage.ID_USUARIO;
+        const params = new URLSearchParams(window.location.search);
 
-        let key = "suporte/gerenciamento-imagens/1_srv1_hsl.json";
+        const idServidor = params.get("idServidor");
+        const nomeServidor = params.get("hostname");
+
+        let key = `suporte/imagens/${idServidor}_${nomeServidor}_hsl_imagens.json`;
         let key2 = "1_srv1_hsl.json";
 
         function carregarInformacoes() {
@@ -183,7 +185,10 @@
                     if (response.ok) {
                         response.json().then(resposta => {
                             console.log("Dado recebido: ", resposta);
+                            gerarKpiImagemMaisPesada(resposta);
                             gerarTabelaImagens(resposta);
+                            gerarKpiCrescimentoMedioImagens(resposta);
+                            gerarKpiTamanhoMedioImagens(resposta);
                         })
                     }
                 })
@@ -196,6 +201,8 @@
         function gerarTabelaImagens(dados) {
             let tbodyImagens = document.getElementById("info-imagens");
             tbodyImagens.innerHTML = "";
+
+            b_imagens_removiveis.innerHTML = dados.imagens_removiveis.length;
 
             let caminhoImagem;
             let nomeArquivo;
@@ -255,6 +262,49 @@
             }).catch(function (erro) {
                 console.log(erro);
             })
+        }
+
+        function gerarKpiImagemMaisPesada(dado){
+            let nomeImagem = dado.imagem_mais_pesada.nome_arquivo;
+            let tamanho = dado.imagem_mais_pesada.tamanho;
+
+            div_imagem_mais_pesada.innerHTML = `<span style="color: #ef4444"   >${nomeImagem} - ${tamanho}MB</span>`
+        }
+
+        function gerarKpiCrescimentoMedioImagens(dado){
+            let media = Number(dado.crescimento_medio_mes.media_imagens_por_mes).toFixed(2);
+
+            div_crescimento_medio_imagem_mes.innerHTML = `${media}`;
+            div_crescimento_medio_imagem_mes.style.color = "#32b9cd";
+
+            span_crescimento.innerHTML = "Estável";
+            span_crescimento.style.color = "#32b9cd";
+
+            if(media > 0.27){
+                div_crescimento_medio_imagem_mes.innerHTML = `${media}`;
+                div_crescimento_medio_imagem_mes.style.color = "#ef4444";
+
+                span_crescimento.innerHTML = "Atenção";
+                span_crescimento.style.color = "#ef4444";
+            }
+        }
+
+        function gerarKpiTamanhoMedioImagens(dado){
+            let tamanhoMedio = Number(dado.tamanho_medio_imagens.tamanho_medio).toFixed(2);
+
+            span_tamanho_medio_imagem.innerHTML = `${tamanhoMedio}`;
+            span_tamanho_medio_imagem.style.color = "#32b9cd";
+
+            span_estabilidade_tamanho_medio_imagem.innerHTML = "Estável";
+            span_estabilidade_tamanho_medio_imagem.style.color = "#32b9cd";
+
+            if(tamanhoMedio > 2){
+                span_tamanho_medio_imagem.innerHTML = `${tamanhoMedio}`;
+                span_tamanho_medio_imagem.style.color = "#ef4444";
+
+                span_estabilidade_tamanho_medio_imagem.innerHTML = "Atenção";
+                span_estabilidade_tamanho_medio_imagem.style.color = "#ef4444";
+            }
         }
 
         const labels = [
