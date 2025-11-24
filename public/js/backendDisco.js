@@ -27,7 +27,6 @@ async function carregarDados() {
   console.log(idServidor);
   console.log(idHospital);
   
-  
   try {
     const resposta = await fetch(`/dashDiscoRoutes/buscar-dados-bucket-disco/${key}`);
     if (!resposta.ok) throw new Error("Falha ao buscar dados de disco");
@@ -182,5 +181,7 @@ function atualizarDash(dados) {
 
 
 function irParaTelaDeGestao(){
-  window.location.href = "dashboardGerImagemServidor.html"
+
+  window.location.href = `dashboardGerImagemServidor.html?idServidor=${idServidor}&hostname=${nomeServidor}&idhospital=${nomeHospital}`;
+
 }
