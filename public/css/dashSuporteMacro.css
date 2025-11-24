@@ -315,15 +315,20 @@ a:hover {
 }
 
 :root {
-  --bg: #f6f7fb;
-  --card: #ececec;
-  --ink: #1f2a37;
-  --muted: #6b7280;
-  --accent: #ef4444;
-  --ok: #10b981;
-  --chip: #f3f4f6;
-  --shadow: 0 3px 6px rgba(0, 0, 0, 0.144);
-  --radius: 16px;
+  --vv-bg: #f7f8fb;
+  --vv-surface: #ffffff;
+  --vv-text: #1f2937;
+  --vv-muted: #6b7280;
+  --vv-border: #e5e7eb;
+  --vv-teal: #14b8a6;  
+  --vv-cyan: #0ea5e9;   
+  --vv-ok: #10b981;
+  --vv-warn: #f59e0b;
+  --vv-alert: #ef4444;
+  --vv-badge-bg: #f1f5f9;
+  --vv-grid-gap: 16px;
+  --vv-radius: 16px;
+  --vv-shadow: 0 8px 24px rgba(0,0,0,.06);
 }
 
 
@@ -348,9 +353,9 @@ a:hover {
 .kpis {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: var(--vv-grid-gap);
   border-radius: 12px;
   margin-bottom: 10px;
 }
@@ -358,75 +363,130 @@ a:hover {
 /* Cards de KPI */
 .kpi {
   flex: 1 1 250px;
-  width: 90%;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.144);
-  padding: 16px;
+  background: var(--vv-surface);
+  border: 1px solid var(--vv-border);
+  border-radius: var(--vv-radius);
+  box-shadow: var(--vv-shadow);
+  padding: 20px 16px 16px;
+  position: relative;
+  overflow: hidden;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  min-height: 140px;
   display: flex;
   flex-direction: column;
-  text-align: center;
-  height: 20vh;
-  justify-content: center;
-  position: relative;
+  justify-content: space-between;
+}
+.kpi:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0,0,0,.08);
+  border-color: color-mix(in oklab, var(--vv-border) 70%, var(--vv-teal));
 }
 
-.kpi .normal {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: #2a2a2a;
-}
-
-.kpi .value {
-  font-weight: 800;
-  font-size: 28px;
-  color: #e62323;
-}
-
-.kpi .value-serv {
-  font-weight: 800;
-  font-size: 28px;
-  color: #e62323;
+/* Título da KPI */
+.kpi-title-container {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  margin-bottom: 8px;
 }
 
-.kpi .sub {
-  color: #6b7280;
-  font-size: 12px;
-  margin-top: 6px;
+.kpi-title-container p {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--vv-text);
+  margin: 0;
 }
 
+/* Valor numérico -*/
+.kpi-value {
+  font-size: 2.6rem;
+  line-height: 1;
+  font-weight: 800;
+  text-align: center;
+  margin: 8px 0;
+  color: var(--vv-teal);
+  font-variant-numeric: tabular-nums;
+}
 
-.kpi-resumo {
+.kpi-value.alert {
+  color: var(--vv-alert);
+}
+
+.kpi-value.warning {
+  color: var(--vv-warn);
+}
+
+.kpi-value.ok {
+  color: var(--vv-ok);
+}
+
+/* Subtítulo */
+.kpi-sub {
+  color: var(--vv-muted);
+  font-size: 0.85rem;
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* Badge de status */
+.kpi-badge {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  padding: 4px 8px;
+  font-size: .7rem;
+  font-weight: 700;
+  border-radius: 999px;
+  background: var(--vv-badge-bg);
+  color: var(--vv-teal);
+  border: 1px solid color-mix(in oklab, var(--vv-badge-bg) 70%, var(--vv-teal));
+}
+
+.kpi-badge.alert {
+  color: var(--vv-alert);
+  border-color: color-mix(in oklab, var(--vv-badge-bg) 70%, var(--vv-alert));
+}
+
+.kpi-badge.ok {
+  color: var(--vv-ok);
+  border-color: color-mix(in oklab, var(--vv-badge-bg) 70%, var(--vv-ok));
+}
+
+#kpi-uso-disco {
+  padding: 0px;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
-}
-
-.resumo-conteudo {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  width: 100%;
-  margin-top: 10px;
-}
-
-.chart-placeholder {
-  width: 80px;
-  height: 80px;
-}
-
-.resumo-legenda {
-  display: flex;
-  flex-direction: column;
   justify-content: center;
-  font-size: 14px;
-  gap: 5px;
+}
+
+.card_grafico_disco {
+  width: 100%;
+  height: 100%;
+  max-height: 140px;
+}
+
+/* Container do filtro de alertas */
+.filtro-alertas {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  padding: 4px 8px;
+  border: 1px solid var(--vv-border);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  background: var(--vv-surface);
+  z-index: 10;
+  cursor: pointer;
+  min-width: 100px;
+  font-family: 'Barlow', 'Segoe UI', Tahoma, sans-serif;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.filtro-alertas:hover {
+  border-color: var(--vv-cyan);
+  box-shadow: 0 2px 5px rgba(14, 165, 233, 0.2);
 }
 
 /* -------------------------------------------------- */

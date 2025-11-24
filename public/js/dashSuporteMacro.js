@@ -67,9 +67,12 @@ function atualizarKPIs(kpis) {
     console.log('KPIs recebidos para salvar:', kpis);
     
     // Servidores em Risco
-    const servidoresRiscoElement = document.querySelector('.kpi .value');
+    const servidoresRiscoElement = document.getElementById('valor-risco');
     if (servidoresRiscoElement) {
-        servidoresRiscoElement.innerHTML = `${kpis.servidoresRisco}<span>/${kpis.totalServidores}</span>`;
+        servidoresRiscoElement.innerHTML = `${kpis.servidoresRisco}<span style="font-size: 1.2rem; color: var(--vv-muted);">/${kpis.totalServidores}</span>`;
+        
+        // Adicionar classe de cor baseado no status
+        servidoresRiscoElement.className = kpis.servidoresRisco > 0 ? 'kpi-value alert' : 'kpi-value ok';
     }
 
     // Alertas
@@ -78,8 +81,10 @@ function atualizarKPIs(kpis) {
     if (valorElement && subtituloElement) {
         if (kpis.alertasGerais === undefined || kpis.alertasGerais === null) {
             valorElement.innerHTML = '0';
+            valorElement.className = 'kpi-value ok';
         } else {
             valorElement.innerHTML = `${kpis.alertasGerais}`;
+            valorElement.className = kpis.alertasGerais > 0 ? 'kpi-value alert' : 'kpi-value ok';
         }
         subtituloElement.textContent = 'Total de ocorrências';
     }
@@ -88,21 +93,6 @@ function atualizarKPIs(kpis) {
     const badgeTotal = document.querySelector('.badge-total');
     if (badgeTotal) {
         badgeTotal.textContent = kpis.totalServidores;
-    }
-
-    // Status da Rede
-    const statusRedeElement = document.getElementById('status-rede');
-    const detalhesRedeElement = document.getElementById('detalhes-rede');
-    
-    if (statusRedeElement && detalhesRedeElement && kpis.rede) {
-        const status = kpis.rede.status; // 'ALERTA' ou 'NORMAL'
-        const alertasAtivos = kpis.rede.alertasAtivos;
-        
-        statusRedeElement.textContent = status;
-        statusRedeElement.className = status === 'ALERTA' ? 'status-alerta' : 'status-normal';
-        detalhesRedeElement.textContent = `${alertasAtivos} alerta(s) ativo(s)`;
-        
-        console.log(`Status Rede: ${status} (${alertasAtivos} alertas ativos)`);
     }
 
     window.dadosDashboard = { 

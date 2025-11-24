@@ -13,7 +13,7 @@ class JiraService {
             // Buscando tickets de rede
             let jql = `project = SUP AND (summary ~ "REDE" OR description ~ "REDE" OR summary ~ "LATÊNCIA" OR summary ~ "CONEXÕES" OR summary ~ "VELOCIDADE") AND status in (Open, "In Progress", Resolved, Closed)`;
             
-            const response = await axios.get(`${this.domain}/rest/api/3/search`, {
+            const response = await axios.get(`${this.domain}/rest/api/3/search/jql`, {
                 headers: {
                     'Authorization': `Basic ${this.auth}`,
                     'Accept': 'application/json'
