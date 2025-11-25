@@ -82,7 +82,7 @@ document.getElementById("servidor_select").addEventListener("change", function (
     if (!idSel || !hostnameSel) return;
 
     window.location.href =
-        `dashRede.html?idServidor=${idSel}&hostname=${hostnameSel}&idhospital=${idHospital}`;
+    `dashRede.html?idServidor=${idSel}&hostname=${hostnameSel}&idhospital=${idHospital}&nomeHospital=${nomeHospital}`;
 });
 
 async function carregarServidoresNoSelect() {
@@ -117,19 +117,22 @@ function obterParametrosServidor() {
     let idServidor = params.get('idServidor');
     let hostname = params.get('hostname');
     let idHospital = params.get('idhospital');
+    let nomeHospital = params.get('nomeHospital');
 
     if (idServidor) sessionStorage.ID_SERVIDOR = idServidor;
     if (hostname) sessionStorage.HOSTNAME_SERVIDOR = hostname;
     if (idHospital) sessionStorage.FK_HOSPITAL = idHospital;
+    if (nomeHospital) sessionStorage.NOME_HOSPITAL = nomeHospital;
 
     if (!idServidor) idServidor = sessionStorage.ID_SERVIDOR;
     if (!hostname) hostname = sessionStorage.HOSTNAME_SERVIDOR;
     if (!idHospital) idHospital = sessionStorage.FK_HOSPITAL;
+    if (!nomeHospital) nomeHospital = sessionStorage.NOME_HOSPITAL;
 
-    return { idServidor, hostname, idHospital };
+    return { idServidor, hostname, idHospital, nomeHospital };
 }
 
-const { idServidor, hostname, idHospital } = obterParametrosServidor();
+const { idServidor, hostname, idHospital, nomeHospital } = obterParametrosServidor();
 
 
 // elements dashboardinha
@@ -428,7 +431,8 @@ function renderKPIs() {
 
 async function carregarDadosRede() {
     try {
-        const resp = await fetch(`/rede/dados/${hostname}`);
+        const resp = await fetch(
+        `/rede/dados?idServidor=${idServidor}&hostname=${hostname}&nomeHospital=${nomeHospital}`);
         const dados = await resp.json();
 
         if (!Array.isArray(dados) || dados.length === 0) return;

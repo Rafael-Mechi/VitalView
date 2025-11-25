@@ -21,20 +21,29 @@ function buscarLimites(req, res) {
 
 
 async function buscarDadosRede(req, res) {
-    const hostname = req.params.hostname;
+    const idServidor = req.query.idServidor;
+    const hostname = req.query.hostname;
+    const nomeHospital = req.query.nomeHospital;
 
-    if (!hostname) {
-        return res.status(400).json({ erro: "Hostname não informado" });
+    if (!idServidor || !hostname || !nomeHospital) {
+        return res.status(400).json({
+            erro: "Parâmetros obrigatórios ausentes (idServidor, hostname, nomeHospital)"
+        });
     }
 
-    try {
-        const registros = await redeModel.pegarDadosRede(hostname);
+     try {
+        const registros = await redeModel.pegarDadosRede(
+            idServidor,
+            hostname,
+            nomeHospital
+        );
 
-        if (!registros || (Array.isArray(registros) && registros.length === 0)) {
-            return res.status(204).send(); // sem conteúdo
+        if (!registros || registros.length === 0) {
+            return res.status(204).send();
         }
 
         res.json(registros);
+
     } catch (error) {
         console.error("Erro ao buscar dados de rede:", error);
 
