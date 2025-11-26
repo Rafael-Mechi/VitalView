@@ -200,17 +200,20 @@
             for (let i = 0; i < dados.imagens_removiveis.length; i++) {
                 let img = dados.imagens_removiveis[i];
 
-                const dataGeracao = new Date(img.data_geracao);
-                const hoje = new Date();
-                const diffMs = hoje - dataGeracao;
-                const tempoNoSistema = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 365));
+                let dataGeracao = new Date(img.data_geracao);
+                let hoje = new Date();
+                let diffMs = hoje - dataGeracao;
+                let tempoNoSistema = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 365));
+
+                let dataFormatada = new Date(img.data_geracao)
+                    .toLocaleDateString("pt-BR", { timeZone: "UTC" });
 
                 let linha = `
             <tr>
                 <td hidden>${img.caminho_arquivo}</td>
                 <td>${img.nome_arquivo}</td>
                 <td>${img.tamanho} MB</td>
-                <td>${img.data_geracao}</td>
+                <td>${dataFormatada}</td>
                 <td>${tempoNoSistema} anos</td>
                 <td class="acao-icons">
                     <button class="btn-excluir-usuario" onclick="excluirImagem(this)">&#x1F5D1;</button>
@@ -291,99 +294,99 @@
                 span_estabilidade_tamanho_medio_imagem.style.color = "#ef4444";
             }
         }
-        function gerarGraficoLinha(dado){
+        function gerarGraficoLinha(dado) {
             let labels = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-            'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+                'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
 
             let eixoY = [
-        dado.crescimento_mensal.jan,
-        dado.crescimento_mensal.fev,
-        dado.crescimento_mensal.mar,
-        dado.crescimento_mensal.abr,
-        dado.crescimento_mensal.mai,
-        dado.crescimento_mensal.jun,
-        dado.crescimento_mensal.jul,
-        dado.crescimento_mensal.ago,
-        dado.crescimento_mensal.set,
-        dado.crescimento_mensal.out,
-        dado.crescimento_mensal.nov,
-        dado.crescimento_mensal.dez,
-    ];
+                dado.crescimento_mensal.jan,
+                dado.crescimento_mensal.fev,
+                dado.crescimento_mensal.mar,
+                dado.crescimento_mensal.abr,
+                dado.crescimento_mensal.mai,
+                dado.crescimento_mensal.jun,
+                dado.crescimento_mensal.jul,
+                dado.crescimento_mensal.ago,
+                dado.crescimento_mensal.set,
+                dado.crescimento_mensal.out,
+                dado.crescimento_mensal.nov,
+                dado.crescimento_mensal.dez,
+            ];
 
-        let limite = Number((dado.crescimento_mensal.dez * 1.2).toFixed(0));
-        
-    
-        const ctx = document.getElementById('grafico-linha').getContext('2d');
+            let limite = Number((dado.crescimento_mensal.dez * 1.2).toFixed(0));
 
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: `${nomeServidor}`,
-                    data: eixoY,
-                    borderColor: '#1ECBE1',
-                    backgroundColor: 'rgba(255, 0, 0, 0.1)',
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: `Crescimento de Imagens - ${nomeServidor}`,
-                        color: 'white',
-                        font: {
-                            size: 20,
-                            family: 'Barlow, sans-serif',
-                            weight: 'bold'
-                        }
-                    },
-                    legend: {
-                        display: true,
-                        position: 'top',
-                        labels: {
-                            color: 'white',
-                            font: {
-                                family: 'Barlow, sans-serif'
-                            }
-                        }
-                    }
+
+            const ctx = document.getElementById('grafico-linha').getContext('2d');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: `${nomeServidor}`,
+                        data: eixoY,
+                        borderColor: '#1ECBE1',
+                        backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                        fill: true
+                    }]
                 },
-                scales: {
-                    y: {
-                        min: 0,
-                        max: limite,
-                        ticks: {
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: `Crescimento de Imagens - ${nomeServidor}`,
                             color: 'white',
                             font: {
-                                family: 'Barlow, sans-serif'
+                                size: 20,
+                                family: 'Barlow, sans-serif',
+                                weight: 'bold'
                             }
                         },
-                        title: {
-                            display: false
-                        },
-                        grid: {
-                            color: 'rgba(255,255,255,0.2)'
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                color: 'white',
+                                font: {
+                                    family: 'Barlow, sans-serif'
+                                }
+                            }
                         }
                     },
-                    x: {
-                        ticks: {
-                            color: 'white',
-                            font: {
-                                family: 'Barlow, sans-serif'
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: limite,
+                            ticks: {
+                                color: 'white',
+                                font: {
+                                    family: 'Barlow, sans-serif'
+                                }
+                            },
+                            title: {
+                                display: false
+                            },
+                            grid: {
+                                color: 'rgba(255,255,255,0.2)'
                             }
                         },
-                        grid: {
-                            color: 'rgba(255,255,255,0.2)'
+                        x: {
+                            ticks: {
+                                color: 'white',
+                                font: {
+                                    family: 'Barlow, sans-serif'
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(255,255,255,0.2)'
+                            }
                         }
                     }
                 }
-            }
 
-        });
+            });
         }
     </script>
 </body>
