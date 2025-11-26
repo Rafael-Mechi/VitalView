@@ -320,15 +320,15 @@ a:hover {
   --vv-text: #1f2937;
   --vv-muted: #6b7280;
   --vv-border: #e5e7eb;
-  --vv-teal: #14b8a6;  
-  --vv-cyan: #0ea5e9;   
+  --vv-teal: #14b8a6;
+  --vv-cyan: #0ea5e9;
   --vv-ok: #10b981;
   --vv-warn: #f59e0b;
   --vv-alert: #ef4444;
   --vv-badge-bg: #f1f5f9;
   --vv-grid-gap: 16px;
   --vv-radius: 16px;
-  --vv-shadow: 0 8px 24px rgba(0,0,0,.06);
+  --vv-shadow: 0 8px 24px rgba(0, 0, 0, .06);
 }
 
 
@@ -376,9 +376,10 @@ a:hover {
   flex-direction: column;
   justify-content: space-between;
 }
+
 .kpi:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(0,0,0,.08);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .08);
   border-color: color-mix(in oklab, var(--vv-border) 70%, var(--vv-teal));
 }
 
@@ -851,54 +852,61 @@ tr:nth-child(even) {
 /*Deixando o alerta com animaçãozinha*/
 
 .btn-com-alerta {
-    position: relative;
-    animation: bounce-alerta 2s infinite;
-    border: 2px solid #e63946 !important;
-    border-radius: 6px !important;
-    background-color: #ffebee !important;
+  position: relative;
+  animation: bounce-alerta 2s infinite;
+  border: 2px solid #e63946 !important;
+  border-radius: 6px !important;
+  background-color: #ffebee !important;
 }
 
 @keyframes bounce-alerta {
-    0%, 20%, 50%, 80%, 100% { 
-        transform: translateY(0); 
-    }
-    40% { 
-        transform: translateY(-3px); 
-    }
-    60% { 
-        transform: translateY(-2px); 
-    }
+
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+
+  40% {
+    transform: translateY(-3px);
+  }
+
+  60% {
+    transform: translateY(-2px);
+  }
 }
 
 /* Tooltip customizado*/
 .btn-server[title]:hover::after,
 .btn-disk[title]:hover::after,
 .btn-network[title]:hover::after {
-    content: attr(title);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #333;
-    color: white;
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    white-space: nowrap;
-    z-index: 1000;
-    font-family: 'Barlow', 'Segoe UI', Tahoma, sans-serif;
-    font-weight: 500;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  font-family: 'Barlow', 'Segoe UI', Tahoma, sans-serif;
+  font-weight: 500;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .status-badge.status-alerta {
-    background: #ffe3e3;
-    color: #e00;
+  background: #ffe3e3;
+  color: #e00;
 }
 
 .status-badge.status-normal {
-    background: #e6f7f7;
-    color: #1a8c8c;
+  background: #e6f7f7;
+  color: #1a8c8c;
 }
 
 .btn-server,
@@ -929,38 +937,44 @@ td:last-child {
 
 /* Container dos botões*/
 .btn-grupo {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    width: 100%;
-    padding-right: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  width: 100%;
+  padding-right: 0;
 }
 
 /*Para os redirecionamentos ficarem grudados na direita*/
 td:last-child {
-    text-align: right;
-    padding-right: 15px; 
+  text-align: right;
+  padding-right: 15px;
 }
 
 /* Centralizando Status de Rede */
 td:nth-child(8) {
-    text-align: center;
-    vertical-align: middle;
+  text-align: center;
+  vertical-align: middle;
 }
 
 td:last-child {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 /* Ajustando largura das colunas para caber tudo la ele kk */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: auto; 
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
 }
 
-th:nth-child(1) { width: 15%; } /* Servidor */
-th:nth-child(9) { width: 12%; } /* Ações */
+th:nth-child(1) {
+  width: 15%;
+}
+
+/* Servidor */
+th:nth-child(9) {
+  width: 12%;
+}
 
 /* Header logo */
 .header-logo {
@@ -980,6 +994,151 @@ th:nth-child(9) { width: 12%; } /* Ações */
   font-weight: 600;
   margin: 0;
 }
+
+/* ========================================= */
+/*          COLUNAS DE ÍCONES COMPACTAS     */
+/* ========================================= */
+
+.badges-tendencia {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.badge-principal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, #32b9cd, #2a9bb3);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(50, 185, 205, 0.3);
+}
+
+.badge-numero {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: white;
+  line-height: 1;
+}
+
+.badge-label {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.badge-variacao {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-weight: 700;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.badge-variacao.aumento {
+  background: linear-gradient(135deg, #e63946, #d32f2f);
+  color: white;
+}
+
+.badge-variacao.queda {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: white;
+}
+
+.badge-seta {
+  font-size: 1.1rem;
+  margin-bottom: 2px;
+}
+
+.badge-diferenca {
+  font-size: 1.1rem;
+}
+
+
+.coluna-icone {
+  width: 60px !important;
+  text-align: center !important;
+  padding: 5px !important;
+}
+
+.coluna-icone button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.coluna-icone button:hover {
+  background: rgba(0, 0, 0, 0.1);
+  transform: scale(1.1);
+}
+
+.coluna-icone img {
+  width: 20px;
+  height: 20px;
+}
+
+/* Mantendo a animação de alerta */
+.btn-com-alerta {
+  position: relative;
+  animation: bounce-alerta 2s infinite;
+  border: 2px solid #e63946 !important;
+  background-color: #ffebee !important;
+}
+
+/* Ajustando larguras das outras colunas para compensar o espaço da tabela */
+th:nth-child(1) {
+  width: 15%;
+}
+
+/* Servidor */
+th:nth-child(2) {
+  width: 10%;
+}
+
+/* Status */
+th:nth-child(3) {
+  width: 12%;
+}
+
+/* CPU */
+th:nth-child(4) {
+  width: 12%;
+}
+
+/* RAM */
+th:nth-child(5) {
+  width: 12%;
+}
+
+/* Disco */
+th:nth-child(6) {
+  width: 8%;
+}
+
+/* Alertas */
+th:nth-child(7) {
+  width: 12%;
+}
+
+/* Tempo Alerta */
+th:nth-child(8) {
+  width: 10%;
+}
+
+/* Status Rede */
+/* Colunas de ícones já ta com a largura fixa*/
 
 /* ========================================= */
 /*          INDICADOR DE TENDÊNCIA */
