@@ -101,43 +101,35 @@
 
         <div class="container-principal">
             <div class="container-graficos">
-    <div class="kpi">
-        <h2 class="normal">Imagem mais pesada:</h2>
-        <div class="sub">Em megabytes</div>
-        <div class="value" id="div_imagem_mais_pesada"></div>
-    </div>
+                <div class="kpi">
+                    <h2 class="normal">Imagem mais pesada:</h2>
+                    <div class="sub">Em megabytes</div>
+                    <div class="value" id="div_imagem_mais_pesada"></div>
+                </div>
 
-    <div class="kpi">
-        <div class="kpi-badge"><span style="color: #32b9cd;" id="span_crescimento"></span></div>
-        <h2 class="normal">Crescimento médio de imagens <button type="button" class="infoBtn"
-                            data-target="infoCrescimentoImagem">&#9432</button></h3></h2>
-        <div class="sub">Imagens por mês</div>
-        <div class="value" id="div_crescimento_medio_imagem_mes"></div>
-    </div>
+                <div class="kpi">
+                    <div class="kpi-badge"><span style="color: #32b9cd;" id="span_crescimento"></span></div>
+                    <h2 class="normal">Crescimento médio de imagens <button type="button" class="infoBtn"
+                            data-target="infoCrescimentoImagem">&#9432</button></h3>
+                    </h2>
+                    <div class="sub">Imagens por mês</div>
+                    <div class="value" id="div_crescimento_medio_imagem_mes"></div>
+                </div>
 
-    <div class="kpi">
-        <div class="kpi-badge"><span style="color: #ef4444;" id="span_estabilidade_tamanho_medio_imagem"></span></div>
-        <h2 class="normal">Tamanho médio das imagens <button type="button" class="infoBtn"
+                <div class="kpi">
+                    <div class="kpi-badge"><span style="color: #ef4444;"
+                            id="span_estabilidade_tamanho_medio_imagem"></span></div>
+                    <h2 class="normal">Tamanho médio das imagens <button type="button" class="infoBtn"
                             data-target="infoCrescimentoImagem">&#9432</button></h2>
-        <div class="sub">Tamanho médio por imagem</div>
-        <div class="value"><span style="color: #ef4444;" id="span_tamanho_medio_imagem"></span></div>
-    </div>
-</div>
+                    <div class="sub">Tamanho médio por imagem</div>
+                    <div class="value"><span style="color: #ef4444;" id="span_tamanho_medio_imagem"></span></div>
+                </div>
+            </div>
 
             <div class="tabela-alertas">
                 <div class="tabela-header">
                     <div>
                         <h2>Imagens que podem ser removidas: <b id="b_imagens_removiveis"></b></h2>
-                    </div>
-                    <div class="div_filtro">
-                        <span>Filtrar por:</span>
-                        <select class="filtro-select" id="filtro">
-                            <option value="idUsuario">servidor</option>
-                            <option value="nome">nome do arquivo</option>
-                            <option value="cargo">tamanho</option>
-                            <option value="data_criacao">data de geração</option>
-                            <option value="data_criacao">tempo no sistema</option>
-                        </select>
                     </div>
                 </div>
 
@@ -148,12 +140,12 @@
                                 <th id="th-sup-esquerdo">Nome do arquivo</th>
                                 <th>Tamanho</th>
                                 <th>Data de geração</th>
-                                <th >Tempo no sistema</th>
+                                <th>Tempo no sistema</th>
                                 <th id="th-sup-direito">Excluir</th>
                             </tr>
                         </thead>
                         <tbody id="info-imagens">
-                            
+
                         </tbody>
                     </table>
                 </div>
@@ -189,6 +181,7 @@
                             gerarTabelaImagens(resposta);
                             gerarKpiCrescimentoMedioImagens(resposta);
                             gerarKpiTamanhoMedioImagens(resposta);
+                            gerarGraficoLinha(resposta);
                         })
                     }
                 })
@@ -204,46 +197,40 @@
 
             b_imagens_removiveis.innerHTML = dados.imagens_removiveis.length;
 
-            let caminhoImagem;
-            let nomeArquivo;
-            let tamanho;
-            let dataGeracao;
-            let tempoNoSistema;
+            for (let i = 0; i < dados.imagens_removiveis.length; i++) {
+                let img = dados.imagens_removiveis[i];
 
-            for(let i = 0; i < dados.length; i++){
-                let registro = dados[i];
-
-                caminhoImagem = registro.caminho_arquivo;
-                nomeArquivo = registro.nome_arquivo;
-                tamanho = registro.tamanho;
-                dataGeracao = registro.data_geracao;
-                tempoNoSistema = registro.anos_no_sistema;
+                const dataGeracao = new Date(img.data_geracao);
+                const hoje = new Date();
+                const diffMs = hoje - dataGeracao;
+                const tempoNoSistema = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 365));
 
                 let linha = `
-                <tr>
-                    <td hidden>${caminhoImagem}</td>
-                    <td>${nomeArquivo}</td>
-                    <td>${tamanho} MB</td>
-                    <td>${dataGeracao}</td>
-                    <td>${tempoNoSistema} anos</td>
-                    <td class="acao-icons">
-                        <button class="btn-excluir-usuario" onclick="excluirImagem(this)">&#x1F5D1;</button>
-                    </td>
-                </tr>
-                `
-                
+            <tr>
+                <td hidden>${img.caminho_arquivo}</td>
+                <td>${img.nome_arquivo}</td>
+                <td>${img.tamanho} MB</td>
+                <td>${img.data_geracao}</td>
+                <td>${tempoNoSistema} anos</td>
+                <td class="acao-icons">
+                    <button class="btn-excluir-usuario" onclick="excluirImagem(this)">&#x1F5D1;</button>
+                </td>
+            </tr>
+        `;
+
                 tbodyImagens.innerHTML += linha;
             }
         }
 
-        function excluirImagem(botao){
-            
+
+        function excluirImagem(botao) {
+
             let linha = botao.closest("tr");
             let colunas = linha.querySelectorAll("td");
 
             let caminhoArquivo = colunas[0].textContent;
             let tempoNoSistema = colunas[3].textContent;
-            
+
             fetch(`jira/abrir-chamado-exclusao`, {
                 method: "POST",
                 headers: {
@@ -264,24 +251,23 @@
             })
         }
 
-        function gerarKpiImagemMaisPesada(dado){
+        function gerarKpiImagemMaisPesada(dado) {
             let nomeImagem = dado.imagem_mais_pesada.nome_arquivo;
             let tamanho = dado.imagem_mais_pesada.tamanho;
 
             div_imagem_mais_pesada.innerHTML = `<span style="color: #ef4444"   >${nomeImagem} - ${tamanho}MB</span>`
         }
 
-        function gerarKpiCrescimentoMedioImagens(dado){
-            let media = Number(dado.crescimento_medio_mes.media_imagens_por_mes).toFixed(2);
+        function gerarKpiCrescimentoMedioImagens(dado) {
+            let media = Number(dado.crescimento_medio_mes.media_imagens_por_mes).toFixed(0);
 
-            div_crescimento_medio_imagem_mes.innerHTML = `${media}`;
+            div_crescimento_medio_imagem_mes.innerHTML = `${media} imagens`;
             div_crescimento_medio_imagem_mes.style.color = "#32b9cd";
 
             span_crescimento.innerHTML = "Estável";
             span_crescimento.style.color = "#32b9cd";
 
-            if(media > 0.27){
-                div_crescimento_medio_imagem_mes.innerHTML = `${media}`;
+            if (media > 0.27) {
                 div_crescimento_medio_imagem_mes.style.color = "#ef4444";
 
                 span_crescimento.innerHTML = "Atenção";
@@ -289,31 +275,44 @@
             }
         }
 
-        function gerarKpiTamanhoMedioImagens(dado){
+        function gerarKpiTamanhoMedioImagens(dado) {
             let tamanhoMedio = Number(dado.tamanho_medio_imagens.tamanho_medio).toFixed(2);
 
-            span_tamanho_medio_imagem.innerHTML = `${tamanhoMedio}`;
+            span_tamanho_medio_imagem.innerHTML = `${tamanhoMedio}MB`;
             span_tamanho_medio_imagem.style.color = "#32b9cd";
 
             span_estabilidade_tamanho_medio_imagem.innerHTML = "Estável";
             span_estabilidade_tamanho_medio_imagem.style.color = "#32b9cd";
 
-            if(tamanhoMedio > 2){
-                span_tamanho_medio_imagem.innerHTML = `${tamanhoMedio}`;
+            if (tamanhoMedio > 2) {
                 span_tamanho_medio_imagem.style.color = "#ef4444";
 
                 span_estabilidade_tamanho_medio_imagem.innerHTML = "Atenção";
                 span_estabilidade_tamanho_medio_imagem.style.color = "#ef4444";
             }
         }
+        function gerarGraficoLinha(dado){
+            let labels = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+            'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
 
-        const labels = [
-            'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-            'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
-        ];
+            let eixoY = [
+        dado.crescimento_mensal.jan,
+        dado.crescimento_mensal.fev,
+        dado.crescimento_mensal.mar,
+        dado.crescimento_mensal.abr,
+        dado.crescimento_mensal.mai,
+        dado.crescimento_mensal.jun,
+        dado.crescimento_mensal.jul,
+        dado.crescimento_mensal.ago,
+        dado.crescimento_mensal.set,
+        dado.crescimento_mensal.out,
+        dado.crescimento_mensal.nov,
+        dado.crescimento_mensal.dez,
+    ];
 
-        const dataA = [420, 480, 550, 610, 680, 740, 800, 850, 900, 940, 970, 1000];
-
+        let limite = Number((dado.crescimento_mensal.dez * 1.2).toFixed(0));
+        
+    
         const ctx = document.getElementById('grafico-linha').getContext('2d');
 
         new Chart(ctx, {
@@ -321,11 +320,10 @@
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'srv1',
-                    data: dataA,
+                    label: `${nomeServidor}`,
+                    data: eixoY,
                     borderColor: '#1ECBE1',
                     backgroundColor: 'rgba(255, 0, 0, 0.1)',
-                    tension: 0.4,
                     fill: true
                 }]
             },
@@ -335,7 +333,7 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Crescimento de Imagens - srv1',
+                        text: `Crescimento de Imagens - ${nomeServidor}`,
                         color: 'white',
                         font: {
                             size: 20,
@@ -357,7 +355,7 @@
                 scales: {
                     y: {
                         min: 0,
-                        max: 1000,
+                        max: limite,
                         ticks: {
                             color: 'white',
                             font: {
@@ -373,7 +371,7 @@
                     },
                     x: {
                         ticks: {
-                            color: 'white',        // <<< números/nomes do eixo X
+                            color: 'white',
                             font: {
                                 family: 'Barlow, sans-serif'
                             }
@@ -386,6 +384,7 @@
             }
 
         });
+        }
     </script>
 </body>
 
