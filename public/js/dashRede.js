@@ -82,7 +82,7 @@ document.getElementById("servidor_select").addEventListener("change", function (
     if (!idSel || !hostnameSel) return;
 
     window.location.href =
-    `dashRede.html?idServidor=${idSel}&hostname=${hostnameSel}&idhospital=${idHospital}&nomeHospital=${nomeHospital}`;
+        `dashRede.html?idServidor=${idSel}&hostname=${hostnameSel}&idhospital=${idHospital}&nomeHospital=${nomeHospital}`;
 });
 
 async function carregarServidoresNoSelect() {
@@ -432,7 +432,7 @@ function renderKPIs() {
 async function carregarDadosRede() {
     try {
         const resp = await fetch(
-        `/rede/dados?idServidor=${idServidor}&hostname=${hostname}&nomeHospital=${nomeHospital}`);
+            `/rede/dados?idServidor=${idServidor}&hostname=${hostname}&nomeHospital=${nomeHospital}`);
         const dados = await resp.json();
 
         if (!Array.isArray(dados) || dados.length === 0) return;
@@ -450,7 +450,9 @@ async function carregarDadosRede() {
 
 async function tickReal() {
     try {
-        const resp = await fetch(`/rede/dados/${hostname}`);
+        const resp = await fetch(
+            `/rede/dados?idServidor=${idServidor}&hostname=${hostname}&nomeHospital=${nomeHospital}`
+        );
         const dados = await resp.json();
 
         if (!Array.isArray(dados) || dados.length === 0) return;
@@ -471,7 +473,7 @@ async function tickReal() {
 }
 
 (async function start() {
-    await carregarServidoresNoSelect(); 
+    await carregarServidoresNoSelect();
     await carregarLimites();
     await carregarDadosRede();
     initChart();
