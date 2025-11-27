@@ -1037,17 +1037,6 @@ th:nth-child(9) {
   padding: 6px 10px;
   border-radius: 10px;
   font-weight: 700;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-}
-
-.badge-variacao.aumento {
-  background: linear-gradient(135deg, #e63946, #d32f2f);
-  color: white;
-}
-
-.badge-variacao.queda {
-  background: linear-gradient(135deg, #2ecc71, #27ae60);
-  color: white;
 }
 
 .badge-seta {
@@ -1058,7 +1047,6 @@ th:nth-child(9) {
 .badge-diferenca {
   font-size: 1.1rem;
 }
-
 
 .coluna-icone {
   width: 60px !important;
