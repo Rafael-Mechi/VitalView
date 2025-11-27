@@ -73,9 +73,9 @@ function buscarAlertasGerais(idHospital) {
 // Busca arquivo S3
 const buscarDadosBucketMacro = async (fileKey) => {
     const bucketName = process.env.AWS_BUCKET_NAME || "bucket-munir-dashmacro";
-    
+
     console.log(`📁 Buscando no S3: ${fileKey}`);
-    
+
     // Debug: lista arquivos do bucket
     try {
         const lista = await s3.listObjectsV2({ Bucket: bucketName }).promise();

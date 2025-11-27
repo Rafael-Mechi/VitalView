@@ -70,8 +70,12 @@ const pegarDadosDiscoModel = async (bucketName, fileKey) => {
     };
 
     try {
+        
         const data = await s3.getObject(params).promise();
         const jsonData = JSON.parse(data.Body.toString('utf-8'));
+        const list = await s3.listObjectsV2({ Bucket: bucketName }).promise();
+        console.log("ARQUIVOS NO BUCKET:");
+        list.Contents.forEach(obj => console.log("-", JSON.stringify(obj.Key)));
         return jsonData;
     } catch (error) {
         console.error('Erro ao acessar o S3:', error);

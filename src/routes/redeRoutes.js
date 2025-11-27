@@ -13,7 +13,7 @@ router.get("/limites/:idServidor", function (req, res) {
     redeController.buscarLimites(req, res);
 });
 
-router.get("/dados/:hostname", function (req, res) {
+router.get("/dados", function (req, res) {
     redeController.buscarDadosRede(req, res);
 });
 

@@ -39,15 +39,17 @@ async function pegarDadosBucket(req, res) {
 
 async function pegarDadosDisco(req, res) {
   const bucketName = process.env.AWS_BUCKET_NAME;
-  const { idServidor } = req.params;
- const fileKey = `1_srv1_Sirio libanes`
+    const fileKey = req.params.key;
+    //ISSO AQUI SALVOU MINHA VIDA -> log("Key recebida na rota:", fileKey)
 
-  try {
-    const dadosDisco = await suporteMicroModel.pegarDadosDiscoModel(bucketName, fileKey);
-    res.json(dadosDisco);
-  } catch (error) {
-    console.error("Erro ao buscar dados de disco:", error);
-    res.status(500).json({ message: "Erro ao buscar dados de disco", details: error.message });
+
+    try {
+      const fileContent = await suporteMicroModel.pegarDadosBucketModel(bucketName, fileKey);
+      res.send(fileContent);
+    } catch (error) {
+      console.error("Erro ao buscar no bucket:", error);
+      res.status(500).send("Erro ao buscar arquivo");
+      
   }
 }
 

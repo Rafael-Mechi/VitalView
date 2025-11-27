@@ -25,7 +25,8 @@
                 </div>
 
                 <div class="icones_baixo">
-                    <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador" style="width: 28px; height: 28px;">
+                    <img src="./assets/dashboard-icons/gerenciar-usuarios.png" data-role="Administrador"
+                        style="width: 28px; height: 28px;">
                     <img src="./assets/dashboard-icons/calendar.svg" data-role="Analista,Técnico,Administrador">
                     <img src="./assets/dashboard-icons/users.svg" data-role="Administrador">
                     <img src="./assets/dashboard-icons/hard-drive.svg" data-role="Técnico,Administrador">
@@ -56,7 +57,7 @@
                 <li style="display: flex; align-items: center;" data-role="Técnico,Administrador"><img
                         src="./assets/dashboard-icons/layout.svg" style="width: 20px; margin-right: 4px;"><a
                         href="dashboardSuporteMicro.html">Dash Suporte Micro</a></li>
-                        <li style="display: flex; align-items: center;" data-role="Técnico,Administrador">
+                <li style="display: flex; align-items: center;" data-role="Técnico,Administrador">
                     <img src="./assets/dashboard-icons/wifi (1).svg" style="width: 20px; margin-right: 4px;"><a
                         href="dashRede.html">Dashboard Rede</a>
                 </li>
@@ -114,13 +115,15 @@
             <section class="sessao-lateral-esquerda">
                 <section class="sessao-lateral-esquerda-itens">
                     <div class="server-info" role="group" aria-labelledby="t1">
-                        <h4 id="t1" class="titulo-cartao" style="text-align: center;">Top 5 Servidores com mais alertas <small>No Mês</small>
+                        <h4 id="t1" class="titulo-cartao" style="text-align: center;">Top 5 Servidores com mais alertas
+                            <small>No Mês</small>
                         </h4>
-                            <canvas id="topServidoresChart" aria-label="Top servidores" role="img"></canvas>
+                        <canvas id="topServidoresChart" aria-label="Top servidores" role="img"></canvas>
                     </div>
 
-                    <div class="server-info" role="group" aria-labelledby="t2" >
-                        <h4 id="t2" class="titulo-cartao" style="text-align: center;">Distribuição de alertas por componente <small>No Mês</small></h4>
+                    <div class="server-info" role="group" aria-labelledby="t2">
+                        <h4 id="t2" class="titulo-cartao" style="text-align: center;">Distribuição de alertas por
+                            componente <small>No Mês</small></h4>
                         <canvas id="componentesChart" aria-label="Alertas por componente" role="img"></canvas>
                     </div>
                 </section>
@@ -129,26 +132,58 @@
             <section class="sessao-lateral-direita">
                 <section class="sessao-lateral-direita-itens" style="height: 35%;">
                     <section class="velocimetro card">
-                        <h4 id="c1" style="text-align: center; font-size: larger;">Dia da semana com mais alertas <br><small>Durante o Mês</small>
+                        <h4 id="c1" style="text-align: center; font-size: larger;">Dia da semana com mais alertas
+                            <br><small>Durante o Mês</small>
                         </h4>
                         <div class="valor grande azul">Segunda-feira</div>
                         <p class="legenda">Dia da semana com maior frequência de alertas</p>
                     </section>
                     <section class="velocimetro card">
-                        <h4 id="c2" style="text-align: center; font-size: larger;">Quantidade total de alertas <br><small>Durante o Mês</small></h4>
+                        <h4 id="c2" style="text-align: center; font-size: larger;">Quantidade total de alertas
+                            <br><small>Durante o Mês</small>
+                        </h4>
                         <div class="valor grande vermelho" style="font-size: 40px; margin-bottom: 20px;">0</div>
                     </section>
                 </section>
                 <section class="sessao-lateral-direita-itens" id="id_sessao_direita_2">
-                    <section id="projecao" style="height: 100%; position: relative;">
+                    <section id="projecao" style="position: relative;">
                         <div aria-labelledby="lin" style="height: 100%; display: flex; flex-direction: column;">
-                            <h4 id="titulo_grafico_linha" style="font-size: larger; text-align: center; margin-bottom: 10px;">Distribuição de alertas no mês</h4>
+                            <h4 id="titulo_grafico_linha"
+                                style="font-size: larger; text-align: center; margin-bottom: 10px;">Distribuição de
+                                alertas no mês</h4>
                             <div style="flex: 1; position: relative; min-height: 0;">
                                 <canvas id="linhaAnoChart" aria-label="Distribuição no período" role="img"></canvas>
                             </div>
                         </div>
                     </section>
                 </section>
+            </section>
+
+        </section>
+        <section class="container-previsoes" style="margin-top: 30px;">
+            <section class="tabela-previsoes">
+                <h4>Previsões Detalhadas por Servidor</h4>
+                <div class="table-wrapper">
+                    <table id="tabelaPrevisoes">
+                        <thead>
+                            <tr>
+                                <th>Servidor</th>
+                                <th>Componente</th>
+                                <th>Dia de Risco</th>
+                                <th>Período</th>
+                                <th>Alertas Previstos</th>
+                                <th>Probabilidade</th>
+                                <th>Tendência</th>
+                                <th>Nível de Risco</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpoTabelaPrevisoes">
+                            <tr>
+                                <td colspan="8" style="text-align: center;">Carregando...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </section>
         </section>
     </section>
@@ -158,4 +193,5 @@
     <script src="js/dashAnalista.js"></script>
 
 </body>
+
 </html>

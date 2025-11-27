@@ -1,7 +1,12 @@
 // ---------------- CONFIGURAÇÕES INICIAIS ----------------
 const params = new URLSearchParams(window.location.search);
 const idServidor = params.get("idServidor");
+const nomeServidor = params.get("hostname");
+const nomeHospital = sessionStorage.NOME_HOSPITAL;
+const key = `${idServidor}_${nomeServidor}_${nomeHospital}.json`;
 
+
+//------------------Puxando as classes do HTML-------------------
 const valorAtividade = document.querySelector(".texto_esquerda h1");
 const horaAtualizacao = document.querySelector(".texto_direita p:last-child");
 
@@ -17,15 +22,18 @@ const variacaoLatencia = document.querySelectorAll('.UD_texto_direita p')[2];
 
 // ---------------- FUNÇÃO PRINCIPAL ----------------
 async function carregarDados() {
+  let idServidor = sessionStorage.ID_SERVIDOR;
+  let idHospital = sessionStorage.FK_HOSPITAL;
+  console.log(idServidor);
+  console.log(idHospital);
+  
   try {
-    const resposta = await fetch(`/dashDiscoRoutes/servidores/${idServidor}/disco`);
+    const resposta = await fetch(`/dashDiscoRoutes/buscar-dados-bucket-disco/${key}`);
     if (!resposta.ok) throw new Error("Falha ao buscar dados de disco");
 
     const dados = await resposta.json();
     console.log("Dados recebidos:", dados);
-    console.log("Tipo:", typeof dados);
-    console.log("Primeiros 10 itens:", Object.entries(dados).slice(0, 10));
-
+    
     atualizarDash(dados);
   } catch (erro) {
     console.error("Erro ao buscar dados do bucket:", erro);
@@ -64,7 +72,7 @@ const ctxUso = document.getElementById('graficoUsoDeDisco').getContext('2d');
 const graficoUso = new Chart(ctxUso, {
   type: 'bar',
   data: {
-    labels: ['Uso de Disco'],
+    labels: ['Disco_usado_(bytes)'],
     datasets: [{
       data: [0],
       backgroundColor: '#008c99',
@@ -128,10 +136,11 @@ const graficoLatencia = new Chart(ctxLatencia, {
 
 // ---------------- FUNÇÃO DE ATUALIZAÇÃO ----------------
 function atualizarDash(dados) {
-  const usoDisco = Number(dados[0]["Uso de Disco"]) || 0;
-  const taxaLeitura = Number(dados[0]["Taxa escrita (MB/s)"])
-  const taxaEscrita = Number(dados[0]["Taxa escrita (MB/s)"])
-  const latMedia = Number(dados[0]["Latência (ms)"])
+  const usoDisco = Number(dados[0]["Disco_usado_(bytes)"]) || 0;
+  const discoTotal =  Number(dados[0]["Disco_total_(bytes)"])
+  const taxaLeitura = Number(dados[0]["Disco_taxa_leitura_mbs"])
+  const taxaEscrita = Number(dados[0]["Disco_taxa_escrita_mbs"])
+  const latMedia = Number(dados[0]["Latencia_(ms)"]) //MUDAR AQUI PQ MEU GRUPO FEZ MERDA
   const dataColeta = Number(dados[0]["Data da Coleta"] || new Date());
 
   // Gráfico principal
@@ -147,7 +156,7 @@ function atualizarDash(dados) {
   graficoUso.data.datasets[0].data = [usoDisco];
   graficoUso.update();
   valorUso.textContent = `${usoDisco.toFixed(1)}%`;
-  textoUso.textContent = `${(usoDisco * 5).toFixed(1)} GB usados de 500 GB`;
+  textoUso.textContent = `${(usoDisco * 5).toFixed(1)} GB usados de ${discoTotal.toFixed()} GB`;
 
   // Taxa de transferência média
   const taxaMedia = ((taxaLeitura + taxaEscrita) / 2).toFixed(2);
@@ -172,5 +181,7 @@ function atualizarDash(dados) {
 
 
 function irParaTelaDeGestao(){
-  window.location.href = "dashboardGerImagemServidor.html"
+
+  window.location.href = `dashboardGerImagemServidor.html?idServidor=${idServidor}&hostname=${nomeServidor}&idhospital=${nomeHospital}`;
+
 }

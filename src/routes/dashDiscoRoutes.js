@@ -17,8 +17,10 @@ router.get("/buscar-servidores", function(req, res){
 })
 
 // Rota específica para pegar dados de disco de um servidor
-router.get("/servidores/:idServidor/disco", function (req, res) {
+router.get("/buscar-dados-bucket-disco/:key", function (req, res) {
     discoController.pegarDadosDisco(req, res);
 });
+
+
 
 module.exports = router;
