@@ -44,8 +44,8 @@ const nomeServidor = params.get("hostname");
 const nomeHospital = sessionStorage.NOME_HOSPITAL;
 
 const idServidor = id;
-const key = `${id}_${nomeServidor}_${nomeHospital}.json`;
-const key2 = `processos_${id}_${nomeServidor}_${nomeHospital}.json`
+const key = `${id}_${nomeServidor}_${nomeHospital}_principal.json`;
+const key2 = `${id}_${nomeServidor}_${nomeHospital}_processos.json`;
 
 console.log(key)
 console.log(key2)
@@ -85,13 +85,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (dadosLimites.length > 0) {
             limiteCPU = dadosLimites[0].limitePercentual
-            limiteRAM = dadosLimites[1].limitePercentual
-            limiteDisco = dadosLimites[2].limitePercentual
+            limiteRAM = dadosLimites[2].limitePercentual
+            limiteDisco = dadosLimites[1].limitePercentual
         }
 
         console.log(limiteCPU)
         console.log(limiteDisco)
         console.log(limiteRAM)
+
+        console.log(alertasServidor)
 
         //Dados do banco
         if (dadosBanco.length > 0) {
@@ -112,8 +114,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         //Exibe tudo 
         plotarDados(dadosBucket, dadosProcessos, alertasServidor);
-
-
 
     } catch (erro) {
         console.log("Erro ao buscar o arquivo do bucket");
@@ -460,41 +460,40 @@ function plotarDados(dadosBucket, dadosProcessos, alertasServidor) {
 
     carregouPagina = true
 
-    setInterval(buscarDadosDinamicos, 65000);
+    setInterval(buscarDadosDinamicos, 10000);
 }
 
 // Função que faz apenas os fetches dinâmicos
-async function buscarDadosDinamicos() {
-    console.log("puxou novos dados!!")
+function buscarDadosDinamicos() {
+  console.log("puxou novos dados!!");
 
-    try {
-        const [resBucket, resProcess, resAlertas] = await Promise.all([
-            fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key}`),
-            fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key2}`),
-            fetch(`/suporteMicroRoutes/buscar-alertas-servidores/${idServidor}`)
-        ]);
+  Promise.all([
+    fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key}`),
+    fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key2}`),
+    fetch(`/suporteMicroRoutes/buscar-alertas-servidores/${idServidor}`)
+  ])
+  .then(([resBucket, resProcess, resAlertas]) => {
+    return Promise.all([
+      resBucket.json(),
+      resProcess.json(),
+      resAlertas.json()
+    ]);
+  })
+  .then(([dadosBucket, dadosProcessos, alertasServidor]) => {
+    console.log("Dados do bucket:", dadosBucket);
+    console.log("Processos:", dadosProcessos);
+    console.log("Alertas:", alertasServidor);
 
-        const [dadosBucket, dadosProcessos, alertasServidor] = await Promise.all([
-            resBucket.json(),
-            resProcess.json(),
-            resAlertas.json()
-        ]);
-
-        // Aqui você processa os dados como quiser
-        console.log("Dados do bucket:", dadosBucket);
-        console.log("Processos:", dadosProcessos);
-        console.log("Alertas:", alertasServidor);
-
-        // Chame suas funções de renderização
-        plotarDados(dadosBucket, dadosProcessos, alertasServidor);
-
-    } catch (erro) {
-        console.error("Erro ao buscar dados dinâmicos:", erro);
-    }
+    plotarDados(dadosBucket, dadosProcessos, alertasServidor);
+  })
+  .catch(erro => {
+    console.error("Erro ao buscar dados dinâmicos:", erro);
+  });
 }
 
+
 document.getElementById("listaProcessos").addEventListener("change", function () {
-    console.log("teste")
+   
     const filtro = this.value;
     const processosFiltrados = filtrarProcessos(processos, filtro);
     renderizarProcessos(processosFiltrados);
@@ -530,8 +529,6 @@ function filtrarProcessos(dados, filtro) {
 function renderizarProcessos(dados) {
     const tbody = document.getElementById("tbody-processos");
     tbody.innerHTML = ""; // limpa a tabela
-
-    console.log(dados)
 
     dados.forEach(processo => {
         const linha = document.createElement("tr");
@@ -955,12 +952,13 @@ function totalAlertas(alertasServidor) {
         let data = alertasServidor.issues[i].fields.created;
         let alerta = alertasServidor.issues[i].fields.summary;
         let dateObj = new Date(data);
+        
         // console.log(dateObj.toLocaleString("pt-BR"));
 
         const limite24h = agora.getTime() - (24 * 60 * 60 * 1000);
 
         // agora você compara:
-        if (dateObj.getTime() >= limite24h) {
+        if (dateObj.getTime() >= limite24h && alerta.includes(nomeServidor)) {
 
             if (alerta.includes("Alerta DISCO:") || alerta.includes("Alerta CPU:") || alerta.includes("Alerta RAM:")) {
                 console.log(alerta)
@@ -1012,11 +1010,11 @@ function distribuicaoDeAlertas24hrs(alertasServidor) {
             let index = 23 - diferencaHoras;
 
             if (index >= 0 && index < 24) {
-                if (alerta.includes("Alerta DISCO:")) {
+                if (alerta.includes("Alerta DISCO:") && alerta.includes(nomeServidor)) {
                     disco[index]++;
-                } else if (alerta.includes("Alerta CPU:")) {
+                } else if (alerta.includes("Alerta CPU:") && alerta.includes(nomeServidor)) {
                     cpu[index]++;
-                } else if (alerta.includes("Alerta RAM:")) {
+                } else if (alerta.includes("Alerta RAM:") && alerta.includes(nomeServidor)) {
                     ram[index]++;
                 }
             }

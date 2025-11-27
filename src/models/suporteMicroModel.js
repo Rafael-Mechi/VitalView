@@ -82,8 +82,7 @@ const pegarDadosDiscoModel = async (bucketName, fileKey) => {
 async function alertasNasUltimas24hrs(idServidor) {
 
     try {
-
-        let jql = 'project = SUP AND resolution = Unresolved ORDER BY created DESC';
+        // let jql = 'project = SUP AND resolution = Unresolved ORDER BY created DESC';
 
         let body = {
             jql: 'project = SUP AND resolution = Unresolved ORDER BY created DESC',
