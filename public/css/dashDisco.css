@@ -484,9 +484,7 @@ h3 {
     margin-top: 10px;
 }
 
-#graficoAtividade {
-  
-}
+
 
 .centralizador {
   position: relative;
@@ -518,9 +516,9 @@ h3 {
     padding: 10px;
     box-shadow: var(--shadow);
     height: 240px;
-    flex-grow: 1; /* <--- ADICIONE ESSA */
-    flex-basis: 0; /* <--- ADICIONE ESSA */
-    min-width: 0; /* <--- ADICIONE ESSA (previne que o conteúdo quebre o layout) */
+    flex-grow: 1; 
+    flex-basis: 0; 
+    min-width: 0; 
     position: relative;
 }
 
@@ -607,7 +605,7 @@ h3 {
   border-color: color-mix(in oklab, var(--vv-badge-bg) 70%, var(--vv-alert));
 }
 
- .indicadorVariacao {
+.indicadorVariacao {
   align-self: center;
 }
 
