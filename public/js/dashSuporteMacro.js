@@ -1,9 +1,42 @@
+document.addEventListener("DOMContentLoaded", async () => {
+
+    try {
+        const [resBucket] = await Promise.all([
+            fetch(`/servidores/dadosBucket`)
+        ]);
+
+        const [dadosBucket] = await Promise.all([
+            resBucket.json()
+        ]);
+
+        if (dadosBucket.length > 0) {
+            console.log(dadosBucket)
+            //ESTRUTURA PARA PEGAR OS DADOS DE CADA BUCKET
+
+            //dadosBucket[0].content["Uso_de_Disco"] == USO DO DISCO srv1
+            //dadosBucket[1].content["Uso_de_Disco"] == USO DO DISCO srv2
+
+            console.log(dadosBucket[1].content["Uso_de_Disco"])
+            console.log(dadosBucket[1].content["Uso_de_Cpu"])
+        }
+
+    } catch (erro) {
+        console.error("Erro ao buscar o arquivo do bucket", erro);
+    }
+
+    //FAZER FUNÇÃO QUE FICA PUXANDO OS DADOS A CADA 3 SEGUNDO 
+    // setInterval(buscarDadosDinamicos, 3000);
+});
+
+
+
+
 async function carregarDashboard() {
     try {
         console.log('Buscando dados do dashboard macro...');
 
         const idHospital = sessionStorage.FK_HOSPITAL;
-        
+
         if (!idHospital) {
             console.error('ID do hospital não encontrado no sessionStorage');
             return;
@@ -17,7 +50,7 @@ async function carregarDashboard() {
 
         // Processa os dados
         window.dadosServidores = dadosCompletos.servidores;
-        
+
         // Atualiza a interface
         atualizarKPIs(dadosCompletos.kpis);
         atualizarTabela(dadosCompletos.servidores);
@@ -34,13 +67,13 @@ function alterarFiltroAlertas(tipo) {
 
     const valorElement = document.getElementById('valor-alertas');
     const subtituloElement = document.getElementById('subtitulo-alertas');
-    
+
     if (!window.dadosDashboard || !window.dadosDashboard.kpis) {
         console.log('Dados não carregados ainda...');
         valorElement.innerHTML = '0';
         return;
     }
-    
+
     const kpis = window.dadosDashboard.kpis;
     console.log('KPIs disponíveis:', kpis);
 
@@ -48,29 +81,29 @@ function alterarFiltroAlertas(tipo) {
         // MOSTRA ALERTAS ATIVOS AGORA 
         const alertasAtivos = kpis.alertasGerais;
         console.log('Alertas Ativos (tempo real):', alertasAtivos);
-        
+
         valorElement.innerHTML = alertasAtivos.toString();
         subtituloElement.textContent = 'Alertas ativos no momento';
-        
+
     } else if (tipo === 'tendencia') {
         //MOSTRA TENDÊNCIA HISTÓRICA
         const tendenciaClass = kpis.tendenciaAlertas.includes('+') ? 'aumento' : 'queda';
         valorElement.innerHTML = `${kpis.alertas24h}<span class="tendencia ${tendenciaClass}">${kpis.tendenciaAlertas}</span>`;
         subtituloElement.textContent = 'Novos alertas (últimas 24h)';
     }
-    
+
     console.log('Filtro aplicado com sucesso!!!');
 }
 
 // Atualizar KPIs
 function atualizarKPIs(kpis) {
     console.log('KPIs recebidos para salvar:', kpis);
-    
+
     // Servidores em Risco
     const servidoresRiscoElement = document.getElementById('valor-risco');
     if (servidoresRiscoElement) {
         servidoresRiscoElement.innerHTML = `${kpis.servidoresRisco}<span style="font-size: 1.2rem; color: var(--vv-muted);">/${kpis.totalServidores}</span>`;
-        
+
         // Adicionar classe de cor baseado no status
         servidoresRiscoElement.className = kpis.servidoresRisco > 0 ? 'kpi-value alert' : 'kpi-value ok';
     }
@@ -95,10 +128,10 @@ function atualizarKPIs(kpis) {
         badgeTotal.textContent = kpis.totalServidores;
     }
 
-    window.dadosDashboard = { 
-        kpis: kpis 
+    window.dadosDashboard = {
+        kpis: kpis
     };
-    
+
     console.log('Dados salvos em window.dadosDashboard:', window.dadosDashboard);
 }
 
@@ -134,7 +167,7 @@ function atualizarTabela(servidores) {
         // Recuperar as classes de alerta para os botões (para deixar a animação funcionando)
         const servidorComAlerta = (servidor.alertas && servidor.alertas.cpu) || (servidor.alertas && servidor.alertas.ram);
         const discoComAlerta = (servidor.alertas && servidor.alertas.disco);
-        
+
         const servidorTooltip = servidorComAlerta ? '⚠️ CPU ou RAM em alerta - Clique para detalhes' : 'Ver detalhes do servidor';
         const discoTooltip = discoComAlerta ? '⚠️ Disco em alerta - Clique para detalhes' : 'Ver detalhes do disco';
         const redeTooltip = 'Ver detalhes da rede';
@@ -204,7 +237,7 @@ function irParaMicro(servidorId, nomeServidor, idHospital) {
     window.location.href = `dashboardSuporteMicro.html?idServidor=${servidorId}&hostname=${nomeServidor}&idhospital=${idHospital}`;
 }
 
-function irParaDisco(servidorId,nomeServidor, idHospital) {
+function irParaDisco(servidorId, nomeServidor, idHospital) {
     window.location.href = `dashDisco.html?idServidor=${servidorId}&hostname=${nomeServidor}&idhospital=${idHospital}`;
 }
 
@@ -219,7 +252,7 @@ function atualizarGrafico(distribuicao) {
     if (!ctx) return;
 
     // Calclando porcentagens
-    const total = distribuicao.normais + distribuicao.alertas; 
+    const total = distribuicao.normais + distribuicao.alertas;
     const percentNormais = total > 0 ? Math.round((distribuicao.normais / total) * 100) : 0;
     const percentAlertas = total > 0 ? Math.round((distribuicao.alertas / total) * 100) : 0;
 

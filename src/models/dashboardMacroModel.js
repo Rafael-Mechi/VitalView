@@ -2,6 +2,50 @@ var database = require("../database/config");
 var AWS = require('../aws/awsConfig.js');
 const s3 = new AWS.S3();
 
+const pegarTodosArquivosBucket = async (bucketName) => {
+  try {
+    const params = {
+      Bucket: bucketName,
+      Prefix: 'suporte/macro/componentes/'
+    };
+
+    const data = await s3.listObjectsV2(params).promise();
+
+    if (!data.Contents || data.Contents.length === 0) {
+      return [];
+    }
+
+    const arquivos = await Promise.all(
+      data.Contents.map(async (obj) => {
+        const fileData = await s3.getObject({
+          Bucket: bucketName,
+          Key: obj.Key
+        }).promise();
+
+        const rawContent = fileData.Body.toString('utf-8');
+
+        // Se for JSON, já faz parse
+        let parsedContent;
+        try {
+          parsedContent = JSON.parse(rawContent);
+        } catch {
+          parsedContent = rawContent; // se não for JSON, mantém como string
+        }
+
+        return {
+          key: obj.Key,
+          content: parsedContent
+        };
+      })
+    );
+
+    return arquivos;
+  } catch (error) {
+    console.error("Erro ao acessar o S3:", error);
+    throw error;
+  }
+};
+
 // Busca servidores do hospital
 function buscarDadosDashboard(idHospital) {
     var instrucaoSql = `
@@ -108,5 +152,6 @@ module.exports = {
     buscarDadosDashboard,
     buscarKPIs,
     buscarAlertasGerais,
-    buscarDadosBucketMacro
+    buscarDadosBucketMacro,
+    pegarTodosArquivosBucket
 };

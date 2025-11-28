@@ -1,6 +1,19 @@
-    var dashboardMacroModel = require("../models/dashboardMacroModel");
+var dashboardMacroModel = require("../models/dashboardMacroModel");
 var database = require("../database/config");
 const jiraService = require("../services/jiraService"); 
+
+async function listarArquivosBucket(req, res) {
+  const bucketName = process.env.AWS_BUCKET_NAME;
+
+  try {
+    const arquivos = await dashboardMacroModel.pegarTodosArquivosBucket(bucketName);
+    res.json(arquivos); // devolve lista [{ key, content }]
+  } catch (error) {
+    console.error("Erro ao listar arquivos do bucket:", error);
+    res.status(500).send("Erro ao listar arquivos");
+  }
+}
+
 
 async function buscarDadosDashboard(req, res) {
     try {
@@ -212,5 +225,6 @@ async function buscarDadosBucketMacro(req, res) {
 
 module.exports = {
     buscarDadosDashboard,
-    buscarDadosBucketMacro
+    buscarDadosBucketMacro,
+    listarArquivosBucket
 };
