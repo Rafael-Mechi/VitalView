@@ -3,7 +3,7 @@ async function carregarDashboard() {
         console.log('Buscando dados do dashboard macro...');
 
         const idHospital = sessionStorage.FK_HOSPITAL;
-
+        
         if (!idHospital) {
             console.error('ID do hospital não encontrado no sessionStorage');
             return;
@@ -17,7 +17,7 @@ async function carregarDashboard() {
 
         // Processa os dados
         window.dadosServidores = dadosCompletos.servidores;
-
+        
         // Atualiza a interface
         atualizarKPIs(dadosCompletos.kpis);
         atualizarTabela(dadosCompletos.servidores);
@@ -34,13 +34,13 @@ function alterarFiltroAlertas(tipo) {
 
     const valorElement = document.getElementById('valor-alertas');
     const subtituloElement = document.getElementById('subtitulo-alertas');
-
+    
     if (!window.dadosDashboard || !window.dadosDashboard.kpis) {
         console.log('Dados não carregados ainda...');
         valorElement.innerHTML = '0';
         return;
     }
-
+    
     const kpis = window.dadosDashboard.kpis;
     console.log('KPIs disponíveis:', kpis);
 
@@ -48,44 +48,29 @@ function alterarFiltroAlertas(tipo) {
         // MOSTRA ALERTAS ATIVOS AGORA 
         const alertasAtivos = kpis.alertasGerais;
         console.log('Alertas Ativos (tempo real):', alertasAtivos);
-
+        
         valorElement.innerHTML = alertasAtivos.toString();
         subtituloElement.textContent = 'Alertas ativos no momento';
-
+        
     } else if (tipo === 'tendencia') {
         //MOSTRA TENDÊNCIA HISTÓRICA
         const tendenciaClass = kpis.tendenciaAlertas.includes('+') ? 'aumento' : 'queda';
-        const simbolo = kpis.tendenciaAlertas.includes('+') ? '▲' : '▼';
-        const valorTendencia = kpis.tendenciaAlertas.replace('+', '').replace('-', '');
-
-        valorElement.innerHTML = `
-        <div class="badges-tendencia">
-            <div class="badge-principal">
-                <span class="badge-numero">${kpis.alertas24h}</span>
-                <span class="badge-label">alertas (24H)</span>
-            </div>
-            <div class="badge-variacao ${tendenciaClass}">
-                <span class="badge-seta">${simbolo}</span>
-                <span class="badge-diferenca">${valorTendencia}</span>
-                <span class="badge-label">Tendência</span>
-            </div>
-        </div>
-    `;
-        subtituloElement.textContent = 'Comparado ao período anterior';
+        valorElement.innerHTML = `${kpis.alertas24h}<span class="tendencia ${tendenciaClass}">${kpis.tendenciaAlertas}</span>`;
+        subtituloElement.textContent = 'Novos alertas (últimas 24h)';
     }
-
+    
     console.log('Filtro aplicado com sucesso!!!');
 }
 
 // Atualizar KPIs
 function atualizarKPIs(kpis) {
     console.log('KPIs recebidos para salvar:', kpis);
-
+    
     // Servidores em Risco
     const servidoresRiscoElement = document.getElementById('valor-risco');
     if (servidoresRiscoElement) {
         servidoresRiscoElement.innerHTML = `${kpis.servidoresRisco}<span style="font-size: 1.2rem; color: var(--vv-muted);">/${kpis.totalServidores}</span>`;
-
+        
         // Adicionar classe de cor baseado no status
         servidoresRiscoElement.className = kpis.servidoresRisco > 0 ? 'kpi-value alert' : 'kpi-value ok';
     }
@@ -110,10 +95,10 @@ function atualizarKPIs(kpis) {
         badgeTotal.textContent = kpis.totalServidores;
     }
 
-    window.dadosDashboard = {
-        kpis: kpis
+    window.dadosDashboard = { 
+        kpis: kpis 
     };
-
+    
     console.log('Dados salvos em window.dadosDashboard:', window.dadosDashboard);
 }
 
@@ -142,14 +127,14 @@ function atualizarTabela(servidores) {
         const discoClass = servidor.alertas && servidor.alertas.disco ? 'critico' : 'normal';
 
         // Status da Rede
-        const statusRede = servidor.statusRede || 'NORMAL'; 
+        const statusRede = Math.random() > 0.7 ? 'ALERTA' : 'NORMAL';
         const statusRedeClass = statusRede === 'ALERTA' ? 'status-alerta' : 'status-normal';
         const statusRedeText = statusRede === 'ALERTA' ? '● Alerta' : '● Normal';
 
         // Recuperar as classes de alerta para os botões (para deixar a animação funcionando)
         const servidorComAlerta = (servidor.alertas && servidor.alertas.cpu) || (servidor.alertas && servidor.alertas.ram);
         const discoComAlerta = (servidor.alertas && servidor.alertas.disco);
-
+        
         const servidorTooltip = servidorComAlerta ? '⚠️ CPU ou RAM em alerta - Clique para detalhes' : 'Ver detalhes do servidor';
         const discoTooltip = discoComAlerta ? '⚠️ Disco em alerta - Clique para detalhes' : 'Ver detalhes do disco';
         const redeTooltip = 'Ver detalhes da rede';
@@ -157,51 +142,48 @@ function atualizarTabela(servidores) {
         console.log(`Servidor ${servidor.nome} - Status Rede: ${statusRede}`);
 
         tr.innerHTML = `
-    <td class="nomeServidor"><a>${servidor.nome}</a></td>
-    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-    <td>
-        <div class="barra-progresso">
-            <div class="barra-uso ${cpuClass}" style="width: ${cpuPercent}%;">
-                <p>${cpuPercent}%</p>
-            </div>
-        </div>
-    </td>
-    <td>
-        <div class="barra-progresso">
-            <div class="barra-uso ${ramClass}" style="width: ${ramPercent}%;">${ramPercent}%</div>
-        </div>
-    </td>
-    <td>
-        <div class="barra-progresso">
-            <div class="barra-uso ${discoClass}" style="width: ${discoPercent}%;">${discoPercent}%</div>
-        </div>
-    </td>
-    <td><span class="alerta-badge">${servidor.qtdAlertas}</span></td>
-    <td>${servidor.tempoAlerta}</td>
-    <td><span class="status-badge ${statusRedeClass}">${statusRedeText}</span></td>
-    <!-- NOVAS COLUNAS DE ICONES -->
-    <td class="coluna-icone">
-        <button class="btn-server ${servidorComAlerta ? 'btn-com-alerta' : ''}" 
-                onclick="irParaMicro('${servidor.id}','${servidor.nome}','${sessionStorage.FK_HOSPITAL}')"
-                title="${servidorTooltip}">
-            <img src="assets/dashboard-icons/servidorIcon.jpg" alt="Servidor">
-        </button>
-    </td>
-    <td class="coluna-icone">
-        <button class="btn-disk ${discoComAlerta ? 'btn-com-alerta' : ''}" 
-                onclick="irParaDisco('${servidor.id}','${servidor.nome}','${sessionStorage.FK_HOSPITAL}')"
-                title="${discoTooltip}">
-            <img src="assets/dashboard-icons/disco.jpg" alt="Disco">
-        </button>
-    </td>
-    <td class="coluna-icone">
-        <button class="btn-network" 
-                onclick="irParaRede('${servidor.id}','${servidor.nome}','${sessionStorage.FK_HOSPITAL}')"
-                title="${redeTooltip}">
-            <img src="assets/dashboard-icons/redeIcon.jpg" alt="Rede">
-        </button>
-    </td>
-`;
+            <td class="nomeServidor"><a>${servidor.nome}</a></td>
+            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+            <td>
+                <div class="barra-progresso">
+                    <div class="barra-uso ${cpuClass}" style="width: ${cpuPercent}%;">
+                        <p>${cpuPercent}%</p>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="barra-progresso">
+                    <div class="barra-uso ${ramClass}" style="width: ${ramPercent}%;">${ramPercent}%</div>
+                </div>
+            </td>
+            <td>
+                <div class="barra-progresso">
+                    <div class="barra-uso ${discoClass}" style="width: ${discoPercent}%;">${discoPercent}%</div>
+                </div>
+            </td>
+            <td><span class="alerta-badge">${servidor.qtdAlertas}</span></td>
+            <td>${servidor.tempoAlerta}</td>
+            <td><span class="status-badge ${statusRedeClass}">${statusRedeText}</span></td>
+            <td>
+                <div class="btn-grupo">
+                    <button class="btn-server ${servidorComAlerta ? 'btn-com-alerta' : ''}" 
+                            onclick="irParaMicro('${servidor.id}','${servidor.nome}','${sessionStorage.FK_HOSPITAL}')"
+                            title="${servidorTooltip}">
+                        <img src="assets/dashboard-icons/servidorIcon.jpg" style="width: 20px;" alt="Servidor">
+                    </button>
+                    <button class="btn-disk ${discoComAlerta ? 'btn-com-alerta' : ''}" 
+                            onclick="irParaDisco('${servidor.id}','${servidor.nome}','${sessionStorage.FK_HOSPITAL}')"
+                            title="${discoTooltip}">
+                        <img src="assets/dashboard-icons/disco.jpg" style="width: 20px;" alt="Disco">
+                    </button>
+                    <button class="btn-network" 
+                            onclick="irParaRede('${servidor.id}','${servidor.nome}','${sessionStorage.FK_HOSPITAL}')"
+                            title="${redeTooltip}">
+                        <img src="assets/dashboard-icons/redeIcon.jpg" style="width: 20px;" alt="Rede">
+                    </button>
+                </div>
+            </td>
+        `;
 
         tbody.appendChild(tr);
     }
@@ -222,7 +204,7 @@ function irParaMicro(servidorId, nomeServidor, idHospital) {
     window.location.href = `dashboardSuporteMicro.html?idServidor=${servidorId}&hostname=${nomeServidor}&idhospital=${idHospital}`;
 }
 
-function irParaDisco(servidorId, nomeServidor, idHospital) {
+function irParaDisco(servidorId,nomeServidor, idHospital) {
     window.location.href = `dashDisco.html?idServidor=${servidorId}&hostname=${nomeServidor}&idhospital=${idHospital}`;
 }
 
@@ -237,7 +219,7 @@ function atualizarGrafico(distribuicao) {
     if (!ctx) return;
 
     // Calclando porcentagens
-    const total = distribuicao.normais + distribuicao.alertas;
+    const total = distribuicao.normais + distribuicao.alertas; 
     const percentNormais = total > 0 ? Math.round((distribuicao.normais / total) * 100) : 0;
     const percentAlertas = total > 0 ? Math.round((distribuicao.alertas / total) * 100) : 0;
 
@@ -270,7 +252,7 @@ function atualizarGrafico(distribuicao) {
                 },
                 title: {
                     display: true,
-                    text: 'Status Geral dos Servidores',
+                    text: 'Distribuição de Status',
                     font: {
                         size: 17,
                         weight: 'bold',

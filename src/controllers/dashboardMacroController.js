@@ -182,7 +182,6 @@ function processarServidoresComS3(dadosServidores, dadosS3) {
             tempoAlerta: temAlertasAtivos ? "Agora" : "--:--:--",  
             ip: servidor.ip,
             localizacao: servidor.localizacao,
-            statusRede: kpis.rede.status,
             // DEBUG
             limites: {
                 cpu: limiteCpu,
