@@ -23,7 +23,7 @@ function buscarLimites(idServidor) {
 }
 
 async function pegarDadosRede(idServidor, hostname, nomeHospital) {
-    const fileKey = `suporte/micro/rede/${idServidor}_${hostname}_${nomeHospital}.json`;
+    const fileKey = `suporte/rede/${idServidor}_${hostname}_${nomeHospital}.json`;
 
     const params = {    
         Bucket: BUCKET_REDE,

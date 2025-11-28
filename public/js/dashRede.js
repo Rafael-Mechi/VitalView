@@ -155,6 +155,8 @@ const valUpEl = document.getElementById('val-up');
 const downBadge = document.getElementById('down-status');
 const upBadge = document.getElementById('up-status');
 
+const pctsBadge = document.getElementById('pctsBadge');
+
 // principais variáveis
 
 let LIMITES = null;
@@ -315,6 +317,38 @@ function initChart() {
     });
 }
 
+function atualizarCorLinhas() {
+    if (!chartRede || !LIMITES) return;
+
+    const limiteIn = LIMITES.pacotesInMax ?? Infinity;
+    const limiteOut = LIMITES.pacotesOutMax ?? Infinity;
+
+    const ultimoIn = dadosIn[dadosIn.length - 1] ?? 0;
+    const ultimoOut = dadosOut[dadosOut.length - 1] ?? 0;
+
+    const datasetIn = chartRede.data.datasets[0];
+    const datasetOut = chartRede.data.datasets[1];
+
+    // Se passar do limite
+    datasetIn.borderColor = ultimoIn > limiteIn ? "#FF4D4D" : "#2CD4C2";
+    datasetIn.backgroundColor = (ultimoIn > limiteIn ? "#FF4D4D" : "#2CD4C2") + "40";
+
+    datasetOut.borderColor = ultimoOut > limiteOut ? "#FF4D4D" : "#0AA8A0";
+    datasetOut.backgroundColor = (ultimoOut > limiteOut ? "#FF4D4D" : "#0AA8A0") + "40";
+
+    if (pctsBadge) {
+        const status =
+            ultimoIn > limiteIn || ultimoOut > limiteOut
+                ? "Alerta"
+                : "Normal";
+
+        setBadge(pctsBadge, status);
+    }
+
+    chartRede.update();
+}
+
+
 function atualizarChartRede(registros) {
 
     labelsTempo.length = 0;
@@ -334,6 +368,7 @@ function atualizarChartRede(registros) {
         chartRede.data.datasets[0].data = dadosIn;
         chartRede.data.datasets[1].data = dadosOut;
         chartRede.update();
+        atualizarCorLinhas();
     }
 }
 
@@ -448,7 +483,7 @@ async function carregarDadosRede() {
     }
 }
 
-async function tickReal() {
+async function tempoReal() {
     try {
         const resp = await fetch(
             `/rede/dados?idServidor=${idServidor}&hostname=${hostname}&nomeHospital=${nomeHospital}`
@@ -465,10 +500,11 @@ async function tickReal() {
             ultimo["Pacotes_OUT_(intervalo)"] || 0
         );
 
+        atualizarCorLinhas();
         renderKPIs();
 
     } catch (e) {
-        console.error("Erro tickReal:", e);
+        console.error("Erro tempoReal:", e);
     }
 }
 
@@ -477,5 +513,5 @@ async function tickReal() {
     await carregarLimites();
     await carregarDadosRede();
     initChart();
-    setInterval(tickReal, 5000);
+    setInterval(tempoReal, 3000);
 })();
