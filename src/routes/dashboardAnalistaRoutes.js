@@ -7,11 +7,12 @@ router.get("/distribuicao-alertas/:idHospital", dashboardAnalistaController.dist
 router.get("/quantidade-alertas/:idHospital", dashboardAnalistaController.contarAlertasNoPeriodo);
 router.get("/distribuicao-alertas-ano/:idHospital", dashboardAnalistaController.distribuicaoAlertasAno);
 router.get("/dia-semana-mais-alertas/:idHospital", dashboardAnalistaController.diaSemanaComMaisAlertas);
-router.get("/buscar-previsoes/:key", function(req, res) {
-    dashboardAnalistaController.pegarDadosPrevisoes(req, res);
-});
-router.get("/listar-por-hospital/:idHospital", function (req, res) {
-    servidoresController.listarServidoresPorHospital(req, res);
-});
+router.get("/buscar-dados-bucket/:key", function(req, res){
+    dashboardAnalistaController.pegarDadosBucket(req,res);
+})
+router.get("/buscar-servidores/:idHospital", function(req, res){
+    dashboardAnalistaController.buscarServidores(req,res);
+})
+
 
 module.exports = router;

@@ -2,7 +2,7 @@ var database = require("../database/config");
 var AWS = require("../aws/awsConfig.js");
 const s3 = new AWS.S3();
 
-const BUCKET_REDE = process.env.AWS_BUCKET_CLIENTE || process.env.AWS_BUCKET_NAME;
+const BUCKET_ANALISTA = process.env.AWS_BUCKET_CLIENTE || process.env.AWS_BUCKET_NAME;
 
 async function topServidoresComMaisAlertas(idHospital, periodo) {
     let filtroData = getFiltroData(periodo);
@@ -197,7 +197,13 @@ function getFiltroData(periodo) {
     }
 }
 
-const pegarDadosPrevisoesBucketModel = async (bucketName, fileKey) => {
+const pegarDadosBucketModel = async (bucketName, fileKey) => {
+
+    s3.listObjectsV2({ Bucket: process.env.AWS_BUCKET_NAME }, (err, data) => {
+        if (err) console.error('Erro ao listar:', err);
+        else console.log('Arquivos no bucket:', data.Contents.map(obj => obj.Key));
+    });
+
     const params = {
         Bucket: bucketName,
         Key: fileKey
@@ -205,25 +211,23 @@ const pegarDadosPrevisoesBucketModel = async (bucketName, fileKey) => {
 
     try {
         const data = await s3.getObject(params).promise();
-        const jsonData = JSON.parse(data.Body.toString('utf-8'));
-        return jsonData;
+        return data.Body.toString('utf-8');
     } catch (error) {
-        console.error('Erro ao acessar o S3 para previsões:', error);
+        console.error('Erro ao acessar o S3:', error);
         throw error;
     }
 };
 
-function listarServidoresPorHospital(idHospital) {
+function buscarServidores(idHospital){
     const instrucao = `
-        SELECT 
-            idServidor,
-            hostname,
-            ip,
-            localizacao,
-            fkHospital
-        FROM servidores
-        WHERE fkHospital = ${idHospital}
-        ORDER BY hostname;
+    SELECT 
+        s.idServidor,
+        s.hostname
+    FROM 
+        servidores s
+    INNER JOIN hospital h on h.idHospital = s.fkHospital
+    WHERE 
+        s.fkHospital = ${idHospital};
     `;
     return database.executar(instrucao);
 }
@@ -234,6 +238,6 @@ module.exports = {
     contarAlertasNoPeriodo,
     distribuicaoAlertasAno,
     diaSemanaComMaisAlertas,
-    pegarDadosPrevisoesBucketModel,
-    listarServidoresPorHospital
+    pegarDadosBucketModel,
+    buscarServidores
 };
