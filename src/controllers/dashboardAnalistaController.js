@@ -110,39 +110,39 @@ function diaSemanaComMaisAlertas(req, res){
         )
 }
 
-async function pegarDadosPrevisoes(req, res) {
-    const bucketName = process.env.AWS_BUCKET_CLIENTE || process.env.AWS_BUCKET_NAME;
+async function pegarDadosBucket(req, res) {
+    const bucketName = process.env.AWS_BUCKET_NAME;
     const fileKey = req.params.key;
 
     try {
-        const fileContent = await dashboardAnalistaModel.pegarDadosPrevisoesBucketModel(bucketName, fileKey);
-        res.json(fileContent);
+        const fileContent = await dashboardAnalistaModel.pegarDadosBucketModel(bucketName, fileKey);
+        res.send(fileContent);
     } catch (error) {
-        console.error("Erro ao buscar previsões no bucket:", error);
-        res.status(500).json({ 
-            error: "Erro ao buscar arquivo de previsões",
-            message: error.message 
-        });
+        console.error("Erro ao buscar no bucket:", error);
+        res.status(500).send("Erro ao buscar arquivo");
     }
 }
 
-function listarServidoresPorHospital(req, res) {
-    const idHospital = req.params.idHospital;
+function buscarServidores(req, res){
+    let idHospital = req.params.idHospital;
 
-    servidoresModel.listarServidoresPorHospital(idHospital)
-        .then(function (resultado) {
-            res.json(resultado);
-        })
-        .catch(function (erro) {
-            console.log(erro);
-            console.log(
-                "\nHouve um erro ao buscar servidores do hospital! Erro: ",
-                erro.sqlMessage
-            );
-            res.status(500).json(erro.sqlMessage);
-        });
+    dashboardAnalistaModel.buscarServidores(idHospital)
+        .then(
+            function (Servidores){
+                res.json(Servidores);
+                console.log(Servidores);
+            }
+        ).catch(
+            function(erro){
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao tentar buscar os servidores do hospital! Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            }
+        )
 }
-
 
 module.exports = {
     topServidoresComMaisAlertas,
@@ -150,6 +150,6 @@ module.exports = {
     contarAlertasNoPeriodo,
     distribuicaoAlertasAno,
     diaSemanaComMaisAlertas,
-    pegarDadosPrevisoes,
-    listarServidoresPorHospital
+    pegarDadosBucket,
+    buscarServidores
 };
