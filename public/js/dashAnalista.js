@@ -231,7 +231,7 @@ function gerarGraficoDistribuicao(dados) {
                 backgroundColor: ["#32b9cd", "#4addf6", "#188b9f", "#093037"],
                 borderRadius: 12
             }]
-        },
+        }, 
         options: {
             plugins: {
                 legend: { display: false },
@@ -415,3 +415,40 @@ function gerarGraficoDistribuicaoAno(dados) {
         }
     });
 }
+
+async function carregarDadosPrevisoes() {
+    try {
+        const resp = await fetch(
+            `/analista/dados?idServidor=${idServidor}&hostname=${hostname}&nomeHospital=${nomeHospital}`);
+        const dados = await resp.json();
+
+        if (!Array.isArray(dados) || dados.length === 0) return;
+
+        ULTIMO_REGISTRO = dados[dados.length - 1];
+
+    } catch (e) {
+        console.error("Erro carregar previsoes:", e);
+    }
+}
+
+async function tickReal() {
+    try {
+        const resp = await fetch(
+            `/analista/dados?idServidor=${idServidor}&hostname=${hostname}&nomeHospital=${nomeHospital}`
+        );
+        const dados = await resp.json();
+
+        if (!Array.isArray(dados) || dados.length === 0) return;
+
+        const ultimo = dados[dados.length - 1];
+
+    } catch (e) {
+        console.error("Erro tickReal:", e);
+    }
+}
+
+(async function start() {
+    await carregarDadosPrevisoes();
+    initChart();
+    setInterval(tickReal, 3600000); // 1 hora
+})();

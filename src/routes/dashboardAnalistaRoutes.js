@@ -7,5 +7,7 @@ router.get("/distribuicao-alertas/:idHospital", dashboardAnalistaController.dist
 router.get("/quantidade-alertas/:idHospital", dashboardAnalistaController.contarAlertasNoPeriodo);
 router.get("/distribuicao-alertas-ano/:idHospital", dashboardAnalistaController.distribuicaoAlertasAno);
 router.get("/dia-semana-mais-alertas/:idHospital", dashboardAnalistaController.diaSemanaComMaisAlertas);
+router.get("/dados", function (req, res) { dashboardAnalistaController.buscarDadosPrevisoes(req, res);
+});
 
 module.exports = router;

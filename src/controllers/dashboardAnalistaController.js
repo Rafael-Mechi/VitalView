@@ -110,10 +110,46 @@ function diaSemanaComMaisAlertas(req, res){
         )
 }
 
+async function buscarDadosPrevisoes(req, res) {
+    const idServidor = req.query.idServidor;
+    const hostname = req.query.hostname;
+    const nomeHospital = req.query.nomeHospital;
+
+    if (!idServidor || !hostname || !nomeHospital) {
+        return res.status(400).json({
+            erro: "Parâmetros obrigatórios ausentes (idServidor, hostname, nomeHospital)"
+        });
+    }
+
+     try {
+        const registros = await dashboardAnalistaModel.pegarPrevisoes(
+            idServidor,
+            hostname,
+            nomeHospital
+        );
+
+        if (!registros || registros.length === 0) {
+            return res.status(204).send();
+        }
+
+        res.json(registros);
+
+    } catch (error) {
+        console.error("Erro ao buscar dados de previsoes:", error);
+
+        if (error.code === "NoSuchKey") {
+            return res.status(404).json({ erro: "Arquivo de previsoes não encontrado no bucket" });
+        }
+
+        res.status(500).json({ erro: "Erro ao buscar dados de previsoes" });
+    }
+}
+
 module.exports = {
     topServidoresComMaisAlertas,
     distribuicaoAlertasPorComponente,
     contarAlertasNoPeriodo,
     distribuicaoAlertasAno,
-    diaSemanaComMaisAlertas
+    diaSemanaComMaisAlertas,
+    buscarDadosPrevisoes
 };
