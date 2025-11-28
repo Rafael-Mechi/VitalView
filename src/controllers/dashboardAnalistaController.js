@@ -110,10 +110,46 @@ function diaSemanaComMaisAlertas(req, res){
         )
 }
 
+async function pegarDadosPrevisoes(req, res) {
+    const bucketName = process.env.AWS_BUCKET_CLIENTE || process.env.AWS_BUCKET_NAME;
+    const fileKey = req.params.key;
+
+    try {
+        const fileContent = await dashboardAnalistaModel.pegarDadosPrevisoesBucketModel(bucketName, fileKey);
+        res.json(fileContent);
+    } catch (error) {
+        console.error("Erro ao buscar previsões no bucket:", error);
+        res.status(500).json({ 
+            error: "Erro ao buscar arquivo de previsões",
+            message: error.message 
+        });
+    }
+}
+
+function listarServidoresPorHospital(req, res) {
+    const idHospital = req.params.idHospital;
+
+    servidoresModel.listarServidoresPorHospital(idHospital)
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            console.log(
+                "\nHouve um erro ao buscar servidores do hospital! Erro: ",
+                erro.sqlMessage
+            );
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+
 module.exports = {
     topServidoresComMaisAlertas,
     distribuicaoAlertasPorComponente,
     contarAlertasNoPeriodo,
     distribuicaoAlertasAno,
-    diaSemanaComMaisAlertas
+    diaSemanaComMaisAlertas,
+    pegarDadosPrevisoes,
+    listarServidoresPorHospital
 };

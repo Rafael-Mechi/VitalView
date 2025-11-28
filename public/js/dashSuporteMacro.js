@@ -142,7 +142,7 @@ function atualizarTabela(servidores) {
         const discoClass = servidor.alertas && servidor.alertas.disco ? 'critico' : 'normal';
 
         // Status da Rede
-        const statusRede = Math.random() > 0.7 ? 'ALERTA' : 'NORMAL';
+        const statusRede = servidor.statusRede || 'NORMAL'; 
         const statusRedeClass = statusRede === 'ALERTA' ? 'status-alerta' : 'status-normal';
         const statusRedeText = statusRede === 'ALERTA' ? '● Alerta' : '● Normal';
 

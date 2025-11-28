@@ -1,4 +1,8 @@
 var database = require("../database/config");
+var AWS = require("../aws/awsConfig.js");
+const s3 = new AWS.S3();
+
+const BUCKET_REDE = process.env.AWS_BUCKET_CLIENTE || process.env.AWS_BUCKET_NAME;
 
 async function topServidoresComMaisAlertas(idHospital, periodo) {
     let filtroData = getFiltroData(periodo);
@@ -193,10 +197,43 @@ function getFiltroData(periodo) {
     }
 }
 
+const pegarDadosPrevisoesBucketModel = async (bucketName, fileKey) => {
+    const params = {
+        Bucket: bucketName,
+        Key: fileKey
+    };
+
+    try {
+        const data = await s3.getObject(params).promise();
+        const jsonData = JSON.parse(data.Body.toString('utf-8'));
+        return jsonData;
+    } catch (error) {
+        console.error('Erro ao acessar o S3 para previsões:', error);
+        throw error;
+    }
+};
+
+function listarServidoresPorHospital(idHospital) {
+    const instrucao = `
+        SELECT 
+            idServidor,
+            hostname,
+            ip,
+            localizacao,
+            fkHospital
+        FROM servidores
+        WHERE fkHospital = ${idHospital}
+        ORDER BY hostname;
+    `;
+    return database.executar(instrucao);
+}
+
 module.exports = {
     topServidoresComMaisAlertas,
     distribuicaoAlertasPorComponente,
     contarAlertasNoPeriodo,
     distribuicaoAlertasAno,
-    diaSemanaComMaisAlertas
+    diaSemanaComMaisAlertas,
+    pegarDadosPrevisoesBucketModel,
+    listarServidoresPorHospital
 };

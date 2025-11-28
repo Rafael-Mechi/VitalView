@@ -29,7 +29,8 @@ async function carregarDados() {
   
   try {
     const resposta = await fetch(`/dashDiscoRoutes/buscar-dados-bucket-disco/${key}`);
-    if (!resposta.ok) throw new Error("Falha ao buscar dados de disco");
+    if (!resposta.ok) throw new Error("Falha ao buscar dados de disco")
+    
 
     const dados = await resposta.json();
     console.log("Dados recebidos:", dados);
@@ -184,4 +185,30 @@ function irParaTelaDeGestao(){
 
   window.location.href = `dashboardGerImagemServidor.html?idServidor=${idServidor}&hostname=${nomeServidor}&idhospital=${nomeHospital}`;
 
+}
+
+function escolherServidor() {
+    const select = document.getElementById("listaServidores");
+
+    fetch(`/dashDiscoRoutes/buscar-servidores`)
+        .then(response => response.json())
+        .then(data => {
+
+            data.forEach(servidor => {
+                const option = document.createElement("option");
+                option.value = servidor.idServidor;
+                option.textContent = servidor.hostname;
+                select.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Erro:', error));
+
+    // evento para redirecionar ao escolher
+    select.addEventListener("change", () => {
+        const servidorSelecionado = select.options[select.selectedIndex];
+        const idServidorSelecionado = servidorSelecionado.value;
+        const hostname = servidorSelecionado.textContent;
+        const idHospital = sessionStorage.FK_HOSPITAL;
+        window.location.href = `dashboardSuporteMicro.html?idServidor=${idServidorSelecionado}&hostname=${hostname}&idhospital=${idHospital}`;
+    })
 }

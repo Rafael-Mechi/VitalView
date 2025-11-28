@@ -8,10 +8,7 @@ router.get("/buscar-dados-banco/:idServidor", function (req, res) {
     discoController.buscarDadosServidores(req, res);
 })
 
-router.get("/buscar-dados-bucket/:key", function(req, res){
-    discoController.pegarDadosBucket(req,res);
-})
-
+//Rota pra listar os servidores no select
 router.get("/buscar-servidores", function(req, res){
     discoController.buscarListaServidores(req,res);
 })
@@ -20,7 +17,6 @@ router.get("/buscar-servidores", function(req, res){
 router.get("/buscar-dados-bucket-disco/:key", function (req, res) {
     discoController.pegarDadosDisco(req, res);
 });
-
 
 
 module.exports = router;
