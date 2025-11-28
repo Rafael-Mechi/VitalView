@@ -213,11 +213,27 @@ const pegarDadosPrevisoesBucketModel = async (bucketName, fileKey) => {
     }
 };
 
+function listarServidoresPorHospital(idHospital) {
+    const instrucao = `
+        SELECT 
+            idServidor,
+            hostname,
+            ip,
+            localizacao,
+            fkHospital
+        FROM servidores
+        WHERE fkHospital = ${idHospital}
+        ORDER BY hostname;
+    `;
+    return database.executar(instrucao);
+}
+
 module.exports = {
     topServidoresComMaisAlertas,
     distribuicaoAlertasPorComponente,
     contarAlertasNoPeriodo,
     distribuicaoAlertasAno,
     diaSemanaComMaisAlertas,
-    pegarDadosPrevisoesBucketModel
+    pegarDadosPrevisoesBucketModel,
+    listarServidoresPorHospital
 };

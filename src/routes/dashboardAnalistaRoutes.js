@@ -10,5 +10,8 @@ router.get("/dia-semana-mais-alertas/:idHospital", dashboardAnalistaController.d
 router.get("/buscar-previsoes/:key", function(req, res) {
     dashboardAnalistaController.pegarDadosPrevisoes(req, res);
 });
+router.get("/listar-por-hospital/:idHospital", function (req, res) {
+    servidoresController.listarServidoresPorHospital(req, res);
+});
 
 module.exports = router;

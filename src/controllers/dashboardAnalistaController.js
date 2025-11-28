@@ -126,11 +126,30 @@ async function pegarDadosPrevisoes(req, res) {
     }
 }
 
+function listarServidoresPorHospital(req, res) {
+    const idHospital = req.params.idHospital;
+
+    servidoresModel.listarServidoresPorHospital(idHospital)
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            console.log(
+                "\nHouve um erro ao buscar servidores do hospital! Erro: ",
+                erro.sqlMessage
+            );
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+
 module.exports = {
     topServidoresComMaisAlertas,
     distribuicaoAlertasPorComponente,
     contarAlertasNoPeriodo,
     distribuicaoAlertasAno,
     diaSemanaComMaisAlertas,
-    pegarDadosPrevisoes
+    pegarDadosPrevisoes,
+    listarServidoresPorHospital
 };

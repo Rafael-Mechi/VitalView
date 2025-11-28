@@ -418,34 +418,110 @@ function gerarGraficoDistribuicaoAno(dados) {
 }
 
 async function carregarDadosPrevisoes() {
-    const key = `analista/previsoes/hospital_${idHospitalVar}_previsoes.json`;
+    const idHospital = sessionStorage.FK_HOSPITAL;
+    
+    if (!idHospital) {
+        console.error("ID do hospital não encontrado na sessão");
+        exibirErroTabela("Erro: Hospital não identificado");
+        return;
+    }
     
     try {
-        const response = await fetch(`/analista/buscar-previsoes/${encodeURIComponent(key)}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        });
-
-        if (response.ok) {
-            const dados = await response.json();
-            console.log("Dados de previsões recebidos: ", dados);
-            gerarTabelaPrevisoes(dados);
-        } else {
-            console.error("Erro na resposta:", response.status);
-            exibirErroTabela("Erro ao carregar previsões");
+        // Buscar lista de servidores do hospital
+        const responseServidores = await fetch(`/servidores/listar-por-hospital/${idHospital}`);
+        
+        if (!responseServidores.ok) {
+            throw new Error("Erro ao buscar servidores do hospital");
         }
+        
+        const servidores = await responseServidores.json();
+        
+        if (!servidores || servidores.length === 0) {
+            exibirErroTabela("Nenhum servidor cadastrado para este hospital");
+            return;
+        }
+        
+        console.log(`Buscando previsões de ${servidores.length} servidores...`);
+        
+        // Array para armazenar todas as previsões consolidadas
+        let todasPrevisoes = [];
+        
+        // Buscar previsões de cada servidor
+        for (const servidor of servidores) {
+            const key = `previsoes/${servidor.idServidor}_${servidor.hostname}_${idHospital}_previsoes.json`;
+            
+            try {
+                const response = await fetch(`/analista/buscar-previsoes/${encodeURIComponent(key)}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                });
+                
+                if (response.ok) {
+                    const dados = await response.json();
+                    
+                    // Verifica se há previsões válidas
+                    if (dados.previsoes && Array.isArray(dados.previsoes)) {
+                        console.log(`✓ Previsões carregadas do servidor ${servidor.hostname}: ${dados.previsoes.length} itens`);
+                        todasPrevisoes = todasPrevisoes.concat(dados.previsoes);
+                    }
+                } else {
+                    console.warn(`Arquivo de previsões não encontrado para ${servidor.hostname} (${response.status})`);
+                }
+            } catch (erro) {
+                console.warn(`Erro ao carregar previsões do servidor ${servidor.hostname}:`, erro.message);
+                // Continua para o próximo servidor mesmo se houver erro
+            }
+        }
+        
+        // Gerar tabela com todas as previsões consolidadas
+        if (todasPrevisoes.length > 0) {
+            console.log(`Total de previsões carregadas: ${todasPrevisoes.length}`);
+            
+            // Ordenar previsões por nível de risco (opcional)
+            todasPrevisoes = ordenarPrevisoesPorRisco(todasPrevisoes);
+            
+            gerarTabelaPrevisoes({ previsoes: todasPrevisoes });
+        } else {
+            exibirErroTabela("Nenhuma previsão disponível para os servidores deste hospital");
+        }
+        
     } catch (erro) {
-        console.error("Erro na requisição de previsões: ", erro);
-        exibirErroTabela("Erro na conexão com o servidor");
+        console.error("Erro ao carregar previsões:", erro);
+        exibirErroTabela("Erro ao carregar previsões: " + erro.message);
     }
 }
 
+// Função auxiliar para ordenar previsões por nível de risco
+function ordenarPrevisoesPorRisco(previsoes) {
+    const ordemRisco = {
+        'crítico': 1,
+        'critico': 1,
+        'alto': 2,
+        'médio': 3,
+        'medio': 3,
+        'baixo': 4
+    };
+    
+    return previsoes.sort((a, b) => {
+        const nivelA = ordemRisco[a.nivel_risco?.toLowerCase()] || 5;
+        const nivelB = ordemRisco[b.nivel_risco?.toLowerCase()] || 5;
+        
+        // Ordena por nível de risco, depois por número de alertas previstos
+        if (nivelA !== nivelB) {
+            return nivelA - nivelB;
+        }
+        return (b.alertas_previstos || 0) - (a.alertas_previstos || 0);
+    });
+}
+
+// Função para gerar a tabela de previsões
 function gerarTabelaPrevisoes(dados) {
     let tbody = document.getElementById("corpoTabelaPrevisoes");
     tbody.innerHTML = "";
 
+    // Verifica se há dados válidos
     if (!dados || !dados.previsoes || dados.previsoes.length === 0) {
         tbody.innerHTML = `
             <tr>
@@ -455,6 +531,7 @@ function gerarTabelaPrevisoes(dados) {
         return;
     }
 
+    // Itera sobre as previsões e cria as linhas da tabela
     dados.previsoes.forEach(previsao => {
         let nivelRiscoClass = getNivelRiscoClass(previsao.nivel_risco);
         let tendenciaIcon = getTendenciaIcon(previsao.tendencia);
@@ -476,6 +553,7 @@ function gerarTabelaPrevisoes(dados) {
     });
 }
 
+// Função auxiliar para definir classe CSS do nível de risco
 function getNivelRiscoClass(nivel) {
     switch(nivel?.toLowerCase()) {
         case 'crítico':
@@ -493,6 +571,7 @@ function getNivelRiscoClass(nivel) {
     }
 }
 
+// Função auxiliar para ícone de tendência
 function getTendenciaIcon(tendencia) {
     switch(tendencia?.toLowerCase()) {
         case 'crescente':
@@ -507,6 +586,7 @@ function getTendenciaIcon(tendencia) {
     }
 }
 
+// Função para exibir erro na tabela
 function exibirErroTabela(mensagem) {
     let tbody = document.getElementById("corpoTabelaPrevisoes");
     tbody.innerHTML = `
@@ -517,3 +597,4 @@ function exibirErroTabela(mensagem) {
         </tr>
     `;
 }
+
