@@ -29,7 +29,8 @@ async function carregarDados() {
   
   try {
     const resposta = await fetch(`/dashDiscoRoutes/buscar-dados-bucket-disco/${key}`);
-    if (!resposta.ok) throw new Error("Falha ao buscar dados de disco");
+    if (!resposta.ok) throw new Error("Falha ao buscar dados de disco")
+    
 
     const dados = await resposta.json();
     console.log("Dados recebidos:", dados);

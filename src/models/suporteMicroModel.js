@@ -83,6 +83,17 @@ const pegarDadosDiscoModel = async (bucketName, fileKey) => {
     }
 };
 
+function buscarLimites(idServidor) {
+    var sql = `
+        SELECT *
+        FROM limiteMetrica
+        WHERE fkServidor = ${idServidor}
+    `;
+    return database.executar(sql);
+}
+
+
+
 async function alertasNasUltimas24hrs(idServidor) {
 
     try {
@@ -125,6 +136,7 @@ module.exports = {
     buscarDadosServidores,
     buscarListaServidores,
     pegarDadosDiscoModel,
+    buscarLimites,
     alertasNasUltimas24hrs,
     buscarLimitesServidor
 };
