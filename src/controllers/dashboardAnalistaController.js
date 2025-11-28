@@ -110,38 +110,19 @@ function diaSemanaComMaisAlertas(req, res){
         )
 }
 
-async function buscarDadosPrevisoes(req, res) {
-    const idServidor = req.query.idServidor;
-    const hostname = req.query.hostname;
-    const nomeHospital = req.query.nomeHospital;
+async function pegarDadosPrevisoes(req, res) {
+    const bucketName = process.env.AWS_BUCKET_CLIENTE || process.env.AWS_BUCKET_NAME;
+    const fileKey = req.params.key;
 
-    if (!idServidor || !hostname || !nomeHospital) {
-        return res.status(400).json({
-            erro: "Parâmetros obrigatórios ausentes (idServidor, hostname, nomeHospital)"
-        });
-    }
-
-     try {
-        const registros = await dashboardAnalistaModel.pegarPrevisoes(
-            idServidor,
-            hostname,
-            nomeHospital
-        );
-
-        if (!registros || registros.length === 0) {
-            return res.status(204).send();
-        }
-
-        res.json(registros);
-
+    try {
+        const fileContent = await dashboardAnalistaModel.pegarDadosPrevisoesBucketModel(bucketName, fileKey);
+        res.json(fileContent);
     } catch (error) {
-        console.error("Erro ao buscar dados de previsoes:", error);
-
-        if (error.code === "NoSuchKey") {
-            return res.status(404).json({ erro: "Arquivo de previsoes não encontrado no bucket" });
-        }
-
-        res.status(500).json({ erro: "Erro ao buscar dados de previsoes" });
+        console.error("Erro ao buscar previsões no bucket:", error);
+        res.status(500).json({ 
+            error: "Erro ao buscar arquivo de previsões",
+            message: error.message 
+        });
     }
 }
 
@@ -151,5 +132,5 @@ module.exports = {
     contarAlertasNoPeriodo,
     distribuicaoAlertasAno,
     diaSemanaComMaisAlertas,
-    buscarDadosPrevisoes
+    pegarDadosPrevisoes
 };

@@ -27,6 +27,7 @@ async function carregarInformacoes() {
     contarAlertasNoPeriodo();
     distribuicaoAlertasAno();
     diaSemanaComMaisAlertas();
+    await carregarDadosPrevisoes();
 }
 
 // Event listener para mudança de período
@@ -417,38 +418,102 @@ function gerarGraficoDistribuicaoAno(dados) {
 }
 
 async function carregarDadosPrevisoes() {
+    const key = `analista/previsoes/hospital_${idHospitalVar}_previsoes.json`;
+    
     try {
-        const resp = await fetch(
-            `/analista/dados?idServidor=${idServidor}&hostname=${hostname}&nomeHospital=${nomeHospital}`);
-        const dados = await resp.json();
+        const response = await fetch(`/analista/buscar-previsoes/${encodeURIComponent(key)}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
 
-        if (!Array.isArray(dados) || dados.length === 0) return;
-
-        ULTIMO_REGISTRO = dados[dados.length - 1];
-
-    } catch (e) {
-        console.error("Erro carregar previsoes:", e);
+        if (response.ok) {
+            const dados = await response.json();
+            console.log("Dados de previsões recebidos: ", dados);
+            gerarTabelaPrevisoes(dados);
+        } else {
+            console.error("Erro na resposta:", response.status);
+            exibirErroTabela("Erro ao carregar previsões");
+        }
+    } catch (erro) {
+        console.error("Erro na requisição de previsões: ", erro);
+        exibirErroTabela("Erro na conexão com o servidor");
     }
 }
 
-async function tickReal() {
-    try {
-        const resp = await fetch(
-            `/analista/dados?idServidor=${idServidor}&hostname=${hostname}&nomeHospital=${nomeHospital}`
-        );
-        const dados = await resp.json();
+function gerarTabelaPrevisoes(dados) {
+    let tbody = document.getElementById("corpoTabelaPrevisoes");
+    tbody.innerHTML = "";
 
-        if (!Array.isArray(dados) || dados.length === 0) return;
+    if (!dados || !dados.previsoes || dados.previsoes.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="8" style="text-align: center;">Nenhuma previsão disponível</td>
+            </tr>
+        `;
+        return;
+    }
 
-        const ultimo = dados[dados.length - 1];
+    dados.previsoes.forEach(previsao => {
+        let nivelRiscoClass = getNivelRiscoClass(previsao.nivel_risco);
+        let tendenciaIcon = getTendenciaIcon(previsao.tendencia);
+        
+        let linha = `
+            <tr>
+                <td>${previsao.servidor || 'N/A'}</td>
+                <td>${previsao.componente || 'N/A'}</td>
+                <td>${previsao.dia_risco || 'N/A'}</td>
+                <td>${previsao.periodo || 'N/A'}</td>
+                <td>${previsao.alertas_previstos || 0}</td>
+                <td>${previsao.probabilidade || '0%'}</td>
+                <td><span class="tendencia-icon">${tendenciaIcon}</span> ${previsao.tendencia || 'Estável'}</td>
+                <td><span class="nivel-risco ${nivelRiscoClass}">${previsao.nivel_risco || 'Baixo'}</span></td>
+            </tr>
+        `;
+        
+        tbody.innerHTML += linha;
+    });
+}
 
-    } catch (e) {
-        console.error("Erro tickReal:", e);
+function getNivelRiscoClass(nivel) {
+    switch(nivel?.toLowerCase()) {
+        case 'crítico':
+        case 'critico':
+            return 'risco-critico';
+        case 'alto':
+            return 'risco-alto';
+        case 'médio':
+        case 'medio':
+            return 'risco-medio';
+        case 'baixo':
+            return 'risco-baixo';
+        default:
+            return 'risco-baixo';
     }
 }
 
-(async function start() {
-    await carregarDadosPrevisoes();
-    initChart();
-    setInterval(tickReal, 3600000); // 1 hora
-})();
+function getTendenciaIcon(tendencia) {
+    switch(tendencia?.toLowerCase()) {
+        case 'crescente':
+            return '↑';
+        case 'decrescente':
+            return '↓';
+        case 'estável':
+        case 'estavel':
+            return '→';
+        default:
+            return '→';
+    }
+}
+
+function exibirErroTabela(mensagem) {
+    let tbody = document.getElementById("corpoTabelaPrevisoes");
+    tbody.innerHTML = `
+        <tr>
+            <td colspan="8" style="text-align: center; color: #ef4444;">
+                ${mensagem}
+            </td>
+        </tr>
+    `;
+}
