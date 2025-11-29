@@ -100,6 +100,35 @@
         </section>
 
         <div class="container-principal">
+            <!-- MODAL CRESCIMENTO MÉDIO DE IMAGEM-->
+            <div id="infoModalProdutividade" class="modal">
+                <div class="modal-content">
+                    <h3>Crescimento médio de imagens</h3>
+                    <br>
+                    <p style="text-align: justify; font-size: 20px;">
+                        Define o nível de estabilidade com base na média do crescimento de imagens de cada mês<br><br>
+                        &gt;= 50 imagens: <span style="color: #f75454;"><b>Atenção</b></span><br>
+                        &lt; 50 imagens <span style="color: #32b9cd;"><b>Estável</b></span>
+                    </p>
+                    <button type="button" class="closeBtn">Fechar</button>
+                </div>
+            </div>
+
+            <!-- MODAL CRESCIMENTO MÉDIO DE IMAGEM-->
+            <div id="infoCrescimentoImagem" class="modal">
+                <div class="modal-content">
+                    <h3>Tamanho médio das imagens</h3>
+                    <br>
+                    <p style="text-align: justify; font-size: 20px;">
+                        Define o nível de estabilidade de tamanho dos arquivos calculando a média de tamanho
+                        das imagens:<br><br>
+                        &gt;= 0.5MB: <span style="color: #f75454;"><b>Atenção</b></span><br>
+                        &lt; 0.4MB: <span style="color: #32b9cd;"><b>Estável</b></span>
+                    </p>
+                    <button type="button" class="closeBtn">Fechar</button>
+                </div>
+            </div>
+
             <div class="container-graficos">
                 <div class="kpi">
                     <h2 class="normal">Imagem mais pesada:</h2>
@@ -110,7 +139,7 @@
                 <div class="kpi">
                     <div class="kpi-badge"><span style="color: #32b9cd;" id="span_crescimento"></span></div>
                     <h2 class="normal">Crescimento médio de imagens <button type="button" class="infoBtn"
-                            data-target="infoCrescimentoImagem">&#9432</button></h3>
+                            data-target="infoModalProdutividade">&#9432</button></h3>
                     </h2>
                     <div class="sub">Imagens por mês</div>
                     <div class="value" id="div_crescimento_medio_imagem_mes"></div>
@@ -388,6 +417,29 @@
 
             });
         }
+
+        let infoBtns = document.querySelectorAll('.infoBtn');
+        let modals = document.querySelectorAll('.modal');
+        let closeBtns = document.querySelectorAll('.closeBtn');
+
+        infoBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                let target = btn.dataset.target;
+                document.getElementById(target).style.display = 'flex';
+            });
+        });
+
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.closest('.modal').style.display = 'none';
+            });
+        });
+
+        modals.forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.style.display = 'none';
+            });
+        });
     </script>
 </body>
 
