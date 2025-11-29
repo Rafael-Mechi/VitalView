@@ -1,5 +1,19 @@
 document.addEventListener("DOMContentLoaded", async () => {
 
+    await carregarDadosBucket(); // primeira execução
+
+    // --- SETINTERVAL PARA ATUALIZAR A CADA 3s ---
+    setInterval(async () => {
+        await carregarDadosBucket();
+        await carregarDashboard(); // se quiser atualizar a dashboard inteira, deixe isso ligado
+    }, 3000);
+    // --------------------------------------------
+
+});
+
+
+// Função isolada para buscar os dados do bucket
+async function carregarDadosBucket() {
     try {
         const [resBucket] = await Promise.all([
             fetch(`/servidores/dadosBucket`)
@@ -10,23 +24,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         ]);
 
         if (dadosBucket.length > 0) {
-            console.log(dadosBucket)
-            //ESTRUTURA PARA PEGAR OS DADOS DE CADA BUCKET
+            console.log("Bucket atualizado:", dadosBucket);
 
-            //dadosBucket[0].content["Uso_de_Disco"] == USO DO DISCO srv1
-            //dadosBucket[1].content["Uso_de_Disco"] == USO DO DISCO srv2
+            // REFERÊNCIAS
+            // dadosBucket[0].content["Uso_de_Disco"]
+            // dadosBucket[1].content["Uso_de_Cpu"]
 
-            console.log(dadosBucket[1].content["Uso_de_Disco"])
-            console.log(dadosBucket[1].content["Uso_de_Cpu"])
+            console.log("Disco srv2:", dadosBucket[1].content["Uso_de_Disco"]);
+            console.log("CPU srv2:", dadosBucket[1].content["Uso_de_Cpu"]);
         }
 
     } catch (erro) {
         console.error("Erro ao buscar o arquivo do bucket", erro);
     }
-
-    //FAZER FUNÇÃO QUE FICA PUXANDO OS DADOS A CADA 3 SEGUNDO 
-    // setInterval(buscarDadosDinamicos, 3000);
-});
+}
 
 
 
@@ -250,6 +261,10 @@ function irParaRede(servidorId, nomeServidor, idHospital) {
 function atualizarGrafico(distribuicao) {
     const ctx = document.getElementById('graficoPizza');
     if (!ctx) return;
+
+    if (window.pizzaChart) {
+        window.pizzaChart.destroy();
+    }
 
     // Calclando porcentagens
     const total = distribuicao.normais + distribuicao.alertas;
