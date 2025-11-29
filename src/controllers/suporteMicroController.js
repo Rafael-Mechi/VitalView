@@ -62,15 +62,29 @@ function buscarListaServidores(req, res) {
 }
 
 async function pegarDadosBucket(req, res) {
-    const bucketName = process.env.AWS_BUCKET_NAME;
-    const fileKey = req.params.key;
+    const key = req.query.key;
 
     try {
-        const fileContent = await suporteMicroModel.pegarDadosBucketModel(bucketName, fileKey);
-        res.send(fileContent);
+        const dados = await suporteMicroModel.pegarDadosBucketModel(process.env.AWS_BUCKET_NAME, key);
+
+        let json;
+        try {
+            json = JSON.parse(dados);
+        } catch (e) {
+            console.error("JSON inválido vindo do S3:", e);
+            return res.status(500).json({ erro: "JSON inválido no bucket" });
+        }
+
+        // garante ARRAY
+        if (!Array.isArray(json)) {
+            json = [json];
+        }
+
+        return res.json(json);
+
     } catch (error) {
-        console.error("Erro ao buscar no bucket:", error);
-        res.status(500).send("Erro ao buscar arquivo");
+        console.error("Erro ao acessar o S3:", error);
+        return res.status(500).json({ erro: "Falha ao acessar bucket" });
     }
 }
 

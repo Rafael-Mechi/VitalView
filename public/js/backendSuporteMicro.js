@@ -15,6 +15,7 @@ let chartCPU = null;
 let graficoDisco = null;
 let graficosAlertas24hrs = null;
 let processando = false;
+let processando2 = false;
 let atualizacaoIniciada = false;
 
 const id = params.get("idServidor");
@@ -22,8 +23,8 @@ const nomeServidor = params.get("hostname");
 const nomeHospital = sessionStorage.NOME_HOSPITAL;
 
 const idServidor = id;
-const key = `${id}_${nomeServidor}_${nomeHospital}_principal.json`;
-const key2 = `${id}_${nomeServidor}_${nomeHospital}_processos.json`;
+const key = `suporte/micro/${id}_${nomeServidor}_${nomeHospital}_principal.json`;
+const key2 = `suporte/micro/${id}_${nomeServidor}_${nomeHospital}_processos.json`;
 
 console.log(key)
 console.log(key2)
@@ -70,8 +71,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const [resBanco, resLimites, resBucket, resProcess, resAlertas] = await Promise.all([
             fetch(`/suporteMicroRoutes/buscar-dados-banco/${idServidor}`),
             fetch(`/suporteMicroRoutes/limites-componentes/${idServidor}`),
-            fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key}`),
-            fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key2}`),
+            fetch(`/suporteMicroRoutes/buscar-dados-bucket/?key=${encodeURIComponent(key)}`),
+            fetch(`/suporteMicroRoutes/buscar-dados-bucket/?key=${encodeURIComponent(key2)}`),
             fetch(`/suporteMicroRoutes/buscar-alertas-servidores/${idServidor}`)
         ]);
 
@@ -103,13 +104,20 @@ document.addEventListener("DOMContentLoaded", async () => {
             discoLivre = bytesParaGB(dadosRecebidos[0]["Disco_livre_(bytes)"]);
         }
 
-        plotarDados(dadosBucket, dadosProcessos, alertasServidor);
+        processos = dadosProcessos;
+
+        renderizarProcessos(dadosProcessos)
+        plotarDados(dadosBucket, alertasServidor);
+
+        console.log(dadosBucket)
+        console.log(dadosProcessos)
 
         //GARANTIA ABSOLUTA: inicia APENAS UMA VEZ
         // Inicia o loop de atualizações só uma vez
         if (!atualizacaoIniciada) {
             atualizacaoIniciada = true;
             setInterval(buscarDadosDinamicos, 3000);
+            setInterval(atualizarProcessos, 60000);
         }
 
 
@@ -122,9 +130,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 
-function plotarDados(dadosBucket, dadosProcessos, alertasServidor) {
-
-    processos = dadosProcessos;
+function plotarDados(dadosBucket, alertasServidor) {
 
     document.getElementById("ativo-inativo-desconectado").textContent = "Ativo";
     detalhesServidor();
@@ -133,7 +139,6 @@ function plotarDados(dadosBucket, dadosProcessos, alertasServidor) {
     utilizacaoDeRam(dadosBucket);
     escolherServidor();
     uptimeSistema(dadosBucket);
-    renderizarProcessos(dadosProcessos);
     saudeDoServidor(dadosBucket);
     totalAlertas(alertasServidor);
 
@@ -158,19 +163,17 @@ async function buscarDadosDinamicos() {
     console.log("puxou novos dados!!");
 
     try {
-        const [resBucket, resProcess, resAlertas] = await Promise.all([
-            fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key}`),
-            fetch(`/suporteMicroRoutes/buscar-dados-bucket/${key2}`),
+        const [resBucket, resAlertas] = await Promise.all([
+            fetch(`/suporteMicroRoutes/buscar-dados-bucket/?key=${encodeURIComponent(key)}`),
             fetch(`/suporteMicroRoutes/buscar-alertas-servidores/${idServidor}`)
         ]);
 
-        const [dadosBucket, dadosProcessos, alertasServidor] = await Promise.all([
+        const [dadosBucket, alertasServidor] = await Promise.all([
             resBucket.json(),
-            resProcess.json(),
             resAlertas.json()
         ]);
 
-        plotarDados(dadosBucket, dadosProcessos, alertasServidor);
+        plotarDados(dadosBucket, alertasServidor);
 
     } catch (erro) {
         console.error("Erro ao buscar dados dinâmicos:", erro);
@@ -179,6 +182,34 @@ async function buscarDadosDinamicos() {
     processando = false;
 }
 
+async function atualizarProcessos() {
+    console.log("atualizou o processo!!")
+    if (processando2) return;
+    processando2 = true;
+
+    console.log("Novos processos!!");
+
+    try {
+        const [resProcess] = await Promise.all([
+            fetch(`/suporteMicroRoutes/buscar-dados-bucket/?key=${encodeURIComponent(key2)}`)
+        ]);
+
+        const [dadosProcessos] = await Promise.all([
+            resProcess.json(),
+        ]);
+
+        processos = dadosProcessos;
+
+        console.log(dadosProcessos)
+
+        renderizarProcessos(dadosProcessos);
+
+    } catch (erro) {
+        console.error("Erro ao buscar dados dinâmicos:", erro);
+    }
+
+    processando2 = false;
+}
 
 
 document.getElementById("listaProcessos").addEventListener("change", function () {

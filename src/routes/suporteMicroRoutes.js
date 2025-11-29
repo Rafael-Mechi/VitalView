@@ -8,9 +8,9 @@ router.get("/buscar-dados-banco/:idServidor", function (req, res) {
     suporteMicroController.buscarDadosServidores(req, res);
 })
 
-router.get("/buscar-dados-bucket/:key", function(req, res){
-    suporteMicroController.pegarDadosBucket(req,res);
-})
+router.get("/buscar-dados-bucket", function(req, res){
+    suporteMicroController.pegarDadosBucket(req, res);
+});
 
 router.get("/buscar-servidores", function(req, res){
     suporteMicroController.buscarListaServidores(req,res);
