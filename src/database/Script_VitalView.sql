@@ -1,7 +1,7 @@
 	drop database if exists VitalView;
 	create database VitalView;
 
-	CREATE USER 'aluno'@'%' IDENTIFIED BY 'sptech';
+CREATE USER 'aluno'@'%' IDENTIFIED BY 'sptech';
 GRANT ALL PRIVILEGES ON *.* TO 'aluno'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
@@ -176,6 +176,7 @@ FLUSH PRIVILEGES;
     (8, 2, 0.5),
     (9, 2, 0.5),
     (10, 2, 10.0),
+    (1, 1, 9.0),
 	(2, 1, 0.1),
 	(3, 1, 37.1),
 	(4, 1, 4.6),
@@ -247,7 +248,7 @@ FLUSH PRIVILEGES;
 	VALUES
 	(100, '2025-11-04 14:35:00', 72.5, 4),  -- CPU servidor 3
 	(101, '2025-11-04 15:10:00', 88.3, 5),  -- Memória servidor 3
-	(102, '2025-11-04 15:10:00', 88.3, 6),  -- Disco servidor 3
+	(102, '2025-11-04 15:10:00', 88.3, 6);  -- Disco servidor 3
 
 
 	-- Usuário 2 (suporte) resolveu 2 alertas
