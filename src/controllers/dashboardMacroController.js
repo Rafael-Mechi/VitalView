@@ -27,7 +27,7 @@ async function buscarDadosDashboard(req, res) {
         }
 
         // Busca dados do banco em paralelo
-        const [dadosServidores, dadosKPIs, alertasGeraisResult] = await Promise.all([
+        const [dadosServidores, dadosKPIs, alertasGeraisResult, buscarDadosConsolidadosS3] = await Promise.all([
             dashboardMacroModel.buscarDadosDashboard(idHospital),
             dashboardMacroModel.buscarKPIs(idHospital),
             dashboardMacroModel.buscarAlertasGerais(idHospital)
@@ -43,7 +43,7 @@ async function buscarDadosDashboard(req, res) {
         // Dados consolidados do hospital
         let dadosS3 = [];
         try {
-            dadosS3 = await buscarDadosConsolidadosS3(idHospital);
+            dadosS3 = await buscarDadosConsolidadosS3();
             console.log(`✅ Dados S3 carregados: ${dadosS3.length} servidores`);
         } catch (error) {
             console.log("❌ Erro S3:", error.message);
@@ -128,22 +128,46 @@ const statusRede = await statusRedePromise;
 }
 
 // Buscando dados consolidados
-async function buscarDadosConsolidadosS3(idHospital) {
-    const nomeArquivo = `hospital_${idHospital}_dados_servidores.json`;
-    
+async function buscarDadosConsolidadosS3() {
     try {
-        console.log(`📁 Buscando dados consolidados: ${nomeArquivo}`);
-        const dados = await dashboardMacroModel.buscarDadosBucketMacro(nomeArquivo);
-        
-        if (dados && dados.length > 0 && dados[0].servidores) {
-            console.log(`✅ Dados S3 carregados: ${dados[0].servidores.length} servidores`);
-            return dados[0].servidores; // Retorna array de servidores
+        const bucketName = process.env.AWS_BUCKET_NAME;
+
+        // Pega todos os arquivos do bucket usando a função CERTA
+        const arquivos = await dashboardMacroModel.pegarTodosArquivosBucket(bucketName);
+
+        if (!arquivos || arquivos.length === 0) {
+            console.log("⚠️ Nenhum arquivo encontrado no bucket S3.");
+            return [];
         }
-        console.log('⚠️ Arquivo S3 vazio ou formato inválido');
-        return [];
-        
+
+        // Transforma cada arquivo em um objeto padronizado
+        const dados = arquivos
+            .map(arq => {
+
+                const c = arq.content || {};
+
+                // Monta objeto final
+                return {
+                    // Nome da máquina é a CHAVE para casar com seu banco
+                    Nome_da_Maquina: c.Nome_da_Maquina || null,
+
+                    Uso_de_Cpu: c.Uso_de_Cpu ? Number(c.Uso_de_Cpu) : 0,
+                    Uso_de_RAM: c.Uso_de_RAM ? Number(c.Uso_de_RAM) : 0,
+                    Uso_de_Disco: c.Uso_de_Disco ? Number(c.Uso_de_Disco) : 0,
+
+                    Data_da_Coleta: c.Data_da_Coleta || null,
+
+                    // Debug opcional
+                    _s3_key: arq.key
+                };
+            })
+            .filter(s => s.Nome_da_Maquina); // garante objetos válidos
+
+        console.log(`📥 S3 carregado: ${dados.length} arquivos válidos`);
+        return dados;
+
     } catch (error) {
-        console.log('❌ Erro ao buscar dados consolidados:', error.message);
+        console.error("❌ Erro ao buscar dados consolidados do S3:", error);
         return [];
     }
 }
