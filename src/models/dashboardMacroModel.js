@@ -77,7 +77,10 @@ function buscarDadosDashboard(idHospital) {
 function buscarKPIs(idHospital) {
     var instrucaoSql = `
         SELECT 
+            -- Total de servidores
             COUNT(DISTINCT s.idServidor) as total_servidores,
+            
+            -- Servidores em alerta (baseado em alertas não resolvidos)
             COUNT(DISTINCT CASE 
                 WHEN EXISTS (
                     SELECT 1 FROM alerta a 
@@ -86,16 +89,30 @@ function buscarKPIs(idHospital) {
                     WHERE c.fkServidor = s.idServidor AND ca.id IS NULL
                 ) THEN s.idServidor 
             END) as servidores_alerta,
+            
+            -- Alertas criados nas ÚLTIMAS 24 horas
             (SELECT COUNT(*) FROM alerta a
              JOIN componentes c ON a.fkComponente = c.idComponente
              JOIN servidores s2 ON c.fkServidor = s2.idServidor
              WHERE a.data_alerta >= DATE_SUB(NOW(), INTERVAL 24 HOUR)
              AND s2.fkHospital = ${idHospital}) as alertas_24h,
+            
+            -- Alertas criados nas 24 horas ANTERIORES (48h até 24h atrás)
             (SELECT COUNT(*) FROM alerta a
              JOIN componentes c ON a.fkComponente = c.idComponente
              JOIN servidores s2 ON c.fkServidor = s2.idServidor
-             WHERE a.data_alerta BETWEEN DATE_SUB(NOW(), INTERVAL 48 HOUR) AND DATE_SUB(NOW(), INTERVAL 24 HOUR)
-             AND s2.fkHospital = ${idHospital}) as alertas_anterior
+             WHERE a.data_alerta BETWEEN DATE_SUB(NOW(), INTERVAL 48 HOUR) 
+                   AND DATE_SUB(NOW(), INTERVAL 24 HOUR)
+             AND s2.fkHospital = ${idHospital}) as alertas_anterior,
+            
+            -- Total de alertas ATIVOS no momento (não resolvidos)
+            (SELECT COUNT(*) FROM alerta a
+             JOIN componentes c ON a.fkComponente = c.idComponente
+             JOIN servidores s2 ON c.fkServidor = s2.idServidor
+             LEFT JOIN correcao_alerta ca ON a.id = ca.fkAlerta
+             WHERE ca.id IS NULL
+             AND s2.fkHospital = ${idHospital}) as alertas_ativos_agora
+             
         FROM servidores s
         WHERE s.fkHospital = ${idHospital}
     `;

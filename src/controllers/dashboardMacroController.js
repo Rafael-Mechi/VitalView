@@ -7,13 +7,12 @@ async function listarArquivosBucket(req, res) {
 
   try {
     const arquivos = await dashboardMacroModel.pegarTodosArquivosBucket(bucketName);
-    res.json(arquivos); // devolve lista [{ key, content }]
+    res.json(arquivos);
   } catch (error) {
     console.error("Erro ao listar arquivos do bucket:", error);
     res.status(500).send("Erro ao listar arquivos");
   }
 }
-
 
 async function buscarDadosDashboard(req, res) {
     try {
@@ -26,76 +25,102 @@ async function buscarDadosDashboard(req, res) {
             return res.status(400).json({ erro: "ID do hospital não fornecido" });
         }
 
-        // Busca dados do banco em paralelo
-        const [dadosServidores, dadosKPIs, alertasGeraisResult, buscarDadosConsolidadosS3] = await Promise.all([
+        // ====================================================================
+        // BUSCA DADOS DO BANCO EM PARALELO
+        // ====================================================================
+        const [dadosServidores, dadosKPIs, alertasGeraisResult] = await Promise.all([
             dashboardMacroModel.buscarDadosDashboard(idHospital),
             dashboardMacroModel.buscarKPIs(idHospital),
             dashboardMacroModel.buscarAlertasGerais(idHospital)
         ]);
 
         console.log("✅ Dados do banco buscados!");
+        console.log(`📊 ${dadosServidores.length} servidores encontrados no banco`);
 
-        let statusRedePromise = jiraService.contarAlertasRede().catch(error => {
-            console.log("⚠️ Erro ao buscar Jira:", error.message);
-            return { abertos: 0, resolvidos: 0, total: 0 };
-        });
-
-        // Dados consolidados do hospital
+        // ====================================================================
+        // BUSCA DADOS DO S3
+        // ====================================================================
         let dadosS3 = [];
         try {
             dadosS3 = await buscarDadosConsolidadosS3();
-            console.log(`✅ Dados S3 carregados: ${dadosS3.length} servidores`);
+            console.log(`✅ S3: ${dadosS3.length} arquivos carregados`);
         } catch (error) {
             console.log("❌ Erro S3:", error.message);
         }
 
-        console.log("🔍 SERVERS FROM DATABASE for hospital", idHospital, ":");
-dadosServidores.forEach(servidor => {
-    console.log(`   ID: ${servidor.id}, Nome: ${servidor.nome}, Hostname: ${servidor.hostname}`);
-});
+        // ====================================================================
+        // BUSCA STATUS DA REDE (JIRA) - OPCIONAL
+        // ====================================================================
+        let statusRede = { abertos: 0, resolvidos: 0, total: 0 };
+        try {
+            statusRede = await jiraService.contarAlertasRede();
+            console.log(`✅ Jira: ${statusRede.total} tickets encontrados`);
+        } catch (error) {
+            console.log("⚠️ Jira não disponível:", error.message);
+        }
 
-// DEBUG: Verificar exatamente quais servidores vieram do S3  
-console.log("🔍 SERVERS FROM S3:");
-if (dadosS3 && dadosS3.length > 0) {
-    dadosS3.forEach(servidor => {
-        console.log(`   ServidorId: ${servidor.ServidorId}, Nome: ${servidor.Nome_da_Maquina}`);
-    });
-} else {
-    console.log("   Nenhum servidor no S3");
-}
+        // ====================================================================
+        // DEBUG: MOSTRA SERVIDORES DO BANCO
+        // ====================================================================
+        console.log("\n🔍 SERVIDORES DO BANCO:");
+        dadosServidores.forEach(s => {
+            console.log(`   [ID: ${s.id}] ${s.nome} - IP: ${s.ip}`);
+        });
 
-const statusRede = await statusRedePromise;
+        // ====================================================================
+        // DEBUG: MOSTRA SERVIDORES DO S3
+        // ====================================================================
+        console.log("\n📦 ARQUIVOS DO S3:");
+        if (dadosS3.length > 0) {
+            dadosS3.forEach(s => {
+                console.log(`   [Arquivo ID: ${s.ServidorIdArquivo}] ${s.Hostname} (${s.Nome_da_Maquina}) - CPU: ${s.Uso_de_Cpu}%, RAM: ${s.Uso_de_RAM}%, Disco: ${s.Uso_de_Disco}%`);
+            });
+        } else {
+            console.log("   ⚠️ Nenhum arquivo no S3");
+        }
 
-        // PROCESSAMENTOS
+        // ====================================================================
+        // PROCESSA SERVIDORES (MESCLA BANCO + S3 POR ID)
+        // ====================================================================
         const servidores = processarServidoresComS3(dadosServidores, dadosS3);
 
-        // CALCULA ALERTAS EM TEMPO REAL
+        // ====================================================================
+        // CALCULA KPIs EM TEMPO REAL
+        // ====================================================================
         const servidoresComAlertas = servidores.filter(s => s.status === "alerta").length;
-        const totalAlertasAtivos = servidores.reduce((total, servidor) => total + servidor.qtdAlertas, 0);
+        const totalAlertasAtivos = servidores.reduce((total, s) => total + s.qtdAlertas, 0);
 
+        // ====================================================================
         // MANTÉM TENDÊNCIAS HISTÓRICAS DO BANCO
+        // ====================================================================
         const alertas24h = dadosKPIs[0]?.alertas_24h || 0;
-        const alertasAnterior = dadosKPIs[0]?.alertas_anterior || 0;
-        const diferenca = alertas24h - alertasAnterior;
-        const tendenciaAlertas = diferenca > 0 ? `+${diferenca}` : `${diferenca}`;
+const alertasAnterior = dadosKPIs[0]?.alertas_anterior || 0;
+const alertasAtivosDB = dadosKPIs[0]?.alertas_ativos_agora || 0;
 
-        const kpis = {
-            // DADOS EM TEMPO REAL
-            servidoresRisco: servidoresComAlertas,
-            alertasGerais: totalAlertasAtivos, 
+const diferenca = alertas24h - alertasAnterior;
+const simbolo = diferenca > 0 ? '▲' : (diferenca < 0 ? '▼' : '=');
+const cor = diferenca > 0 ? 'aumento' : (diferenca < 0 ? 'queda' : 'neutro');
+const tendenciaAlertas = diferenca !== 0 ? `${simbolo}${Math.abs(diferenca)}` : '0';
+
+const kpis = {
+    // TEMPO REAL (do processamento S3)
+    servidoresRisco: servidoresComAlertas,
+    alertasGerais: totalAlertasAtivos,  // Calculado em tempo real
+    
+    // HISTÓRICO (do banco de dados)
+    alertas24h: alertas24h,               // Novos nas últimas 24h
+    alertasAnterior: alertasAnterior,     // Novos nas 24h anteriores
+    tendenciaAlertas: tendenciaAlertas,   // ▲5 ou ▼3 ou 0
+    tendenciaCor: cor,                     // Para estilização no frontend
+    alertasAtivosDB: alertasAtivosDB,
             
-            // DADOS HISTÓRICOS (para tendências)
-            alertas24h: alertas24h,           
-            alertasAnterior: alertasAnterior,   
-            tendenciaAlertas: tendenciaAlertas,
-            
-            // OUTROS DADOS
+            // OUTROS
             totalServidores: dadosKPIs[0]?.total_servidores || 0,
             distribuicao: {
                 normais: (dadosKPIs[0]?.total_servidores || 0) - servidoresComAlertas,
                 alertas: servidoresComAlertas
             },
-             rede: {
+            rede: {
                 alertasAtivos: statusRede.abertos,
                 alertasResolvidos: statusRede.resolvidos,
                 totalAlertas: statusRede.total,
@@ -103,18 +128,13 @@ const statusRede = await statusRedePromise;
             }
         };
 
-        console.log("KPIs - Tempo real:", {
-            alertasAtivos: totalAlertasAtivos,
-            servidoresRisco: servidoresComAlertas,
-            redeAlerta: statusRede.abertos > 0 ? 'SIM' : 'NÃO'
-        });
-        console.log("KPIs - Histórico:", {
-            alertas24h: alertas24h,
-            alertasAnterior: alertasAnterior,
-            tendencia: tendenciaAlertas
-        });
+        console.log("\n📊 KPIs CALCULADOS:");
+        console.log(`   Servidores em Risco: ${servidoresComAlertas}/${kpis.totalServidores}`);
+        console.log(`   Alertas Ativos: ${totalAlertasAtivos}`);
+        console.log(`   Rede: ${statusRede.abertos > 0 ? 'ALERTA' : 'OK'}`);
         
-        console.log("Enviando resposta para frontend...");
+        console.log("\n✅ Enviando resposta para frontend...\n");
+
         res.json({
             kpis: kpis,
             servidores: servidores,
@@ -122,83 +142,118 @@ const statusRede = await statusRedePromise;
         });
 
     } catch (error) {
-        console.error("ERRO no Controller:", error);
-        res.status(500).json({ erro: "Erro interno do servidor" });
+        console.error("\n❌ ERRO CRÍTICO no Controller:", error);
+        res.status(500).json({ erro: "Erro interno do servidor", detalhes: error.message });
     }
 }
 
-// Buscando dados consolidados
+// ============================================================================
+// BUSCAR DADOS CONSOLIDADOS DO S3 - EXTRAI ID E HOSTNAME DO ARQUIVO
+// ============================================================================
 async function buscarDadosConsolidadosS3() {
     try {
         const bucketName = process.env.AWS_BUCKET_NAME;
 
-        // Pega todos os arquivos do bucket usando a função CERTA
+        // Pega todos os arquivos do bucket
         const arquivos = await dashboardMacroModel.pegarTodosArquivosBucket(bucketName);
 
         if (!arquivos || arquivos.length === 0) {
-            console.log("⚠️ Nenhum arquivo encontrado no bucket S3.");
+            console.log("⚠️ Bucket vazio ou inacessível");
             return [];
         }
 
-        // Transforma cada arquivo em um objeto padronizado
+        // Transforma cada arquivo extraindo ID e hostname do nome
         const dados = arquivos
             .map(arq => {
-
                 const c = arq.content || {};
 
-                // Monta objeto final
-                return {
-                    // Nome da máquina é a CHAVE para casar com seu banco
-                    Nome_da_Maquina: c.Nome_da_Maquina || null,
+                // ============================================================
+                // EXTRAI ID E HOSTNAME DO NOME DO ARQUIVO
+                // Exemplo: "1_srv1_hsl_componentes.json" → ID=1, hostname=srv1
+                // Padrão: suporte/macro/componentes/[ID]_[hostname]_[hospital]_componentes.json
+                // ============================================================
+                let servidorIdArquivo = null;
+                let hostnameArquivo = null;
+                
+                if (arq.key) {
+                    // Pega só o nome do arquivo (última parte do caminho)
+                    const nomeArquivo = arq.key.split('/').pop();
+                    
+                    // Extrai ID e hostname: "1_srv1_hsl_componentes.json"
+                    const match = nomeArquivo.match(/^(\d+)_([^_]+)_/);
+                    
+                    if (match) {
+                        servidorIdArquivo = parseInt(match[1]);  // ID do arquivo (1, 2, 3...)
+                        hostnameArquivo = match[2];               // hostname (srv1, srv2, srv3...)
+                    }
+                }
 
+                return {
+                    ServidorIdArquivo: servidorIdArquivo,  // ID no nome do arquivo
+                    Hostname: hostnameArquivo,              // Hostname extraído do arquivo
+                    Nome_da_Maquina: c.Nome_da_Maquina || null,  // Nome da máquina (DESKTOP-...)
                     Uso_de_Cpu: c.Uso_de_Cpu ? Number(c.Uso_de_Cpu) : 0,
                     Uso_de_RAM: c.Uso_de_RAM ? Number(c.Uso_de_RAM) : 0,
                     Uso_de_Disco: c.Uso_de_Disco ? Number(c.Uso_de_Disco) : 0,
-
                     Data_da_Coleta: c.Data_da_Coleta || null,
-
-                    // Debug opcional
-                    _s3_key: arq.key
+                    _s3_key: arq.key // debug
                 };
             })
-            .filter(s => s.Nome_da_Maquina); // garante objetos válidos
+            .filter(s => s.Hostname !== null); // remove inválidos
 
-        console.log(`📥 S3 carregado: ${dados.length} arquivos válidos`);
         return dados;
 
     } catch (error) {
-        console.error("❌ Erro ao buscar dados consolidados do S3:", error);
+        console.error("❌ Erro ao buscar S3:", error);
         return [];
     }
 }
 
-// Buscando por ID
+// ============================================================================
+// PROCESSAR SERVIDORES (MESCLA BANCO + S3 POR HOSTNAME)
+// ============================================================================
 function processarServidoresComS3(dadosServidores, dadosS3) {
     return dadosServidores.map(servidor => {
-        // Dados padrão do banco (fallback)
-        let cpu = servidor.limite_cpu || 0;
-        let ram = servidor.limite_ram || 0; 
-        let disco = servidor.limite_disco || 0;
         
-        // Buscando dados S3 por ID do servidor
+        // Valores padrão do banco (fallback)
+        let cpu = 0;
+        let ram = 0; 
+        let disco = 0;
+        let fonteDados = 'banco';
+        let dataColeta = null;
+        
+        // ====================================================================
+        // BUSCA DADOS DO S3 PELO HOSTNAME DO SERVIDOR
+        // Exemplo: Servidor "srv1" no banco busca arquivo "X_srv1_*.json" no S3
+        // ====================================================================
         if (dadosS3 && dadosS3.length > 0) {
-            const servidorS3 = dadosS3.find(s => s.ServidorId === servidor.id);
+            const servidorS3 = dadosS3.find(s => 
+                s.Hostname && 
+                s.Hostname.toLowerCase() === servidor.nome.toLowerCase()
+            );
             
             if (servidorS3) {
-                cpu = servidorS3.Uso_de_Cpu || cpu;
-                ram = servidorS3.Uso_de_RAM || ram;
-                disco = servidorS3.Uso_de_Disco || disco;
-                console.log(`✅ S3: ${servidor.nome} (ID:${servidor.id}) - CPU:${cpu}%, RAM:${ram}%, Disco:${disco}%`);
+                cpu = servidorS3.Uso_de_Cpu || 0;
+                ram = servidorS3.Uso_de_RAM || 0;
+                disco = servidorS3.Uso_de_Disco || 0;
+                dataColeta = servidorS3.Data_da_Coleta;
+                fonteDados = 'S3';
+                console.log(`✅ [Banco ID: ${servidor.id}] ${servidor.nome} ← Match com arquivo [${servidorS3.ServidorIdArquivo}_${servidorS3.Hostname}_...] - CPU: ${cpu}%, RAM: ${ram}%, Disco: ${disco}%`);
             } else {
-                console.log(`📊 Servidor ${servidor.nome} (ID:${servidor.id}) - Dados do banco (não encontrado no S3)`);
+                console.log(`⚠️ [Banco ID: ${servidor.id}] ${servidor.nome} - Nenhum arquivo S3 encontrado (esperado: *_${servidor.nome}_*.json)`);
             }
         }
 
+        // ====================================================================
+        // LIMITES CONFIGURADOS (DO BANCO)
+        // ====================================================================
+        const limiteCpu = servidor.limite_cpu ? Number(servidor.limite_cpu) : 80;
+        const limiteRam = servidor.limite_ram ? Number(servidor.limite_ram) : 80;
+        const limiteDisco = servidor.limite_disco ? Number(servidor.limite_disco) : 85;
+
+        // ====================================================================
         // CÁLCULO DE ALERTAS EM TEMPO REAL
-        const limiteCpu = servidor.limite_cpu || 83.5;
-        const limiteRam = servidor.limite_ram || 41.6;
-        const limiteDisco = servidor.limite_disco || 85.0;
-        
+        // ====================================================================
         const alertaCpu = cpu > limiteCpu;
         const alertaRam = ram > limiteRam;
         const alertaDisco = disco > limiteDisco;
@@ -206,20 +261,53 @@ function processarServidoresComS3(dadosServidores, dadosS3) {
         const temAlertasAtivos = alertaCpu || alertaRam || alertaDisco;
         const qtdAlertasAtivos = [alertaCpu, alertaRam, alertaDisco].filter(Boolean).length;
 
-        console.log(`🔔 Servidor ${servidor.nome} - Alertas: CPU ${alertaCpu ? 'SIM' : 'não'}, RAM ${alertaRam ? 'SIM' : 'não'}, Disco ${alertaDisco ? 'SIM' : 'não'}`);
+        // ====================================================================
+        // CÁLCULO DO TEMPO EM ALERTA
+        // Se tem alertas ativos e temos data de coleta do S3, calcula tempo
+        // ====================================================================
+        let tempoAlerta = "--:--:--";
+        
+        if (temAlertasAtivos && dataColeta) {
+            try {
+                const dataColetaDate = new Date(dataColeta);
+                const agora = new Date();
+                const diffMs = agora - dataColetaDate;
+                
+                const horas = Math.floor(diffMs / (1000 * 60 * 60));
+                const minutos = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+                const segundos = Math.floor((diffMs % (1000 * 60)) / 1000);
+                
+                tempoAlerta = `${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
+            } catch (error) {
+                console.error(`❌ Erro ao calcular tempo para ${servidor.nome}:`, error);
+                tempoAlerta = "Agora";
+            }
+        } else if (temAlertasAtivos) {
+            tempoAlerta = "Agora";
+        }
+
+        // Log de alertas
+        if (temAlertasAtivos) {
+            console.log(`🚨 [${servidor.nome}] ALERTAS DETECTADOS (há ${tempoAlerta}):`, {
+                CPU: alertaCpu ? `${cpu}% > ${limiteCpu}% ⚠️` : 'OK',
+                RAM: alertaRam ? `${ram}% > ${limiteRam}% ⚠️` : 'OK',
+                Disco: alertaDisco ? `${disco}% > ${limiteDisco}% ⚠️` : 'OK'
+            });
+        }
 
         return {
             id: servidor.id,
             nome: servidor.nome,
             status: temAlertasAtivos ? "alerta" : "normal",  
-            cpu: cpu, 
-            ram: ram, 
-            disco: disco,  
+            cpu: Math.round(cpu), 
+            ram: Math.round(ram), 
+            disco: Math.round(disco),  
             qtdAlertas: qtdAlertasAtivos,  
-            tempoAlerta: temAlertasAtivos ? "Agora" : "--:--:--",  
+            tempoAlerta: tempoAlerta,  
             ip: servidor.ip,
             localizacao: servidor.localizacao,
-            // DEBUG
+            fonteDados: fonteDados,
+            dataColeta: dataColeta,
             limites: {
                 cpu: limiteCpu,
                 ram: limiteRam, 
@@ -234,7 +322,9 @@ function processarServidoresComS3(dadosServidores, dadosS3) {
     });
 }
 
-// ROTA DO BUCKET
+// ============================================================================
+// ROTA DO BUCKET (para debug no frontend)
+// ============================================================================
 async function buscarDadosBucketMacro(req, res) {
     try {
         const fileKey = req.params.key;
