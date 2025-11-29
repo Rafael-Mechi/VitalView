@@ -1,16 +1,9 @@
-// ============================================================================
-// DASHBOARD SUPORTE MACRO - VERSÃO CONSOLIDADA E SINCRONIZADA
-// ============================================================================
-
 // Variáveis globais para armazenar dados
 window.dadosServidores = [];
 window.dadosDashboard = null;
 window.dadosBucket = [];
 window.pizzaChart = null;
 
-// ============================================================================
-// INICIALIZAÇÃO
-// ============================================================================
 document.addEventListener("DOMContentLoaded", async () => {
     console.log('🚀 Dashboard Suporte Macro carregado!');
     
@@ -28,9 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, 30000);
 });
 
-// ============================================================================
-// FUNÇÃO PRINCIPAL - CARREGA TODOS OS DADOS
-// ============================================================================
+// Carregando todos os dados
 async function carregarTodosDados() {
     try {
         const idHospital = sessionStorage.FK_HOSPITAL;
@@ -69,9 +60,7 @@ async function carregarTodosDados() {
     }
 }
 
-// ============================================================================
-// BUSCAR DADOS DO BUCKET S3
-// ============================================================================
+// Buscando dados do Bucket 
 async function buscarDadosBucket() {
     try {
         const res = await fetch('/servidores/dadosBucket');
@@ -103,9 +92,7 @@ async function buscarDadosBucket() {
     }
 }
 
-// ============================================================================
-// BUSCAR DADOS DA DASHBOARD (API)
-// ============================================================================
+// Buscando dados da dash
 async function buscarDadosDashboard(idHospital) {
     try {
         const res = await fetch(`/servidores/dashboard-macro?hospital=${idHospital}`);
@@ -130,9 +117,7 @@ async function buscarDadosDashboard(idHospital) {
     }
 }
 
-// ============================================================================
-// ATUALIZAR INTERFACE COMPLETA
-// ============================================================================
+// Atualizandoo interface
 function atualizarInterface(dados) {
     if (!dados || !dados.kpis || !dados.servidores) {
         console.warn('⚠️ Dados incompletos, pulando atualização');
@@ -146,9 +131,7 @@ function atualizarInterface(dados) {
     atualizarBadgeTotal(dados.kpis.totalServidores);
 }
 
-// ============================================================================
-// ATUALIZAR KPIs
-// ============================================================================
+// Atualizando KPI´s
 function atualizarKPIs(kpis) {
     // KPI 1: Servidores em Risco
     const riscoElement = document.getElementById('valor-risco');
@@ -157,7 +140,7 @@ function atualizarKPIs(kpis) {
         riscoElement.className = kpis.servidoresRisco > 0 ? 'kpi-value alert' : 'kpi-value ok';
     }
 
-    // KPI 2: Alertas (modo geral por padrão)
+    // KPI 2: Alertas (modo geral)
     const alertasElement = document.getElementById('valor-alertas');
     const subtituloElement = document.getElementById('subtitulo-alertas');
     
@@ -174,9 +157,7 @@ function atualizarKPIs(kpis) {
     });
 }
 
-// ============================================================================
-// ALTERNAR FILTRO DE ALERTAS (Geral vs Tendência)
-// ============================================================================
+// Configurando filtro de tendência
 function alterarFiltroAlertas(tipo) {
     const valorElement = document.getElementById('valor-alertas');
     const subtituloElement = document.getElementById('subtitulo-alertas');
@@ -190,47 +171,69 @@ function alterarFiltroAlertas(tipo) {
     const kpis = window.dadosDashboard.kpis;
 
     if (tipo === 'geral') {
-        // MODO GERAL: Alertas ativos agora
+       // Modo geral (todos os alertas)
         const alertasAtivos = kpis.alertasGerais || 0;
+        
         valorElement.innerHTML = alertasAtivos.toString();
         valorElement.className = alertasAtivos > 0 ? 'kpi-value alert' : 'kpi-value ok';
         subtituloElement.textContent = 'Alertas ativos no momento';
         
     } else if (tipo === 'tendencia') {
-        // MODO TENDÊNCIA: Alertas nas últimas 24h com direção correta
+        // Modo de tendências (nas ultimas 24 horas)
         const alertas24h = kpis.alertas24h || 0;
+        const alertasAnterior = kpis.alertasAnterior || 0;
         const tendencia = kpis.tendenciaAlertas || '0';
         
-        // LÓGICA CORRETA:
-        // ▲ (aumento) = RUIM = vermelho (#e63946)
-        // ▼ (diminuição) = BOM = verde (#2ecc71)
-        // = (manteve) = neutro
-        let tendenciaClass = '';
+        // Determina cor da tendência
+        let tendenciaClass = 'neutro';
+        let tendenciaTexto = 'Manteve';
+        let tendenciaIcon = '=';
+        
         if (tendencia.includes('▲')) {
-            tendenciaClass = 'aumento';  // Vermelho - piorou
+            tendenciaClass = 'aumento';
+            tendenciaTexto = 'Aumentou';
+            tendenciaIcon = '▲';
         } else if (tendencia.includes('▼')) {
-            tendenciaClass = 'queda';    // Verde - melhorou
+            tendenciaClass = 'queda';
+            tendenciaTexto = 'Diminuiu';
+            tendenciaIcon = '▼';
         }
         
-        // Monta HTML com espaçamento adequado
-        valorElement.innerHTML = `${alertas24h} <span class="tendencia ${tendenciaClass}">${tendencia}</span>`;
-        valorElement.className = 'kpi-value'; // Remove classe alert/ok para não sobrescrever cor
-        subtituloElement.textContent = 'Novos alertas (últimas 24h)';
+        // Layout com explicação visual clara (talvez mude)
+        valorElement.innerHTML = `
+            <div class="tendencia-container">
+                <div class="tendencia-card principal">
+                    <div class="tendencia-numero">${alertas24h}</div>
+                    <div class="tendencia-label">Novos nas últimas 24h</div>
+                </div>
+                <div class="tendencia-separador">
+                    <div class="tendencia-seta ${tendenciaClass}">
+                        <span class="seta-icon">${tendenciaIcon}</span>
+                        <span class="seta-texto">${tendenciaTexto}</span>
+                    </div>
+                </div>
+                <div class="tendencia-card comparacao">
+                    <div class="tendencia-numero-small">${alertasAnterior}</div>
+                    <div class="tendencia-label-small">Período anterior</div>
+                </div>
+            </div>
+        `;
         
-        console.log('📊 Tendência aplicada:', {
-            alertas24h: alertas24h,
-            simbolo: tendencia,
-            classe: tendenciaClass,
-            cor: tendenciaClass === 'aumento' ? '🔴 Vermelho (piorou)' : '🟢 Verde (melhorou)'
+        valorElement.className = 'kpi-value tendencia-mode';
+        subtituloElement.textContent = 'Comparação: últimas 24h vs 24h anteriores';
+        
+        console.log('📊 Tendência visual aplicada:', {
+            novos: alertas24h,
+            anteriores: alertasAnterior,
+            mudanca: tendenciaTexto,
+            cor: tendenciaClass
         });
     }
 
     console.log(`🔄 Filtro alterado: ${tipo}`);
 }
 
-// ============================================================================
-// ATUALIZAR TABELA DE SERVIDORES
-// ============================================================================
+// Atualizando tabela de servidores
 function atualizarTabela(servidores) {
     const tbody = document.querySelector('.tabela-corpo tbody');
     if (!tbody) {
@@ -238,7 +241,6 @@ function atualizarTabela(servidores) {
         return;
     }
 
-    // Limpa loading
     tbody.innerHTML = '';
 
     if (!servidores || servidores.length === 0) {
@@ -262,18 +264,18 @@ function atualizarTabela(servidores) {
         const statusClass = temAlertas ? 'alerta' : 'normal';
         const statusText = temAlertas ? '● Em Alerta' : '● Normal';
 
-        // Valores de recursos
+        // Dados dos componentes
         const cpuPercent = Math.round(servidor.cpu || 0);
         const ramPercent = Math.round(servidor.ram || 0);
         const discoPercent = Math.round(servidor.disco || 0);
 
-        // Classes das barras (vermelho se em alerta)
+        // Classes das barras (vermelho se tiver em alerta)
         const cpuClass = servidor.alertas?.cpu ? 'critico' : 'normal';
         const ramClass = servidor.alertas?.ram ? 'critico' : 'normal';
         const discoClass = servidor.alertas?.disco ? 'critico' : 'normal';
 
-        // Status da Rede (simulado - você pode integrar com Jira depois)
-        const statusRede = 'NORMAL'; // ou pegar de servidor.statusRede se vier da API
+        // Status da Rede (simulado ainda)
+        const statusRede = 'NORMAL'; 
         const statusRedeClass = statusRede === 'ALERTA' ? 'status-alerta' : 'status-normal';
         const statusRedeText = statusRede === 'ALERTA' ? '● Alerta' : '● Normal';
 
@@ -340,9 +342,7 @@ function atualizarTabela(servidores) {
     console.log('✅ Tabela renderizada com sucesso');
 }
 
-// ============================================================================
-// ATUALIZAR GRÁFICO DE PIZZA (STATUS DOS SERVIDORES)
-// ============================================================================
+// Atualizando gráfico de pizza
 function atualizarGraficoPizza(distribuicao) {
     const ctx = document.getElementById('graficoPizza');
     if (!ctx) {
@@ -405,9 +405,7 @@ function atualizarGraficoPizza(distribuicao) {
     });
 }
 
-// ============================================================================
-// ATUALIZAR BADGE DE TOTAL DE SERVIDORES
-// ============================================================================
+// Atualizando total de servidores
 function atualizarBadgeTotal(total) {
     const badgeTotal = document.querySelector('.badge-total');
     if (badgeTotal) {
@@ -415,9 +413,7 @@ function atualizarBadgeTotal(total) {
     }
 }
 
-// ============================================================================
-// FUNÇÕES DE REDIRECIONAMENTO
-// ============================================================================
+// Redirecionamentos
 function irParaMicro(servidorId, nomeServidor, idHospital) {
     window.location.href = `dashboardSuporteMicro.html?idServidor=${servidorId}&hostname=${nomeServidor}&idhospital=${idHospital}`;
 }
@@ -430,9 +426,7 @@ function irParaRede(servidorId, nomeServidor, idHospital) {
     window.location.href = `dashRede.html?idServidor=${servidorId}&hostname=${nomeServidor}&idhospital=${idHospital}`;
 }
 
-// ============================================================================
-// SISTEMA DE PESQUISA
-// ============================================================================
+// Barra de pesquisa
 function configurarPesquisa() {
     const inputPesquisa = document.querySelector('.input-pesquisa');
     if (inputPesquisa) {
@@ -453,9 +447,7 @@ function pesquisarServidores() {
     console.log(`🔍 Pesquisa: "${filtro}"`);
 }
 
-// ============================================================================
-// SISTEMA DE FILTROS
-// ============================================================================
+// Filtros (Maior alerta, maior CPU e etc)
 function configurarFiltros() {
     const filtros = document.querySelectorAll('.aba');
 
@@ -509,9 +501,7 @@ function aplicarFiltro(tipo) {
     atualizarTabela(servidoresFiltrados);
 }
 
-// ============================================================================
-// SISTEMA DE MODAIS DE INFORMAÇÃO
-// ============================================================================
+// Configurando modais
 function configurarModais() {
     const infoBtns = document.querySelectorAll('.infoBtn');
     const modals = document.querySelectorAll('.modal');
@@ -542,9 +532,7 @@ function configurarModais() {
     });
 }
 
-// ============================================================================
-// FUNÇÃO DE ERRO
-// ============================================================================
+// Funções para caso dê erro
 function mostrarErro(mensagem) {
     const tbody = document.querySelector('.tabela-corpo tbody');
     if (tbody) {

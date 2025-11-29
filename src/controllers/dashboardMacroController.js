@@ -25,9 +25,7 @@ async function buscarDadosDashboard(req, res) {
             return res.status(400).json({ erro: "ID do hospital não fornecido" });
         }
 
-        // ====================================================================
-        // BUSCA DADOS DO BANCO EM PARALELO
-        // ====================================================================
+        // Buscando dados do banco
         const [dadosServidores, dadosKPIs, alertasGeraisResult] = await Promise.all([
             dashboardMacroModel.buscarDadosDashboard(idHospital),
             dashboardMacroModel.buscarKPIs(idHospital),
@@ -37,9 +35,7 @@ async function buscarDadosDashboard(req, res) {
         console.log("✅ Dados do banco buscados!");
         console.log(`📊 ${dadosServidores.length} servidores encontrados no banco`);
 
-        // ====================================================================
-        // BUSCA DADOS DO S3
-        // ====================================================================
+        // Buscando dados do Bucket
         let dadosS3 = [];
         try {
             dadosS3 = await buscarDadosConsolidadosS3();
@@ -48,9 +44,7 @@ async function buscarDadosDashboard(req, res) {
             console.log("❌ Erro S3:", error.message);
         }
 
-        // ====================================================================
-        // BUSCA STATUS DA REDE (JIRA) - OPCIONAL
-        // ====================================================================
+        // Pegando dados do JIRA pra rede
         let statusRede = { abertos: 0, resolvidos: 0, total: 0 };
         try {
             statusRede = await jiraService.contarAlertasRede();
@@ -79,20 +73,14 @@ async function buscarDadosDashboard(req, res) {
             console.log("   ⚠️ Nenhum arquivo no S3");
         }
 
-        // ====================================================================
-        // PROCESSA SERVIDORES (MESCLA BANCO + S3 POR ID)
-        // ====================================================================
+        // Processando servidores
         const servidores = processarServidoresComS3(dadosServidores, dadosS3);
 
-        // ====================================================================
-        // CALCULA KPIs EM TEMPO REAL
-        // ====================================================================
+        // Calculando as KPI´s
         const servidoresComAlertas = servidores.filter(s => s.status === "alerta").length;
         const totalAlertasAtivos = servidores.reduce((total, s) => total + s.qtdAlertas, 0);
 
-        // ====================================================================
-        // MANTÉM TENDÊNCIAS HISTÓRICAS DO BANCO
-        // ====================================================================
+        // Mantendo as tendências para fazer o calculo no banco
         const alertas24h = dadosKPIs[0]?.alertas_24h || 0;
 const alertasAnterior = dadosKPIs[0]?.alertas_anterior || 0;
 const alertasAtivosDB = dadosKPIs[0]?.alertas_ativos_agora || 0;
@@ -103,18 +91,18 @@ const cor = diferenca > 0 ? 'aumento' : (diferenca < 0 ? 'queda' : 'neutro');
 const tendenciaAlertas = diferenca !== 0 ? `${simbolo}${Math.abs(diferenca)}` : '0';
 
 const kpis = {
-    // TEMPO REAL (do processamento S3)
+    // Calculando em tempo real os servidores com alertas
     servidoresRisco: servidoresComAlertas,
     alertasGerais: totalAlertasAtivos,  // Calculado em tempo real
     
-    // HISTÓRICO (do banco de dados)
-    alertas24h: alertas24h,               // Novos nas últimas 24h
-    alertasAnterior: alertasAnterior,     // Novos nas 24h anteriores
-    tendenciaAlertas: tendenciaAlertas,   // ▲5 ou ▼3 ou 0
-    tendenciaCor: cor,                     // Para estilização no frontend
+    // Histórico do banco de dados
+    alertas24h: alertas24h,               
+    alertasAnterior: alertasAnterior,     
+    tendenciaAlertas: tendenciaAlertas,  
+    tendenciaCor: cor,                     
     alertasAtivosDB: alertasAtivosDB,
             
-            // OUTROS
+            // Status de rede e total de servidor
             totalServidores: dadosKPIs[0]?.total_servidores || 0,
             distribuicao: {
                 normais: (dadosKPIs[0]?.total_servidores || 0) - servidoresComAlertas,
@@ -147,9 +135,7 @@ const kpis = {
     }
 }
 
-// ============================================================================
-// BUSCAR DADOS CONSOLIDADOS DO S3 - EXTRAI ID E HOSTNAME DO ARQUIVO
-// ============================================================================
+// Buscando dados do Bucket
 async function buscarDadosConsolidadosS3() {
     try {
         const bucketName = process.env.AWS_BUCKET_NAME;
@@ -169,7 +155,7 @@ async function buscarDadosConsolidadosS3() {
 
                 // ============================================================
                 // EXTRAI ID E HOSTNAME DO NOME DO ARQUIVO
-                // Exemplo: "1_srv1_hsl_componentes.json" → ID=1, hostname=srv1
+                // Exemplo: "1_srv1_hsl_componentes.json" --> ID=1, hostname=srv1
                 // Padrão: suporte/macro/componentes/[ID]_[hostname]_[hospital]_componentes.json
                 // ============================================================
                 let servidorIdArquivo = null;
@@ -179,19 +165,19 @@ async function buscarDadosConsolidadosS3() {
                     // Pega só o nome do arquivo (última parte do caminho)
                     const nomeArquivo = arq.key.split('/').pop();
                     
-                    // Extrai ID e hostname: "1_srv1_hsl_componentes.json"
+                    // Extrai ID e hostname: "1_srv1_hsl_componentes.json" por exemplo
                     const match = nomeArquivo.match(/^(\d+)_([^_]+)_/);
                     
                     if (match) {
-                        servidorIdArquivo = parseInt(match[1]);  // ID do arquivo (1, 2, 3...)
-                        hostnameArquivo = match[2];               // hostname (srv1, srv2, srv3...)
+                        servidorIdArquivo = parseInt(match[1]);  
+                        hostnameArquivo = match[2];             
                     }
                 }
 
                 return {
-                    ServidorIdArquivo: servidorIdArquivo,  // ID no nome do arquivo
-                    Hostname: hostnameArquivo,              // Hostname extraído do arquivo
-                    Nome_da_Maquina: c.Nome_da_Maquina || null,  // Nome da máquina (DESKTOP-...)
+                    ServidorIdArquivo: servidorIdArquivo,  
+                    Hostname: hostnameArquivo,              
+                    Nome_da_Maquina: c.Nome_da_Maquina || null,  
                     Uso_de_Cpu: c.Uso_de_Cpu ? Number(c.Uso_de_Cpu) : 0,
                     Uso_de_RAM: c.Uso_de_RAM ? Number(c.Uso_de_RAM) : 0,
                     Uso_de_Disco: c.Uso_de_Disco ? Number(c.Uso_de_Disco) : 0,
@@ -199,7 +185,7 @@ async function buscarDadosConsolidadosS3() {
                     _s3_key: arq.key // debug
                 };
             })
-            .filter(s => s.Hostname !== null); // remove inválidos
+            .filter(s => s.Hostname !== null); 
 
         return dados;
 
@@ -209,9 +195,7 @@ async function buscarDadosConsolidadosS3() {
     }
 }
 
-// ============================================================================
-// PROCESSAR SERVIDORES (MESCLA BANCO + S3 POR HOSTNAME)
-// ============================================================================
+// Processando servidores
 function processarServidoresComS3(dadosServidores, dadosS3) {
     return dadosServidores.map(servidor => {
         
@@ -222,10 +206,7 @@ function processarServidoresComS3(dadosServidores, dadosS3) {
         let fonteDados = 'banco';
         let dataColeta = null;
         
-        // ====================================================================
-        // BUSCA DADOS DO S3 PELO HOSTNAME DO SERVIDOR
-        // Exemplo: Servidor "srv1" no banco busca arquivo "X_srv1_*.json" no S3
-        // ====================================================================
+        // Buscando dados do Bucket pelo hostname do servidor
         if (dadosS3 && dadosS3.length > 0) {
             const servidorS3 = dadosS3.find(s => 
                 s.Hostname && 
@@ -244,16 +225,12 @@ function processarServidoresComS3(dadosServidores, dadosS3) {
             }
         }
 
-        // ====================================================================
-        // LIMITES CONFIGURADOS (DO BANCO)
-        // ====================================================================
-        const limiteCpu = servidor.limite_cpu ? Number(servidor.limite_cpu) : 80;
-        const limiteRam = servidor.limite_ram ? Number(servidor.limite_ram) : 80;
-        const limiteDisco = servidor.limite_disco ? Number(servidor.limite_disco) : 85;
+        // Limites do banco (parametrização padrao caso nao tenha sido cadastrado)
+        const limiteCpu = servidor.limite_cpu ? Number(servidor.limite_cpu) : 83.5;
+        const limiteRam = servidor.limite_ram ? Number(servidor.limite_ram) : 41.6;
+        const limiteDisco = servidor.limite_disco ? Number(servidor.limite_disco) : 85.0;
 
-        // ====================================================================
-        // CÁLCULO DE ALERTAS EM TEMPO REAL
-        // ====================================================================
+       // Calculando alertas (em tempo real)
         const alertaCpu = cpu > limiteCpu;
         const alertaRam = ram > limiteRam;
         const alertaDisco = disco > limiteDisco;
@@ -261,10 +238,7 @@ function processarServidoresComS3(dadosServidores, dadosS3) {
         const temAlertasAtivos = alertaCpu || alertaRam || alertaDisco;
         const qtdAlertasAtivos = [alertaCpu, alertaRam, alertaDisco].filter(Boolean).length;
 
-        // ====================================================================
-        // CÁLCULO DO TEMPO EM ALERTA
-        // Se tem alertas ativos e temos data de coleta do S3, calcula tempo
-        // ====================================================================
+        // Se tem alertas ativos e temos data de coleta do Bucket, calcula tempo.
         let tempoAlerta = "--:--:--";
         
         if (temAlertasAtivos && dataColeta) {
@@ -322,9 +296,7 @@ function processarServidoresComS3(dadosServidores, dadosS3) {
     });
 }
 
-// ============================================================================
-// ROTA DO BUCKET (para debug no frontend)
-// ============================================================================
+// rota pro Bucket
 async function buscarDadosBucketMacro(req, res) {
     try {
         const fileKey = req.params.key;
