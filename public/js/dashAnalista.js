@@ -157,7 +157,7 @@ function atualizarTextosPeriodo() {
     switch(periodoAtual) {
         case 'dia':
             textoPeriodoNo = 'Hoje';
-            textoPeriodoDurante = 'Durante o Dia';
+            textoPeriodoDurante = 'Durante a Semana';
             tituloGrafico = 'Distribuição de alertas ao longo do dia';
             break;
         case 'semana':

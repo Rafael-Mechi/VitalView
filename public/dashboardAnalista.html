@@ -106,12 +106,17 @@
                     <option value="1">Escolher período</option>
                     <option value="2">Hoje</option>
                     <option value="3">Nesta semana</option>
-                    <option value="4" selected>Neste mês</option>
+                    <option value="4">Neste mês</option>
                     <option value="6">Neste trimestre</option>
                     <option value="7">Neste semestre</option>
                     <option value="5">Neste ano</option>
                 </select>
             </section>
+                <section style="display: flex; justify-content: center; margin: 20px 0;">
+                    <button onclick="scrollParaPrevisoes()" class="periodo_select">
+                        Ver Previsões de Alertas
+                    </button>
+                </section>
         </section>
 
         <section class="container-de-sessoes">
@@ -196,5 +201,15 @@
     <script src="js/dashAnalista.js"></script>
 
 </body>
-
+<script>
+    function scrollParaPrevisoes() {
+    const tabelaPrevisoes = document.querySelector('.container-previsoes');
+    if (tabelaPrevisoes) {
+        tabelaPrevisoes.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+        });
+    }
+}
+</script>
 </html>
