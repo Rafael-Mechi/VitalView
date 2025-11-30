@@ -446,6 +446,16 @@ h3 {
     width: 50%;
 }
 
+.kpi_grafico_previsao {
+    height: 300px;
+    margin-right: 10%;
+    margin: 1%;
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    width: 50%;
+}
+
 .centralizador_titulo {
   display: flex;
   justify-content: space-between;
@@ -583,7 +593,7 @@ h3 {
 
 #badgeDeCima {
   width: 19%;
-  margin-left: 160px;
+  margin-left: 130px;
   transform: translateY(0);
   padding: 6px 10px;
   font-size: .78rem;

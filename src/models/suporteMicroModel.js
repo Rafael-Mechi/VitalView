@@ -94,6 +94,8 @@ function buscarLimites(idServidor) {
 
 
 
+
+
 async function alertasNasUltimas24hrs(idServidor) {
 
     try {
@@ -129,6 +131,35 @@ async function alertasNasUltimas24hrs(idServidor) {
 }
 
 
+async function preverSobrecarga(req, res) {
+  try {
+    const bucketName = process.env.AWS_BUCKET_NAME;
+    const fileKey = `suporte/disco/${req.params.key}`;
+    const dados = await pegarDadosDiscoModel(bucketName, fileKey);
+
+    // Se for objeto simples, cria array de histórico
+    let historico;
+    if (Array.isArray(dados)) {
+      historico = dados.map(d => Number(d["Uso_de_Disco"]));
+    } else if (typeof dados === "object") {
+      historico = [Number(dados["Uso_de_Disco"])];
+    } else {
+      historico = [];
+    }
+
+    // Gere a previsão (exemplo simples)
+    const previsao = historico.length > 0 ? [historico[0] + 10, historico[0] + 20] : [];
+
+    res.json({ historico, previsao });
+  } catch (err) {
+    console.log("Erro:", err);
+    res.status(400).send("Erro ao prever sobrecarga");
+  }
+}
+
+
+
+
 
 
 module.exports = {
@@ -138,5 +169,6 @@ module.exports = {
     pegarDadosDiscoModel,
     buscarLimites,
     alertasNasUltimas24hrs,
-    buscarLimitesServidor
+    buscarLimitesServidor,
+    preverSobrecarga
 };

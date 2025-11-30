@@ -18,5 +18,10 @@ router.get("/buscar-dados-bucket-disco/:key", function (req, res) {
     discoController.pegarDadosDisco(req, res);
 });
 
+router.get("/previsao-sobrecarga/:key", function (req, res) {
+  discoController.preverSobrecarga(req, res);
+});
+
+
 
 module.exports = router;

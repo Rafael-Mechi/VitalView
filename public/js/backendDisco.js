@@ -4,7 +4,7 @@ const idServidor = params.get("idServidor");
 const idHospital = sessionStorage.FK_HOSPITAL;
 const nomeHospital = sessionStorage.NOME_HOSPITAL;
 const nomeServidor = params.get("hostname");
-const key = `${idServidor}_${nomeServidor}_${nomeHospital}.json`;
+const key = `${idServidor}_${nomeServidor}_${nomeHospital}_disco.json`;
 
 
 console.log(idServidor);
@@ -97,12 +97,18 @@ const graficoAtividade = new Chart(ctx, {
   }
 });
 
+
+
+
+
+
+
 // ---------------- GRAFICO USO DE DISCO ----------------
 const ctxUso = document.getElementById('graficoUsoDeDisco').getContext('2d');
 const graficoUso = new Chart(ctxUso, {
   type: 'bar',
   data: {
-    labels: ['Disco_usado_(bytes)'],
+    labels: ['Disco_usado_(GB)'],
     datasets: [{
       data: [0],
       backgroundColor: '#008c99',
@@ -119,6 +125,84 @@ const graficoUso = new Chart(ctxUso, {
     plugins: { legend: { display: false } }
   }
 });
+
+
+// ---------------- GRAFICO PREVISÃO DE SOBRECARGA ----------------
+const ctxPrevisao = document.getElementById('graficoPrevisao').getContext('2d');
+
+  // Exemplo de meses — você pode ajustar depois via backend
+  const labels = ["Out", "Nov", "Dez", "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul"];
+
+  // Valores reais (histórico)
+  const dadosHistoricos = [50, 120, 200, 260, 310, 420, 500, 560, 640, null];
+
+  // Projeção futura (tracejada)
+  const dadosProjetados = [null, null, null, null, null, 420, 500, 560, 640, 780];
+
+  const grafico = new Chart(ctxPrevisao, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Uso de Disco (Histórico)',
+          data: dadosHistoricos,
+          borderWidth: 2,
+          borderColor: '#008c99',
+          backgroundColor: 'transparent',
+          tension: 0.3
+        },
+        {
+          label: 'Projeção',
+          data: dadosProjetados,
+          borderWidth: 2,
+          borderColor: 'rgba(255, 0, 0, 1)',
+          borderDash: [8, 8],
+          backgroundColor: 'transparent',
+          tension: 0.3
+        }
+      ]
+    },
+
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          enabled: true
+        }
+      },
+
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: "Meses"
+          },
+          grid: {
+            color: "#ddd"
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: "Uso de Disco (GB)"
+          },
+          beginAtZero: true,
+          grid: {
+            color: "#ddd"
+          }
+        }
+      }
+    }
+  });
+
+
+
 
 // ---------------- GRAFICO TAXA DE TRANSFERÊNCIA ----------------
 const ctxTaxa = document.getElementById('graficoTaxaTransferencia').getContext('2d');
@@ -166,27 +250,29 @@ const graficoLatencia = new Chart(ctxLatencia, {
 
 // ---------------- FUNÇÃO DE ATUALIZAÇÃO ----------------
 function atualizarDash(dados, limites) {
-  const usoDisco = Number(dados[0]["Disco_usado_(bytes)"]) || 0;
-  const discoTotal =  Number(dados[0]["Disco_total_(bytes)"])
-  const taxaLeitura = Number(dados[0]["Disco_taxa_leitura_mbs"])
-  const taxaEscrita = Number(dados[0]["Disco_taxa_escrita_mbs"])
-  const latMediaLeitura = Number(dados[0]["Disco_latencia_leitura"]) 
-  const latMediaEscrita = Number(dados[0]["Disco_latencia_escrita"])
-  const dataColeta = Number(dados[0]["Data da Coleta"] || new Date());
+  const atividade = Number(dados["Uso_de_Disco"]);
+  const usoDisco = Number(dados["Disco_usado_(bytes)"]);
+  const discoTotal =  Number(dados["Disco_total_(bytes)"])
+  const porcentagemDisco = (usoDisco / discoTotal) * 100 // para calcular a porcentagem 
+  const taxaLeitura = Number(dados["Disco_taxa_leitura_mbs"])
+  const taxaEscrita = Number(dados["Disco_taxa_escrita_mbs"])
+  const latMediaLeitura = Number(dados["Disco_latencia_leitura"]) 
+  const latMediaEscrita = Number(dados["Disco_latencia_escrita"])
+  const dataColeta = (dados["Data da Coleta"] || new Date());
 
   // Gráfico principal
   const dataset = graficoAtividade.data.datasets[0];
   dataset.data.shift();
-  dataset.data.push(usoDisco);
+  dataset.data.push(atividade);
   graficoAtividade.update();
 
-  valorAtividade.textContent = `${usoDisco.toFixed(1)}%`;
+  valorAtividade.textContent = `${atividade.toFixed(1)}%`;
   horaAtualizacao.textContent = `Atualizado às ${new Date(dataColeta).toLocaleTimeString("pt-BR", { hour12: false })}`;
 
   // Uso de disco
-  graficoUso.data.datasets[0].data = [usoDisco];
+  graficoUso.data.datasets[0].data = [porcentagemDisco];
   graficoUso.update();
-  valorUso.textContent = `${usoDisco.toFixed(1)}%`;
+  valorUso.textContent = `${porcentagemDisco.toFixed(1)}%`;
   textoUso.textContent = `${(usoDisco).toFixed(1)} GB usados de ${discoTotal.toFixed()} GB`;
 
   // Taxa de transferência média
@@ -225,6 +311,7 @@ function irParaTelaDeGestao(){
 
 function escolherServidor() {
     const select = document.getElementById("listaServidores");
+    const idServidorAtual = idServidor
 
     fetch(`/dashDiscoRoutes/buscar-servidores`)
         .then(response => response.json())
@@ -234,6 +321,9 @@ function escolherServidor() {
                 const option = document.createElement("option");
                 option.value = servidor.idServidor;
                 option.textContent = servidor.hostname;
+                if(servidor.idServidor == idServidorAtual){
+                  option.selected = true;
+                }
                 select.appendChild(option);
             });
         })
@@ -266,6 +356,7 @@ function atualizarStatus(valorAtual, limite, elemento) {
 
 //Função para calcular a varicao das KPIS comparando o valor anterior
 function calcularVariacao(valorAtual, valorAnterior, elemento, unidade) {
+  if (!elemento) return valorAtual;
     if (valorAnterior === null) {
         elemento.textContent = "—";
         elemento.style.color = "gray";
@@ -287,3 +378,25 @@ function calcularVariacao(valorAtual, valorAnterior, elemento, unidade) {
 
     return valorAtual;
 }
+
+async function carregarPrevisao() {
+  try {
+    const res = await fetch(`/dashDiscoRoutes/previsao-sobrecarga/${key}`);
+    if (!res.ok) throw new Error("Falha ao buscar previsão de sobrecarga");
+    const previsao = await res.json();
+    console.log("Previsão recebida:", previsao);
+
+    
+      grafico.data.datasets[0].data = previsao.historico;
+      grafico.data.datasets[1].data = previsao.previsao;
+      grafico.update();
+
+  } catch (erro) {
+    console.error("Erro ao buscar previsão:", erro);
+  }
+}
+
+// Chame a função junto com carregarDados
+carregarPrevisao();
+setInterval(carregarPrevisao, 3000); // Atualiza a cada 3s
+
