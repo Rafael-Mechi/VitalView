@@ -56,7 +56,7 @@ function buscarDadosBucket(key) {
             if (response.ok) {
                 response.json().then(resposta => {
                     console.log("Dados recebidos do bucket: ", resposta);
-                    //gerarTabelaPrevisoes(resposta);
+                    gerarTabelaPrevisoes(resposta);
                         })
                     }
                 })
@@ -68,33 +68,38 @@ function buscarDadosBucket(key) {
 
 function gerarTabelaPrevisoes(dados) {
     let tbodyPrevisoes = document.getElementById("corpoTabelaPrevisoes");
-    tbodyPrevisoes.innerHTML = "";
 
     for (let i = 0; i < dados.length; i++) {
         let registro = dados[i];
 
-        let idServidor = registro.idServidor;
-        let hostname = registro.hostname;
-        let diffMs = hoje - dataGeracao;
-        let tempoNoSistema = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 365));
+        let servidor = registro.servidor;
+        let componente = registro.componente;
+        let diaRisco = registro.diaRisco;
+        let periodo = registro.periodo;
+        let alertasPrevistos = registro.alertasPrevistos;
+        let probabilidade = registro.probabilidade;
+        let tendencia = registro.tendencia;
+        let nivelRisco = registro.nivelRisco;
 
-        let dataFormatada = new Date(img.data_geracao)
-            .toLocaleDateString("pt-BR", { timeZone: "UTC" });
+        if(componente == "Memoria"){
+            componente = "Ram"
+        }
+
 
         let linha = `
         <tr>
-            <td hidden>${img.caminho_arquivo}</td>
-            <td>${img.nome_arquivo}</td>
-            <td>${img.tamanho} MB</td>
-            <td>${dataFormatada}</td>
-            <td>${tempoNoSistema} anos</td>
-            <td class="acao-icons">
-                    <button class="btn-excluir-usuario" onclick="excluirImagem(this)">&#x1F5D1;</button>
-            </td>
+            <td>${servidor}</td>
+            <td>${componente}</td>
+            <td>${diaRisco}</td>
+            <td>${periodo}</td>
+            <td>${alertasPrevistos}</td>
+            <td>${probabilidade}</td>
+            <td>${tendencia}</td>
+            <td>${nivelRisco}</td>
         </tr>
     `;
 
-        tbodyImagens.innerHTML += linha;
+        tbodyPrevisoes.innerHTML += linha;
         }
 }
 
@@ -103,7 +108,7 @@ async function carregarInformacoes() {
         document.querySelectorAll('small').forEach((el, index) => {
             textosOriginais.set(index, el.textContent);
         });
-    }
+    } 
     
     atualizarTextosPeriodo();
     topServidoresComMaisAlertas();
@@ -111,7 +116,6 @@ async function carregarInformacoes() {
     contarAlertasNoPeriodo();
     distribuicaoAlertasAno();
     diaSemanaComMaisAlertas();
-    await gerarTabelaPrevisoes();
 }
 
 // Event listener para mudança de período
