@@ -21,15 +21,15 @@ const horaAtualizacao = document.querySelector(".texto_direita p:last-child");
 //grafico uso de disco
 const valorUso = document.querySelectorAll('.numero_uso_disco h1')[0];
 const textoUso = document.querySelectorAll('.p_esquerda')[1];
-const variacaoUso = document.querySelectorAll('.UD_texto_direita p')[0];
+const variacaoUso = document.querySelectorAll('.indicadorVariacao')[0];
 
 //Grafico taxa de transferencia
 const valorTaxa = document.querySelectorAll('.numero_uso_disco h1')[1];
-const variacaoTaxa = document.querySelectorAll('.UD_texto_direita p')[1];
+const variacaoTaxa = document.querySelectorAll('.indicadorVariacao')[1];
 
 //Grafico letencia
 const valorLatencia = document.querySelectorAll('.numero_uso_disco h1')[2];
-const variacaoLatencia = document.querySelectorAll('.UD_texto_direita p')[2];
+const variacaoLatencia = document.querySelectorAll('.indicadorVariacao')[2];
 
 //Icones de alerta
 const statusUso = document.querySelector('.status-usoDisco');
@@ -63,15 +63,21 @@ async function carregarDados() {
 
     console.log("Dados recebidos:", dados)
     console.log("Limites recebidos:", limites)
+
+    //Ordena por Data de coleta
+    dados.sort((a, b) => new Date(a.Data_da_Coleta) - new Date(b.Data_da_Coleta));
+
+
+    const registroAtual = dados[dados.length-1] //pega sempre o ultimo registro
+    const registroAnterior = dados.length > 1 ? dados[dados.length - 2] : null;
     
-    atualizarDash(dados, limites);
+    atualizarDash(registroAtual, registroAnterior, limites);
   } catch (erro) {
     console.error("Erro ao buscar dados do bucket:", erro);
   }
 }
 
-carregarDados();
-setInterval(carregarDados, 3000); // Atualiza a cada 3s
+
 
 // ---------------- GRAFICO PRINCIPAL (ATIVIDADE GERAL) ----------------
 const ctx = document.getElementById("graficoAtividade").getContext("2d");
@@ -130,14 +136,13 @@ const graficoUso = new Chart(ctxUso, {
 // ---------------- GRAFICO PREVISÃO DE SOBRECARGA ----------------
 const ctxPrevisao = document.getElementById('graficoPrevisao').getContext('2d');
 
-  // Exemplo de meses — você pode ajustar depois via backend
-  const labels = ["Out", "Nov", "Dez", "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul"];
-
-  // Valores reais (histórico)
-  const dadosHistoricos = [50, 120, 200, 260, 310, 420, 500, 560, 640, null];
-
-  // Projeção futura (tracejada)
-  const dadosProjetados = [null, null, null, null, null, 420, 500, 560, 640, 780];
+ function gerarLabels(historico, previsao) {
+  const meses = ["Out", "Nov", "Dez", "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul"];
+  const total = historico.length + previsao.length;
+  return meses.slice(0, total);
+}
+// labels vai começar vazio e depois a funcao de sobrecarga vai sobreescrever
+const labels = []
 
   const grafico = new Chart(ctxPrevisao, {
     type: 'line',
@@ -146,7 +151,7 @@ const ctxPrevisao = document.getElementById('graficoPrevisao').getContext('2d');
       datasets: [
         {
           label: 'Uso de Disco (Histórico)',
-          data: dadosHistoricos,
+          data: [],
           borderWidth: 2,
           borderColor: '#008c99',
           backgroundColor: 'transparent',
@@ -154,7 +159,7 @@ const ctxPrevisao = document.getElementById('graficoPrevisao').getContext('2d');
         },
         {
           label: 'Projeção',
-          data: dadosProjetados,
+          data: [],
           borderWidth: 2,
           borderColor: 'rgba(255, 0, 0, 1)',
           borderDash: [8, 8],
@@ -249,7 +254,7 @@ const graficoLatencia = new Chart(ctxLatencia, {
 });
 
 // ---------------- FUNÇÃO DE ATUALIZAÇÃO ----------------
-function atualizarDash(dados, limites) {
+function atualizarDash(dados, dadosAnterior, limites) {
   const atividade = Number(dados["Uso_de_Disco"]);
   const usoDisco = Number(dados["Disco_usado_(bytes)"]);
   const discoTotal =  Number(dados["Disco_total_(bytes)"])
@@ -259,6 +264,14 @@ function atualizarDash(dados, limites) {
   const latMediaLeitura = Number(dados["Disco_latencia_leitura"]) 
   const latMediaEscrita = Number(dados["Disco_latencia_escrita"])
   const dataColeta = (dados["Data da Coleta"] || new Date());
+
+  // Valores anteriores para calcular a variação
+  const usoDiscoAnterior = dadosAnterior ? Number(dadosAnterior["Disco_usado_(bytes)"]) : null;
+  const taxaLeituraAnterior = dadosAnterior ? Number(dadosAnterior["Disco_taxa_leitura_mbs"]) : null;
+  const taxaEscritaAnterior = dadosAnterior ? Number(dadosAnterior["Disco_taxa_escrita_mbs"]) : null;
+  const latMediaLeituraAnterior = dadosAnterior ? Number(dadosAnterior["Disco_latencia_leitura"]) : null;
+  const latMediaEscritaAnterior = dadosAnterior ? Number(dadosAnterior["Disco_latencia_escrita"]) : null;
+  const porcentagemDiscoAnterior = dadosAnterior ? (Number(dadosAnterior["Disco_usado_(bytes)"]) / Number(dadosAnterior["Disco_total_(bytes)"])) * 100 : null;
 
   // Gráfico principal
   const dataset = graficoAtividade.data.datasets[0];
@@ -290,15 +303,9 @@ function atualizarDash(dados, limites) {
   valorLatencia.textContent = `${latMedia.toFixed(2)} ms`;
 
 //Chamando função para calcular a variação das KPIS
-ultimoUso = calcularVariacao(usoDisco, ultimoUso, variacaoUso, "%")
-ultimaTaxaMedia = calcularVariacao(taxaMedia, ultimaTaxaMedia, variacaoTaxa, "MB/s")
-ultimaLatencia = calcularVariacao(latMedia, ultimaLatencia, variacaoLatencia, "ms")
-
-
-// Atualiza para as proximas
-ultimoUso = usoDisco;
-ultimaTaxaMedia = taxaMedia;
-ultimaLatencia = latMedia;
+calcularVariacao(usoDisco, usoDiscoAnterior, variacaoUso, "%");
+calcularVariacao(Number(taxaMedia), (taxaLeituraAnterior + taxaEscritaAnterior) / 2, variacaoTaxa, "MB/s");
+calcularVariacao(latMedia, (latMediaLeituraAnterior + latMediaEscritaAnterior) / 2, variacaoLatencia, "ms");
 
 }
 
@@ -375,8 +382,6 @@ function calcularVariacao(valorAtual, valorAnterior, elemento, unidade) {
         elemento.textContent = `0 ${unidade}`;
         elemento.style.color = "gray";
     }
-
-    return valorAtual;
 }
 
 async function carregarPrevisao() {
@@ -386,10 +391,17 @@ async function carregarPrevisao() {
     const previsao = await res.json();
     console.log("Previsão recebida:", previsao);
 
-    
-      grafico.data.datasets[0].data = previsao.historico;
-      grafico.data.datasets[1].data = previsao.previsao;
-      grafico.update();
+    //Gera as labels dinamicas
+    const labels = gerarLabels(previsao.historico, previsao.previsao)
+
+    // Monta os dados para o gráfico
+    const dadosHistoricos = previsao.historico.concat(Array(previsao.previsao.length).fill(null));
+    const dadosProjetados = Array(previsao.historico.length).fill(null).concat(previsao.previsao);
+
+    grafico.data.labels = labels;
+    grafico.data.datasets[0].data = dadosHistoricos;
+    grafico.data.datasets[1].data = dadosProjetados;
+    grafico.update();
 
   } catch (erro) {
     console.error("Erro ao buscar previsão:", erro);
@@ -397,6 +409,8 @@ async function carregarPrevisao() {
 }
 
 // Chame a função junto com carregarDados
+carregarDados();
 carregarPrevisao();
 setInterval(carregarPrevisao, 3000); // Atualiza a cada 3s
+setInterval(carregarDados, 3000); // Atualiza a cada 3s
 

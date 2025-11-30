@@ -131,6 +131,30 @@ async function alertasNasUltimas24hrs(idServidor) {
 }
 
 
+function regressaoLinear(y) {
+    // y: array de valores históricos
+    const n = y.length;
+    if (n < 2) return []; // Não dá para prever com menos de 2 pontos
+
+    const x = Array.from({length: n}, (_, i) => i + 1);
+
+    const sumX = x.reduce((a, b) => a + b, 0);
+    const sumY = y.reduce((a, b) => a + b, 0);
+    const sumXY = x.reduce((acc, xi, i) => acc + xi * y[i], 0);
+    const sumX2 = x.reduce((acc, xi) => acc + xi * xi, 0);
+
+    const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    const b = (sumY - m * sumX) / n;
+
+    // Projeção para próximos 6 períodos
+    const previsao = [];
+    for (let i = n + 1; i <= n + 6; i++) {
+        previsao.push(m * i + b);
+    }
+    return previsao;
+}
+
+
 async function preverSobrecarga(req, res) {
   try {
     const bucketName = process.env.AWS_BUCKET_NAME;
@@ -148,7 +172,7 @@ async function preverSobrecarga(req, res) {
     }
 
     // Gere a previsão (exemplo simples)
-    const previsao = historico.length > 0 ? [historico[0] + 10, historico[0] + 20] : [];
+    const previsao = regressaoLinear(historico)
 
     res.json({ historico, previsao });
   } catch (err) {
