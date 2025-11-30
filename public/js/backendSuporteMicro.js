@@ -98,14 +98,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (dadosBucket.length > 0) {
             dadosRecebidos = dadosBucket;
-            discoTotal = bytesParaGB(dadosRecebidos[0]["Disco_total_(bytes)"]);
+            discoTotal = Math.round(dadosRecebidos[0]["Disco_total_(bytes)"],0);
             ramTotal = bytesParaGB(dadosRecebidos[0]["RAM_total_(bytes)"]);
-            discoUsado = bytesParaGB(dadosRecebidos[0]["Disco_usado_(bytes)"]);
-            discoLivre = bytesParaGB(dadosRecebidos[0]["Disco_livre_(bytes)"]);
+            discoUsado = Math.round(dadosRecebidos[0]["Disco_usado_(bytes)"], 0);
+            discoLivre = Math.round(dadosRecebidos[0]["Disco_livre_(bytes)"],0);
         }
 
         processos = dadosProcessos;
 
+        escolherServidor();
         renderizarProcessos(dadosProcessos)
         plotarDados(dadosBucket, alertasServidor);
 
@@ -137,7 +138,6 @@ function plotarDados(dadosBucket, alertasServidor) {
     utilizaçãoDeDisco();
     utilizacaoCPU(dadosBucket);
     utilizacaoDeRam(dadosBucket);
-    escolherServidor();
     uptimeSistema(dadosBucket);
     saudeDoServidor(dadosBucket);
     totalAlertas(alertasServidor);
