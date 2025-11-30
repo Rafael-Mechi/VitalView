@@ -119,6 +119,9 @@ document.getElementById('periodo_select').addEventListener('change', function() 
     const valorSelecionado = this.value;
     
     switch(valorSelecionado) {
+        case '2':
+            periodoAtual = 'dia';
+            break;
         case '3':
             periodoAtual = 'semana';
             break;
@@ -127,6 +130,12 @@ document.getElementById('periodo_select').addEventListener('change', function() 
             break;
         case '5':
             periodoAtual = 'ano';
+            break;
+        case '6':
+            periodoAtual = 'trimestre';
+            break;
+        case '7':
+            periodoAtual = 'semestre';
             break;
         default:
             periodoAtual = 'mes';
@@ -142,6 +151,11 @@ function atualizarTextosPeriodo() {
     let tituloGrafico = '';
     
     switch(periodoAtual) {
+        case 'dia':
+            textoPeriodoNo = 'Hoje';
+            textoPeriodoDurante = 'Durante o Dia';
+            tituloGrafico = 'Distribuição de alertas ao longo do dia';
+            break;
         case 'semana':
             textoPeriodoNo = 'Nesta Semana';
             textoPeriodoDurante = 'Durante a Semana';
@@ -151,6 +165,16 @@ function atualizarTextosPeriodo() {
             textoPeriodoNo = 'Neste Mês';
             textoPeriodoDurante = 'Durante o Mês';
             tituloGrafico = 'Distribuição de alertas no mês';
+            break;
+        case 'trimestre':
+            textoPeriodoNo = 'Neste Trimestre';
+            textoPeriodoDurante = 'Durante o Trimestre';
+            tituloGrafico = 'Distribuição de alertas no trimestre';
+            break;
+        case 'semestre':
+            textoPeriodoNo = 'Neste Semestre';
+            textoPeriodoDurante = 'Durante o Semestre';
+            tituloGrafico = 'Distribuição de alertas no semestre';
             break;
         case 'ano':
             textoPeriodoNo = 'Neste Ano';
@@ -166,12 +190,13 @@ function atualizarTextosPeriodo() {
         let novoTexto = textoOriginal;
         
         novoTexto = novoTexto
-            .replace(/No (Mês|Ano|Semana|Neste Mês|Neste Ano|Nesta Semana)/gi, textoPeriodoNo)
-            .replace(/Neste (Mês|Ano)/gi, textoPeriodoNo)
-            .replace(/Nesta (Semana)/gi, textoPeriodoNo);
+            .replace(/No (Mês|Ano|Semana|Neste Mês|Neste Ano|Nesta Semana|Hoje|Trimestre|Semestre|Neste Trimestre|Neste Semestre)/gi, textoPeriodoNo)
+            .replace(/Neste (Mês|Ano|Trimestre|Semestre)/gi, textoPeriodoNo)
+            .replace(/Nesta (Semana)/gi, textoPeriodoNo)
+            .replace(/Hoje/gi, textoPeriodoNo);
         
         novoTexto = novoTexto
-            .replace(/Durante (o Mês|o Ano|a Semana)/gi, textoPeriodoDurante);
+            .replace(/Durante (o Mês|o Ano|a Semana|o Dia|o Trimestre|o Semestre)/gi, textoPeriodoDurante);
         
         el.textContent = novoTexto;
         
@@ -262,9 +287,27 @@ function gerarGraficoTopServidores(dados) {
         chartTopServidores.destroy();
     }
     
-    let labelPeriodo = periodoAtual === 'semana' ? 'na última semana' : 
-                       periodoAtual === 'mes' ? 'no último mês' : 
-                       'no último ano';
+    let labelPeriodo = '';
+    switch(periodoAtual) {
+        case 'dia':
+            labelPeriodo = 'hoje';
+            break;
+        case 'semana':
+            labelPeriodo = 'na última semana';
+            break;
+        case 'mes':
+            labelPeriodo = 'no último mês';
+            break;
+        case 'trimestre':
+            labelPeriodo = 'no último trimestre';
+            break;
+        case 'semestre':
+            labelPeriodo = 'no último semestre';
+            break;
+        case 'ano':
+            labelPeriodo = 'no último ano';
+            break;
+    }
     
     chartTopServidores = new Chart(document.getElementById("topServidoresChart"), {
         type: "bar",
@@ -351,27 +394,24 @@ function gerarGraficoDistribuicaoAno(dados) {
         dados = [];
     }
     
-    if (periodoAtual === 'ano') {
-        tituloGrafico = 'Distribuição de alertas ao longo do ano';
+    if (periodoAtual === 'dia') {
+        tituloGrafico = 'Distribuição de alertas ao longo do dia';
         
-        for (let i = 0; i < dados.length - 1; i++) {
-            for (let j = i + 1; j < dados.length; j++) {
-                if (new Date(dados[i].periodo) > new Date(dados[j].periodo)) {
-                    let temp = dados[i];
-                    dados[i] = dados[j];
-                    dados[j] = temp;
+        const porHora = {};
+        dados.forEach(item => {
+            if (item.hora !== undefined) {
+                if (!porHora[item.hora]) {
+                    porHora[item.hora] = 0;
                 }
+                porHora[item.hora] += item.quantidade_alertas;
             }
+        });
+        
+        for (let hora = 0; hora < 24; hora++) {
+            labels.push(`${hora.toString().padStart(2, '0')}h`);
+            quantidades.push(porHora[hora] || 0);
         }
         
-        let nomesMes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-        
-        for (let i = 0; i < dados.length; i++) {
-            let partes = dados[i].periodo.split("-");
-            let mesIndex = parseInt(partes[1]) - 1;
-            labels.push(nomesMes[mesIndex]);
-            quantidades.push(dados[i].quantidade_alertas);
-        }
     } else if (periodoAtual === 'semana') {
         tituloGrafico = 'Distribuição de alertas na semana';
         
@@ -410,6 +450,7 @@ function gerarGraficoDistribuicaoAno(dados) {
                 quantidades.push(0);
             });
         }
+        
     } else if (periodoAtual === 'mes') {
         tituloGrafico = 'Distribuição de alertas no mês';
         
@@ -433,6 +474,52 @@ function gerarGraficoDistribuicaoAno(dados) {
         } else {
             labels.push('Sem dados');
             quantidades.push(0);
+        }
+        
+    } else if (periodoAtual === 'trimestre' || periodoAtual === 'semestre') {
+        tituloGrafico = periodoAtual === 'trimestre' ? 
+            'Distribuição de alertas no trimestre' : 
+            'Distribuição de alertas no semestre';
+        
+        for (let i = 0; i < dados.length - 1; i++) {
+            for (let j = i + 1; j < dados.length; j++) {
+                if (new Date(dados[i].periodo) > new Date(dados[j].periodo)) {
+                    let temp = dados[i];
+                    dados[i] = dados[j];
+                    dados[j] = temp;
+                }
+            }
+        }
+        
+        let nomesMes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+        
+        for (let i = 0; i < dados.length; i++) {
+            let partes = dados[i].periodo.split("-");
+            let mesIndex = parseInt(partes[1]) - 1;
+            labels.push(nomesMes[mesIndex]);
+            quantidades.push(dados[i].quantidade_alertas);
+        }
+        
+    } else if (periodoAtual === 'ano') {
+        tituloGrafico = 'Distribuição de alertas ao longo do ano';
+        
+        for (let i = 0; i < dados.length - 1; i++) {
+            for (let j = i + 1; j < dados.length; j++) {
+                if (new Date(dados[i].periodo) > new Date(dados[j].periodo)) {
+                    let temp = dados[i];
+                    dados[i] = dados[j];
+                    dados[j] = temp;
+                }
+            }
+        }
+        
+        let nomesMes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+        
+        for (let i = 0; i < dados.length; i++) {
+            let partes = dados[i].periodo.split("-");
+            let mesIndex = parseInt(partes[1]) - 1;
+            labels.push(nomesMes[mesIndex]);
+            quantidades.push(dados[i].quantidade_alertas);
         }
     }
     
@@ -483,7 +570,7 @@ function gerarGraficoDistribuicaoAno(dados) {
                         maxRotation: 45,
                         minRotation: 0,
                         autoSkip: true,
-                        maxTicksLimit: 15
+                        maxTicksLimit: periodoAtual === 'dia' ? 24 : 15
                     }
                 },
                 y: { 

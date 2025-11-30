@@ -78,6 +78,30 @@ async function distribuicaoAlertasAno(idHospital, periodo) {
     let instrucao = '';
     
     switch(periodo) {
+        case 'dia':
+            instrucao = `
+            SELECT 
+                DATE_FORMAT(a.data_alerta, '%Y-%m-%d %H:00:00') AS periodo,
+                HOUR(a.data_alerta) AS hora,
+                COUNT(a.id) AS quantidade_alertas
+            FROM 
+                alerta a
+            JOIN 
+                componentes c ON a.fkComponente = c.idComponente
+            JOIN 
+                servidores s ON c.fkServidor = s.idServidor
+            JOIN 
+                hospital h ON s.fkHospital = h.idHospital
+            WHERE 
+                h.idHospital = ${idHospital}
+                AND a.data_alerta >= CURDATE()
+                AND a.data_alerta < CURDATE() + INTERVAL 1 DAY
+            GROUP BY 
+                periodo, hora
+            ORDER BY 
+                periodo ASC`;
+            break;
+            
         case 'semana':
             instrucao = `
             SELECT 
@@ -122,6 +146,52 @@ async function distribuicaoAlertasAno(idHospital, periodo) {
                 AND a.data_alerta < DATE_ADD(DATE_FORMAT(CURDATE(), '%Y-%m-01'), INTERVAL 1 MONTH)
             GROUP BY 
                 periodo, dia_mes
+            ORDER BY 
+                periodo ASC`;
+            break;
+            
+        case 'trimestre':
+            instrucao = `
+            SELECT 
+                DATE_FORMAT(a.data_alerta, '%Y-%m') AS periodo,
+                MONTH(a.data_alerta) AS mes,
+                COUNT(a.id) AS quantidade_alertas
+            FROM 
+                alerta a
+            JOIN 
+                componentes c ON a.fkComponente = c.idComponente
+            JOIN 
+                servidores s ON c.fkServidor = s.idServidor
+            JOIN 
+                hospital h ON s.fkHospital = h.idHospital
+            WHERE 
+                h.idHospital = ${idHospital}
+                AND a.data_alerta >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+            GROUP BY 
+                periodo, mes
+            ORDER BY 
+                periodo ASC`;
+            break;
+            
+        case 'semestre':
+            instrucao = `
+            SELECT 
+                DATE_FORMAT(a.data_alerta, '%Y-%m') AS periodo,
+                MONTH(a.data_alerta) AS mes,
+                COUNT(a.id) AS quantidade_alertas
+            FROM 
+                alerta a
+            JOIN 
+                componentes c ON a.fkComponente = c.idComponente
+            JOIN 
+                servidores s ON c.fkServidor = s.idServidor
+            JOIN 
+                hospital h ON s.fkHospital = h.idHospital
+            WHERE 
+                h.idHospital = ${idHospital}
+                AND a.data_alerta >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+            GROUP BY 
+                periodo, mes
             ORDER BY 
                 periodo ASC`;
             break;
@@ -181,15 +251,22 @@ async function diaSemanaComMaisAlertas(idHospital, periodo) {
     return database.executar(instrucao);
 }
 
-// Função auxiliar pfiltro de data
+// Função auxiliar para filtro de data
 function getFiltroData(periodo) {
     switch(periodo) {
+        case 'dia':
+            return `a.data_alerta >= CURDATE() 
+                    AND a.data_alerta < CURDATE() + INTERVAL 1 DAY`;
         case 'semana':
             return `a.data_alerta >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) 
                     AND a.data_alerta < CURDATE() + INTERVAL 1 DAY`;
         case 'mes':
             return `a.data_alerta >= DATE_FORMAT(CURDATE(), '%Y-%m-01') 
                     AND a.data_alerta < DATE_ADD(DATE_FORMAT(CURDATE(), '%Y-%m-01'), INTERVAL 1 MONTH)`;
+        case 'trimestre':
+            return `a.data_alerta >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)`;
+        case 'semestre':
+            return `a.data_alerta >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)`;
         case 'ano':
             return `a.data_alerta >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)`;
         default:
