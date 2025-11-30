@@ -4,7 +4,7 @@ var router = express.Router();
 var discoController = require("../controllers/discoController");
 
 //Recebendo os dados do html e direcionando para a função cadastrar de usuarioController.js
-router.get("/buscar-dados-banco/:idServidor", function (req, res) {
+router.get("/buscar-limites/:idServidor", function (req, res) {
     discoController.buscarDadosServidores(req, res);
 })
 

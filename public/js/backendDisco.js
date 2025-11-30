@@ -1,48 +1,77 @@
 // ---------------- CONFIGURAÇÕES INICIAIS ----------------
 const params = new URLSearchParams(window.location.search);
 const idServidor = params.get("idServidor");
-const nomeServidor = params.get("hostname");
+const idHospital = sessionStorage.FK_HOSPITAL;
 const nomeHospital = sessionStorage.NOME_HOSPITAL;
+const nomeServidor = params.get("hostname");
 const key = `${idServidor}_${nomeServidor}_${nomeHospital}.json`;
 
 
+console.log(idServidor);
+console.log(idHospital);
+console.log(nomeHospital);
+
+
+
 //------------------Puxando as classes do HTML-------------------
+//Grafico atividade
 const valorAtividade = document.querySelector(".texto_esquerda h1");
 const horaAtualizacao = document.querySelector(".texto_direita p:last-child");
 
+//grafico uso de disco
 const valorUso = document.querySelectorAll('.numero_uso_disco h1')[0];
 const textoUso = document.querySelectorAll('.p_esquerda')[1];
 const variacaoUso = document.querySelectorAll('.UD_texto_direita p')[0];
 
+//Grafico taxa de transferencia
 const valorTaxa = document.querySelectorAll('.numero_uso_disco h1')[1];
 const variacaoTaxa = document.querySelectorAll('.UD_texto_direita p')[1];
 
+//Grafico letencia
 const valorLatencia = document.querySelectorAll('.numero_uso_disco h1')[2];
 const variacaoLatencia = document.querySelectorAll('.UD_texto_direita p')[2];
 
+//Icones de alerta
+const statusUso = document.querySelector('.status-usoDisco');
+const statusTaxa = document.querySelector('.status-taxa');
+const statusLatencia = document.querySelector('.status-latencia');
+
+//Variavies para pegar a ultima captura para fazer a comparação:
+let ultimoUso = null;
+let ultimaTaxaMedia = null;
+let ultimaLatencia = null;
+
+
+
 // ---------------- FUNÇÃO PRINCIPAL ----------------
 async function carregarDados() {
-  let idServidor = sessionStorage.ID_SERVIDOR;
-  let idHospital = sessionStorage.FK_HOSPITAL;
-  console.log(idServidor);
-  console.log(idHospital);
-  
+
   try {
-    const resposta = await fetch(`/dashDiscoRoutes/buscar-dados-bucket-disco/${key}`);
-    if (!resposta.ok) throw new Error("Falha ao buscar dados de disco")
+    //Fazendo um fetch para puxar os dados e os limites
+   const [bucketRes, limitesRes] = await Promise.all([
+      fetch(`/dashDiscoRoutes/buscar-dados-bucket-disco/${key}`),
+      fetch(`/dashDiscoRoutes/buscar-limites/${idServidor}`)
+    ]);
+
+    if (!bucketRes.ok) throw new Error("Falha ao buscar dados de disco")
+    if (!limitesRes.ok) throw new Error("Falha ao puxar os limites de componentes")
     
 
-    const dados = await resposta.json();
-    console.log("Dados recebidos:", dados);
+    //Convertendo para json só pra garantir
+    const dados = await bucketRes.json()
+    const limites = await limitesRes.json()
+
+    console.log("Dados recebidos:", dados)
+    console.log("Limites recebidos:", limites)
     
-    atualizarDash(dados);
+    atualizarDash(dados, limites);
   } catch (erro) {
     console.error("Erro ao buscar dados do bucket:", erro);
   }
 }
 
 carregarDados();
-setInterval(carregarDados, 5000); // Atualiza a cada 5s
+setInterval(carregarDados, 3000); // Atualiza a cada 3s
 
 // ---------------- GRAFICO PRINCIPAL (ATIVIDADE GERAL) ----------------
 const ctx = document.getElementById("graficoAtividade").getContext("2d");
@@ -136,12 +165,13 @@ const graficoLatencia = new Chart(ctxLatencia, {
 });
 
 // ---------------- FUNÇÃO DE ATUALIZAÇÃO ----------------
-function atualizarDash(dados) {
+function atualizarDash(dados, limites) {
   const usoDisco = Number(dados[0]["Disco_usado_(bytes)"]) || 0;
   const discoTotal =  Number(dados[0]["Disco_total_(bytes)"])
   const taxaLeitura = Number(dados[0]["Disco_taxa_leitura_mbs"])
   const taxaEscrita = Number(dados[0]["Disco_taxa_escrita_mbs"])
-  const latMedia = Number(dados[0]["Latencia_(ms)"]) //MUDAR AQUI PQ MEU GRUPO FEZ MERDA
+  const latMediaLeitura = Number(dados[0]["Disco_latencia_leitura"]) 
+  const latMediaEscrita = Number(dados[0]["Disco_latencia_escrita"])
   const dataColeta = Number(dados[0]["Data da Coleta"] || new Date());
 
   // Gráfico principal
@@ -157,7 +187,7 @@ function atualizarDash(dados) {
   graficoUso.data.datasets[0].data = [usoDisco];
   graficoUso.update();
   valorUso.textContent = `${usoDisco.toFixed(1)}%`;
-  textoUso.textContent = `${(usoDisco * 5).toFixed(1)} GB usados de ${discoTotal.toFixed()} GB`;
+  textoUso.textContent = `${(usoDisco).toFixed(1)} GB usados de ${discoTotal.toFixed()} GB`;
 
   // Taxa de transferência média
   const taxaMedia = ((taxaLeitura + taxaEscrita) / 2).toFixed(2);
@@ -166,18 +196,24 @@ function atualizarDash(dados) {
   graficoTaxa.update();
   valorTaxa.textContent = `${taxaMedia} MB/s`;
 
-  const variacaoTx = ((Math.random() * 2 - 1) * 0.5).toFixed(1);
-  variacaoTaxa.textContent = `${variacaoTx >= 0 ? "▲" : "▼"} ${variacaoTx} MB/s`;
-  variacaoTaxa.style.color = variacaoTx >= 0 ? "green" : "red";
 
   // Latência
+  const latMedia = (latMediaLeitura + latMediaEscrita) / 2;
   graficoLatencia.data.datasets[0].data = [latMedia];
   graficoLatencia.update();
-  valorLatencia.textContent = `${latMedia.toFixed(1)} ms`;
+  valorLatencia.textContent = `${latMedia.toFixed(2)} ms`;
 
-  const variacaoLat = ((Math.random() * 2 - 1) * 0.5).toFixed(1);
-  variacaoLatencia.textContent = `${variacaoLat >= 0 ? "▲" : "▼"} ${variacaoLat} ms`;
-  variacaoLatencia.style.color = variacaoLat >= 0 ? "red" : "green";
+//Chamando função para calcular a variação das KPIS
+ultimoUso = calcularVariacao(usoDisco, ultimoUso, variacaoUso, "%")
+ultimaTaxaMedia = calcularVariacao(taxaMedia, ultimaTaxaMedia, variacaoTaxa, "MB/s")
+ultimaLatencia = calcularVariacao(latMedia, ultimaLatencia, variacaoLatencia, "ms")
+
+
+// Atualiza para as proximas
+ultimoUso = usoDisco;
+ultimaTaxaMedia = taxaMedia;
+ultimaLatencia = latMedia;
+
 }
 
 
@@ -211,4 +247,43 @@ function escolherServidor() {
         const idHospital = sessionStorage.FK_HOSPITAL;
         window.location.href = `dashboardSuporteMicro.html?idServidor=${idServidorSelecionado}&hostname=${hostname}&idhospital=${idHospital}`;
     })
+}
+
+//Função para atualizar o "normal dos graficos e KPIS"
+function atualizarStatus(valorAtual, limite, elemento) {
+    if (!limite || limite <= 0) return;
+
+    if (valorAtual > limite) {
+        elemento.classList.remove("ok");
+        elemento.classList.add("alerta");
+        elemento.textContent = "Alerta";
+    } else {
+        elemento.classList.remove("alerta");
+        elemento.classList.add("ok");
+        elemento.textContent = "Normal";
+    }
+}
+
+//Função para calcular a varicao das KPIS comparando o valor anterior
+function calcularVariacao(valorAtual, valorAnterior, elemento, unidade) {
+    if (valorAnterior === null) {
+        elemento.textContent = "—";
+        elemento.style.color = "gray";
+        return valorAtual; // volta o novo "último"
+    }
+
+    const diferenca = valorAtual - valorAnterior;
+
+    if (diferenca > 0) {
+        elemento.textContent = `▲ +${diferenca.toFixed(2)} ${unidade}`;
+        elemento.style.color = "red";
+    } else if (diferenca < 0) {
+        elemento.textContent = `▼ ${Math.abs(diferenca).toFixed(2)} ${unidade}`;
+        elemento.style.color = "green";
+    } else {
+        elemento.textContent = `0 ${unidade}`;
+        elemento.style.color = "gray";
+    }
+
+    return valorAtual;
 }

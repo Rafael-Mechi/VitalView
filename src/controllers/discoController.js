@@ -18,10 +18,9 @@ function buscarListaServidores(req, res) {
     });
 }
 
-
 async function pegarDadosDisco(req, res) {
   const bucketName = process.env.AWS_BUCKET_NAME;
-    const fileKey = req.params.key;
+    const fileKey = `suporte/disco/${req.params.key}`
     //ISSO AQUI SALVOU MINHA VIDA -> log("Key recebida na rota:", fileKey)
 
     try {
