@@ -198,7 +198,6 @@ function getFiltroData(periodo) {
 }
 
 const pegarDadosBucketModel = async (bucketName, fileKey) => {
-
     s3.listObjectsV2({ Bucket: process.env.AWS_BUCKET_NAME }, (err, data) => {
         if (err) console.error('Erro ao listar:', err);
         else console.log('Arquivos no bucket:', data.Contents.map(obj => obj.Key));
@@ -222,7 +221,8 @@ function buscarServidores(idHospital){
     const instrucao = `
     SELECT 
         s.idServidor,
-        s.hostname
+        s.hostname,
+        h.nome
     FROM 
         servidores s
     INNER JOIN hospital h on h.idHospital = s.fkHospital

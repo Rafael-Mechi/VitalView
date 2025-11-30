@@ -24,7 +24,18 @@ function buscarServidores(){
                 .then(response => {
                     if (response.ok) {
                         response.json().then(resposta => {
-                            console.log("Servidores: ", resposta);
+                            console.log("Servidores do banco: ", resposta);
+
+                            for(let i = 0; i < resposta.length; i++){
+                                let idServidor = resposta[i].idServidor;
+                                let hostname = resposta[i].hostname;
+                                let nomeHospital = resposta[i].nome;
+
+                                let key = `analista/previsoes/${idServidor}_${hostname}_${nomeHospital}_previsoes.json`;
+                                console.log(`Chave que está sendo enviada: ${key}`);
+                                
+                                buscarDadosBucket(key);
+                            }
                         })
                     }
                 })
@@ -32,6 +43,59 @@ function buscarServidores(){
                     console.error("Erro na requisição: ", erro);
                     alert("Erro na conexão com o servidor.");
                 });
+}
+
+function buscarDadosBucket(key) {
+    fetch(`analista/buscar-dados-bucket/${encodeURIComponent(key)}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+        .then(response => {
+            if (response.ok) {
+                response.json().then(resposta => {
+                    console.log("Dados recebidos do bucket: ", resposta);
+                    //gerarTabelaPrevisoes(resposta);
+                        })
+                    }
+                })
+                .catch((erro) => {
+                    console.error("Erro na requisição: ", erro);
+                    alert("Erro na conexão com o servidor.");
+                });
+        }
+
+function gerarTabelaPrevisoes(dados) {
+    let tbodyPrevisoes = document.getElementById("corpoTabelaPrevisoes");
+    tbodyPrevisoes.innerHTML = "";
+
+    for (let i = 0; i < dados.length; i++) {
+        let registro = dados[i];
+
+        let idServidor = registro.idServidor;
+        let hostname = registro.hostname;
+        let diffMs = hoje - dataGeracao;
+        let tempoNoSistema = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 365));
+
+        let dataFormatada = new Date(img.data_geracao)
+            .toLocaleDateString("pt-BR", { timeZone: "UTC" });
+
+        let linha = `
+        <tr>
+            <td hidden>${img.caminho_arquivo}</td>
+            <td>${img.nome_arquivo}</td>
+            <td>${img.tamanho} MB</td>
+            <td>${dataFormatada}</td>
+            <td>${tempoNoSistema} anos</td>
+            <td class="acao-icons">
+                    <button class="btn-excluir-usuario" onclick="excluirImagem(this)">&#x1F5D1;</button>
+            </td>
+        </tr>
+    `;
+
+        tbodyImagens.innerHTML += linha;
+        }
 }
 
 async function carregarInformacoes() {
@@ -47,7 +111,7 @@ async function carregarInformacoes() {
     contarAlertasNoPeriodo();
     distribuicaoAlertasAno();
     diaSemanaComMaisAlertas();
-    await carregarDadosPrevisoes();
+    await gerarTabelaPrevisoes();
 }
 
 // Event listener para mudança de período
@@ -436,69 +500,3 @@ function gerarGraficoDistribuicaoAno(dados) {
         }
     });
 }
-
-const params = new URLSearchParams(window.location.search);
-
-const idServidor = params.get("idServidor");
-const nomeServidor = params.get("hostname");
-
-console.log(idServidor, nomeServidor);
-
-
-let key = `analista/previsoes/3_srv1_hsl_previsoes.json`;
-let key2 = "1_srv1_hsl.json";
-
-function carregarInformacoes() {
-    fetch(`/analista/buscar-dados-bucket/${encodeURIComponent(key)}`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        }
-    })
-        .then(response => {
-            if (response.ok) {
-                response.json().then(resposta => {
-                    console.log("Dado recebido: ", resposta);
-                    gerarTabelaPrevisoes(resposta);
-                        })
-                    }
-                })
-                .catch((erro) => {
-                    console.error("Erro na requisição: ", erro);
-                    alert("Erro na conexão com o servidor.");
-                });
-        }
-
-function gerarTabelaPrevisoes(dados) {
-    let tbodyPrevisoes = document.getElementById("corpoTabelaPrevisoes");
-    tbodyPrevisoes.innerHTML = "";
-
-    for (let i = 0; i < dados.length; i++) {
-        let registro = dados[i];
-
-        let idServidor = registro.idServidor;
-        let hostname = registro.hostname;
-        let diffMs = hoje - dataGeracao;
-        let tempoNoSistema = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 365));
-
-        let dataFormatada = new Date(img.data_geracao)
-            .toLocaleDateString("pt-BR", { timeZone: "UTC" });
-
-        let linha = `
-        <tr>
-            <td hidden>${img.caminho_arquivo}</td>
-            <td>${img.nome_arquivo}</td>
-            <td>${img.tamanho} MB</td>
-            <td>${dataFormatada}</td>
-            <td>${tempoNoSistema} anos</td>
-            <td class="acao-icons">
-                    <button class="btn-excluir-usuario" onclick="excluirImagem(this)">&#x1F5D1;</button>
-            </td>
-        </tr>
-    `;
-
-        tbodyImagens.innerHTML += linha;
-        }
-}
-
-        
