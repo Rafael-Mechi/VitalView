@@ -459,15 +459,25 @@ h3 {
 .centralizador_titulo {
   display: flex;
   justify-content: space-between;
-    margin-bottom: 1%;
+  margin-bottom: 1%;
+  
 }
 
 .texto_esquerda {
   display: flex;
+  height: 30px;
+  align-items: center;
+  flex-direction: row;
+  width: 50%;
+}
+
+.texto_esquerdaPrevisao {
+  display: flex;
   height: 25px;
   align-items: center;
   flex-direction: row;
-  width: 30%;
+  width: 80%;
+  justify-content: space-evenly;
 }
 
 .texto_direita {
@@ -480,8 +490,9 @@ h3 {
 
 .p_direita {
   display: flex;
-  flex-direction: row;
-  width: 70%;
+  flex-direction: column;
+  width: 150px;
+  align-items: center;
 }
 
 .texto_esquerda p {
