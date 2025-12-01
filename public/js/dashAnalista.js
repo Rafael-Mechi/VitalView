@@ -14,35 +14,35 @@ let chartTopServidores = null;
 let chartComponentes = null;
 let chartLinhaAno = null;
 
-function buscarServidores(){
+function buscarServidores() {
     fetch(`/analista/buscar-servidores/${idHospitalVar}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                }
-            })
-                .then(response => {
-                    if (response.ok) {
-                        response.json().then(resposta => {
-                            console.log("Servidores do banco: ", resposta);
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+        .then(response => {
+            if (response.ok) {
+                response.json().then(resposta => {
+                    console.log("Servidores do banco: ", resposta);
 
-                            for(let i = 0; i < resposta.length; i++){
-                                let idServidor = resposta[i].idServidor;
-                                let hostname = resposta[i].hostname;
-                                let nomeHospital = resposta[i].nome;
+                    for (let i = 0; i < resposta.length; i++) {
+                        let idServidor = resposta[i].idServidor;
+                        let hostname = resposta[i].hostname;
+                        let nomeHospital = resposta[i].nome;
 
-                                let key = `analista/previsoes/${idServidor}_${hostname}_${nomeHospital}_previsoes.json`;
-                                console.log(`Chave que está sendo enviada: ${key}`);
-                                
-                                buscarDadosBucket(key);
-                            }
-                        })
+                        let key = `analista/previsoes/${idServidor}_${hostname}_${nomeHospital}_previsoes.json`;
+                        console.log(`Chave que está sendo enviada: ${key}`);
+
+                        buscarDadosBucket(key);
                     }
                 })
-                .catch((erro) => {
-                    console.error("Erro na requisição: ", erro);
-                    alert("Erro na conexão com o servidor.");
-                });
+            }
+        })
+        .catch((erro) => {
+            console.error("Erro na requisição: ", erro);
+            alert("Erro na conexão com o servidor.");
+        });
 }
 
 function buscarDadosBucket(key) {
@@ -57,14 +57,14 @@ function buscarDadosBucket(key) {
                 response.json().then(resposta => {
                     console.log("Dados recebidos do bucket: ", resposta);
                     gerarTabelaPrevisoes(resposta);
-                        })
-                    }
                 })
-                .catch((erro) => {
-                    console.error("Erro na requisição: ", erro);
-                    alert("Erro na conexão com o servidor.");
-                });
-        }
+            }
+        })
+        .catch((erro) => {
+            console.error("Erro na requisição: ", erro);
+            alert("Erro na conexão com o servidor.");
+        });
+}
 
 function gerarTabelaPrevisoes(dados) {
     let tbodyPrevisoes = document.getElementById("corpoTabelaPrevisoes");
@@ -82,7 +82,7 @@ function gerarTabelaPrevisoes(dados) {
         let tendencia = registro.tendencia;
         let nivelRisco = registro.nivelRisco;
 
-        if(componente == "Memoria"){
+        if (componente == "Memoria") {
             componente = "Ram"
         }
 
@@ -100,7 +100,7 @@ function gerarTabelaPrevisoes(dados) {
     `;
 
         tbodyPrevisoes.innerHTML += linha;
-        }
+    }
 }
 
 async function carregarInformacoes() {
@@ -109,7 +109,7 @@ async function carregarInformacoes() {
             textosOriginais.set(index, el.textContent);
         });
     }
-    
+
     atualizarTextosPeriodo();
     topServidoresComMaisAlertas();
     distribuicaoAlertasPorComponente();
@@ -120,10 +120,10 @@ async function carregarInformacoes() {
 }
 
 // Event listener para mudança de período
-document.getElementById('periodo_select').addEventListener('change', function() {
+document.getElementById('periodo_select').addEventListener('change', function () {
     const valorSelecionado = this.value;
-    
-    switch(valorSelecionado) {
+
+    switch (valorSelecionado) {
         case '2':
             periodoAtual = 'dia';
             break;
@@ -145,7 +145,7 @@ document.getElementById('periodo_select').addEventListener('change', function() 
         default:
             periodoAtual = 'mes';
     }
-    
+
     carregarInformacoes();
     atualizarTextosPeriodo();
 });
@@ -156,8 +156,8 @@ function atualizarTextosPeriodo() {
     let tituloGrafico = '';
     let tituloKPI = '';
     let legendaKPI = '';
-    
-    switch(periodoAtual) {
+
+    switch (periodoAtual) {
         case 'dia':
             textoPeriodoNo = 'Hoje';
             textoPeriodoDurante = 'Durante o Dia';
@@ -201,38 +201,38 @@ function atualizarTextosPeriodo() {
             legendaKPI = 'Dia da semana com maior frequência de alertas';
             break;
     }
-    
+
     // Para atualizar os textos do periodo
     document.querySelectorAll('small').forEach((el, index) => {
         let textoOriginal = textosOriginais.get(index) || el.textContent;
-        
+
         let novoTexto = textoOriginal;
-        
+
         novoTexto = novoTexto
             .replace(/No (Mês|Ano|Semana|Neste Mês|Neste Ano|Nesta Semana|Hoje|Trimestre|Semestre|Neste Trimestre|Neste Semestre)/gi, textoPeriodoNo)
             .replace(/Neste (Mês|Ano|Trimestre|Semestre)/gi, textoPeriodoNo)
             .replace(/Nesta (Semana)/gi, textoPeriodoNo)
             .replace(/Hoje/gi, textoPeriodoNo);
-        
+
         novoTexto = novoTexto
             .replace(/Durante (o Mês|o Ano|a Semana|o Dia|o Trimestre|o Semestre)/gi, textoPeriodoDurante);
-        
+
         el.textContent = novoTexto;
-        
+
         textosOriginais.set(index, novoTexto);
     });
-    
+
     const tituloGraficoLinha = document.getElementById('titulo_grafico_linha');
     if (tituloGraficoLinha) {
         tituloGraficoLinha.textContent = tituloGrafico;
     }
-    
+
     // Atualizar o título e legenda da KPI
     const tituloKPIElement = document.getElementById('c1');
     if (tituloKPIElement) {
         tituloKPIElement.innerHTML = `${tituloKPI}<br><small>${textoPeriodoDurante}</small>`;
     }
-    
+
     const legendaKPIElement = document.querySelector('.velocimetro.card .legenda');
     if (legendaKPIElement) {
         legendaKPIElement.textContent = legendaKPI;
@@ -315,18 +315,18 @@ function diaSemanaComMaisAlertas() {
 function gerarGraficoTopServidores(dados) {
     let nomes = [];
     let quantidades = [];
-    
+
     for (let i = 0; i < dados.length; i++) {
         nomes.push(dados[i].hostname);
         quantidades.push(dados[i].quantidade_alertas);
     }
-    
+
     if (chartTopServidores) {
         chartTopServidores.destroy();
     }
-    
+
     let labelPeriodo = '';
-    switch(periodoAtual) {
+    switch (periodoAtual) {
         case 'dia':
             labelPeriodo = 'hoje';
             break;
@@ -346,7 +346,7 @@ function gerarGraficoTopServidores(dados) {
             labelPeriodo = 'no último ano';
             break;
     }
-    
+
     chartTopServidores = new Chart(document.getElementById("topServidoresChart"), {
         type: "bar",
         data: {
@@ -377,16 +377,16 @@ function gerarGraficoTopServidores(dados) {
 function gerarGraficoDistribuicao(dados) {
     let nomesComponentes = [];
     let quantidades = [];
-    
+
     for (let i = 0; i < dados.length; i++) {
         nomesComponentes.push(dados[i].componente);
         quantidades.push(dados[i].quantidade_alertas);
     }
-    
+
     if (chartComponentes) {
         chartComponentes.destroy();
     }
-    
+
     chartComponentes = new Chart(document.getElementById("componentesChart"), {
         type: "bar",
         data: {
@@ -397,7 +397,7 @@ function gerarGraficoDistribuicao(dados) {
                 backgroundColor: ["#32b9cd", "#4addf6", "#188b9f", "#093037"],
                 borderRadius: 12
             }]
-        }, 
+        },
         options: {
             plugins: {
                 legend: { display: false },
@@ -427,14 +427,14 @@ function gerarGraficoDistribuicaoAno(dados) {
     let labels = [];
     let quantidades = [];
     let tituloGrafico = '';
-    
+
     if (!Array.isArray(dados)) {
         dados = [];
     }
-    
+
     if (periodoAtual === 'dia') {
         tituloGrafico = 'Distribuição de alertas ao longo do dia';
-        
+
         const porHora = {};
         dados.forEach(item => {
             if (item.hora !== undefined) {
@@ -444,15 +444,15 @@ function gerarGraficoDistribuicaoAno(dados) {
                 porHora[item.hora] += item.quantidade_alertas;
             }
         });
-        
+
         for (let hora = 0; hora < 24; hora++) {
             labels.push(`${hora.toString().padStart(2, '0')}h`);
             quantidades.push(porHora[hora] || 0);
         }
-        
+
     } else if (periodoAtual === 'semana') {
         tituloGrafico = 'Distribuição de alertas na semana';
-        
+
         const diasSemana = {
             'Monday': 'Seg',
             'Tuesday': 'Ter',
@@ -462,9 +462,9 @@ function gerarGraficoDistribuicaoAno(dados) {
             'Saturday': 'Sáb',
             'Sunday': 'Dom'
         };
-        
+
         const ordemDias = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        
+
         const porDiaSemana = {};
         dados.forEach(item => {
             if (item.dia_semana) {
@@ -474,51 +474,42 @@ function gerarGraficoDistribuicaoAno(dados) {
                 porDiaSemana[item.dia_semana] += item.quantidade_alertas;
             }
         });
-        
+
         ordemDias.forEach(dia => {
             if (porDiaSemana[dia]) {
                 labels.push(diasSemana[dia]);
                 quantidades.push(porDiaSemana[dia]);
             }
         });
-        
+
         if (labels.length === 0) {
             ordemDias.forEach(dia => {
                 labels.push(diasSemana[dia]);
                 quantidades.push(0);
             });
         }
-        
+
     } else if (periodoAtual === 'mes') {
-        tituloGrafico = 'Distribuição de alertas no mês';
-        
-        const porDia = {};
+        tituloGrafico = 'Distribuição de alertas nos últimos 30 dias';
+
         dados.forEach(item => {
-            if (item.dia_mes) {
-                if (!porDia[item.dia_mes]) {
-                    porDia[item.dia_mes] = 0;
-                }
-                porDia[item.dia_mes] += item.quantidade_alertas;
+            if (item.dia_mes && item.mes) {
+                const dia = item.dia_mes.toString().padStart(2, '0');
+                const mes = item.mes.toString().padStart(2, '0');
+                labels.push(`${dia}/${mes}`);
+                quantidades.push(item.quantidade_alertas);
             }
         });
-        
-        const diasOrdenados = Object.keys(porDia).sort((a, b) => parseInt(a) - parseInt(b));
-        
-        if (diasOrdenados.length > 0) {
-            diasOrdenados.forEach(dia => {
-                labels.push(`Dia ${dia}`);
-                quantidades.push(porDia[dia]);
-            });
-        } else {
+
+        if (labels.length === 0) {
             labels.push('Sem dados');
             quantidades.push(0);
         }
-        
     } else if (periodoAtual === 'trimestre' || periodoAtual === 'semestre') {
-        tituloGrafico = periodoAtual === 'trimestre' ? 
-            'Distribuição de alertas no trimestre' : 
+        tituloGrafico = periodoAtual === 'trimestre' ?
+            'Distribuição de alertas no trimestre' :
             'Distribuição de alertas no semestre';
-        
+
         for (let i = 0; i < dados.length - 1; i++) {
             for (let j = i + 1; j < dados.length; j++) {
                 if (new Date(dados[i].periodo) > new Date(dados[j].periodo)) {
@@ -528,19 +519,19 @@ function gerarGraficoDistribuicaoAno(dados) {
                 }
             }
         }
-        
+
         let nomesMes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-        
+
         for (let i = 0; i < dados.length; i++) {
             let partes = dados[i].periodo.split("-");
             let mesIndex = parseInt(partes[1]) - 1;
             labels.push(nomesMes[mesIndex]);
             quantidades.push(dados[i].quantidade_alertas);
         }
-        
+
     } else if (periodoAtual === 'ano') {
         tituloGrafico = 'Distribuição de alertas ao longo do ano';
-        
+
         for (let i = 0; i < dados.length - 1; i++) {
             for (let j = i + 1; j < dados.length; j++) {
                 if (new Date(dados[i].periodo) > new Date(dados[j].periodo)) {
@@ -550,9 +541,9 @@ function gerarGraficoDistribuicaoAno(dados) {
                 }
             }
         }
-        
+
         let nomesMes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-        
+
         for (let i = 0; i < dados.length; i++) {
             let partes = dados[i].periodo.split("-");
             let mesIndex = parseInt(partes[1]) - 1;
@@ -560,16 +551,16 @@ function gerarGraficoDistribuicaoAno(dados) {
             quantidades.push(dados[i].quantidade_alertas);
         }
     }
-    
+
     if (chartLinhaAno) {
         chartLinhaAno.destroy();
     }
-    
+
     const tituloElemento = document.getElementById('titulo_grafico_linha');
     if (tituloElemento) {
         tituloElemento.textContent = tituloGrafico;
     }
-    
+
     chartLinhaAno = new Chart(document.getElementById("linhaAnoChart"), {
         type: "line",
         data: {
@@ -595,14 +586,14 @@ function gerarGraficoDistribuicaoAno(dados) {
                 },
                 tooltip: {
                     callbacks: {
-                        label: function(context) {
+                        label: function (context) {
                             return `Alertas: ${context.parsed.y}`;
                         }
                     }
                 }
             },
             scales: {
-                x: { 
+                x: {
                     grid: { display: false },
                     ticks: {
                         maxRotation: 45,
@@ -611,12 +602,12 @@ function gerarGraficoDistribuicaoAno(dados) {
                         maxTicksLimit: periodoAtual === 'dia' ? 24 : 15
                     }
                 },
-                y: { 
-                    beginAtZero: true, 
+                y: {
+                    beginAtZero: true,
                     grid: { color: gridColor },
-                    ticks: { 
+                    ticks: {
                         stepSize: 1,
-                        callback: function(value) {
+                        callback: function (value) {
                             return Math.floor(value);
                         }
                     }

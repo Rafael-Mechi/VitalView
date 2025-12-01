@@ -127,7 +127,9 @@ async function distribuicaoAlertasAno(idHospital, periodo) {
         case 'mes':
             instrucao = `
             SELECT 
+                DATE(a.data_alerta) AS data_completa,
                 DAY(a.data_alerta) AS dia_mes,
+                MONTH(a.data_alerta) AS mes,
                 COUNT(a.id) AS quantidade_alertas
             FROM 
                 alerta a
@@ -139,12 +141,12 @@ async function distribuicaoAlertasAno(idHospital, periodo) {
                 hospital h ON s.fkHospital = h.idHospital
             WHERE 
                 h.idHospital = ${idHospital}
-                AND YEAR(a.data_alerta) = YEAR(CURDATE())
-                AND MONTH(a.data_alerta) = MONTH(CURDATE())
+                AND a.data_alerta >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+                AND a.data_alerta < CURDATE() + INTERVAL 1 DAY
             GROUP BY 
-                dia_mes
+                data_completa, dia_mes, mes
             ORDER BY 
-                dia_mes ASC`;
+                data_completa ASC`;
             break;
             
         case 'trimestre':
@@ -285,8 +287,8 @@ function getFiltroData(periodo) {
             return `a.data_alerta >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) 
                     AND a.data_alerta < CURDATE() + INTERVAL 1 DAY`;
         case 'mes':
-            return `YEAR(a.data_alerta) = YEAR(CURDATE()) 
-                    AND MONTH(a.data_alerta) = MONTH(CURDATE())`;
+            return `a.data_alerta >= DATE_SUB(CURDATE(), INTERVAL 30 DAY) 
+                    AND a.data_alerta < CURDATE() + INTERVAL 1 DAY`;
         case 'trimestre':
             return `a.data_alerta >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)`;
         case 'semestre':
