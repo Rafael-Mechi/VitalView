@@ -226,10 +226,40 @@ const graficoTaxa = new Chart(ctxTaxa, {
   options: {
     responsive: true,
     maintainAspectRatio: false,
-    scales: { x: { display: false }, y: { display: false, min: 0 } },
-    plugins: { legend: { display: false } }
+    scales: {
+      x: {
+        display: false
+      },
+      y: {
+        display: true,
+        title: {
+          display: true,
+          text: 'MB/s',
+          font: { size: 12 }
+        },
+        ticks: {
+          stepSize: 0.5
+        },
+        min: 0
+      }
+    },
+    plugins: {
+      title: {
+        display: true,
+        font: { size: 16 }
+      },
+      tooltip: {
+        callbacks: {
+          label: ctx => `Taxa: ${ctx.parsed.y.toFixed(2)} MB/s`
+        }
+      },
+      legend: {
+        display: false
+      }
+    }
   }
 });
+
 
 // ---------------- GRAFICO LATÊNCIA ----------------
 const ctxLatencia = document.getElementById('graficoLatencia').getContext('2d');
@@ -323,7 +353,7 @@ function escolherServidor() {
     fetch(`/dashDiscoRoutes/buscar-servidores`)
         .then(response => response.json())
         .then(data => {
-
+          console.log(data)
             data.forEach(servidor => {
                 const option = document.createElement("option");
                 option.value = servidor.idServidor;
@@ -342,7 +372,7 @@ function escolherServidor() {
         const idServidorSelecionado = servidorSelecionado.value;
         const hostname = servidorSelecionado.textContent;
         const idHospital = sessionStorage.FK_HOSPITAL;
-        window.location.href = `dashboardSuporteMicro.html?idServidor=${idServidorSelecionado}&hostname=${hostname}&idhospital=${idHospital}`;
+        window.location.href = `dashDisco.html?idServidor=${idServidorSelecionado}&hostname=${hostname}&idhospital=${idHospital}`;
     })
 }
 
@@ -409,8 +439,10 @@ async function carregarPrevisao() {
 }
 
 // Chame a função junto com carregarDados
+window.onload = escolherServidor;
 carregarDados();
 carregarPrevisao();
 setInterval(carregarPrevisao, 3000); // Atualiza a cada 3s
 setInterval(carregarDados, 3000); // Atualiza a cada 3s
+
 
