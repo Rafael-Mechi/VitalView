@@ -56,7 +56,7 @@ function buscarDadosBucket(key) {
             if (response.ok) {
                 response.json().then(resposta => {
                     console.log("Dados recebidos do bucket: ", resposta);
-                    //gerarTabelaPrevisoes(resposta);
+                    gerarTabelaPrevisoes(resposta);
                         })
                     }
                 })
