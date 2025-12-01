@@ -1151,167 +1151,38 @@ th:nth-child(8) {
 
 
 /*Mudar isso aqui depois*/
-.kpi-value.tendencia-mode {
-    font-size: 1rem;
-    padding: 0;
-    margin: 0;
-    color: var(--vv-text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/*Precisa mais não, deu certo*/
+.tendencia-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  margin-left: 12px;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  vertical-align: middle;
+  transition: all 0.3s ease;
+  background: var(--vv-badge-bg);
+  border: 1px solid var(--vv-border);
 }
 
-/* Container principal da tendência */
-.tendencia-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    width: 100%;
-    padding: 8px 0;
+/* Cores do badge - PADRONIZADO */
+.tendencia-badge.aumento {
+  color: var(--vv-alert);
+  border-color: color-mix(in oklab, var(--vv-badge-bg) 70%, var(--vv-alert));
+  background: color-mix(in oklab, var(--vv-badge-bg) 95%, var(--vv-alert));
 }
 
-/* Cards de números */
-.tendencia-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 12px 16px;
-    border-radius: 12px;
-    transition: all 0.3s ease;
+.tendencia-badge.queda {
+  color: var(--vv-ok);
+  border-color: color-mix(in oklab, var(--vv-badge-bg) 70%, var(--vv-ok));
+  background: color-mix(in oklab, var(--vv-badge-bg) 95%, var(--vv-ok));
 }
 
-/* Card principal (número grande) */
-.tendencia-card.principal {
-    background: linear-gradient(135deg, var(--vv-teal), var(--vv-cyan));
-    box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
-    min-width: 100px;
+.tendencia-badge.neutro {
+  color: var(--vv-teal);
+  border-color: color-mix(in oklab, var(--vv-badge-bg) 70%, var(--vv-teal));
+  background: color-mix(in oklab, var(--vv-badge-bg) 95%, var(--vv-teal));
 }
-
-.tendencia-numero {
-    font-size: 2.8rem;
-    font-weight: 900;
-    color: white;
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-}
-
-.tendencia-label {
-    font-size: 0.7rem;
-    color: rgba(255, 255, 255, 0.95);
-    font-weight: 600;
-    margin-top: 4px;
-    text-align: center;
-    letter-spacing: 0.3px;
-}
-
-/* Separador com seta de tendência */
-.tendencia-separador {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0 8px;
-}
-
-.tendencia-seta {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-
-.seta-icon {
-    font-size: 1.8rem;
-    font-weight: 900;
-    line-height: 1;
-}
-
-.seta-texto {
-    font-size: 0.65rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-/* Cores da seta de tendência */
-.tendencia-seta.aumento {
-    background: rgba(230, 57, 70, 0.15);
-    color: #e63946;
-}
-
-.tendencia-seta.queda {
-    background: rgba(46, 204, 113, 0.15);
-    color: #2ecc71;
-}
-
-.tendencia-seta.neutro {
-    background: rgba(52, 152, 219, 0.15);
-    color: #3498db;
-}
-
-/* Card de comparação (número pequeno) */
-.tendencia-card.comparacao {
-    background: var(--vv-badge-bg);
-    border: 1px dashed var(--vv-border);
-    min-width: 80px;
-}
-
-.tendencia-numero-small {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: var(--vv-muted);
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-}
-
-.tendencia-label-small {
-    font-size: 0.65rem;
-    color: var(--vv-muted);
-    font-weight: 600;
-    margin-top: 4px;
-    text-align: center;
-}
-
-/* Animações sutis */
-.tendencia-card.principal {
-    animation: pulse-card 3s ease-in-out infinite;
-}
-
-@keyframes pulse-card {
-    0%, 100% {
-        transform: scale(1);
-        box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
-    }
-    50% {
-        transform: scale(1.02);
-        box-shadow: 0 6px 16px rgba(20, 184, 166, 0.4);
-    }
-}
-
-/* Responsividade */
-@media (max-width: 1400px) {
-    .tendencia-container {
-        flex-direction: column;
-        gap: 8px;
-    }
-    
-    .tendencia-separador {
-        transform: rotate(90deg);
-    }
-}
-
-@media (max-width: 768px) {
-    .tendencia-numero {
-        font-size: 2.2rem;
-    }
-    
-    .tendencia-numero-small {
-        font-size: 1.4rem;
-    }
-}
-
-/*Esse aqui foi o Chat que fez, amanha vou arrumar*/ 

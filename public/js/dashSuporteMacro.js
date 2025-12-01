@@ -5,7 +5,6 @@ window.dadosBucket = [];
 window.pizzaChart = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
-    console.log('🚀 Dashboard Suporte Macro carregado!');
     
     // Configurações iniciais
     configurarPesquisa();
@@ -15,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Primeira carga de dados
     await carregarTodosDados();
     
-    // Atualização automática a cada 3 segundos
+    // Atualização automática a cada 30 segundos
     setInterval(async () => {
         await carregarTodosDados();
     }, 30000);
@@ -34,7 +33,7 @@ async function carregarTodosDados() {
 
         console.log(`📊 Atualizando dados do hospital ${idHospital}...`);
 
-        // Busca dados do bucket E da dashboard em paralelo
+        // Busca dados do bucket E da dashboard
         const [dadosBucket, dadosDashboard] = await Promise.all([
             buscarDadosBucket(),
             buscarDadosDashboard(idHospital)
@@ -45,7 +44,7 @@ async function carregarTodosDados() {
         window.dadosDashboard = dadosDashboard;
         window.dadosServidores = dadosDashboard.servidores;
 
-        // Atualiza interface
+        // Atualizando interface
         atualizarInterface(dadosDashboard);
 
         console.log('✅ Atualização completa!', {
@@ -171,7 +170,7 @@ function alterarFiltroAlertas(tipo) {
     const kpis = window.dadosDashboard.kpis;
 
     if (tipo === 'geral') {
-       // Modo geral (todos os alertas)
+        // MODO GERAL: Alertas ativos no momento
         const alertasAtivos = kpis.alertasGerais || 0;
         
         valorElement.innerHTML = alertasAtivos.toString();
@@ -179,54 +178,38 @@ function alterarFiltroAlertas(tipo) {
         subtituloElement.textContent = 'Alertas ativos no momento';
         
     } else if (tipo === 'tendencia') {
-        // Modo de tendências (nas ultimas 24 horas)
+        // MODO TENDÊNCIA
         const alertas24h = kpis.alertas24h || 0;
         const alertasAnterior = kpis.alertasAnterior || 0;
-        const tendencia = kpis.tendenciaAlertas || '0';
+        const diferenca = alertas24h - alertasAnterior;
         
-        // Determina cor da tendência
-        let tendenciaClass = 'neutro';
-        let tendenciaTexto = 'Manteve';
-        let tendenciaIcon = '=';
+        // Determina símbolo e cor
+        let simbolo = '=';
+        let corClass = 'neutro';
         
-        if (tendencia.includes('▲')) {
-            tendenciaClass = 'aumento';
-            tendenciaTexto = 'Aumentou';
-            tendenciaIcon = '▲';
-        } else if (tendencia.includes('▼')) {
-            tendenciaClass = 'queda';
-            tendenciaTexto = 'Diminuiu';
-            tendenciaIcon = '▼';
+        if (diferenca > 0) {
+            simbolo = '▲';
+            corClass = 'aumento';
+        } else if (diferenca < 0) {
+            simbolo = '▼';
+            corClass = 'queda';
         }
         
-        // Layout com explicação visual clara (talvez mude)
         valorElement.innerHTML = `
-            <div class="tendencia-container">
-                <div class="tendencia-card principal">
-                    <div class="tendencia-numero">${alertas24h}</div>
-                    <div class="tendencia-label">Novos nas últimas 24h</div>
-                </div>
-                <div class="tendencia-separador">
-                    <div class="tendencia-seta ${tendenciaClass}">
-                        <span class="seta-icon">${tendenciaIcon}</span>
-                        <span class="seta-texto">${tendenciaTexto}</span>
-                    </div>
-                </div>
-                <div class="tendencia-card comparacao">
-                    <div class="tendencia-numero-small">${alertasAnterior}</div>
-                    <div class="tendencia-label-small">Período anterior</div>
-                </div>
-            </div>
+            ${alertas24h}
+            <span class="tendencia-badge ${corClass}">
+                ${simbolo} ${Math.abs(diferenca)}
+            </span>
         `;
         
-        valorElement.className = 'kpi-value tendencia-mode';
-        subtituloElement.textContent = 'Comparação: últimas 24h vs 24h anteriores';
+        valorElement.className = 'kpi-value';
+        subtituloElement.innerHTML = `Últimas 24h <span style="color: var(--vv-muted); font-size: 0.75rem;">(vs ${alertasAnterior} anteriores)</span>`;
         
-        console.log('📊 Tendência visual aplicada:', {
+        console.log('Tendência:', {
             novos: alertas24h,
             anteriores: alertasAnterior,
-            mudanca: tendenciaTexto,
-            cor: tendenciaClass
+            diferenca: diferenca,
+            simbolo: simbolo
         });
     }
 
@@ -274,10 +257,12 @@ function atualizarTabela(servidores) {
         const ramClass = servidor.alertas?.ram ? 'critico' : 'normal';
         const discoClass = servidor.alertas?.disco ? 'critico' : 'normal';
 
-        // Status da Rede (simulado ainda)
-        const statusRede = 'NORMAL'; 
+        // Status da Rede 
+        const statusRede = servidor.statusRede || 'NORMAL';
         const statusRedeClass = statusRede === 'ALERTA' ? 'status-alerta' : 'status-normal';
         const statusRedeText = statusRede === 'ALERTA' ? '● Alerta' : '● Normal';
+        const redeComAlerta = statusRede === 'ALERTA';
+        const redeBtnClass = redeComAlerta ? 'btn-network btn-com-alerta' : 'btn-network';
 
         // Animação nos botões se tiver alerta
         const servidorComAlerta = servidor.alertas?.cpu || servidor.alertas?.ram;
@@ -328,7 +313,7 @@ function atualizarTabela(servidores) {
                 </button>
             </td>
             <td class="coluna-icone">
-                <button class="btn-network" 
+                <button class="${redeBtnClass}" 
                         onclick="irParaRede('${servidor.id}','${servidor.nome}','${sessionStorage.FK_HOSPITAL}')"
                         title="Ver detalhes da rede">
                     <img src="assets/dashboard-icons/redeIcon.jpg" style="width: 20px;" alt="Rede">
