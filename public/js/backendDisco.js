@@ -263,25 +263,70 @@ const graficoTaxa = new Chart(ctxTaxa, {
 
 // ---------------- GRAFICO LATÊNCIA ----------------
 const ctxLatencia = document.getElementById('graficoLatencia').getContext('2d');
+
+const gradient = ctxLatencia.createLinearGradient(0, 0, 300, 0);
+gradient.addColorStop(0, 'rgba(0, 255, 180, 0.4)');
+gradient.addColorStop(1, 'rgba(0, 255, 180, 0.9)');
+
 const graficoLatencia = new Chart(ctxLatencia, {
   type: 'bar',
   data: {
-    labels: ['Latência média'],
+    labels: [" "],
     datasets: [{
+      label: 'ms',
       data: [0],
-      backgroundColor: 'rgba(0, 255, 180, 0.8)',
-      borderRadius: 8,
-      barThickness: 10
+      backgroundColor: gradient,
+      borderRadius: 12,
+      borderSkipped: false,
+      barThickness: 22
     }]
   },
   options: {
     indexAxis: 'y',
     responsive: true,
     maintainAspectRatio: false,
-    scales: { x: { display: false }, y: { display: false } },
-    plugins: { legend: { display: false } }
+
+    scales: {
+      x: {
+        grid: {
+          color: 'rgba(255,255,255,0.08)',
+          drawBorder: false
+        },
+        ticks: {
+          color: '#ccc',
+          font: { size: 12 }
+        }
+      },
+      y: {
+        ticks: {
+          color: '#eee',
+          font: { size: 14 }
+        },
+        grid: { display: false }
+      }
+    },
+
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: 'rgba(20,20,20,0.9)',
+        padding: 10,
+        titleFont: { size: 14, weight: 'bold' },
+        bodyFont: { size: 13 },
+        callbacks: {
+          label: ctx => `Latência: ${ctx.raw} ms`
+        }
+      }
+    },
+
+    animation: {
+      duration: 700,
+      easing: 'easeOutQuart'
+    }
   }
 });
+
+
 
 // ---------------- FUNÇÃO DE ATUALIZAÇÃO ----------------
 function atualizarDash(dados, dadosAnterior, limites) {
