@@ -128,7 +128,8 @@ async function distribuicaoAlertasAno(idHospital, periodo) {
             
         case 'mes':
             instrucao = `
-            SELECT 
+            SELECT
+                DATE_FORMAT(a.data_alerta, '%Y-%m-%d') AS periodo, 
                 DAY(a.data_alerta) AS dia_mes,
                 COUNT(a.id) AS quantidade_alertas
             FROM 
@@ -144,9 +145,9 @@ async function distribuicaoAlertasAno(idHospital, periodo) {
                 AND a.data_alerta >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
                 AND a.data_alerta < DATE_ADD(DATE_FORMAT(CURDATE(), '%Y-%m-01'), INTERVAL 1 MONTH)
             GROUP BY 
-                dia_mes
+                periodo, dia_mes
             ORDER BY 
-                dia_mes ASC`;
+                periodo ASC`;
             break;
             
         case 'trimestre':
