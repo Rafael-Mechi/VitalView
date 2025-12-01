@@ -68,7 +68,6 @@ function buscarDadosBucket(key) {
 
 function gerarTabelaPrevisoes(dados) {
     let tbodyPrevisoes = document.getElementById("corpoTabelaPrevisoes");
-    tbodyPrevisoes.innerHTML = "";
 
     for (let i = 0; i < dados.length; i++) {
         let registro = dados[i];
@@ -116,7 +115,6 @@ async function carregarInformacoes() {
     contarAlertasNoPeriodo();
     distribuicaoAlertasAno();
     diaSemanaComMaisAlertas();
-    gerarTabelaPrevisoes();
 }
 
 // Event listener para mudança de período
