@@ -116,7 +116,7 @@ async function carregarInformacoes() {
     contarAlertasNoPeriodo();
     distribuicaoAlertasAno();
     diaSemanaComMaisAlertas();
-    await gerarTabelaPrevisoes();
+    gerarTabelaPrevisoes();
 }
 
 // Event listener para mudança de período
