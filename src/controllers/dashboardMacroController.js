@@ -231,8 +231,9 @@ function processarServidoresComS3(dadosServidores, dadosS3, statusRede) {
         const alertaRam = ram > limiteRam;
         const alertaDisco = disco > limiteDisco;
 
-        const temAlertasAtivos = alertaCpu || alertaRam || alertaDisco;
-        const qtdAlertasAtivos = [alertaCpu, alertaRam, alertaDisco].filter(Boolean).length;
+        const temAlertasAtivos = alertaCpu || alertaRam || alertaDisco || alertaRede;
+        const alertaRede = statusRede.abertos > 0;
+        const qtdAlertasAtivos = [alertaCpu, alertaRam, alertaDisco, alertaRede].filter(Boolean).length;
 
         // Se tem alertas ativos e temos data de coleta do Bucket, calcula o tempo e tal.
         let tempoAlerta = "--:--:--";
