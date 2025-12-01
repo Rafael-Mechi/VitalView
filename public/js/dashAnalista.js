@@ -56,7 +56,7 @@ function buscarDadosBucket(key) {
             if (response.ok) {
                 response.json().then(resposta => {
                     console.log("Dados recebidos do bucket: ", resposta);
-                    gerarTabelaPrevisoes(resposta);
+                    //gerarTabelaPrevisoes(resposta);
                         })
                     }
                 })
@@ -68,38 +68,33 @@ function buscarDadosBucket(key) {
 
 function gerarTabelaPrevisoes(dados) {
     let tbodyPrevisoes = document.getElementById("corpoTabelaPrevisoes");
+    tbodyPrevisoes.innerHTML = "";
 
     for (let i = 0; i < dados.length; i++) {
         let registro = dados[i];
 
-        let servidor = registro.servidor;
-        let componente = registro.componente;
-        let diaRisco = registro.diaRisco;
-        let periodo = registro.periodo;
-        let alertasPrevistos = registro.alertasPrevistos;
-        let probabilidade = registro.probabilidade;
-        let tendencia = registro.tendencia;
-        let nivelRisco = registro.nivelRisco;
+        let idServidor = registro.idServidor;
+        let hostname = registro.hostname;
+        let diffMs = hoje - dataGeracao;
+        let tempoNoSistema = Math.floor(diffMs / (1000 * 60 * 60 * 24 * 365));
 
-        if(componente == "Memoria"){
-            componente = "Ram"
-        }
-
+        let dataFormatada = new Date(img.data_geracao)
+            .toLocaleDateString("pt-BR", { timeZone: "UTC" });
 
         let linha = `
         <tr>
-            <td>${servidor}</td>
-            <td>${componente}</td>
-            <td>${diaRisco}</td>
-            <td>${periodo}</td>
-            <td>${alertasPrevistos}</td>
-            <td>${probabilidade}</td>
-            <td>${tendencia}</td>
-            <td>${nivelRisco}</td>
+            <td hidden>${img.caminho_arquivo}</td>
+            <td>${img.nome_arquivo}</td>
+            <td>${img.tamanho} MB</td>
+            <td>${dataFormatada}</td>
+            <td>${tempoNoSistema} anos</td>
+            <td class="acao-icons">
+                    <button class="btn-excluir-usuario" onclick="excluirImagem(this)">&#x1F5D1;</button>
+            </td>
         </tr>
     `;
 
-        tbodyPrevisoes.innerHTML += linha;
+        tbodyImagens.innerHTML += linha;
         }
 }
 
@@ -108,7 +103,7 @@ async function carregarInformacoes() {
         document.querySelectorAll('small').forEach((el, index) => {
             textosOriginais.set(index, el.textContent);
         });
-    } 
+    }
     
     atualizarTextosPeriodo();
     topServidoresComMaisAlertas();
@@ -116,6 +111,7 @@ async function carregarInformacoes() {
     contarAlertasNoPeriodo();
     distribuicaoAlertasAno();
     diaSemanaComMaisAlertas();
+    await gerarTabelaPrevisoes();
 }
 
 // Event listener para mudança de período
@@ -153,37 +149,51 @@ function atualizarTextosPeriodo() {
     let textoPeriodoNo = '';
     let textoPeriodoDurante = '';
     let tituloGrafico = '';
+    let tituloKPI = '';
+    let legendaKPI = '';
     
     switch(periodoAtual) {
         case 'dia':
             textoPeriodoNo = 'Hoje';
-            textoPeriodoDurante = 'Durante a Semana';
+            textoPeriodoDurante = 'Durante o Dia';
             tituloGrafico = 'Distribuição de alertas ao longo do dia';
+            tituloKPI = 'Hora do dia com mais alertas';
+            legendaKPI = 'Horário com maior frequência de alertas';
             break;
         case 'semana':
             textoPeriodoNo = 'Nesta Semana';
             textoPeriodoDurante = 'Durante a Semana';
             tituloGrafico = 'Distribuição de alertas na semana';
+            tituloKPI = 'Dia da semana com mais alertas';
+            legendaKPI = 'Dia da semana com maior frequência de alertas';
             break;
         case 'mes':
             textoPeriodoNo = 'Neste Mês';
             textoPeriodoDurante = 'Durante o Mês';
             tituloGrafico = 'Distribuição de alertas no mês';
+            tituloKPI = 'Dia da semana com mais alertas';
+            legendaKPI = 'Dia da semana com maior frequência de alertas';
             break;
         case 'trimestre':
             textoPeriodoNo = 'Neste Trimestre';
             textoPeriodoDurante = 'Durante o Trimestre';
             tituloGrafico = 'Distribuição de alertas no trimestre';
+            tituloKPI = 'Dia da semana com mais alertas';
+            legendaKPI = 'Dia da semana com maior frequência de alertas';
             break;
         case 'semestre':
             textoPeriodoNo = 'Neste Semestre';
             textoPeriodoDurante = 'Durante o Semestre';
             tituloGrafico = 'Distribuição de alertas no semestre';
+            tituloKPI = 'Dia da semana com mais alertas';
+            legendaKPI = 'Dia da semana com maior frequência de alertas';
             break;
         case 'ano':
             textoPeriodoNo = 'Neste Ano';
             textoPeriodoDurante = 'Durante o Ano';
             tituloGrafico = 'Distribuição de alertas ao longo do ano';
+            tituloKPI = 'Dia da semana com mais alertas';
+            legendaKPI = 'Dia da semana com maior frequência de alertas';
             break;
     }
     
@@ -210,6 +220,17 @@ function atualizarTextosPeriodo() {
     const tituloGraficoLinha = document.getElementById('titulo_grafico_linha');
     if (tituloGraficoLinha) {
         tituloGraficoLinha.textContent = tituloGrafico;
+    }
+    
+    // Atualizar o título e legenda da KPI
+    const tituloKPIElement = document.getElementById('c1');
+    if (tituloKPIElement) {
+        tituloKPIElement.innerHTML = `${tituloKPI}<br><small>${textoPeriodoDurante}</small>`;
+    }
+    
+    const legendaKPIElement = document.querySelector('.velocimetro.card .legenda');
+    if (legendaKPIElement) {
+        legendaKPIElement.textContent = legendaKPI;
     }
 }
 
@@ -256,23 +277,31 @@ function distribuicaoAlertasAno() {
         });
 }
 
-// Para pegar o dia da semana com mais alertas eu relacionei o nome dos dias da semana em inglês para fazer selects no banco (temporario)
+// Para pegar o dia da semana com mais alertas ou hora do dia (se período for 'dia')
 function diaSemanaComMaisAlertas() {
     fetch(`/analista/dia-semana-mais-alertas/${idHospitalVar}?periodo=${periodoAtual}`)
         .then(res => res.json())
         .then(dados => {
-            if (dados.length > 0 && dados[0].dia_semana) {
-                const diasPT = {
-                    'Monday': 'Segunda-feira',
-                    'Tuesday': 'Terça-feira',
-                    'Wednesday': 'Quarta-feira',
-                    'Thursday': 'Quinta-feira',
-                    'Friday': 'Sexta-feira',
-                    'Saturday': 'Sábado',
-                    'Sunday': 'Domingo'
-                };
-                const diaTraduzido = diasPT[dados[0].dia_semana] || dados[0].dia_semana;
-                document.querySelector('.valor.grande.azul').textContent = diaTraduzido;
+            if (dados.length > 0) {
+                if (periodoAtual === 'dia' && dados[0].hora !== undefined) {
+                    // Para o período 'dia', mostra a hora com mais alertas
+                    const hora = dados[0].hora;
+                    const horaFormatada = `${hora.toString().padStart(2, '0')}:00`;
+                    document.querySelector('.valor.grande.azul').textContent = horaFormatada;
+                } else if (dados[0].dia_semana) {
+                    // Para outros períodos, mostra o dia da semana
+                    const diasPT = {
+                        'Monday': 'Segunda-feira',
+                        'Tuesday': 'Terça-feira',
+                        'Wednesday': 'Quarta-feira',
+                        'Thursday': 'Quinta-feira',
+                        'Friday': 'Sexta-feira',
+                        'Saturday': 'Sábado',
+                        'Sunday': 'Domingo'
+                    };
+                    const diaTraduzido = diasPT[dados[0].dia_semana] || dados[0].dia_semana;
+                    document.querySelector('.valor.grande.azul').textContent = diaTraduzido;
+                }
             }
         })
         .catch(err => console.error("Erro ao buscar dia com mais alertas: ", err));

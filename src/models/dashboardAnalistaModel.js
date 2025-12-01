@@ -129,7 +129,6 @@ async function distribuicaoAlertasAno(idHospital, periodo) {
         case 'mes':
             instrucao = `
             SELECT 
-                DATE_FORMAT(a.data_alerta, '%Y-%m-%d') AS periodo,
                 DAY(a.data_alerta) AS dia_mes,
                 COUNT(a.id) AS quantidade_alertas
             FROM 
@@ -145,9 +144,9 @@ async function distribuicaoAlertasAno(idHospital, periodo) {
                 AND a.data_alerta >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
                 AND a.data_alerta < DATE_ADD(DATE_FORMAT(CURDATE(), '%Y-%m-01'), INTERVAL 1 MONTH)
             GROUP BY 
-                periodo, dia_mes
+                dia_mes
             ORDER BY 
-                periodo ASC`;
+                dia_mes ASC`;
             break;
             
         case 'trimestre':
@@ -225,29 +224,57 @@ async function distribuicaoAlertasAno(idHospital, periodo) {
 
 async function diaSemanaComMaisAlertas(idHospital, periodo) {
     let filtroData = getFiltroData(periodo);
+    let instrucao = '';
     
-    const instrucao = `
-    SELECT 
-        DAYNAME(a.data_alerta) AS dia_semana,
-        DAYOFWEEK(a.data_alerta) AS ordem_dia,
-        COUNT(a.id) AS quantidade_alertas
-    FROM 
-        alerta a
-    JOIN 
-        componentes c ON a.fkComponente = c.idComponente
-    JOIN 
-        servidores s ON c.fkServidor = s.idServidor
-    JOIN 
-        hospital h ON s.fkHospital = h.idHospital
-    WHERE 
-        h.idHospital = ${idHospital}
-        AND ${filtroData}
-    GROUP BY 
-        dia_semana, ordem_dia
-    ORDER BY 
-        quantidade_alertas DESC
-    LIMIT 1;
-    `;
+    if (periodo === 'dia') {
+        // Para o período 'dia', retorna a hora com mais alertas
+        instrucao = `
+        SELECT 
+            HOUR(a.data_alerta) AS hora,
+            COUNT(a.id) AS quantidade_alertas
+        FROM 
+            alerta a
+        JOIN 
+            componentes c ON a.fkComponente = c.idComponente
+        JOIN 
+            servidores s ON c.fkServidor = s.idServidor
+        JOIN 
+            hospital h ON s.fkHospital = h.idHospital
+        WHERE 
+            h.idHospital = ${idHospital}
+            AND ${filtroData}
+        GROUP BY 
+            hora
+        ORDER BY 
+            quantidade_alertas DESC
+        LIMIT 1;
+        `;
+    } else {
+        // Para outros períodos, retorna o dia da semana com mais alertas
+        instrucao = `
+        SELECT 
+            DAYNAME(a.data_alerta) AS dia_semana,
+            DAYOFWEEK(a.data_alerta) AS ordem_dia,
+            COUNT(a.id) AS quantidade_alertas
+        FROM 
+            alerta a
+        JOIN 
+            componentes c ON a.fkComponente = c.idComponente
+        JOIN 
+            servidores s ON c.fkServidor = s.idServidor
+        JOIN 
+            hospital h ON s.fkHospital = h.idHospital
+        WHERE 
+            h.idHospital = ${idHospital}
+            AND ${filtroData}
+        GROUP BY 
+            dia_semana, ordem_dia
+        ORDER BY 
+            quantidade_alertas DESC
+        LIMIT 1;
+        `;
+    }
+    
     return database.executar(instrucao);
 }
 
