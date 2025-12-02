@@ -80,7 +80,7 @@ function buscarKPIs(idHospital) {
             -- Total de servidores
             COUNT(DISTINCT s.idServidor) as total_servidores,
             
-            -- Servidores em alerta (baseado em alertas não resolvidos)
+            -- Servidores em alerta AGORA (não resolvidos)
             COUNT(DISTINCT CASE 
                 WHEN EXISTS (
                     SELECT 1 FROM alerta a 
@@ -90,28 +90,46 @@ function buscarKPIs(idHospital) {
                 ) THEN s.idServidor 
             END) as servidores_alerta,
             
-            -- Alertas criados nas ÚLTIMAS 24 horas
+            -- ============================================================
+            -- ALERTAS CRIADOS nas ÚLTIMAS 24 horas (para histórico)
+            -- ============================================================
             (SELECT COUNT(*) FROM alerta a
              JOIN componentes c ON a.fkComponente = c.idComponente
              JOIN servidores s2 ON c.fkServidor = s2.idServidor
              WHERE a.data_alerta >= DATE_SUB(NOW(), INTERVAL 24 HOUR)
-             AND s2.fkHospital = ${idHospital}) as alertas_24h,
+             AND s2.fkHospital = ${idHospital}) as alertas_criados_24h,
             
-            -- Alertas criados nas 24 horas ANTERIORES (48h até 24h atrás)
+            -- ============================================================
+            -- ALERTAS CRIADOS nas 24h ANTERIORES (48h até 24h atrás)
+            -- ============================================================
             (SELECT COUNT(*) FROM alerta a
              JOIN componentes c ON a.fkComponente = c.idComponente
              JOIN servidores s2 ON c.fkServidor = s2.idServidor
              WHERE a.data_alerta BETWEEN DATE_SUB(NOW(), INTERVAL 48 HOUR) 
                    AND DATE_SUB(NOW(), INTERVAL 24 HOUR)
-             AND s2.fkHospital = ${idHospital}) as alertas_anterior,
+             AND s2.fkHospital = ${idHospital}) as alertas_criados_anterior,
             
-            -- Total de alertas ATIVOS no momento (não resolvidos)
+            -- ============================================================
+            -- ALERTAS ATIVOS AGORA (não resolvidos) - TEMPO REAL
+            -- ============================================================
             (SELECT COUNT(*) FROM alerta a
              JOIN componentes c ON a.fkComponente = c.idComponente
              JOIN servidores s2 ON c.fkServidor = s2.idServidor
              LEFT JOIN correcao_alerta ca ON a.id = ca.fkAlerta
              WHERE ca.id IS NULL
-             AND s2.fkHospital = ${idHospital}) as alertas_ativos_agora
+             AND s2.fkHospital = ${idHospital}) as alertas_ativos_agora,
+             
+            -- ============================================================
+            -- ALERTAS que ESTAVAM ATIVOS há 24 horas atrás
+            -- (Criados antes de 24h atrás E ainda não resolvidos OU resolvidos depois de 24h atrás)
+            -- ============================================================
+            (SELECT COUNT(*) FROM alerta a
+             JOIN componentes c ON a.fkComponente = c.idComponente
+             JOIN servidores s2 ON c.fkServidor = s2.idServidor
+             LEFT JOIN correcao_alerta ca ON a.id = ca.fkAlerta
+             WHERE a.data_alerta <= DATE_SUB(NOW(), INTERVAL 24 HOUR)
+             AND (ca.id IS NULL OR ca.data_correcao >= DATE_SUB(NOW(), INTERVAL 24 HOUR))
+             AND s2.fkHospital = ${idHospital}) as alertas_ativos_24h_atras
              
         FROM servidores s
         WHERE s.fkHospital = ${idHospital}
