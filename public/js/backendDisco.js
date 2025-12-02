@@ -72,11 +72,29 @@ async function carregarDados() {
     const registroAnterior = dados.length > 1 ? dados[dados.length - 2] : null;
     
     atualizarDash(registroAtual, registroAnterior, limites);
+
+
+    //Chamando a funcao para calcular sobrecarga
+    const previsao = preverSobrecarga(dados);
+    if (!previsao.erro) {
+    // Atualiza o título da previsão no dashboard
+    document.querySelector(".kpi_grafico_previsao .texto_esquerdaPrevisao h1").textContent = previsao.dataPrevista;
+
+
+     // monta o eixo x do gradico (horas)
+    const labels = gerarLabels(previsao.historico, previsao.previsao);
+
+    // Preehnche o grafico
+    grafico.data.labels = labels;
+    grafico.data.datasets[0].data = previsao.historico.concat(Array(previsao.previsao.length).fill(null));
+    grafico.data.datasets[1].data = Array(previsao.historico.length).fill(null).concat(previsao.previsao);
+    grafico.update();
+
+    }
   } catch (erro) {
     console.error("Erro ao buscar dados do bucket:", erro);
   }
 }
-
 
 
 // ---------------- GRAFICO PRINCIPAL (ATIVIDADE GERAL) ----------------
@@ -102,10 +120,6 @@ const graficoAtividade = new Chart(ctx, {
     plugins: { legend: { display: false } }
   }
 });
-
-
-
-
 
 
 
@@ -137,11 +151,19 @@ const graficoUso = new Chart(ctxUso, {
 const ctxPrevisao = document.getElementById('graficoPrevisao').getContext('2d');
 
  function gerarLabels(historico, previsao) {
-  const meses = ["Out", "Nov", "Dez", "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul"];
+  const agora = new Date();
   const total = historico.length + previsao.length;
-  return meses.slice(0, total);
+  const labels = [];
+
+  for (let i = 0; i < total; i++) {
+    const tempo = new Date(agora.getTime() + i * 3000); // 3s por coleta
+    const hora = tempo.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    labels.push(hora);
+  }
+
+  return labels;
 }
-// labels vai começar vazio e depois a funcao de sobrecarga vai sobreescrever
+
 const labels = []
 
   const grafico = new Chart(ctxPrevisao, {
@@ -186,7 +208,7 @@ const labels = []
         x: {
           title: {
             display: true,
-            text: "Meses"
+            text: "Hora"
           },
           grid: {
             color: "#ddd"
@@ -330,7 +352,6 @@ const graficoLatencia = new Chart(ctxLatencia, {
 
 // ---------------- FUNÇÃO DE ATUALIZAÇÃO ----------------
 function atualizarDash(dados, dadosAnterior, limites) {
-  const atividade = Number(dados["Uso_de_Disco"]);
   const usoDisco = Number(dados["Disco_usado_(bytes)"]);
   const discoTotal =  Number(dados["Disco_total_(bytes)"])
   const porcentagemDisco = (usoDisco / discoTotal) * 100 // para calcular a porcentagem 
@@ -339,6 +360,9 @@ function atualizarDash(dados, dadosAnterior, limites) {
   const latMediaLeitura = Number(dados["Disco_latencia_leitura"]) 
   const latMediaEscrita = Number(dados["Disco_latencia_escrita"])
   const dataColeta = (dados["Data da Coleta"] || new Date());
+  const taxaTotal = taxaLeitura + taxaEscrita;
+  
+
 
   // Valores anteriores para calcular a variação
   const usoDiscoAnterior = dadosAnterior ? Number(dadosAnterior["Disco_usado_(bytes)"]) : null;
@@ -348,15 +372,7 @@ function atualizarDash(dados, dadosAnterior, limites) {
   const latMediaEscritaAnterior = dadosAnterior ? Number(dadosAnterior["Disco_latencia_escrita"]) : null;
   const porcentagemDiscoAnterior = dadosAnterior ? (Number(dadosAnterior["Disco_usado_(bytes)"]) / Number(dadosAnterior["Disco_total_(bytes)"])) * 100 : null;
 
-  // Gráfico principal
-  const dataset = graficoAtividade.data.datasets[0];
-  dataset.data.shift();
-  dataset.data.push(atividade);
-  graficoAtividade.update();
-
-  valorAtividade.textContent = `${atividade.toFixed(1)}%`;
-  horaAtualizacao.textContent = `Atualizado às ${new Date(dataColeta).toLocaleTimeString("pt-BR", { hour12: false })}`;
-
+  
   // Uso de disco
   graficoUso.data.datasets[0].data = [porcentagemDisco];
   graficoUso.update();
@@ -365,17 +381,26 @@ function atualizarDash(dados, dadosAnterior, limites) {
 
   // Taxa de transferência média
   const taxaMedia = ((taxaLeitura + taxaEscrita) / 2).toFixed(2);
-  graficoTaxa.data.datasets[0].data.shift();
+  graficoTaxa.data.datasets[0].data.shift(); // tira o primeiro registro e quando adiciona o novo
   graficoTaxa.data.datasets[0].data.push(taxaMedia);
   graficoTaxa.update();
   valorTaxa.textContent = `${taxaMedia} MB/s`;
-
 
   // Latência
   const latMedia = (latMediaLeitura + latMediaEscrita) / 2;
   graficoLatencia.data.datasets[0].data = [latMedia];
   graficoLatencia.update();
   valorLatencia.textContent = `${latMedia.toFixed(2)} ms`;
+
+  // Gráfico principal
+  const atividade = Math.min((taxaTotal * latMedia) / 100, 100);
+  const dataset = graficoAtividade.data.datasets[0];
+  dataset.data.shift();
+  dataset.data.push(atividade);
+  graficoAtividade.update();
+
+  valorAtividade.textContent = `${atividade.toFixed(4)}%`;
+  horaAtualizacao.textContent = `Atualizado às ${new Date(dataColeta).toLocaleTimeString("pt-BR", { hour12: false })}`;
 
 //Chamando função para calcular a variação das KPIS
 calcularVariacao(usoDisco, usoDiscoAnterior, variacaoUso, "%");
@@ -459,35 +484,49 @@ function calcularVariacao(valorAtual, valorAnterior, elemento, unidade) {
     }
 }
 
-async function carregarPrevisao() {
-  try {
-    const res = await fetch(`/dashDiscoRoutes/previsao-sobrecarga/${key}`);
-    if (!res.ok) throw new Error("Falha ao buscar previsão de sobrecarga");
-    const previsao = await res.json();
-    console.log("Previsão recebida:", previsao);
+function preverSobrecarga(dados) {
+  const usados = []
 
-    //Gera as labels dinamicas
-    const labels = gerarLabels(previsao.historico, previsao.previsao)
-
-    // Monta os dados para o gráfico
-    const dadosHistoricos = previsao.historico.concat(Array(previsao.previsao.length).fill(null));
-    const dadosProjetados = Array(previsao.historico.length).fill(null).concat(previsao.previsao);
-
-    grafico.data.labels = labels;
-    grafico.data.datasets[0].data = dadosHistoricos;
-    grafico.data.datasets[1].data = dadosProjetados;
-    grafico.update();
-
-  } catch (erro) {
-    console.error("Erro ao buscar previsão:", erro);
+  //for que percorre todos os registros e salva o disco cheio no vetor
+  for (let i = 0; i < dados.length; i++) {
+    const valor = Number(dados[i]["Disco_usado_(bytes)"]);
+    if (!isNaN(valor)) usados.push(valor);
   }
+
+  const total = Number(dados[dados.length - 1]["Disco_total_(bytes)"]);
+  const limite = 0.9 * total;
+
+  const primeiro = usados[0];
+  const ultimo = usados[usados.length - 1];
+  const taxa = (ultimo - primeiro) / (usados.length - 1);
+
+  const coletasRestantes = Math.ceil((limite - ultimo) / taxa);
+
+  // gera pontos de projeção para o grafico
+  const previsao = [];
+  let valor = ultimo;
+  for (let i = 0; i < coletasRestantes; i++) {
+    valor += taxa;
+    previsao.push(valor);
+  }
+
+  const agora = new Date();
+  const futuro = new Date(agora.getTime() + coletasRestantes * 3000);
+
+  return {
+    historico: usados,
+    previsao,
+    atualGB: ultimo.toFixed(2),
+    limiteGB: limite.toFixed(2),
+    taxaGB: taxa.toFixed(2),
+    coletasRestantes,
+    dataPrevista: futuro.toLocaleString("pt-BR", { hour12: false })
+  };
 }
+
 
 // Chame a função junto com carregarDados
 window.onload = escolherServidor;
 carregarDados();
-carregarPrevisao();
-setInterval(carregarPrevisao, 3000); // Atualiza a cada 3s
 setInterval(carregarDados, 3000); // Atualiza a cada 3s
-
 

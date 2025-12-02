@@ -465,8 +465,9 @@ h3 {
   height: 30px;
   align-items: center;
   flex-direction: row;
-  width: 50%;
+  width: 100px;
 }
+
 
 .texto_esquerdaPrevisao {
   display: flex;
@@ -475,6 +476,19 @@ h3 {
   flex-direction: row;
   width: 80%;
   justify-content: space-evenly;
+}
+
+.texto_esquerdaPrevisao h1 {
+  white-space: nowrap;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: start;
+  font-size: 1.2rem;
+}
+
+.texto_esquerdaPrevisao p {
+  font-weight: bold;
 }
 
 .texto_direita {

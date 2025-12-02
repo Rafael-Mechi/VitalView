@@ -62,15 +62,15 @@ const pegarDadosBucketModel = async (bucketName, fileKey) => {
     }
 };
 
+
 //IGOR: Adicionei aqui ao inves de criar outro model praticamente igual (eu teria que usar os outros metodos acima de qualquer jeito)
 const pegarDadosDiscoModel = async (bucketName, fileKey) => {
     const params = {
         Bucket: bucketName,
         Key: fileKey // caminho para a pasta do json de disco (lembrar de criar no bucket)
-    };
+    }
 
     try {
-        
         const data = await s3.getObject(params).promise();
         const jsonData = JSON.parse(data.Body.toString('utf-8'));
         const list = await s3.listObjectsV2({ Bucket: bucketName }).promise();
@@ -91,8 +91,6 @@ function buscarLimites(idServidor) {
     `;
     return database.executar(sql);
 }
-
-
 
 
 
@@ -131,59 +129,6 @@ async function alertasNasUltimas24hrs(idServidor) {
 }
 
 
-function regressaoLinear(y) {
-    // y: array de valores históricos
-    const n = y.length;
-    if (n < 2) return []; // Não dá para prever com menos de 2 pontos
-
-    const x = Array.from({length: n}, (_, i) => i + 1);
-
-    const sumX = x.reduce((a, b) => a + b, 0);
-    const sumY = y.reduce((a, b) => a + b, 0);
-    const sumXY = x.reduce((acc, xi, i) => acc + xi * y[i], 0);
-    const sumX2 = x.reduce((acc, xi) => acc + xi * xi, 0);
-
-    const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
-    const b = (sumY - m * sumX) / n;
-
-    // Projeção para próximos 6 períodos
-    const previsao = [];
-    for (let i = n + 1; i <= n + 6; i++) {
-        previsao.push(m * i + b);
-    }
-    return previsao;
-}
-
-
-async function preverSobrecarga(req, res) {
-  try {
-    const bucketName = process.env.AWS_BUCKET_NAME;
-    const fileKey = `suporte/disco/${req.params.key}`;
-    const dados = await pegarDadosDiscoModel(bucketName, fileKey);
-
-    // Se for objeto simples, cria array de histórico
-    let historico;
-    if (Array.isArray(dados)) {
-      historico = dados.map(d => Number(d["Uso_de_Disco"]));
-    } else if (typeof dados === "object") {
-      historico = [Number(dados["Uso_de_Disco"])];
-    } else {
-      historico = [];
-    }
-
-    // Gere a previsão (exemplo simples)
-    const previsao = regressaoLinear(historico)
-
-    res.json({ historico, previsao });
-  } catch (err) {
-    console.log("Erro:", err);
-    res.status(400).send("Erro ao prever sobrecarga");
-  }
-}
-
-
-
-
 
 
 module.exports = {
@@ -194,5 +139,4 @@ module.exports = {
     buscarLimites,
     alertasNasUltimas24hrs,
     buscarLimitesServidor,
-    preverSobrecarga
 };

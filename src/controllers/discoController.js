@@ -32,20 +32,10 @@ async function pegarDadosDisco(req, res) {
   }
 }
 
-async function preverSobrecarga(req, res) {
-  try {
-    await suporteMicroModel.preverSobrecarga(req, res);
-  } catch (error) {
-    console.error("Erro ao chamar função de previsão")
-    res.status(500).send("Erro ao chamar função")
-  }
-}
-
 
 
 module.exports = {
   buscarDadosServidores,
   buscarListaServidores,
   pegarDadosDisco,
-  preverSobrecarga
 };
