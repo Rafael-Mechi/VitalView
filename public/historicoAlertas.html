@@ -152,14 +152,17 @@
       let id = tickets.issues[i].id;
       let descr = tickets.issues[i].fields.summary;
       let status = tickets.issues[i].fields.status.name;
+      statusNome = status;
       let url = `https://vitalviewsptech.atlassian.net/jira/servicedesk/projects/SUP/queues/custom/1/${tickets.issues[i].key}`
 
       let registroStatus = ""
       if (status == "Open") {
-        registroStatus = `<span class="status critico">${status}</span>`;
+        statusNome = "Alerta"
+        registroStatus = `<span class="status critico">${statusNome}</span>`;
       }
       else {
-        registroStatus = `<span class="status resolvido">${status}</span>`;
+        statusNome = "Resolvido"
+        registroStatus = `<span class="status resolvido">${statusNome}</span>`;
       }
 
 
@@ -213,9 +216,11 @@
       let status = dados[i].status;
 
       let registroStatus = "";
-      if (status == "Em alerta") {
+      if (status == "Open") {
+        status = "Em alerta"
         registroStatus = `<td><span class="status critico">${status}</span></td>`;
       } else {
+        status = "Resolvido"
         registroStatus = `<td><span class="status resolvido">${status}</span></td>`;
       }
 
