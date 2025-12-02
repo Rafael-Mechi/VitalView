@@ -48,7 +48,7 @@ const pegarTodosArquivosBucket = async (bucketName) => {
 
 // Busca servidores do hospital
 function buscarDadosDashboard(idHospital) {
-    var instrucaoSql = `
+  var instrucaoSql = `
         SELECT 
             s.idServidor as id,
             s.hostname as nome,
@@ -70,12 +70,12 @@ function buscarDadosDashboard(idHospital) {
         WHERE s.fkHospital = ${idHospital}
         ORDER BY s.hostname;
     `;
-    return database.executar(instrucaoSql);
+  return database.executar(instrucaoSql);
 }
 
 // Busca KPIs
 function buscarKPIs(idHospital) {
-    var instrucaoSql = `
+  var instrucaoSql = `
         SELECT 
             -- Total de servidores
             COUNT(DISTINCT s.idServidor) as total_servidores,
@@ -134,59 +134,59 @@ function buscarKPIs(idHospital) {
         FROM servidores s
         WHERE s.fkHospital = ${idHospital}
     `;
-    return database.executar(instrucaoSql);
+  return database.executar(instrucaoSql);
 }
 
 // Busca total de alertas
 function buscarAlertasGerais(idHospital) {
-    var instrucaoSql = `
+  var instrucaoSql = `
         SELECT COUNT(*) as total_alertas
         FROM alerta a
         JOIN componentes c ON a.fkComponente = c.idComponente
         JOIN servidores s ON c.fkServidor = s.idServidor
         WHERE s.fkHospital = ${idHospital};
     `;
-    return database.executar(instrucaoSql);
+  return database.executar(instrucaoSql);
 }
 
 // Busca arquivo S3
 const buscarDadosBucketMacro = async (fileKey) => {
-    const bucketName = process.env.AWS_BUCKET_NAME || "bucket-munir-dashmacro";
+  const bucketName = process.env.AWS_BUCKET_NAME || "bucket-munir-dashmacro";
 
-    console.log(`📁 Buscando no S3: ${fileKey}`);
+  console.log(`📁 Buscando no S3: ${fileKey}`);
 
-    // Debug: lista arquivos do bucket
-    try {
-        const lista = await s3.listObjectsV2({ Bucket: bucketName }).promise();
-        console.log('📁 Arquivos disponíveis:', lista.Contents.map(obj => obj.Key));
-    } catch (err) {
-        console.error('❌ Erro ao listar bucket:', err);
+  // Debug: lista arquivos do bucket
+  try {
+    const lista = await s3.listObjectsV2({ Bucket: bucketName }).promise();
+    console.log('📁 Arquivos disponíveis:', lista.Contents.map(obj => obj.Key));
+  } catch (err) {
+    console.error('❌ Erro ao listar bucket:', err);
+  }
+
+  const params = {
+    Bucket: bucketName,
+    Key: fileKey
+  };
+
+  try {
+    const data = await s3.getObject(params).promise();
+    const jsonData = JSON.parse(data.Body.toString('utf-8'));
+    console.log(`✅ Arquivo ${fileKey} carregado com ${jsonData.length} registros`);
+    return jsonData;
+  } catch (error) {
+    if (error.code === 'NoSuchKey') {
+      console.log(`⚠️ Arquivo ${fileKey} não encontrado no bucket`);
+      return []; // Retorna array vazio se arquivo não existir
     }
-
-    const params = {
-        Bucket: bucketName,
-        Key: fileKey
-    };
-
-    try {
-        const data = await s3.getObject(params).promise();
-        const jsonData = JSON.parse(data.Body.toString('utf-8'));
-        console.log(`✅ Arquivo ${fileKey} carregado com ${jsonData.length} registros`);
-        return jsonData;
-    } catch (error) {
-        if (error.code === 'NoSuchKey') {
-            console.log(`⚠️ Arquivo ${fileKey} não encontrado no bucket`);
-            return []; // Retorna array vazio se arquivo não existir
-        }
-        console.error('❌ Erro ao acessar o S3:', error);
-        throw error;
-    }
+    console.error('❌ Erro ao acessar o S3:', error);
+    throw error;
+  }
 };
 
 module.exports = {
-    buscarDadosDashboard,
-    buscarKPIs,
-    buscarAlertasGerais,
-    buscarDadosBucketMacro,
-    pegarTodosArquivosBucket
+  buscarDadosDashboard,
+  buscarKPIs,
+  buscarAlertasGerais,
+  buscarDadosBucketMacro,
+  pegarTodosArquivosBucket
 };

@@ -82,12 +82,12 @@ async function buscarDadosDashboard(req, res) {
 
         // Mantendo as tendências para fazer o calculo no banco
         const alertasAtivoAgora = dadosKPIs[0]?.alertas_ativos_agora || 0;
-const alertasAtivos24hAtras = dadosKPIs[0]?.alertas_ativos_24h_atras || 0;
+        const alertasAtivos24hAtras = dadosKPIs[0]?.alertas_ativos_24h_atras || 0;
 
-const diferenca = alertasAtivoAgora - alertasAtivos24hAtras;
-const simbolo = diferenca > 0 ? '▲' : (diferenca < 0 ? '▼' : '=');
-const cor = diferenca > 0 ? 'aumento' : (diferenca < 0 ? 'queda' : 'neutro');
-const tendenciaAlertas = diferenca !== 0 ? `${simbolo}${Math.abs(diferenca)}` : '0';
+        const diferenca = alertasAtivoAgora - alertasAtivos24hAtras;
+        const simbolo = diferenca > 0 ? '▲' : (diferenca < 0 ? '▼' : '=');
+        const cor = diferenca > 0 ? 'aumento' : (diferenca < 0 ? 'queda' : 'neutro');
+        const tendenciaAlertas = diferenca !== 0 ? `${simbolo}${Math.abs(diferenca)}` : '0';
 
         const kpis = {
             // Calculando em tempo real os servidores com alertas
@@ -96,8 +96,8 @@ const tendenciaAlertas = diferenca !== 0 ? `${simbolo}${Math.abs(diferenca)}` : 
 
             // Histórico do banco de dados
             alertas24h: alertasAtivoAgora,           // Alertas ativos AGORA
-    alertasAnterior: alertasAtivos24hAtras,  // Alertas ativos HÁ 24H
-    tendenciaAlertas: tendenciaAlertas,
+            alertasAnterior: alertasAtivos24hAtras,  // Alertas ativos HÁ 24H
+            tendenciaAlertas: tendenciaAlertas,
 
             // Status de rede e total de servidor
             totalServidores: dadosKPIs[0]?.total_servidores || 0,
