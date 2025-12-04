@@ -35,7 +35,8 @@ As técnologias utilizadas foram:
   Outras técnologias:
     Integração com Jira e Slack - para abrir chamados e reportar alertas
 
-<img width="3532" height="4909" alt="arquitetura" src="https://github.com/user-attachments/assets/f4aaacad-305a-4e97-a221-d8c1d4470908" />
+<img width="3000" height="2100" alt="arquitetura" src="https://github.com/user-attachments/assets/8eee0206-6953-44fd-be0d-62c5274ed2bf" />
+
 
 Antes de exemplificar como funciona o fluxo de dados detalhadamente, é importante esclarecer uma coisa: cada dashboard foi desenvolvida por um integrante do grupo, seguindo as orientações dos professores. Portanto, o processo da captura, envio do arquivo até o consumo dos dados variar entre as implementações. Entretanto, todos seguem a mesma rota em comum: captura -> envio -> processamento -> plotagem.
 
