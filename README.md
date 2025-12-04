@@ -1,104 +1,57 @@
-<img src="https://user-images.githubusercontent.com/46379117/192358781-9ca879e4-e55e-4d0d-b876-f9a4a2ed9ae8.png" width="600px">
+VitalView
 
-_Web Data Visualization = Visualização de Dados na Web_
+Contexto*
+O VitalView é um projeto fullstack acadêmico desenvolvido pelos alunos do 2º semestre do 1º ano do curso de Bacharelado em Ciências da Computação da faculdade SPTech School.
 
-_Implementação de Referência para o seu Projeto de Primeiro Semestre_
+O objetivo como turma é integrar, de forma prática e contínua, os conteúdos estudados ao longo do semestre, com o projeto sendo desenvolvido paralelamente às aulas.
 
-<hr>
+Neste semestre, o tema do projeto foi sobre monitoramento de hardware e processos. O sistema é responsável por coletar métricas de sobre o tema escolhido pelo grupo, desde que tenha sido aprovado pelos professores de Pesquisa e Inovação (PI) - como CPU, RAM, disco, rede etc -, fazer um processamento e gerar insights ao usuário final. Dependendo do negócio, um monitoramento que não esteja dentro do escopo também é bem vindo, com a condição de que atenda ao tema escolhido e gere valor ao usuário.
 
-# Como usar
+Como funciona?*
+O semestre é divido em três sprints, seguindo a metodologia ágil scrum, onde cada sprint representa a reunião com o professor, que no dia ele atua como o "cliente" que está comprando seu produto.
 
-1. Clone este repositório em sua máquina.
+Na segunda sprint, houve uma mudança nos temas onde cada grupo passou a dar continuidade no projeto até o final.
 
+O tema abordado*
+O tema escolhido foi o monitoramento em servidores on-premises hospitalares, com foco em disco.
 
-1. Crie, no Banco de Dados, as tabelas necessárias para o funcionamento deste projeto.
-- Siga as instruções no arquivo **/src/database/script-tabelas.sql**
+Nele, coletamos informações menciondas anteriomente: CPU, RAM, disco e além de propriedades de imagens. As métricas não se limitam somente ao seu uso, mas também informações de desempenho, análises e projeções a partir do processamento delas.
 
+Arquitetura e ferramentas*
+As técnologias utilizadas foram:
+  Linguagens:
+    Python - para pegar dados da máquina
+    R - para análise de dados
+    Java - para ETL (extrair, transformar e carregar)
+    MySQL - para o banco
+    HTML, CSS e Javascript + Node - para o front-end
+  
+  Infra:
+    AWS
+      EC2 - para hospedar o site e o banco
+      S3 - para datalake e disponibilização dos dados
+      Lambda - para acionar a ETL
+    Docker - para conteinerização do site e banco
+  Outras técnologias:
+    Integração com Jira e Slack - para abrir chamados e reportar alertas
 
-3. Acesse o arquivo **app.js** e parametrize o ambiente.
-- Se você estiver utilizando o Ambiente de Produção (remoto), comente a linha 2 e deixe habilitada a linha 1 onde está o valor **var ambiente_processo = 'producao';**
-- Se você estiver utilizando o Ambiente de Desenvolvimento (local), comente a linha 1 e deixe habilitada a linha 2 onde está o valor **var ambiente_processo = 'desenvolvimento';**
+![arquitetura](C:\Users\PC\Documents\arquitetura.png)
 
-4. Adicione as credenciais de Banco de Dados no arquivo **.env** ou em **.env.dev**, seguindo as instruções neste.
+Antes de exemplificar como funciona o fluxo de dados detalhadamente, é importante esclarecer uma coisa: cada dashboard foi desenvolvida por um integrante do grupo, seguindo as orientações dos professores. Portanto, o processo da captura, envio do arquivo até o consumo dos dados variar entre as implementações. Entretanto, todos seguem a mesma rota em comum: captura -> envio -> processamento -> plotagem.
 
-5. Acesse este repositório no seu terminal (GitBash ou VSCode) e execute os comandos abaixo:
+[colocar imagem aqui]
 
-```
-npm i
-``` 
-_O comando acima irá instalar as bibliotecas necessárias para o funcionamento do projeto. As bibliotecas a serem instaladas estão listadas no arquivo **package.json** então é muito importante que este não seja alterado. Será criada uma nova pasta/diretório chamado **node_modules** quando o comando for finalizado, que é onde as bibliotecas estão localizadas. Não altere a pasta/diretório._
+1. Geração de arquivo
+  O python gera o arquivo das informações do hardware em formato csv, com o seguinte padrão de nomeclatura: idServidor_nomeServidor_hospital.csv. Por exemplo: 1_srv1_hsl.csv.
 
-```
-npm start
-``` 
+2. Envio ao bucket
+  O arquivo é então enviado ao bucket raw, servindo de datalake para todos os arquivos que estão chegando.
 
-_O comando acima irá iniciar seu projeto e efetuar os comandos de acordo com a sua parametrização feita nos passos anteriores._
+3. Primeira ETL
+  O bucket é servido como um trigger para a lambda "raw-to-trusted", que pega o arquivo do bucket, converte para JSON e envia ao bucket trusted.
 
-6. Para "ver" seu projeto funcionando, acesse em seu navegador o caminho **informado no terminal**.
+4. Segunda ETL
+  Este bucket também serve como um trigger para a segunda lambda "trusted-to-client", que pega o arquivo, faz o tratamento necessário, gera um arquivo JSON de relatório e envia ao bucket client. Aqui também é feito o uso do banco de dados para analisar parametrizações e enviar alertas para o banco e o Jira.
 
-7. Caso queira parar a execução, tecle **CTRL+C** no terminal em que o projeto está rodando.
-
-## Adicionar novo recurso ao projeto
-
-**"Recurso? O que é?"** Enquanto no Banco de Dados chamamos as tabelas de "entidades", quando tratamos de desenvolvimento WEB usamos a palavra "recurso" para se referir a algo que podemos criar, ler, atualizar ou deletar [1]. Estas ações são conhecidas como CRUD: Create, Read, Update e Delete. Para acessar cada ação, usamos os métodos HTTP: POST, GET, PUT e DELETE [2]. (Há outros verbos, porém com estes já conseguimos efetuar CRUDs). 
-
-**Tabela para ajudar a fazer a associação**
-
-<table>
-  <tr>
-    <th>C.R.U.D</th>
-    <th>Ação</th>
-    <th>Tradução</th>
-    <th>Verbo HTTP *</th>
-    <th>Comando BD</th>
-  </tr>
-  <tr>
-    <td>C</td>
-    <td>Create</td>
-    <td>Criar</td>
-    <td>POST</td>
-    <td>INSERT</td>
-  </tr>
-  <tr>
-    <td>R</td>
-    <td>Read</td>
-    <td>Ler</td>
-    <td>GET</td>
-    <td>SELECT</td>
-  </tr>
-  <tr>
-    <td>U</td>
-    <td>Update</td>
-    <td>Atualizar</td>
-    <td>PUT</td>
-    <td>UPDATE</td>
-  </tr>
-  <tr>
-    <td>D</td>
-    <td>Delete</td>
-    <td>Deletar</td>
-    <td>DELETE</td>
-    <td>DELETE</td>
-  </tr>
-</table>
-
-_* Você verá o verbo HTTP sendo apontado nos arquivos em /routes_
-
-**"E no meu projeto, o que seria um recurso?"** Em web-data-viz manipulamos os recursos **usuário**, **aviso** e **medida**. Podemos conferir isso vendo para quais entidades foram criados os caminhos de inserção e captura de dados, que envolve os diretórios **routes**, **controllers** e **models**.
-
-Abaixo, uma figura que ajuda a compreender o caminho percorrido para, por exemplo, efetuar o cadastro de um usuário:
-
-
-![image](https://github.com/BandTec/web-data-viz/assets/46379117/e8d63551-6153-4632-93b9-f59a1d2afd3e)
-
-
-**Entendi o que é um recurso e gostaria de adicionar um novo ao meu projeto! Como faz?**  
-- Primeiro, crie a tabela no Banco de Dados referente a este recurso. Exemplos de recursos comuns de serem adicionados ao projeto no primeiro semestre: Silo, Aquário, Sala, Andar, Endereço, Mercado, Prateleira, Unidade, Carro, Caminhão...  
-- Assim que criada a tabela, faça todo o caminho de **front-end → routes → controllers → models** replicando o que já existe!  
-- Exemplo, se você quiser a funcionalidade de adicionar um novo Aquário, deve criar arquivos referentes ao aquario nos diretórios e replicar também as funções.  
-- Dica: A implementação de AVISO já contém o CRUD completo! :wink:
- 
-### Fontes bibliográficas
-
-[1] https://datatracker.ietf.org/doc/html/rfc2396  
-[2] https://datatracker.ietf.org/doc/html/rfc7231
+5. Consumo dos dados
+  Cada dashboard possui seu próprio JSON para ser consumido. Logo, a segunda ETL também gera vários arquivos JSON para atender cada uma dessa dashboard. Isso permite que cada tela do site que exibe a dashboard busca por um arquivo diferente dentro do bucket.

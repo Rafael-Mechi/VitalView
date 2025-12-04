@@ -42,29 +42,13 @@ function autenticar(req, res) {
 function cadastrar(req, res) {
     
     console.log("Dados recebidos no cadastro:", req.body);
+    var nome = req.body.nomeServer;
+    var email = req.body.emailServer;
+    var senha = req.body.senhaServer;
+    var dataNascimento = req.body.dtNascimentoServer;
+    var genero = req.body.generoServer;
 
-    const { nome, cpf, telefone, email, senha, data_criacao, fkCargo, fkHospital } = req.body;
-    if (!nome || !email || !senha || !fkCargo || !cpf || !telefone || !fkHospital) {
-        return res.status(400).send("Dados incompletos!");
-    }
-
-    else if (nome == undefined) {
-        res.status(400).send("Seu nome está undefined!");
-    } else if (email == undefined) {
-        res.status(400).send("Seu email está undefined!");
-    } else if (senha == undefined) {
-        res.status(400).send("Sua senha está undefined!");
-    } else if (cpf == undefined) {
-        res.status(400).send("Seu cpf está undefined!");
-    }else if (telefone == undefined) {
-        res.status(400).send("Seu telefone está undefined!");
-    }else if (fkCargo == undefined) {
-        res.status(400).send("Seu cargo está undefined!");
-    }else if (fkHospital == undefined) {
-        res.status(400).send("Seu hospital está undefined!");
-    }else {
-
-        usuarioModel.cadastrar(nome, cpf, telefone, email, senha, data_criacao, fkCargo, fkHospital)
+        usuarioModel.cadastrar(nome, email, senha, dataNascimento, genero)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -80,7 +64,6 @@ function cadastrar(req, res) {
                 }
             );
     }
-}
 
 function procurarCargos(req, res){
     usuarioModel.procurarCargos()
