@@ -1,4 +1,4 @@
-![capa](C:\Users\PC\Documents\capa.png)
+![capa](image-capa.png)
 
 VitalView*
 
@@ -37,7 +37,7 @@ As técnologias utilizadas foram:
   Outras técnologias:
     Integração com Jira e Slack - para abrir chamados e reportar alertas
 
-![arquitetura](C:\Users\PC\Documents\arquitetura.png)
+![arquitetura](image-arq.png)
 
 Antes de exemplificar como funciona o fluxo de dados detalhadamente, é importante esclarecer uma coisa: cada dashboard foi desenvolvida por um integrante do grupo, seguindo as orientações dos professores. Portanto, o processo da captura, envio do arquivo até o consumo dos dados variar entre as implementações. Entretanto, todos seguem a mesma rota em comum: captura -> envio -> processamento -> plotagem.
 
